@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Greentext Archives :: Abel Experience™</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Custom scrollbar for the BROWSER (if content overflows viewport) */
+      body::-webkit-scrollbar {
+        width: 10px;
+      }
+      body::-webkit-scrollbar-track {
+        background: #111827; /* gray-900 */
+      }
+      body::-webkit-scrollbar-thumb {
+        background: #0d9488; /* teal-600 */
+        border-radius: 5px;
+        border: 2px solid #111827;
+      }
+      body::-webkit-scrollbar-thumb:hover {
+        background: #14b8a6; /* teal-500 */
+      }
+
+      .greentext-line {
+        color: #34d399; /* Tailwind green-400 */
+      }
+      .system-message {
+        /* For ABEL_SYSTEM_MSG or similar */
+        color: #2dd4bf; /* teal-400 */
+      }
+      .metadata-line {
+        color: #facc15; /* yellow-400 */
+      }
+      .entry-title-line {
+        color: #9ca3af; /* gray-400 */
+      }
+      .entry-separator-line {
+        color: #4b5563; /* gray-600 */
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+      .blinking-cursor {
+        animation: blink 1s step-end infinite;
+        font-weight: bold;
+      }
+      /* Hide original source content for typewriter */
+      #source-greentext-content {
+        display: none;
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              mono: [
+                '"Courier New"',
+                "Courier",
+                "ui-monospace",
+                "SFMono-Regular",
+                "Menlo",
+                "Monaco",
+                "Consolas",
+                "Liberation Mono",
+                "monospace",
+              ], // Prioritize Courier New
+            },
+            colors: {
+              "crt-black": "#0A0A0A", // Off-black for terminal background
+              "crt-green": "#34D399", // Main greentext color
+              "crt-lightgreen": "#6EE7B7",
+              "crt-amber": "#FACC15",
+              "crt-gray": "#9CA3AF",
+              "crt-darkgray": "#374151",
+              "crt-blue": "#3B82F6", // For title bar or highlights
+              "crt-white": "#E5E7EB",
+
+              // Standard Tailwind colors for page elements outside terminal
+              "gray-900": "#111827",
+              "gray-800": "#1F2937",
+              "gray-700": "#374151",
+              "gray-600": "#4B5563",
+              "gray-500": "#6B7280",
+              "gray-300": "#D1D5DB",
+              "teal-400": "#2DD4BF",
+              "teal-500": "#14B8A6",
+              "teal-600": "#0D9488",
+              "blue-400": "#60A5FA", // User input prompt part
+              "yellow-400": "#FACC15", // Metadata
+              "red-500": "#EF4444",
+              "green-500": "#22C55E",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-gray-900 flex flex-col items-center justify-start min-h-screen p-4 sm:p-6 font-mono selection:bg-teal-500 selection:text-black"
+  >
+    <header class="my-6 sm:my-8 text-center">
+      <h1
+        class="text-3xl sm:text-5xl font-bold text-teal-400 filter drop-shadow-[0_0_8px_rgba(45,212,191,0.5)]"
+      >
+        ABEL EXPERIENCE™
+      </h1>
+      <p class="text-lg text-gray-300 mt-1">
+        PUBLIC ARCHIVES :: GREENTEXT TERMINAL
+      </p>
+    </header>
+
+    <div
+      id="terminal-viewer"
+      class="w-full max-w-4xl bg-crt-black shadow-2xl rounded-md overflow-hidden flex flex-col border-2 border-crt-darkgray"
+    >
+      <div
+        class="bg-crt-blue p-1.5 text-center border-b-2 border-black select-none"
+      >
+        <span class="text-sm text-crt-white font-bold tracking-wider"
+          >MS-DOS Executive - [ABEL_ARCHIVES.EXE]</span
+        >
+      </div>
+
+      <div
+        id="terminal-output"
+        class="p-3 sm:p-4 text-sm text-crt-lightgreen flex-grow space-y-0.5 leading-normal"
+      ></div>
+
+      <div id="source-greentext-content">
+        <p class="system-message">
+          ABEL_SYSTEM_MSG&gt; Initializing connection to public archives...
+        </p>
+        <p class="system-message">
+          ABEL_SYSTEM_MSG&gt; Security layer nominal. Welcome, Visitor.
+        </p>
+        <p class="system-message">
+          ABEL_SYSTEM_MSG&gt; Type 'help' for available commands (simulation
+          only).
+        </p>
+        <p>
+          <span class="system-message">visitor@abel-archives</span>:<span
+            class="text-blue-400"
+            >~</span
+          >$ load_volume --latest
+        </p>
+        <p class="system-message">
+          ABEL_ARCHIVES&gt; Loading volume "Chronicles of the Digital Frontier
+          v2.1"...
+        </p>
+        <p class="metadata-line">
+          [METADATA] Title: Chronicles of the Digital Frontier v2.1
+        </p>
+        <p class="metadata-line">[METADATA] Author: Various Anons</p>
+        <p class="metadata-line">[METADATA] Publication Date: 2025-05-24</p>
+        <p class="source-br">br</p>
+        <p class="entry-title-line">
+          --- Entry 001: The Algorithm's Whimsy ---
+        </p>
+        <p class="greentext-line">&gt;be me, tier 1 tech support drone</p>
+        <p class="greentext-line">
+          &gt;another monday, another cascade of tickets
+        </p>
+        <p>
+          &nbsp;&nbsp;one ticket subject: "My computer is haunted by a frog."
+        </p>
+        <p class="greentext-line">&gt;internally sigh.jpeg</p>
+        <p>&nbsp;&nbsp;call user, old lady, sounds sweet</p>
+        <p class="greentext-line">&gt;"Ma'am, can you describe the frog?"</p>
+        <p class="greentext-line">
+          &gt;"Oh, he's quite dapper! Wears a little top hat and sips tea. Only
+          appears when I search for recipes."
+        </p>
+        <p>
+          &nbsp;&nbsp;spend an hour troubleshooting. turns out she installed a
+          browser extension called "RecipePepe".
+        </p>
+        <p class="greentext-line">
+          &gt;mfw it's literally a well-dressed frog that gives recipe
+          suggestions
+        </p>
+        <p class="greentext-line">
+          &gt;told her it was a "feature". she was delighted.
+        </p>
+        <p class="entry-separator-line">--- End of Entry ---</p>
+        <p class="source-br">br</p>
+
+        <p class="entry-title-line">
+          --- Entry 002: The Quest for Pokémon in HTML ---
+        </p>
+        <p class="greentext-line">
+          &gt;project for a client "The Abel Experience™"
+        </p>
+        <p class="greentext-line">
+          &gt;wants admin panel, dark theme, futuristic, cyberpunk vibes
+        </p>
+        <p>&nbsp;&nbsp;then adds habit tracker... that rewards Pokémon</p>
+        <p class="greentext-line">
+          &gt;gen 1-6, lowest evo. 5% legendary, 1% variant.
+        </p>
+        <p>&nbsp;&nbsp;all in a single HTML file at first.</p>
+        <p class="greentext-line">
+          &gt;me_trying_to_manage_state_with_global_js_vars.gif
+        </p>
+        <p class="greentext-line">
+          &gt;client then asks for this public terminal viewer page.
+        </p>
+        <p>
+          &nbsp;&nbsp;"Make it feel like TerminalViewer.jsx, but static HTML."
+        </p>
+        <p class="greentext-line">&gt;this is fine.dog_in_burning_room.png</p>
+        <p class="greentext-line">&gt;at least the aesthetic is cool.</p>
+        <p class="entry-separator-line">--- End of Entry ---</p>
+        <p class="source-br">br</p>
+
+        <p class="entry-title-line">--- Entry 003: Server Room Serenade ---</p>
+        <p class="greentext-line">&gt;night shift at the data center</p>
+        <p class="greentext-line">
+          &gt;only sounds are the hum of servers and my own tinnitus
+        </p>
+        <p>&nbsp;&nbsp;start hearing faint music</p>
+        <p class="greentext-line">&gt;think i'm finally losing it</p>
+        <p>
+          &nbsp;&nbsp;follow the sound, ends up being one of the older server
+          racks
+        </p>
+        <p class="greentext-line">
+          &gt;fans are vibrating at specific frequencies, creating a
+          surprisingly melodic tune
+        </p>
+        <p class="greentext-line">
+          &gt;it's playing a distorted version of "Never Gonna Give You Up"
+        </p>
+        <p>&nbsp;&nbsp;the machines are rickrolling me</p>
+        <p class="greentext-line">&gt;can't even be mad, that's impressive</p>
+        <p class="entry-separator-line">--- End of Entry ---</p>
+        <p class="source-br">br</p>
+        <p class="system-message">
+          ABEL_ARCHIVES&gt; End of volume "Chronicles of the Digital Frontier
+          v2.1".
+        </p>
+        <p class="system-message">
+          ABEL_ARCHIVES&gt; Standing by for next command...
+        </p>
+      </div>
+
+      <div
+        class="bg-crt-black p-2 border-t-2 border-crt-darkgray flex items-center"
+      >
+        <label
+          for="terminal-input"
+          class="text-sm text-crt-lightgreen select-none"
+        >
+          <span class="text-teal-400">visitor@abel-archives</span>:<span
+            class="text-blue-400"
+            >~</span
+          >$&nbsp;
+        </label>
+        <input
+          type="text"
+          id="terminal-input"
+          name="terminal-input"
+          class="bg-transparent text-crt-lightgreen text-sm focus:outline-none flex-grow"
+          placeholder=""
+        />
+        <span id="input-cursor" class="blinking-cursor text-teal-400">█</span>
+      </div>
+    </div>
+
+    <footer class="mt-6 sm:mt-8 text-center text-xs text-gray-500">
+      <p>
+        &copy; <span id="currentYear"></span> The Abel Experience™. All rights
+        reserved. Public Archives Division.
+      </p>
+      <p>This is a fictional interface for demonstration purposes.</p>
+    </footer>
+
+    <script>
+      document.getElementById("currentYear").textContent =
+        new Date().getFullYear();
+
+      const sourceContent = document.getElementById("source-greentext-content");
+      const terminalOutput = document.getElementById("terminal-output");
+      const terminalInput = document.getElementById("terminal-input");
+      const inputCursor = document.getElementById("input-cursor");
+
+      const baseTypingDelay = 5; // ms
+      const randomDelayMax = 60; // ms
+      const pauseChance = 0.03; // Chance of a longer pause per character
+      const pauseDurationMin = 200; // ms
+      const pauseDurationMax = 500; // ms
+      const glitchChance = 0.15; // Chance of a glitch per character
+      const glitchDuration = 100; // ms
+      const glitchChars = "!@#$%^*()_+[]{};'\\\"|?,./<>";
+
+      async function typeLine(sourceElement) {
+        const text = sourceElement.textContent.trim();
+        const newP = document.createElement("p");
+        if (sourceElement.className) {
+          // Copy classes for styling
+          newP.className = sourceElement.className;
+        }
+        terminalOutput.appendChild(newP);
+
+        let currentLineText = "";
+        for (let i = 0; i < text.length; i++) {
+          // Random pause
+          if (Math.random() < pauseChance && text[i] !== " ") {
+            await new Promise((resolve) =>
+              setTimeout(
+                resolve,
+                pauseDurationMin +
+                  Math.random() * (pauseDurationMax - pauseDurationMin)
+              )
+            );
+          }
+
+          // Random glitch
+          if (Math.random() < glitchChance && text[i] !== " ") {
+            const originalChar = text[i];
+            const randomGlitchChar =
+              glitchChars[Math.floor(Math.random() * glitchChars.length)];
+            newP.textContent = currentLineText + randomGlitchChar;
+            await new Promise((resolve) => setTimeout(resolve, glitchDuration));
+            currentLineText += originalChar;
+            newP.textContent = currentLineText;
+          } else {
+            currentLineText += text[i];
+            newP.textContent = currentLineText;
+          }
+          await new Promise((resolve) =>
+            setTimeout(
+              resolve,
+              baseTypingDelay + Math.random() * randomDelayMax
+            )
+          );
+        }
+      }
+
+      async function startTypewriter() {
+        const elementsToType = Array.from(sourceContent.children);
+        for (const el of elementsToType) {
+          if (el.classList.contains("source-br")) {
+            // Handle our <br> marker
+            terminalOutput.appendChild(document.createElement("br"));
+          } else if (el.textContent.trim() === "" && el.tagName === "P") {
+            // Handle empty paragraphs for spacing
+            const emptyP = document.createElement("p");
+            emptyP.innerHTML = "&nbsp;"; // Maintain space
+            terminalOutput.appendChild(emptyP);
+          } else {
+            await typeLine(el);
+          }
+        }
+        // After typing, make input cursor visible and focus input
+        if (terminalInput) {
+          terminalInput.focus();
+          inputCursor.style.display = "inline"; // Ensure cursor is visible
+        }
+      }
+
+      // Simulated command input
+      if (terminalInput) {
+        terminalInput.addEventListener("focus", () =>
+          inputCursor.classList.remove("blinking-cursor")
+        );
+        terminalInput.addEventListener("blur", () =>
+          inputCursor.classList.add("blinking-cursor")
+        );
+
+        terminalInput.addEventListener("keydown", function (event) {
+          if (event.key === "Enter") {
+            const command = terminalInput.value.trim();
+            if (command) {
+              const outputLine = document.createElement("p");
+              // Reconstruct the prompt and command in the output
+              const promptSpan = document.createElement("span");
+              promptSpan.className = "text-teal-400";
+              promptSpan.textContent = "visitor@abel-archives";
+              const colonSpan = document.createElement("span");
+              colonSpan.textContent = ":";
+              const tildeSpan = document.createElement("span");
+              tildeSpan.className = "text-blue-400";
+              tildeSpan.textContent = "~";
+              outputLine.appendChild(promptSpan);
+              outputLine.appendChild(colonSpan);
+              outputLine.appendChild(tildeSpan);
+              outputLine.append("$ " + command);
+              terminalOutput.appendChild(outputLine);
+
+              const responseLine = document.createElement("p");
+              responseLine.className = "system-message"; // Default class for response
+
+              if (command.toLowerCase() === "help") {
+                responseLine.innerHTML = `<span class="text-yellow-400">[SIM_RESPONSE]</span> Available: 'load_volume [name]', 'list_volumes', 'clear', 'date', 'whoami'. (Demo only)`;
+              } else if (
+                command.toLowerCase().startsWith("load_volume") ||
+                command.toLowerCase().startsWith("list_volumes")
+              ) {
+                responseLine.innerHTML = `<span class="text-yellow-400">[SIM_RESPONSE]</span> Command '${
+                  command.split(" ")[0]
+                }' acknowledged. (Content static in this demo)`;
+              } else if (command.toLowerCase() === "clear") {
+                responseLine.innerHTML = `<span class="text-yellow-400">[SIM_RESPONSE]</span> Screen cleared (simulated). Restart typewriter to see content again.`;
+                // For a real clear, you'd empty terminalOutput and restart or provide a way to.
+                // For this demo, it just prints a message.
+              } else if (command.toLowerCase() === "date") {
+                responseLine.innerHTML = `<span class="text-yellow-400">[SIM_RESPONSE]</span> ${new Date().toString()}`;
+              } else if (command.toLowerCase() === "whoami") {
+                responseLine.innerHTML = `<span class="text-yellow-400">[SIM_RESPONSE]</span> visitor_0x${Math.random()
+                  .toString(16)
+                  .substr(2, 6)}`;
+              } else {
+                responseLine.innerHTML = `<span class="text-red-500">[SIM_ERROR]</span> Unknown command: ${command}. Type 'help'.`;
+              }
+              terminalOutput.appendChild(responseLine);
+              terminalInput.value = ""; // Clear input
+              terminalOutput.scrollTop = terminalOutput.scrollHeight; // Scroll to bottom (though not strictly needed now)
+            }
+            event.preventDefault();
+          }
+        });
+      }
+
+      // Start the typewriter effect when the page loads
+      window.addEventListener("load", () => {
+        if (inputCursor) inputCursor.style.display = "none"; // Hide until typing done
+        startTypewriter();
+      });
+    </script>
+  </body>
+</html>
