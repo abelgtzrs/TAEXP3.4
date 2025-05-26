@@ -61,11 +61,6 @@ const PokemonBaseSchema = new mongoose.Schema(
       type: String,
       required: false, // Or true if you have them all ready
     },
-    description: {
-      // A short Pokédex-like description
-      type: String,
-      default: "",
-    },
   },
   { timestamps: true }
 ); // Adds createdAt and updatedAt automatically
