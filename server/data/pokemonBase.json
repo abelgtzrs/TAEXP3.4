@@ -1,0 +1,63 @@
+[
+  {
+    "speciesId": 1,
+    "name": "Bulbasaur",
+    "generation": 1,
+    "types": ["Grass", "Poison"],
+    "isStarter": true,
+    "evolvesAtLevel": 16,
+    "evolvesToSpeciesId": 2,
+    "spriteKey": "001",
+    "description": "A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon."
+  },
+  {
+    "speciesId": 2,
+    "name": "Ivysaur",
+    "generation": 1,
+    "types": ["Grass", "Poison"],
+    "evolvesAtLevel": 32,
+    "evolvesToSpeciesId": 3,
+    "spriteKey": "002",
+    "description": "When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs."
+  },
+  {
+    "speciesId": 3,
+    "name": "Venusaur",
+    "generation": 1,
+    "types": ["Grass", "Poison"],
+    "spriteKey": "003",
+    "description": "The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight."
+  },
+  {
+    "speciesId": 4,
+    "name": "Charmander",
+    "generation": 1,
+    "types": ["Fire"],
+    "isStarter": true,
+    "evolvesAtLevel": 16,
+    "evolvesToSpeciesId": 5,
+    "spriteKey": "004",
+    "description": "From the time it is born, a flame burns at the tip of its tail. Its life would end if the flame were to go out."
+  },
+  {
+    "speciesId": 7,
+    "name": "Squirtle",
+    "generation": 1,
+    "types": ["Water"],
+    "isStarter": true,
+    "evolvesAtLevel": 16,
+    "evolvesToSpeciesId": 8,
+    "spriteKey": "007",
+    "description": "After birth, its back swells and hardens into a shell. Powerfully sprays foam from its mouth."
+  },
+  {
+    "speciesId": 25,
+    "name": "Pikachu",
+    "generation": 1,
+    "types": ["Electric"],
+    "evolvesAtLevel": null,
+    "evolvesToSpeciesId": 26,
+    "spriteKey": "025",
+    "description": "It has small electric sacs on both its cheeks. If threatened, it looses electric charges from the sacs."
+  }
+]

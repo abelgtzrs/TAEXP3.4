@@ -1,0 +1,18 @@
+[
+  {
+    "snoopyId": "classic_snoopy_001",
+    "name": "Classic Snoopy - On Doghouse",
+    "description": "The original beagle, pondering life atop his iconic red doghouse.",
+    "imageUrl": "path/to/your/classic_snoopy.png",
+    "rarity": "common",
+    "series": "Originals"
+  },
+  {
+    "snoopyId": "joe_cool_001",
+    "name": "Joe Cool",
+    "description": "The epitome of cool, leaning against a wall with shades.",
+    "imageUrl": "path/to/your/joe_cool.png",
+    "rarity": "uncommon",
+    "series": "Personas"
+  }
+]

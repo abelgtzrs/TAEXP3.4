@@ -1,6 +1,7 @@
 // server/routes/authRoutes.js
 const express = require("express");
 const router = express.Router();
+const { protect } = require("../middleware/authMiddleware");
 
 // We will import controller functions here later
 const {
@@ -26,6 +27,6 @@ router.post("/login", loginUser);
 // @route   GET /api/auth/me
 // @access  Private (will need 'protect' middleware later)
 // For now, let's make it public for easier initial testing, then add 'protect'
-router.get("/me", /* protect, */ getMe); // Temporarily public
+router.get("/me", protect, getMe); // Temporarily public
 
 module.exports = router;

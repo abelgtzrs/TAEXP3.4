@@ -1,0 +1,30 @@
+[
+  {
+    "personaId": "default_abel",
+    "name": "Standard Issue Abel",
+    "description": "The default operational interface.",
+    "themeColors": {
+      "primary": "#14B8A6",
+      "secondary": "#0D9488",
+      "accent": "#2DD4BF",
+      "background": "#111827",
+      "text_primary": "#E5E7EB",
+      "text_secondary": "#9CA3AF"
+    },
+    "unlockCriteriaText": "Available by default."
+  },
+  {
+    "personaId": "stoic_abel",
+    "name": "Stoic Abel",
+    "description": "A calm, collected, and minimalist interface.",
+    "themeColors": {
+      "primary": "#4B5563",
+      "secondary": "#374151",
+      "accent": "#9CA3AF",
+      "background": "#1F2937",
+      "text_primary": "#F3F4F6",
+      "text_secondary": "#D1D5DB"
+    },
+    "unlockCriteriaText": "Maintain a 7-day habit streak."
+  }
+]

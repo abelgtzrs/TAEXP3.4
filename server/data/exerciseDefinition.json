@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Bench Press",
+    "muscleGroups": ["Chest", "Triceps", "Shoulders"],
+    "exerciseType": "strength",
+    "defaultMetrics": [
+      { "name": "weight", "unit": "kg" },
+      { "name": "reps", "unit": "count" },
+      { "name": "sets", "unit": "count" }
+    ],
+    "equipmentNeeded": ["Barbell", "Bench"]
+  },
+  {
+    "name": "Squat",
+    "muscleGroups": ["Quads", "Glutes", "Hamstrings", "Core"],
+    "exerciseType": "strength",
+    "defaultMetrics": [
+      { "name": "weight", "unit": "kg" },
+      { "name": "reps", "unit": "count" },
+      { "name": "sets", "unit": "count" }
+    ],
+    "equipmentNeeded": ["Barbell", "Rack"]
+  },
+  {
+    "name": "Running",
+    "muscleGroups": ["Legs", "Cardio"],
+    "exerciseType": "cardio",
+    "defaultMetrics": [
+      { "name": "distance", "unit": "km" },
+      { "name": "duration", "unit": "minutes" }
+    ],
+    "equipmentNeeded": ["Running Shoes"]
+  },
+  {
+    "name": "Push-up",
+    "muscleGroups": ["Chest", "Triceps", "Shoulders", "Core"],
+    "exerciseType": "strength",
+    "defaultMetrics": [
+      { "name": "reps", "unit": "count" },
+      { "name": "sets", "unit": "count" }
+    ],
+    "equipmentNeeded": ["Bodyweight"]
+  }
+]

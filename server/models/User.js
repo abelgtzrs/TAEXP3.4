@@ -12,6 +12,14 @@ const UserSchema = new mongoose.Schema({
     lowercase: true,
     trim: true,
   },
+  username: {
+    type: String,
+    required: [true, "Username is required"],
+    unique: true,
+    minlength: [3, "Username must be at least 3 characters long"],
+    maxlength: [20, "Username cannot exceed 20 characters"],
+    trim: true,
+  },
   password: {
     type: String,
     required: [true, "Password is required"],
@@ -149,9 +157,9 @@ UserSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
-
-return await bcrypt.compare(enteredPassword, this.password);
-
+UserSchema.methods.comparePassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
 // UserSchema.methods.getSignedJwtToken = function() {
 //     return jwt.sign({ id: this._id, role: this.role }, process.env.JWT_SECRET, {
 //         expiresIn: process.env.JWT_EXPIRE || '30d' // Configurable expiration
