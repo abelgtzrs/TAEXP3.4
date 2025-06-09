@@ -40,3 +40,21 @@
 .read-the-docs {
   color: #888;
 }
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* You can define your base styles for :root CSS variables here if needed for default theme */
+:root {
+  --theme-primary: #14B8A6; /* Default Teal */
+  --theme-secondary: #0D9488;
+  --theme-accent: #2DD4BF;
+  --theme-background: #111827; /* Default Dark Background */
+  --theme-text: #E5E7EB;     /* Default Light Text */
+}
+body {
+  background-color: var(--theme-background);
+  color: var(--theme-text);
+  /* Add other global styles if needed */
+}

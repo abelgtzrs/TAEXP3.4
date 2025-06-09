@@ -62,7 +62,7 @@ const authorize = (...roles) => {
         success: false,
         message: `User role '${req.user.role}' is not authorized to access this route`,
       });
-    }
+    }3+
     next(); // Role is authorized, proceed
   };
 };
