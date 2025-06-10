@@ -1,77 +1,66 @@
 // server/models/userSpecific/WorkoutLog.js
+
 const mongoose = require("mongoose");
 
+// First, we define a sub-schema for a single exercise performed during a workout.
+// This is not a separate model, but a blueprint for objects inside the WorkoutLog's 'exercises' array.
 const ExercisePerformanceSchema = new mongoose.Schema(
   {
+    // A reference to the base definition of the exercise performed.
     exerciseDefinition: {
-      // Reference to the base definition of the exercise
       type: mongoose.Schema.Types.ObjectId,
       ref: "ExerciseDefinition",
       required: true,
     },
-    // For strength exercises
+    // For strength exercises: an array of sets.
     sets: [
       {
-        reps: { type: Number, min: 0 },
-        weight: { type: Number, min: 0 },
-        weightUnit: {
-          type: String,
-          enum: ["kg", "lbs", "bodyweight", "band"],
-          default: "kg",
-        },
-        notes: String, // e.g., "Warm-up set", "Drop set"
+        reps: { type: Number },
+        weight: { type: Number },
+        weightUnit: { type: String, enum: ["kg", "lbs"], default: "kg" },
       },
     ],
-    // For cardio exercises
-    distance: { type: Number, min: 0 },
-    distanceUnit: { type: String, enum: ["km", "miles", "meters", "laps"] },
-    durationExerciseMinutes: { type: Number, min: 0 }, // Duration for this specific exercise
-
-    // General
-    caloriesBurned: { type: Number, min: 0 }, // Estimated, optional
-    notes: String, // Notes for this specific exercise performance in the log
+    // For cardio exercises:
+    distance: { type: Number },
+    distanceUnit: { type: String, enum: ["km", "miles"] },
+    durationMinutes: { type: Number }, // Duration for this specific exercise
   },
   { _id: false }
-); // Don't create separate _id for subdocuments unless needed
+); // We set _id to false as we don't need a separate ID for each exercise performance in the array.
 
+// Now, we define the main schema for the entire workout log.
 const WorkoutLogSchema = new mongoose.Schema(
   {
+    // Link to the user who performed the workout.
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
       index: true,
     },
+    // The date the workout was performed.
     date: {
-      // When the workout was performed
       type: Date,
       default: Date.now,
       required: true,
     },
+    // An optional name for the workout session, e.g., "Morning Chest Day".
     workoutName: {
-      // Optional name for the session, e.g., "Morning Chest Day"
       type: String,
       trim: true,
       default: "Workout Session",
     },
+    // The total duration of the entire workout session in minutes.
     durationSessionMinutes: {
-      // Total duration of the entire workout session
       type: Number,
       min: 0,
     },
-    exercises: [ExercisePerformanceSchema], // Array of exercises performed in this session
-    overallFeeling: {
-      // Optional user rating of the session
-      type: String,
-      enum: ["great", "good", "okay", "meh", "tough", "exhausted"],
-    },
-    notesSession: {
-      // General notes for the entire workout session
-      type: String,
-      trim: true,
-    },
+    // An array of all the exercises performed during this session.
+    // Each object in this array will follow the structure of ExercisePerformanceSchema.
+    exercises: [ExercisePerformanceSchema],
   },
   { timestamps: true }
-); // Adds createdAt and updatedAt
+); // Automatically adds createdAt and updatedAt.
 
+// Export the model. This will correspond to a 'workoutlogs' collection in MongoDB.
 module.exports = mongoose.model("WorkoutLog", WorkoutLogSchema);
