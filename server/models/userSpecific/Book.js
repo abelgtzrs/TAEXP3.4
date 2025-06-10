@@ -83,23 +83,27 @@ const BookSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Middleware to automatically set isFinished and finishedDate if pagesRead >= totalPages
+// --- Mongoose Middleware ---
+
+// This 'pre-save' hook runs before a Book document is saved.
+// It automatically handles setting the 'isFinished' and 'finishedDate' fields
+// based on the user's reading progress.
 BookSchema.pre("save", function (next) {
+  // Check if the 'pagesRead' field was changed or if this is a new book.
   if (this.isModified("pagesRead") || this.isNew) {
+    // If pagesRead equals or exceeds totalPages, the book is considered finished.
     if (this.pagesRead >= this.totalPages && this.totalPages > 0) {
-      // Ensure totalPages is not 0
+      // Only update the finishedDate if it's not already set.
       if (!this.isFinished) {
-        // Only update if not already marked finished
         this.isFinished = true;
         this.finishedDate = Date.now();
-        // The EXP/Token reward logic will be in the API controller when isFinished is set to true
+        // NOTE: The reward logic (awarding XP/Hearts) is handled in the controller,
+        // not here. The controller is a better place for business logic that
+        // affects other models (like the User model).
       }
-    } else {
-      // If pagesRead is reduced below totalPages, unfinish it (optional behavior)
-      // this.isFinished = false;
-      // this.finishedDate = null;
     }
   }
+  // Continue to the next step in the save process.
   next();
 });
 
