@@ -30,3 +30,5 @@ router
 // Route to mark a habit as complete, triggering rewards.
 // POST /api/habits/some_habit_id/complete -> completeHabit
 router.post("/:habitID/complete", protect, completeHabit);
+
+module.exports = router;
