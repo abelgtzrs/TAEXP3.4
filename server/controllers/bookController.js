@@ -17,13 +17,11 @@ exports.createBook = async (req, res) => {
     res.status(201).json({ success: true, data: book });
   } catch (error) {
     console.error("Create Book Error:", error);
-    res
-      .status(400)
-      .json({
-        success: false,
-        message: "Error creating book entry",
-        error: error.message,
-      });
+    res.status(400).json({
+      success: false,
+      message: "Error creating book entry",
+      error: error.message,
+    });
   }
 };
 
@@ -48,16 +46,18 @@ exports.getUserBooks = async (req, res) => {
 // @route   PUT /api/books/:bookId
 exports.updateBook = async (req, res) => {
   try {
-    // Find the book by its ID from the URL parameter.
-    let book = await Book.findById(req.params.bookId);
+    // --- Step 1: Find the full document first ---
+    // This brings the entire book document into our code, including 'totalPages'.
+    const book = await Book.findById(req.params.bookId);
 
+    // --- Step 2: Perform Checks ---
     if (!book) {
       return res
         .status(404)
-        .json({ success: false, message: "Book entry not found" });
+        .json({ success: false, message: "Book entry not found with that ID" });
     }
 
-    // Security check: Ensure the user owns this book entry.
+    // Security check: Ensure the logged-in user owns this book entry.
     if (book.user.toString() !== req.user.id) {
       return res
         .status(401)
@@ -67,44 +67,38 @@ exports.updateBook = async (req, res) => {
         });
     }
 
-    // --- Reward Logic ---
-    // We need to check the book's 'isFinished' status *before* we update it.
+    // --- Step 3: Check for Reward Trigger ---
+    // Capture the 'isFinished' state *before* any changes are made.
     const wasFinishedBefore = book.isFinished;
 
-    // Update the book document with the data from the request body.
-    const updatedBook = await Book.findByIdAndUpdate(
-      req.params.bookId,
-      req.body,
-      {
-        new: true, // Return the updated document.
-        runValidators: true, // Ensure updates follow schema rules.
-      }
-    );
+    // --- Step 4: Apply Updates and Save ---
+    // This is the key change. We modify the document we found...
+    Object.assign(book, req.body);
 
-    // Check if the book's status has just changed from not finished to finished.
+    // ...and then we call .save(). This method triggers all document middleware,
+    // including our custom validator, which will now work correctly.
+    const updatedBook = await book.save();
+
+    // --- Step 5: Handle Reward Logic After Successful Save ---
     if (updatedBook.isFinished && !wasFinishedBefore) {
-      // Find the user to give them their reward.
       const user = await User.findById(req.user.id);
 
-      // Define the rewards. These can be moved to a config file later.
-      const BOOK_FINISH_XP = 150; // More XP for finishing a book!
+      const BOOK_FINISH_XP = 150;
       const WENDY_HEARTS_AWARD = 25;
 
-      // Add the rewards to the user's stats.
-      user.wendyHearts += WENDY_HEARTS_AWARD;
-      user.experience += BOOK_FINISH_XP;
+      user.wendyHearts = (user.wendyHearts || 0) + WENDY_HEARTS_AWARD;
+      user.experience = (user.experience || 0) + BOOK_FINISH_XP;
 
-      // Check for user level up.
+      // Check for user level up
       if (user.experience >= user.xpToNextLevel) {
         user.level += 1;
         user.experience -= user.xpToNextLevel;
         user.xpToNextLevel = Math.floor(user.xpToNextLevel * 1.25);
       }
 
-      // Save the updated user document.
       await user.save();
 
-      // Send a special success response indicating a reward was given.
+      // Return a special success response
       return res.status(200).json({
         success: true,
         message: `Book finished! +${BOOK_FINISH_XP} XP, +${WENDY_HEARTS_AWARD} Wendy Hearts!`,
@@ -115,7 +109,15 @@ exports.updateBook = async (req, res) => {
     // If the book wasn't just finished, send a standard success response.
     res.status(200).json({ success: true, data: updatedBook });
   } catch (error) {
+    // Now, if a validation error occurs, it will be caught here correctly.
     console.error("Update Book Error:", error);
+
+    // Send back a more specific validation error message if that's what it is.
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ success: false, message: error.message });
+    }
+
+    // Otherwise, send a generic server error.
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
@@ -134,24 +136,20 @@ exports.deleteBook = async (req, res) => {
 
     // Security check: Ensure user owns this entry.
     if (book.user.toString() !== req.user.id) {
-      return res
-        .status(401)
-        .json({
-          success: false,
-          message: "Not authorized to delete this entry",
-        });
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized to delete this entry",
+      });
     }
 
     // Remove the book from the database.
     await book.remove();
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Book entry deleted successfully",
-        data: {},
-      });
+    res.status(200).json({
+      success: true,
+      message: "Book entry deleted successfully",
+      data: {},
+    });
   } catch (error) {
     console.error("Delete Book Error:", error);
     res.status(500).json({ success: false, message: "Server Error" });

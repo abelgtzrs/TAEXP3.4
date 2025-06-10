@@ -16,6 +16,9 @@ router.use(protect);
 
 router.route("/").get(getUserBooks).post(createBook);
 
-router.route("/:bookID").put(updateBook).delete(deleteBook);
+router
+  .route("/:bookId") // This defines a URL parameter named 'bookId'
+  .put(protect, updateBook)
+  .delete(protect, deleteBook);
 
 module.exports = router;
