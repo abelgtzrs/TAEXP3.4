@@ -1,20 +1,29 @@
 const express = require("express");
 const router = express.Router();
+
+// Import the controller functions.
 const {
   createWorkoutLog,
   getUserWorkoutLogs,
+  getWorkoutLogById,
+  updateWorkoutLog,
   deleteWorkoutLog,
-} = require("../controllers/workoutLogController"); // We'll create this next
+} = require("../controllers/workoutLogController");
+
+// Import the 'protect' middleware to secure all routes.
 const { protect } = require("../middleware/authMiddleware");
 
-// Apply 'protect' middleware to all routes in this file.
+// Apply the 'protect' middleware to all routes in this file.
 router.use(protect);
 
 // Routes for getting the user's list of logs and creating a new one.
 router.route("/").get(getUserWorkoutLogs).post(createWorkoutLog);
 
-// Route for deleting a specific workout log.
-// (We'll skip PUT/update for MVP simplicity unless you need it).
-router.route("/:logId").delete(deleteWorkoutLog);
+// Routes for getting, updating, or deleting a specific workout log by its ID.
+router
+  .route("/:logId")
+  .get(getWorkoutLogById)
+  .put(updateWorkoutLog)
+  .delete(deleteWorkoutLog);
 
 module.exports = router;

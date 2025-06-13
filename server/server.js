@@ -23,7 +23,8 @@ app.get("/", (req, res) => {
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/habits", require("./routes/habitRoutes"));
 app.use("/api/books", require("./routes/bookRoutes"));
-app.use("/api/exercises", require("./routes/exerciseRoutes"));
+app.use("/api/exercises", require("./routes/exerciseDefinitionRoutes"));
+app.use("/api/workouts", require("./routes/workoutLogRoutes"));
 app.use("/api/workouts", require("./routes/workoutLogRoutes"));
 //app.use('/api/users', require('./routes/userRoutes'));
 //app.use('/api/volumes', require('./routes/volumeRoutes'));

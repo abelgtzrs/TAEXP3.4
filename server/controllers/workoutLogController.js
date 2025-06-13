@@ -1,17 +1,25 @@
-const WorkoutLog = require("../models/userSpecific/WorkoutLog");
-const User = require("../models/User");
+// server/controllers/workoutLogController.js
+
+const WorkoutLog = require("../models/userSpecific/WorkoutLog"); // Import the WorkoutLog model.
+const User = require("../models/User"); // Import User model for rewards.
 
 // @desc    Create a new workout log
 // @route   POST /api/workouts
 exports.createWorkoutLog = async (req, res) => {
   try {
-    // --- Reward Logic ---
-    // The reward is based on the number of *distinct exercises* logged.
-    const numberOfExercises = req.body.exercises
-      ? req.body.exercises.length
-      : 0;
+    // --- Prepare the Log Data ---
+    // Get the workout data from the request body.
+    const {
+      date,
+      workoutName,
+      durationSessionMinutes,
+      exercises,
+      overallFeeling,
+      notesSession,
+    } = req.body;
 
-    if (numberOfExercises === 0) {
+    // Check if there are any exercises in the log.
+    if (!exercises || exercises.length === 0) {
       return res
         .status(400)
         .json({
@@ -20,36 +28,50 @@ exports.createWorkoutLog = async (req, res) => {
         });
     }
 
-    const GATILLA_GOLD_PER_EXERCISE = 1; // You can configure this
-    const WORKOUT_XP_AWARD = 25; // Base XP for logging a workout
+    // --- Reward Logic ---
+    // As per our rule: 1 Gatilla Gold per exercise logged.
+    const GATILLA_GOLD_AWARD = exercises.length;
+    const XP_AWARD = 15 * exercises.length; // Example: 15 XP per exercise.
 
-    const totalGoldAward = numberOfExercises * GATILLA_GOLD_PER_EXERCISE;
-    const totalXPAward = WORKOUT_XP_AWARD * numberOfExercises; // XP scales with effort!
-
-    // --- Create Workout Log ---
-    // Add the user's ID to the request data before creating the document.
-    req.body.user = req.user.id;
-    const workoutLog = await WorkoutLog.create(req.body);
-
-    // --- Update User with Rewards ---
+    // Find the user to give them their reward.
     const user = await User.findById(req.user.id);
-    user.gatillaGold = (user.gatillaGold || 0) + totalGoldAward;
-    user.experience = (user.experience || 0) + totalXPAward;
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found." });
+    }
 
-    // Check for level up
+    // Add the rewards.
+    user.gatillaGold = (user.gatillaGold || 0) + GATILLA_GOLD_AWARD;
+    user.experience = (user.experience || 0) + XP_AWARD;
+
+    // Check for user level up.
     if (user.experience >= user.xpToNextLevel) {
       user.level += 1;
       user.experience -= user.xpToNextLevel;
       user.xpToNextLevel = Math.floor(user.xpToNextLevel * 1.25);
     }
 
+    // --- Save to Database ---
+    // Create the new workout log document.
+    const newLog = await WorkoutLog.create({
+      user: req.user.id, // Associate the log with the logged-in user.
+      date,
+      workoutName,
+      durationSessionMinutes,
+      exercises, // This is the array of exercise subdocuments.
+      overallFeeling,
+      notesSession,
+    });
+
+    // Save the updated user document with new currency and XP.
     await user.save();
 
-    // Send a success response.
+    // Send a successful response.
     res.status(201).json({
       success: true,
-      message: `Workout logged! +${totalXPAward} XP, +${totalGoldAward} Gatilla Gold!`,
-      data: workoutLog,
+      message: `Workout logged! +${XP_AWARD} XP, +${GATILLA_GOLD_AWARD} Gatilla Gold!`,
+      data: newLog,
     });
   } catch (error) {
     console.error("Create Workout Log Error:", error);
@@ -63,18 +85,64 @@ exports.createWorkoutLog = async (req, res) => {
   }
 };
 
-// @desc    Get all workout logs for the logged-in user
+// --- Other CRUD Functions (Get, Update, Delete) ---
+
+// @desc    Get all workout logs for a user
 // @route   GET /api/workouts
 exports.getUserWorkoutLogs = async (req, res) => {
   try {
-    // Find all logs belonging to the user and populate the exercise definition details.
+    // Find all logs for the user, sort by most recent date.
+    // .populate() will replace the exerciseDefinition ObjectId with the actual document from the ExerciseDefinition collection.
     const logs = await WorkoutLog.find({ user: req.user.id })
-      .populate("exercises.exerciseDefinition", "name muscleGroups") // This replaces the ID with the name/muscles from the ExerciseDefinition model!
-      .sort({ date: -1 }); // Sort by most recent date first
+      .populate("exercises.exerciseDefinition", "name exerciseType") // Populate name and type of exercise
+      .sort({ date: -1 });
 
     res.status(200).json({ success: true, count: logs.length, data: logs });
   } catch (error) {
-    console.error("Get User Workout Logs Error:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// @desc    Get a single workout log by ID
+// @route   GET /api/workouts/:logId
+exports.getWorkoutLogById = async (req, res) => {
+  try {
+    const log = await WorkoutLog.findById(req.params.logId).populate(
+      "exercises.exerciseDefinition"
+    ); // Populate with full exercise details
+
+    if (!log || log.user.toString() !== req.user.id) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Workout log not found" });
+    }
+
+    res.status(200).json({ success: true, data: log });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// @desc    Update a workout log
+// @route   PUT /api/workouts/:logId
+exports.updateWorkoutLog = async (req, res) => {
+  // Note: Updating a log does not typically re-award currency/XP.
+  try {
+    let log = await WorkoutLog.findById(req.params.logId);
+
+    if (!log || log.user.toString() !== req.user.id) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Workout log not found" });
+    }
+
+    log = await WorkoutLog.findByIdAndUpdate(req.params.logId, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({ success: true, data: log });
+  } catch (error) {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
@@ -82,20 +150,15 @@ exports.getUserWorkoutLogs = async (req, res) => {
 // @desc    Delete a workout log
 // @route   DELETE /api/workouts/:logId
 exports.deleteWorkoutLog = async (req, res) => {
+  // Note: Deleting a log should ideally also reverse any awards, but that is complex.
+  // For MVP, we will just delete the log.
   try {
     const log = await WorkoutLog.findById(req.params.logId);
 
-    if (!log) {
+    if (!log || log.user.toString() !== req.user.id) {
       return res
         .status(404)
         .json({ success: false, message: "Workout log not found" });
-    }
-
-    // Security Check: Ensure user owns this log.
-    if (log.user.toString() !== req.user.id) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Not authorized" });
     }
 
     await log.remove();
@@ -103,7 +166,6 @@ exports.deleteWorkoutLog = async (req, res) => {
       .status(200)
       .json({ success: true, message: "Workout log deleted", data: {} });
   } catch (error) {
-    console.error("Delete Workout Log Error:", error);
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
