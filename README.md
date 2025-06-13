@@ -1,6 +1,6 @@
 # The Abel Experience™ - MERN Application
 
-**Version:** 0.1.0 (Pre-Alpha)
+**Version:** 0.3.0 (Pre-Alpha)
 **Last Updated:** June 13, 2025
 
 A multifaceted MERN stack application designed as a personalized digital sanctuary, content management system, and gamified productivity platform.
