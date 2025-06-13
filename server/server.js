@@ -26,6 +26,7 @@ app.use("/api/books", require("./routes/bookRoutes"));
 app.use("/api/exercises", require("./routes/exerciseDefinitionRoutes"));
 app.use("/api/workouts", require("./routes/workoutLogRoutes"));
 app.use("/api/workouts", require("./routes/workoutLogRoutes"));
+app.use("/api/shop", require("./routes/shopRoutes"));
 //app.use('/api/users', require('./routes/userRoutes'));
 //app.use('/api/volumes', require('./routes/volumeRoutes'));
 

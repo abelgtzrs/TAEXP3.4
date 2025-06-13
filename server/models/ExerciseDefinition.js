@@ -34,18 +34,21 @@ const ExerciseDefinitionSchema = new mongoose.Schema(
       {
         type: String,
         trim: true,
-        // Using an enum here can help standardize the data.
+        // We have expanded this list to be more comprehensive.
         enum: [
           "Chest",
           "Triceps",
           "Biceps",
           "Back",
+          "Back (Lower)",
           "Shoulders",
           "Quads",
           "Hamstrings",
-          "Core",
           "Glutes",
           "Calves",
+          "Legs",
+          "Abs",
+          "Core",
           "Forearms",
           "Full Body",
         ],

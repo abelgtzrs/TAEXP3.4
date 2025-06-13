@@ -1,14 +1,12 @@
-// server/models/PokemonBase.js
 const mongoose = require("mongoose");
 
 const PokemonBaseSchema = new mongoose.Schema(
   {
     speciesId: {
-      // National Pokédex number
       type: Number,
       required: [true, "Please provide a species ID (Pokédex number)"],
       unique: true,
-      index: true, // Good for faster queries on speciesId
+      index: true,
     },
     name: {
       type: String,
@@ -47,6 +45,11 @@ const PokemonBaseSchema = new mongoose.Schema(
       // Level at which this Pokémon evolves
       type: Number,
       default: null, // Null if it doesn't evolve by level or is final stage
+    },
+    evolutionStage: {
+      type: Number,
+      required: [true, "Please specify the evolution stage (1, 2, or 3)"],
+      enum: [1, 2, 3],
     },
     evolvesToSpeciesId: {
       // speciesId of the Pokémon it evolves into

@@ -1,44 +1,48 @@
 [
   {
     "name": "Bench Press",
+    "description": "A compound exercise that targets the chest, shoulders, and triceps.",
+    "exerciseType": "Strength",
     "muscleGroups": ["Chest", "Triceps", "Shoulders"],
-    "exerciseType": "strength",
     "defaultMetrics": [
       { "name": "weight", "unit": "kg" },
       { "name": "reps", "unit": "count" },
       { "name": "sets", "unit": "count" }
     ],
-    "equipmentNeeded": ["Barbell", "Bench"]
+    "equipment": ["Barbell"]
   },
   {
     "name": "Squat",
+    "description": "A fundamental compound exercise for building lower body strength.",
+    "exerciseType": "Strength",
     "muscleGroups": ["Quads", "Glutes", "Hamstrings", "Core"],
-    "exerciseType": "strength",
     "defaultMetrics": [
       { "name": "weight", "unit": "kg" },
       { "name": "reps", "unit": "count" },
       { "name": "sets", "unit": "count" }
     ],
-    "equipmentNeeded": ["Barbell", "Rack"]
+    "equipment": ["Barbell"]
   },
   {
     "name": "Running",
-    "muscleGroups": ["Legs", "Cardio"],
-    "exerciseType": "cardio",
+    "description": "Improves cardiovascular health and endurance.",
+    "exerciseType": "Cardio",
+    "muscleGroups": ["Legs", "Core"],
     "defaultMetrics": [
       { "name": "distance", "unit": "km" },
       { "name": "duration", "unit": "minutes" }
     ],
-    "equipmentNeeded": ["Running Shoes"]
+    "equipment": ["Treadmill", "Bodyweight"]
   },
   {
     "name": "Push-up",
+    "description": "A classic bodyweight exercise targeting the upper body pushing muscles.",
+    "exerciseType": "Strength",
     "muscleGroups": ["Chest", "Triceps", "Shoulders", "Core"],
-    "exerciseType": "strength",
     "defaultMetrics": [
       { "name": "reps", "unit": "count" },
       { "name": "sets", "unit": "count" }
     ],
-    "equipmentNeeded": ["Bodyweight"]
+    "equipment": ["Bodyweight"]
   }
 ]
