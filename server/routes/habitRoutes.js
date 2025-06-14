@@ -1,34 +1,42 @@
-// Importing Express framework and create router instance
+// server/routes/habitRoutes.js
+
 const express = require("express");
 const router = express.Router();
 
-// Importing controller fucntions
 const {
   createHabit,
   getUserHabits,
+  getHabitById, // We will add this controller function for completeness
   updateHabit,
   deleteHabit,
   completeHabit,
 } = require("../controllers/habitController");
 
-// Importing protection middleware
 const { protect } = require("../middleware/authMiddleware");
 
-// Route to get all habits for the logged-in user and create a new habit.
-// GET /api/habits -> getUserHabits
-// POST /api/habits -> createHabit
-router.route("/").get(protect, getUserHabits).post(protect, createHabit);
+// Apply the 'protect' middleware to all routes in this file.
+router.use(protect);
 
-// Route to update or delete a specific habit by its ID.
-// PUT /api/habits/some_habit_id -> updateHabit
-// DELETE /api/habits/some_habit_id -> deleteHabit
+// --- NEW, REORDERED STRUCTURE ---
+// We define routes from most specific to most general.
+
+// Route for getting all habits and creating a new habit.
+// GET /api/habits
+// POST /api/habits
+router.route("/").get(getUserHabits).post(createHabit);
+
+// This is the most specific route involving an ID, so we place it first.
+// POST /api/habits/:habitId/complete
+router.post("/:habitId/complete", completeHabit);
+
+// These routes all work on a specific habit ID and are less specific than the '/complete' route.
+// GET /api/habits/:habitId
+// PUT /api/habits/:habitId
+// DELETE /api/habits/:habitId
 router
-  .route("/:habitID")
-  .put(protect, updateHabit)
-  .delete(protect, deleteHabit);
-
-// Route to mark a habit as complete, triggering rewards.
-// POST /api/habits/some_habit_id/complete -> completeHabit
-router.post("/:habitID/complete", protect, completeHabit);
+  .route("/:habitId")
+  .get(getHabitById) // Good practice to have a route to get a single item
+  .put(updateHabit)
+  .delete(deleteHabit);
 
 module.exports = router;

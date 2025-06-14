@@ -1,19 +1,34 @@
-import { Outlet } from "react-router-dom";
+// src/components/layout/AdminLayout.jsx
+import { Outlet, Link } from "react-router-dom"; // <-- IMPORT LINK
 
 const AdminLayout = () => {
   return (
     <div className="flex h-screen bg-gray-900">
-      {/* Placeholder for Sidebar */}
-      <aside className="w-64 bg-gray-800 p-4">
-        <h2 className="text-white font-bold text-xl">Sidebar</h2>
+      <aside className="w-64 bg-gray-800 p-4 text-gray-300">
+        <h2 className="text-white font-bold text-2xl mb-8">TAEXP™</h2>
+        <nav>
+          <ul>
+            <li className="mb-4">
+              <Link to="/dashboard" className="hover:text-teal-400">
+                Dashboard
+              </Link>
+            </li>
+            <li className="mb-4">
+              <Link to="/habits" className="hover:text-teal-400">
+                Habit Tracker
+              </Link>{" "}
+              {/* <-- ADD THIS LINK */}
+            </li>
+            {/* Add links to other pages here later */}
+          </ul>
+        </nav>
       </aside>
 
-      {/* Main Content Area */}
-      <main className="flex-1 p-6">
-        {/* Outlet renders the child route's component (e.g., DashboardPage) */}
+      <main className="flex-1 p-6 overflow-y-auto">
         <Outlet />
       </main>
     </div>
   );
 };
+
 export default AdminLayout;

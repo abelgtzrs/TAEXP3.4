@@ -1,12 +1,9 @@
-// Import database models.
-const Habit = require("../models/userSpecific/Habit");
-const User = require("../models/User");
+// server/controllers/habitController.js
 
-/**
- * Checks if a date is today.
- * @param {Date} someDate - The date to check.
- * @returns {boolean} True if the date is today, false otherwise.
- */
+const Habit = require("../models/userSpecific/Habit"); // Import Habit model
+const User = require("../models/User"); // Import User model for rewards
+
+// --- HELPER FUNCTIONS ---
 const isToday = (someDate) => {
   if (!someDate) return false;
   const today = new Date();
@@ -17,16 +14,11 @@ const isToday = (someDate) => {
   );
 };
 
-/**
- * Checks if a given date was the same calendar day as yesterday.
- * @param {Date} someDate - The date to check.
- * @returns {boolean} - True if the date was yesterday, otherwise false.
- */
 const wasYesterday = (someDate) => {
   if (!someDate) return false;
   const today = new Date();
   const yesterday = new Date();
-  yesterday.setDate(today.getDate() - 1); // Set the date to one day before today.
+  yesterday.setDate(today.getDate() - 1);
   return (
     someDate.getDate() === yesterday.getDate() &&
     someDate.getMonth() === yesterday.getMonth() &&
@@ -34,9 +26,12 @@ const wasYesterday = (someDate) => {
   );
 };
 
+// --- CONTROLLER FUNCTIONS ---
+
+// @desc    Create a new habit
+// @route   POST /api/habits
 exports.createHabit = async (req, res) => {
   try {
-    // Create new habit document in the DB
     const habit = await Habit.create({
       user: req.user.id,
       name: req.body.name,
@@ -47,85 +42,81 @@ exports.createHabit = async (req, res) => {
     console.error("Create Habit Error:", error);
     res.status(400).json({
       success: false,
-      message: "Failed to create habit",
+      message: "Error creating habit",
       error: error.message,
     });
   }
 };
 
+// @desc    Get all habits for logged-in user
+// @route   GET /api/habits
 exports.getUserHabits = async (req, res) => {
   try {
-    // Find all habits in the database where the 'user' field matches the ID of the currently logged-in user.
     const habits = await Habit.find({ user: req.user.id }).sort({
       createdAt: -1,
-    }); // Sort by newest first.
-
-    // Send a 200 OK status with the user's habits.
+    });
     res.status(200).json({ success: true, count: habits.length, data: habits });
   } catch (error) {
-    // If an error occurs, send a server error response.
     console.error("Get User Habits Error:", error);
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
-// @desc    Update an existing habit
+
+// @desc    Update a specific habit
 // @route   PUT /api/habits/:habitId
 exports.updateHabit = async (req, res) => {
   try {
-    // Find the habit by its unique ID from the URL parameter.
     let habit = await Habit.findById(req.params.habitId);
 
-    if (!habit) {
+    if (!habit || habit.user.toString() !== req.user.id) {
       return res
         .status(404)
-        .json({ success: false, message: "Habit not found" });
+        .json({ success: false, message: "Habit not found or not authorized" });
     }
 
-    // SECURITY CHECK: Make sure the logged-in user owns this habit.
-    if (habit.user.toString() !== req.user.id) {
-      return res.status(401).json({
-        success: false,
-        message: "Not authorized to update this habit",
-      });
-    }
-
-    // Update the habit with new data from the request body.
-    // 'new: true' returns the modified document instead of the original.
-    // 'runValidators: true' ensures any updates still adhere to our schema rules.
     habit = await Habit.findByIdAndUpdate(req.params.habitId, req.body, {
       new: true,
       runValidators: true,
     });
-
     res.status(200).json({ success: true, data: habit });
   } catch (error) {
     console.error("Update Habit Error:", error);
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
-// @desc    Delete a habit
-// @route   DELETE /api/habits/:habitId
-exports.deleteHabit = async (req, res) => {
+// @desc    Get a single habit by its ID
+// @route   GET /api/habits/:habitId
+exports.getHabitById = async (req, res) => {
   try {
     const habit = await Habit.findById(req.params.habitId);
 
-    if (!habit) {
+    // Make sure habit exists and belongs to the user
+    if (!habit || habit.user.toString() !== req.user.id) {
       return res
         .status(404)
         .json({ success: false, message: "Habit not found" });
     }
 
-    // SECURITY CHECK: Make sure the logged-in user owns this habit.
-    if (habit.user.toString() !== req.user.id) {
-      return res.status(401).json({
-        success: false,
-        message: "Not authorized to delete this habit",
-      });
+    res.status(200).json({ success: true, data: habit });
+  } catch (error) {
+    console.error("Get Habit By ID Error:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// @desc    Delete a specific habit
+// @route   DELETE /api/habits/:habitId
+exports.deleteHabit = async (req, res) => {
+  try {
+    const habit = await Habit.findById(req.params.habitId);
+
+    if (!habit || habit.user.toString() !== req.user.id) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Habit not found or not authorized" });
     }
 
-    // Remove the habit from the database.
     await habit.remove();
-
     res
       .status(200)
       .json({ success: true, message: "Habit deleted successfully", data: {} });
@@ -134,21 +125,29 @@ exports.deleteHabit = async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
+
 // @desc    Mark a habit as complete and give rewards
 // @route   POST /api/habits/:habitId/complete
 exports.completeHabit = async (req, res) => {
   try {
-    // Find the habit and the user who is completing it.
-    const habit = await Habit.findById(req.params.habitId);
-    const user = await User.findById(req.user.id);
+    // Find both the habit to update and the user to reward in parallel.
+    const [habit, user] = await Promise.all([
+      Habit.findById(req.params.habitId),
+      User.findById(req.user.id),
+    ]);
 
     if (!habit) {
       return res
         .status(404)
         .json({ success: false, message: "Habit not found" });
     }
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
 
-    // SECURITY CHECK: User must own the habit.
+    // Security check: User must own the habit.
     if (habit.user.toString() !== req.user.id) {
       return res
         .status(401)
@@ -164,47 +163,50 @@ exports.completeHabit = async (req, res) => {
 
     // --- Update Streak Logic ---
     if (wasYesterday(habit.lastCompletedDate)) {
-      habit.streak += 1; // Continue the streak.
+      habit.streak += 1;
     } else {
-      habit.streak = 1; // Start a new streak.
+      habit.streak = 1;
     }
-
-    // Update longest streak if the current one is greater.
     if (habit.streak > habit.longestStreak) {
       habit.longestStreak = habit.streak;
     }
-
-    // Set the last completed date to now.
     habit.lastCompletedDate = new Date();
 
     // --- Reward Logic ---
     const XP_AWARD = 10;
     const TEMU_TOKENS_AWARD = 1;
-    // Daily token cap will be handled later for simplicity, but this is where it would go.
+    // The daily cap logic would go here. For now, we award on every valid completion.
 
-    // Award currency and experience points.
-    user.temuTokens += TEMU_TOKENS_AWARD;
-    user.experience += XP_AWARD;
+    user.temuTokens = (user.temuTokens || 0) + TEMU_TOKENS_AWARD;
+    user.experience = (user.experience || 0) + XP_AWARD;
 
-    // Check if the user leveled up.
+    // Check for user level up.
     if (user.experience >= user.xpToNextLevel) {
       user.level += 1;
-      user.experience -= user.xpToNextLevel; // Subtract the XP needed for the level up.
-      user.xpToNextLevel = Math.floor(user.xpToNextLevel * 1.25); // Increase XP for the next level.
+      user.experience -= user.xpToNextLevel;
+      user.xpToNextLevel = Math.floor(user.xpToNextLevel * 1.25);
     }
 
-    // Save the updated information for both the habit and the user to the database.
-    await habit.save();
-    await user.save();
+    // Save both documents. Using Promise.all is efficient.
+    const [updatedHabit, updatedUser] = await Promise.all([
+      habit.save(),
+      user.save(),
+    ]);
 
-    // Send a successful response with the updated data.
+    // Create a user object to send back, excluding the password
+    const userResponse = { ...updatedUser.toObject() };
+    delete userResponse.password;
+
     res.status(200).json({
       success: true,
       message: `Habit completed! +${XP_AWARD} XP, +${TEMU_TOKENS_AWARD} Temu Tokens.`,
-      data: habit,
+      habitData: updatedHabit,
+      userData: userResponse, // Sending back the full updated user state
     });
   } catch (error) {
     console.error("Complete Habit Error:", error);
-    res.status(500).json({ success: false, message: "Server Error" });
+    res
+      .status(500)
+      .json({ success: false, message: "Server Error while completing habit" });
   }
 };
