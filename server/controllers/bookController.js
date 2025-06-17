@@ -145,7 +145,7 @@ exports.deleteBook = async (req, res) => {
     }
 
     // Remove the book from the database.
-    await book.remove();
+    await book.deleteOne();
 
     res.status(200).json({
       success: true,

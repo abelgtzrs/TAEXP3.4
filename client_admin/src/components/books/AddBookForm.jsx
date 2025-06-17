@@ -5,14 +5,26 @@ const AddBookForm = ({ onAddBook }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [totalPages, setTotalPages] = useState("");
+  const [coverImageUrl, setCoverImageUrl] = useState(""); // New state
+  const [year, setYear] = useState(""); // New state
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title || !author || !totalPages) return;
-    onAddBook({ title, author, totalPages: Number(totalPages) });
+    // Pass all the new data up to the parent component
+    onAddBook({
+      title,
+      author,
+      totalPages: Number(totalPages),
+      coverImageUrl,
+      year: year ? Number(year) : undefined, // Send year only if it exists
+    });
+    // Reset all fields
     setTitle("");
     setAuthor("");
     setTotalPages("");
+    setCoverImageUrl("");
+    setYear("");
   };
 
   return (
@@ -20,14 +32,15 @@ const AddBookForm = ({ onAddBook }) => {
       <h2 className="text-xl text-white font-semibold mb-4">
         Add New Book to Library
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      {/* Main Details */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <input
           type="text"
           placeholder="Book Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
-          className="md:col-span-2 p-3 bg-gray-700 rounded border border-gray-600 text-white focus:outline-none focus:border-teal-500"
+          className="p-3 bg-gray-700 rounded border border-gray-600 text-white focus:outline-none focus:border-teal-500"
         />
         <input
           type="text"
@@ -35,6 +48,24 @@ const AddBookForm = ({ onAddBook }) => {
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
           required
+          className="p-3 bg-gray-700 rounded border border-gray-600 text-white focus:outline-none focus:border-teal-500"
+        />
+      </div>
+      {/* Secondary Details */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <input
+          type="text"
+          placeholder="Cover Image URL (Optional)"
+          value={coverImageUrl}
+          onChange={(e) => setCoverImageUrl(e.target.value)}
+          className="p-3 bg-gray-700 rounded border border-gray-600 text-white focus:outline-none focus:border-teal-500"
+        />
+        <input
+          type="number"
+          placeholder="Year Published (Optional)"
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
+          min="0"
           className="p-3 bg-gray-700 rounded border border-gray-600 text-white focus:outline-none focus:border-teal-500"
         />
         <input
