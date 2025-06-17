@@ -42,6 +42,11 @@ const UserSchema = new mongoose.Schema({
     default: 0,
     min: [0, "Experience cannot be negative"],
   },
+  xpToNextLevel: {
+    type: Number,
+    default: 100,
+    min: [1, "xpToNextLevel must be at least 1"],
+  },
   temuTokens: {
     type: Number,
     default: 10,

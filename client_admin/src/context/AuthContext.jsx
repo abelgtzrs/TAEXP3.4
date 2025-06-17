@@ -70,6 +70,7 @@ export const AuthProvider = ({ children }) => {
   // The value provided to consuming components
   const value = {
     user,
+    setUser,
     token,
     isAuthenticated: !!user, // True if user object exists, false otherwise
     loading,

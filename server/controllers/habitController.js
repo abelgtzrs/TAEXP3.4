@@ -61,7 +61,25 @@ exports.getUserHabits = async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
+// @desc    Get a single habit by its ID
+// @route   GET /api/habits/:habitId
+exports.getHabitById = async (req, res) => {
+  try {
+    const habit = await Habit.findById(req.params.habitId);
 
+    // Make sure habit exists and belongs to the user
+    if (!habit || habit.user.toString() !== req.user.id) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Habit not found" });
+    }
+
+    res.status(200).json({ success: true, data: habit });
+  } catch (error) {
+    console.error("Get Habit By ID Error:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
 // @desc    Update a specific habit
 // @route   PUT /api/habits/:habitId
 exports.updateHabit = async (req, res) => {
@@ -84,25 +102,6 @@ exports.updateHabit = async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
-// @desc    Get a single habit by its ID
-// @route   GET /api/habits/:habitId
-exports.getHabitById = async (req, res) => {
-  try {
-    const habit = await Habit.findById(req.params.habitId);
-
-    // Make sure habit exists and belongs to the user
-    if (!habit || habit.user.toString() !== req.user.id) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Habit not found" });
-    }
-
-    res.status(200).json({ success: true, data: habit });
-  } catch (error) {
-    console.error("Get Habit By ID Error:", error);
-    res.status(500).json({ success: false, message: "Server Error" });
-  }
-};
 
 // @desc    Delete a specific habit
 // @route   DELETE /api/habits/:habitId
@@ -116,7 +115,7 @@ exports.deleteHabit = async (req, res) => {
         .json({ success: false, message: "Habit not found or not authorized" });
     }
 
-    await habit.remove();
+    await habit.deleteOne();
     res
       .status(200)
       .json({ success: true, message: "Habit deleted successfully", data: {} });
@@ -145,6 +144,10 @@ exports.completeHabit = async (req, res) => {
       return res
         .status(404)
         .json({ success: false, message: "User not found" });
+    }
+
+    if (typeof user.xpToNextLevel !== "number" || isNaN(user.xpToNextLevel)) {
+      user.xpToNextLevel = 100;
     }
 
     // Security check: User must own the habit.

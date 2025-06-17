@@ -20,12 +20,10 @@ exports.createWorkoutLog = async (req, res) => {
 
     // Check if there are any exercises in the log.
     if (!exercises || exercises.length === 0) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "A workout log must contain at least one exercise.",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "A workout log must contain at least one exercise.",
+      });
     }
 
     // --- Reward Logic ---
@@ -41,6 +39,9 @@ exports.createWorkoutLog = async (req, res) => {
         .json({ success: false, message: "User not found." });
     }
 
+    if (typeof user.xpToNextLevel !== "number" || isNaN(user.xpToNextLevel)) {
+      user.xpToNextLevel = 100;
+    }
     // Add the rewards.
     user.gatillaGold = (user.gatillaGold || 0) + GATILLA_GOLD_AWARD;
     user.experience = (user.experience || 0) + XP_AWARD;
@@ -75,13 +76,11 @@ exports.createWorkoutLog = async (req, res) => {
     });
   } catch (error) {
     console.error("Create Workout Log Error:", error);
-    res
-      .status(400)
-      .json({
-        success: false,
-        message: "Error creating workout log",
-        error: error.message,
-      });
+    res.status(400).json({
+      success: false,
+      message: "Error creating workout log",
+      error: error.message,
+    });
   }
 };
 

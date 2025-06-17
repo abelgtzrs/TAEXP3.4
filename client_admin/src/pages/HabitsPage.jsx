@@ -51,26 +51,14 @@ const HabitsPage = () => {
   const handleCompleteHabit = async (habitId) => {
     try {
       const response = await api.post(`/habits/${habitId}/complete`);
-      const updatedHabit = response.data.data;
+      const updatedHabit = response.data.habitData;
 
       // Update the specific habit in our local state
       setHabits(habits.map((h) => (h._id === habitId ? updatedHabit : h)));
 
-      // Also, update the user's currency and XP in our global AuthContext state
-      // NOTE: The 'completeHabit' controller should ideally return the updated user stats
-      // For now, we manually update with known reward amounts.
-      const XP_AWARD = 10;
-      const TEMU_TOKENS_AWARD = 1;
-      setUser({
-        ...user,
-        experience: user.experience + XP_AWARD,
-        temuTokens: user.temuTokens + TEMU_TOKENS_AWARD,
-      });
-      // A better way is to get the updated user object from the API response.
-      // Let's assume our API does this for a more robust update.
-      // if(response.data.userData) {
-      //   setUser(prevUser => ({...prevUser, ...response.data.userData}));
-      // }
+      if (response.data.userData) {
+        setUser((prevUser) => ({ ...prevUser, ...response.data.userData }));
+      }
     } catch (err) {
       console.error("Failed to complete habit:", err);
       setError(err.response?.data?.message || "Could not complete habit.");

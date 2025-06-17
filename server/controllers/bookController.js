@@ -59,12 +59,10 @@ exports.updateBook = async (req, res) => {
 
     // Security check: Ensure the logged-in user owns this book entry.
     if (book.user.toString() !== req.user.id) {
-      return res
-        .status(401)
-        .json({
-          success: false,
-          message: "Not authorized to update this entry",
-        });
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized to update this entry",
+      });
     }
 
     // --- Step 3: Check for Reward Trigger ---
@@ -82,6 +80,10 @@ exports.updateBook = async (req, res) => {
     // --- Step 5: Handle Reward Logic After Successful Save ---
     if (updatedBook.isFinished && !wasFinishedBefore) {
       const user = await User.findById(req.user.id);
+
+      if (typeof user.xpToNextLevel !== "number" || isNaN(user.xpToNextLevel)) {
+        user.xpToNextLevel = 100;
+      }
 
       const BOOK_FINISH_XP = 150;
       const WENDY_HEARTS_AWARD = 25;

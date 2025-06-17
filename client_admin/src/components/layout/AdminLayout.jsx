@@ -17,6 +17,11 @@ const AdminLayout = () => {
               <Link to="/habits" className="hover:text-teal-400">
                 Habit Tracker
               </Link>{" "}
+            </li>
+            <li className="mb-4">
+              <Link to="/books" className="hover:text-teal-400">
+                Book Tracker
+              </Link>{" "}
               {/* <-- ADD THIS LINK */}
             </li>
             {/* Add links to other pages here later */}

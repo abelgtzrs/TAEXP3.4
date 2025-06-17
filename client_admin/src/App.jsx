@@ -5,6 +5,7 @@ import DashboardPage from "./pages/DashboardPage";
 import AdminLayout from "./components/layout/AdminLayout";
 import ProtectedRoute from "./components/routing/ProtectedRoute";
 import HabitsPage from "./pages/HabitsPage";
+import BooksPage from "./pages/BooksPage";
 
 function App() {
   return (
@@ -17,9 +18,8 @@ function App() {
         <Route element={<AdminLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/habits" element={<HabitsPage />} />
-          {/* Add other protected routes here later */}
-          {/* e.g., <Route path="/habits" element={<HabitsPage />} /> */}
-          {/* e.g., <Route path="/books" element={<BooksPage />} /> */}
+          <Route path="/books" element={<BooksPage />} />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>
       </Route>
 
