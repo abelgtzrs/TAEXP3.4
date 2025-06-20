@@ -81,10 +81,6 @@ exports.updateBook = async (req, res) => {
     if (updatedBook.isFinished && !wasFinishedBefore) {
       const user = await User.findById(req.user.id);
 
-      if (typeof user.xpToNextLevel !== "number" || isNaN(user.xpToNextLevel)) {
-        user.xpToNextLevel = 100;
-      }
-
       const BOOK_FINISH_XP = 150;
       const WENDY_HEARTS_AWARD = 25;
 
@@ -98,13 +94,15 @@ exports.updateBook = async (req, res) => {
         user.xpToNextLevel = Math.floor(user.xpToNextLevel * 1.25);
       }
 
-      await user.save();
+      // Save the updated user document.
+      const updatedUser = await user.save(); // <--- Capture the saved user
 
-      // Return a special success response
+      // Return a special success response INCLUDING the updated user data
       return res.status(200).json({
         success: true,
         message: `Book finished! +${BOOK_FINISH_XP} XP, +${WENDY_HEARTS_AWARD} Wendy Hearts!`,
         data: updatedBook,
+        userData: updatedUser, // <--- ADD THIS to the response
       });
     }
 

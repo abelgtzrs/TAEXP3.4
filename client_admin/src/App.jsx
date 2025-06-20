@@ -6,6 +6,9 @@ import AdminLayout from "./components/layout/AdminLayout";
 import ProtectedRoute from "./components/routing/ProtectedRoute";
 import HabitsPage from "./pages/HabitsPage";
 import BooksPage from "./pages/BooksPage";
+import AdminRoute from "./components/routing/AdminRoute";
+import VolumesPage from "./pages/VolumesPage";
+import EditVolumePage from "./pages/EditVolumePage";
 
 function App() {
   return (
@@ -23,6 +26,16 @@ function App() {
         </Route>
       </Route>
 
+      {/* Admin-Only Routes */}
+      <Route element={<AdminRoute />}>
+        <Route element={<AdminLayout />}>
+          <Route path="/admin/volumes" element={<VolumesPage />} />
+          <Route
+            path="/admin/volumes/edit/:volumeId"
+            element={<EditVolumePage />}
+          />
+        </Route>
+      </Route>
       {/* Optional: A catch-all for unknown routes or a root redirect */}
       <Route path="*" element={<div>Not Found</div>} />
       {/* If you want users at the root "/" to be redirected to the dashboard if logged in:
