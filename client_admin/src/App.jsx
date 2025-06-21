@@ -9,6 +9,9 @@ import BooksPage from "./pages/BooksPage";
 import AdminRoute from "./components/routing/AdminRoute";
 import VolumesPage from "./pages/VolumesPage";
 import EditVolumePage from "./pages/EditVolumePage";
+import WorkoutPage from "./pages/WorkoutPage";
+import SelectTemplatePage from "./pages/SelectTemplatePage";
+import LogWorkoutPage from "./pages/LogWorkoutPage"; //
 
 function App() {
   return (
@@ -22,6 +25,13 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/habits" element={<HabitsPage />} />
           <Route path="/books" element={<BooksPage />} />
+          <Route path="/workouts" element={<WorkoutPage />} />
+          <Route path="/workouts/log" element={<LogWorkoutPage />} />
+          <Route
+            path="/workouts/new/template"
+            element={<SelectTemplatePage />}
+          />
+          <Route path="/workouts/new/clean" element={<LogWorkoutPage />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>
       </Route>

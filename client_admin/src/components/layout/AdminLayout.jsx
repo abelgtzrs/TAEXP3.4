@@ -26,6 +26,11 @@ const AdminLayout = () => {
                 Book Tracker
               </Link>
             </li>
+            <li className="mb-4">
+              <Link to="/workouts" className="hover:text-teal-400">
+                Workout Tracker
+              </Link>
+            </li>
             {/* Conditionally render the admin-only link */}
             {user?.role === "admin" && (
               <li className="mb-4 border-t border-gray-700 pt-4 mt-4">

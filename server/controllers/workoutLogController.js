@@ -7,8 +7,6 @@ const User = require("../models/User"); // Import User model for rewards.
 // @route   POST /api/workouts
 exports.createWorkoutLog = async (req, res) => {
   try {
-    // --- Prepare the Log Data ---
-    // Get the workout data from the request body.
     const {
       date,
       workoutName,
@@ -18,33 +16,55 @@ exports.createWorkoutLog = async (req, res) => {
       notesSession,
     } = req.body;
 
-    // Check if there are any exercises in the log.
     if (!exercises || exercises.length === 0) {
-      return res.status(400).json({
-        success: false,
-        message: "A workout log must contain at least one exercise.",
-      });
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "A workout log must contain at least one exercise.",
+        });
     }
 
-    // --- Reward Logic ---
-    // As per our rule: 1 Gatilla Gold per exercise logged.
-    const GATILLA_GOLD_AWARD = exercises.length;
-    const XP_AWARD = 15 * exercises.length; // Example: 15 XP per exercise.
+    // --- NEW REWARD LOGIC ---
+    let totalGatillaGoldAwarded = 0;
+    const XP_PER_SET = 5; // Example: 5 XP per set logged
+
+    // Iterate over each exercise in the logged workout
+    for (const exercise of exercises) {
+      // Check if 'sets' exists and is an array
+      if (exercise.sets && Array.isArray(exercise.sets)) {
+        const numSets = exercise.sets.length;
+        let goldForThisExercise = 0;
+
+        if (numSets === 1) {
+          goldForThisExercise = 1;
+        } else if (numSets === 2) {
+          goldForThisExercise = 3;
+        } else if (numSets >= 3) {
+          // Baseline for 3 sets is 5 gold
+          goldForThisExercise = 5;
+          // Add 1 gold for each extra set beyond 3
+          if (numSets > 3) {
+            goldForThisExercise += numSets - 3;
+          }
+        }
+        totalGatillaGoldAwarded += goldForThisExercise;
+      }
+    }
+
+    // Calculate total XP based on the number of sets across all exercises
+    const totalSets = exercises.reduce(
+      (acc, curr) => acc + (curr.sets ? curr.sets.length : 0),
+      0
+    );
+    const totalXpAwarded = totalSets * XP_PER_SET;
 
     // Find the user to give them their reward.
     const user = await User.findById(req.user.id);
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found." });
-    }
 
-    if (typeof user.xpToNextLevel !== "number" || isNaN(user.xpToNextLevel)) {
-      user.xpToNextLevel = 100;
-    }
     // Add the rewards.
-    user.gatillaGold = (user.gatillaGold || 0) + GATILLA_GOLD_AWARD;
-    user.experience = (user.experience || 0) + XP_AWARD;
+    user.gatillaGold += totalGatillaGoldAwarded;
+    user.experience += totalXpAwarded;
 
     // Check for user level up.
     if (user.experience >= user.xpToNextLevel) {
@@ -54,33 +74,32 @@ exports.createWorkoutLog = async (req, res) => {
     }
 
     // --- Save to Database ---
-    // Create the new workout log document.
     const newLog = await WorkoutLog.create({
-      user: req.user.id, // Associate the log with the logged-in user.
+      user: req.user.id,
       date,
       workoutName,
       durationSessionMinutes,
-      exercises, // This is the array of exercise subdocuments.
+      exercises,
       overallFeeling,
       notesSession,
     });
-
-    // Save the updated user document with new currency and XP.
     await user.save();
 
     // Send a successful response.
     res.status(201).json({
       success: true,
-      message: `Workout logged! +${XP_AWARD} XP, +${GATILLA_GOLD_AWARD} Gatilla Gold!`,
+      message: `Workout logged! +${totalXpAwarded} XP, +${totalGatillaGoldAwarded} Gatilla Gold!`,
       data: newLog,
     });
   } catch (error) {
     console.error("Create Workout Log Error:", error);
-    res.status(400).json({
-      success: false,
-      message: "Error creating workout log",
-      error: error.message,
-    });
+    res
+      .status(400)
+      .json({
+        success: false,
+        message: "Error creating workout log",
+        error: error.message,
+      });
   }
 };
 

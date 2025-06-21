@@ -28,6 +28,11 @@ app.use("/api/workouts", require("./routes/workoutLogRoutes"));
 app.use("/api/workouts", require("./routes/workoutLogRoutes"));
 app.use("/api/shop", require("./routes/shopRoutes"));
 app.use("/api/admin/volumes", require("./routes/VolumeRoutes"));
+app.use(
+  "/api/admin/workout-templates",
+  require("./routes/workoutTemplateRoutes")
+);
+app.use("/api/workout-templates", require("./routes/workoutTemplateRoutes"));
 //app.use('/api/users', require('./routes/userRoutes'));
 //app.use('/api/volumes', require('./routes/volumeRoutes'));
 
