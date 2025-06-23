@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
 
+const { protect, authorize } = require('./middleware/authMiddleware');
 // Load environment variables and connect to the database
 dotenv.config();
 const app = express(); // Create an Express application
@@ -33,6 +34,7 @@ app.use(
   require("./routes/workoutTemplateRoutes")
 );
 app.use("/api/workout-templates", require("./routes/workoutTemplateRoutes"));
+app.use('/api/admin/exercises', protect, authorize('admin'), require('./routes/exerciseAdminRoutes'));
 //app.use('/api/users', require('./routes/userRoutes'));
 //app.use('/api/volumes', require('./routes/volumeRoutes'));
 

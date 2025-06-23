@@ -31,15 +31,15 @@ const AdminLayout = () => {
                 Workout Tracker
               </Link>
             </li>
-            {/* Conditionally render the admin-only link */}
-            {user?.role === "admin" && (
-              <li className="mb-4 border-t border-gray-700 pt-4 mt-4">
-                <p className="text-xs text-gray-500 uppercase mb-2">Admin</p>
-                <Link to="/admin/volumes" className="hover:text-teal-400">
-                  Volume Manager
-                </Link>
-              </li>
-            )}
+                {user?.role === 'admin' && (
+                    <li className="mb-4 border-t border-gray-700 pt-4 mt-4">
+                        <p className="text-xs text-gray-500 uppercase mb-2">Admin</p>
+                        <Link to="/admin/volumes" className="block mb-2 hover:text-teal-400">Volume Manager</Link>
+                        <Link to="/admin/exercises" className="block mb-2 hover:text-teal-400">Exercise Definitions</Link>
+                        <Link to="/admin/templates" className="block mb-2 hover:text-teal-400">Workout Templates</Link>
+                    </li>
+                )}
+
           </ul>
         </nav>
       </aside>

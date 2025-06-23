@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
-import WorkoutLogItem from "../components/workouts/WorkoutLogItem"; // <-- Import the new component
+import WorkoutLogItem from "../components/workouts/WorkoutLogItem";
 
 const WorkoutPage = () => {
   // New state for storing workout history
@@ -31,7 +31,6 @@ const WorkoutPage = () => {
       <h1 className="text-3xl font-bold text-teal-400 mb-8">Workout Tracker</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
-        {/* These links remain the same */}
         <Link
           to="/workouts/log"
           className="p-10 bg-gray-800 rounded-lg hover:bg-gray-700 hover:border-teal-500 border-2 border-transparent transition-all duration-300"
