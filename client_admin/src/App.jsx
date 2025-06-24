@@ -14,6 +14,7 @@ import VolumesPage from './pages/VolumesPage';
 import EditVolumePage from './pages/EditVolumePage';
 import AdminExercisesPage from './pages/AdminExercisesPage';
 import AdminTemplatesPage from './pages/AdminTemplatesPage';
+import ShopPage from './pages/ShopPage';
 
 function App() {
   // Notice this component now ONLY returns the Routes.
@@ -31,6 +32,7 @@ function App() {
           <Route path="/workouts" element={<WorkoutPage />} />
           <Route path="/workouts/log" element={<LogWorkoutPage />} />
           <Route path="/workouts/new/template" element={<SelectTemplatePage />} />
+          <Route path="/shop" element={<ShopPage />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>
       </Route>

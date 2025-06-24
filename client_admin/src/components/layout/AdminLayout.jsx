@@ -31,6 +31,7 @@ const AdminLayout = () => {
                 Workout Tracker
               </Link>
             </li>
+            <li className="mb-2"><Link to="/shop" className="block p-2 rounded hover:bg-gray-700 hover:text-teal-400">Shop (Gacha)</Link></li>
                 {user?.role === 'admin' && (
                     <li className="mb-4 border-t border-gray-700 pt-4 mt-4">
                         <p className="text-xs text-gray-500 uppercase mb-2">Admin</p>
