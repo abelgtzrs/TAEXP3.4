@@ -1,238 +1,201 @@
-# The Abel Experience™ - MERN Application
+# The Abel Experience™ CFW (Cognitive Framework) v3.0
 
-**Version:** 0.3.0 (Pre-Alpha)
-**Last Updated:** June 13, 2025
+## Description
 
-A multifaceted MERN stack application designed as a personalized digital sanctuary, content management system, and gamified productivity platform.
+The Abel Experience™ CFW (Cognitive Framework) is the third iteration of a full-stack MERN application designed as a personalized digital sanctuary and command center. It leverages a decoupled API architecture to serve a private user/admin panel and a public-facing content viewer.
 
----
+The core philosophy of this project is to create a deeply integrated environment that blends personal productivity, content management, and sophisticated gamification. The system is built around a suite of trackers for daily life activities (habits, workouts, reading), which fuel an internal economy of multiple currencies. These currencies are then used in a gacha-style shop to acquire a wide range of digital collectibles.
+
+The primary client is a feature-rich web application (`client-admin`) providing a dark, professional, HUD-style interface for registered users. A secondary client (`client-public`) offers an immersive, retro-terminal experience for viewing published narrative content.
+
+Future iterations of this project will explore the development of native desktop (C# or C++) and mobile UI clients that will connect to the same robust backend API, offering enhanced performance and deeper OS integration.
 
 ## Table of Contents
 
-1.  [Project Philosophy & Ultimate Goal](#1-project-philosophy--ultimate-goal)
-2.  [Core Features](#2-core-features)
-    * [Admin Panel (Abel's Experience)](#admin-panel)
-    * [User Panel (Wendy & Members)](#user-panel)
-    * [Public Terminal Viewer](#public-terminal-viewer)
-3.  [Technology Stack](#3-technology-stack)
-4.  [Project Structure](#4-project-structure)
-5.  [Setup and Installation](#5-setup-and-installation)
-    * [Prerequisites](#prerequisites)
-    * [Backend Setup (Server)](#backend-setup-server)
-    * [Frontend Setup (Admin/User Panel & Public Terminal)](#frontend-setup-adminuser-panel--public-terminal)
-6.  [Running the Application](#6-running-the-application)
-7.  [Environment Variables](#7-environment-variables)
-8.  [Database Seeding](#8-database-seeding)
-9.  [API Endpoints Overview](#9-api-endpoints-overview)
-10. [Database Models Overview](#10-database-models-overview)
-11. [Current Development Status](#11-current-development-status)
+1.  [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+    - [Backend Setup (Server)](#backend-setup-server)
+    - [Frontend Setup (client-admin & client-public)](#frontend-setup-client-admin--client-public)
+2.  [Usage](#usage)
+    - [Running the Application](#running-the-application)
+    - [Seeding Initial Data](#seeding-initial-data)
+3.  [Features](#features)
+    - [Backend & API](#backend--api)
+    - [Admin & User Panel (`client-admin`)](#admin--user-panel-client-admin)
+    - [Public Terminal Viewer (`client-public`)](#public-terminal-viewer-client-public)
+4.  [Walkthrough](#walkthrough)
+    - [First Time Setup (Admin)](#first-time-setup-admin)
+    - [Daily User Flow](#daily-user-flow)
+5.  [Screenshot](#screenshot)
+6.  [License](#license)
+7.  [Contributors and Questions](#contributors-and-questions)
 
 ---
 
-## 1. Project Philosophy & Ultimate Goal
-
-The ultimate goal of "The Abel Experience™" is to create an **evolving digital extension of its primary users' (Abel & Wendy) world, interests, and personal growth journey.** It is a **Personalized Digital Sanctuary & Command Center**, blending productivity, creativity, and gamification.
-
-The design philosophy emphasizes:
-* **Deep Personalization:** Extensive options to tailor the interface, data, and aesthetics (e.g., "Abel Personas").
-* **Immersive & Rich Interface:** A professional, dark, futuristic HUD-style UI that is data-rich but intuitive.
-* **Joyful Gamification:** Rewarding daily activities with a unique three-currency economy, collectible items, and a sense of progression.
-* **Seamless Integration:** A central hub for tracking various life aspects (habits, fitness, reading, tasks, media, and eventually finances & sports).
-
-While built for a core user experience, it includes features for a wider audience, such as a public terminal for consuming content and registration for members to participate in the collection ecosystem.
-
-## 2. Core Features
-
-### Admin Panel (Abel's Experience)
-* **Dynamic Theming:** Select from unlocked "Abel Personas" to dynamically change the entire admin panel's color scheme.
-* **HUD Dashboard:** A command center with complex charts and graphs displaying custom, lore-based data.
-* **Content Management:** Full CRUD (Create, Read, Update, Delete) and publishing control over "Greentext Volumes."
-* **Base Data Management:** Interfaces to manage the foundational data for all collectibles (Pokémon, Snoopys, Badges, etc.) and definitions (Exercises).
-* **User Management:** View all users and manage their roles.
-* **Showcase Pages:** (Post-MVP) Ability to create and post personal galleries, music lists, and other showcases.
-* **Full User Panel Access:** Receives all features available to Wendy.
-
-### User Panel (Wendy & Members)
-* **Secure Registration & Login:** For `special_user` (Wendy) and `member` roles.
-* **Personalized Profile:** A customizable space to display chosen collectibles, badges, and titles.
-* **Three-Currency Economy:**
-    * **`TemuTokens`**: Earned from completing habits.
-    * **`GatillaGold`**: Earned from logging workout exercises.
-    * **`WendyHearts`**: Earned from reading books.
-* **Gacha Shop:** Spend currencies for a random chance to acquire collectibles.
-* **Trackers:**
-    * **Habit Tracker:** Log daily habits to earn `TemuTokens` and XP.
-    * **Workout Tracker:** Log detailed workouts to earn `GatillaGold` and XP.
-    * **Book Tracker:** Track reading progress to earn `WendyHearts` and significant XP.
-    * **Task Manager:** A personal to-do list with sub-task checklists.
-    * **Notes & Media Trackers:** For personal notes and tracking shows, movies, and games.
-* **Collectible Systems:**
-    * **Pokémon (Gen 1-6):** Get a starter, acquire more via gacha, and level up/evolve your party (leveling/evolution for Admin/Wendy in MVP).
-    * **Snoopys, Habbo Rares, Yu-Gi-Oh! Cards:** Acquire via gacha and display in your collection.
-    * **Badges:** Earn Pokémon gym/league badges through daily login streaks.
-    * **Titles:** (Post-MVP) Unlock and equip titles.
-
-### Public Terminal Viewer
-* **Immersive Interface:** A retro terminal aesthetic for viewing published Greentext Volumes.
-* **Typewriter Animation:** Text is revealed character-by-character with random, subtle glitches and pauses.
-* **Command-Line Interaction:** Users type commands like "catalogue", "random", or "view \[id]" to navigate content.
-
-## 3. Technology Stack
-
-* **Backend:** Node.js, Express.js
-* **Database:** MongoDB with Mongoose ODM
-* **Frontend:** React (with Vite)
-* **Authentication:** JSON Web Tokens (JWT), bcryptjs
-* **Styling:** Tailwind CSS
-* **API Client:** Axios
-* **Charting:** Recharts (or similar)
-* **Icons:** Lucide React
-
-## 4. Project Structure
-```
-abel_experience_mern/
-├── server/                 # Backend (Node.js, Express)
-│   ├── config/             # Database connection
-│   ├── controllers/        # Request handling logic
-│   ├── data/               # JSON files for seeding
-│   ├── middleware/         # Auth, error handling
-│   ├── models/             # Mongoose schemas
-│   │   └── userSpecific/   # User-specific instance models
-│   ├── routes/             # API route definitions
-│   ├── .env                # Environment variables
-│   ├── server.js           # Main backend entry point
-│   └── seeder.js           # Script to seed database
-├── client-admin/           # Frontend - Admin/User Panel (React)
-│   ├── src/
-│   │   ├── components/
-│   │   ├── context/
-│   │   ├── pages/
-│   │   └── services/
-│   ├── .env.local
-│   └── tailwind.config.js
-└── client-public/          # Frontend - Public Terminal (React)
-└── ...
-```
-
-## 5. Setup and Installation
+## Installation
 
 ### Prerequisites
-* Node.js (v18.x or later)
-* npm (v9.x or later)
-* MongoDB Atlas Account (or local MongoDB installation)
-* Git
+
+-   Node.js (v18.x or later)
+-   npm (v9.x or later)
+-   MongoDB (A local instance or a free cloud cluster from MongoDB Atlas)
+-   Git
 
 ### Backend Setup (Server)
-Located in the `server/` directory.
 
-1.  **Navigate to directory:** `cd server`
-2.  **Install dependencies:** `npm install`
-3.  **Create `.env` file:** Create a file named `.env` in the `server/` root. Populate it with your specific configurations (see [Environment Variables](#7-environment-variables)).
-    * **Crucial variables:** `MONGO_URI`, `JWT_SECRET`, `PORT`.
+The server is located in the `server/` directory.
 
-### Frontend Setup (Admin/User Panel & Public Terminal)
-Repeat these steps for both `client-admin/` and `client-public/`.
+1.  **Navigate to the server directory:**
+    ```bash
+    cd server
+    ```
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Create an Environment File:**
+    Create a `.env` file in the `server/` root and populate it with the necessary variables. See the `Environment Variables` section in the project's full documentation for a complete list.
+    **Crucial variables:**
+    -   `MONGO_URI`: Your MongoDB connection string.
+    -   `JWT_SECRET`: A long, random string for signing tokens.
+    -   `PORT`: The port for the backend server (e.g., 5000).
 
-1.  **Navigate to directory:** `cd client-admin` (or `cd client-public`)
-2.  **Install dependencies:** `npm install`
-3.  **Create `.env.local` file (optional):** To specify the backend API URL.
+### Frontend Setup (client-admin & client-public)
+
+The setup process is identical for both the `client-admin` and `client-public` directories.
+
+1.  **Navigate to the client directory:**
+    ```bash
+    cd client-admin  # or client-public
+    ```
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **(Optional) Create Local Environment File:**
+    For local development, you can create a `.env.local` file in the client's root to specify the backend API URL.
     ```env
-    # client-admin/.env.local
     VITE_API_BASE_URL=http://localhost:5000/api
     ```
 
-## 6. Running the Application
+---
 
-You will need **three separate terminal windows** open simultaneously.
+## Usage
 
-1.  **Terminal 1: Start Backend Server**
+### Running the Application
+
+To run the full application, you will need to open three separate terminal windows.
+
+1.  **Start the Backend Server:**
     ```bash
     cd server
     npm run dev
     ```
-    *Server will run on `http://localhost:5000` (or your specified port).*
+    *The server will typically run on `http://localhost:5000`.*
 
-2.  **Terminal 2: Start Admin Panel Frontend**
+2.  **Start the Admin Panel Frontend:**
     ```bash
     cd client-admin
     npm run dev
     ```
-    *App will run on `http://localhost:5173` (or the next available port).*
+    *This client will typically run on `http://localhost:5173` or the next available port.*
 
-3.  **Terminal 3: Start Public Terminal Frontend**
+3.  **Start the Public Terminal Frontend:**
     ```bash
     cd client-public
     npm run dev
     ```
-    *App will run on `http://localhost:5174` (or the next available port).*
+    *This client will typically run on the next available port after the admin panel (e.g., `5174`).*
 
-## 7. Environment Variables
+### Seeding Initial Data
 
-### Server (`server/.env`)
-| Variable | Description | Example |
-| :--- | :--- | :--- |
-| `PORT` | Port the backend server will run on. | `5000` |
-| `NODE_ENV` | Application environment. | `development` |
-| `MONGO_URI`| Your full MongoDB connection string. | `mongodb+srv://user:pass@cluster.xyz.mongodb.net/abelExperienceDB`|
-| `JWT_SECRET` | A long, random, secret key for signing tokens.| `a_very_long_random_and_secret_string_!@#$%` |
-| `JWT_EXPIRE` | Expiration time for JWTs. | `30d` |
+After setting up the project, the first step is to populate the database with the foundational "Base" data for collectibles and definitions.
 
-### Frontend (`client-*/.env.local`)
-| Variable | Description | Example |
-| :--- | :--- | :--- |
-| `VITE_API_BASE_URL` | The base URL for your backend API. | `http://localhost:5000/api`|
-
-## 8. Database Seeding
-
-The `server/seeder.js` script populates the database with foundational "Base" data (Pokémon, Snoopys, Exercises, etc.) from JSON files in `server/data/`.
-
-* **Import data:**
+1.  **Review Data Files:** Ensure the JSON files in `server/data/` are configured as desired.
+2.  **Run the Import Script:**
     ```bash
-    # from server/ directory
+    cd server
     npm run data:import
     ```
-* **Destroy data (from seeded collections):**
-    ```bash
-    # from server/ directory
-    npm run data:destroy
-    ```
-**Note:** Ensure all required model files exist in `server/models/` before running the seeder.
+    *This command will clear the relevant collections and insert the data from your JSON files.*
 
-## 9. API Endpoints Overview
+---
 
-* **Auth:** `/api/auth` (register, login, me)
-* **Users:** `/api/users` (Admin management, profile updates)
-* **Volumes:** `/api/admin/volumes` (Admin CRUD), `/api/volumes/public` (Public access)
-* **Trackers:** `/api/habits`, `/api/books`, `/api/workouts`, `/api/tasks`, `/api/notes`
-* **Shop/Gacha:** `/api/shop/pull/:category`
-* **Base Data (Admin):** `/api/admin/base/*` (e.g., `/pokemon`, `/snoopys`)
-* **User Collections:** `/api/me/collection/:type`
+## Features
 
-## 10. Database Models Overview
+### Backend & API
 
-The application utilizes ~22 Mongoose models, categorized as:
-* **Core:** `User`
-* **Content:** `Volume`
-* **Base Collectibles:** `PokemonBase`, `SnoopyArtBase`, `BadgeBase`, `TitleBase`, `YugiohCardBase`, `HabboRareBase`, `AbelPersonaBase`
-* **User-Specific Instances:** `UserPokemon`, `UserSnoopyArt`, `UserBadge`, `UserTitle`, `UserYugiohCard`, `UserHabboRare`
-* **Trackers:** `Habit`, `Task`, `Book`, `MediaItem`, `Note`
-* **Workout:** `ExerciseDefinition`, `WorkoutLog`
+-   **Authentication:** Secure user registration and login system using JSON Web Tokens (JWT).
+-   **Middleware:** Role-based access control (`admin`, `special_user`, `member`) and route protection.
+-   **Decoupled Architecture:** RESTful API designed to serve multiple clients (web, future native desktop/mobile).
+-   **Gamified Economy:** Logic for awarding three distinct currencies (`TemuTokens`, `GatillaGold`, `WendyHearts`) based on user activities.
+-   **Gacha System:** A robust API endpoint for handling randomized "pulls" of collectibles, deducting currency, and handling duplicates.
+-   **Content Parsing:** A server-side parser to convert raw "greentext" block text into a structured JSON format for storage.
+-   **Data Seeding:** A script to populate the database with foundational data for all collectible types.
 
-## 11. Current Development Status
+### Admin & User Panel (`client-admin`)
 
-The project is currently in the **Backend Development** phase. Key accomplishments include:
-* Full backend setup with Node.js/Express and MongoDB connection.
-* Complete authentication system with JWTs and role-based access control.
-* Fully defined Mongoose schemas for all planned features.
-* Functional APIs for core trackers (Habits, Books, Workouts) with currency/XP reward systems.
-* Functional API for the Gacha/Shop collectible acquisition system.
-* A seeder script for populating foundational "Base" data.
-* The project is now transitioning to **Frontend Development**, starting with the Admin/User Panel (`client-admin`).
+-   **Responsive Design:** Fully functional on both desktop and mobile devices.
+-   **HUD Dashboard:** A professional, data-rich dashboard with a futuristic aesthetic, displaying lore-based charts and key user metrics.
+-   **Abel Persona Theming:** A system for Admin and Wendy to unlock and equip "Personas" that dynamically change the entire UI color scheme.
+-   **Full-Featured Trackers:**
+    -   **Habit Tracker:** CRUD for personal habits.
+    -   **Book Tracker:** Track reading progress, ratings, and library.
+    -   **Workout Tracker:** Log detailed workouts with exercises, sets, reps, and weight. Includes support for "clean" sessions or "prebuilt templates."
+    -   **Task Manager:** With support for sub-task checklists.
+    -   **Note Manager:** For personal notes and ideas.
+-   **Collection Management:** UI to view all collected items (Pokémon, Snoopys, Habbo Rares, Yu-Gi-Oh! Cards, Badges, Titles).
+-   **Profile Customization:** Users can select up to 6 of each collectible type to display on their profile page.
+-   **Admin-Specific Panels:**
+    -   **Volume Manager:** Create, edit, publish, and delete Greentext Volumes using a form with a live JSON preview.
+    -   **Base Data Manager:** CRUD interfaces for managing the foundational data of all collectibles (e.g., adding a new exercise to the system, defining a new Snoopy collectible).
 
-## 12. Post-MVP Vision
+### Public Terminal Viewer (`client-public`)
 
-* Full "Paste and Parse" for volume creation.
-* Social features: Public user profiles, comments on volumes, friend system.
-* Advanced trackers and system configuration panels.
-* Integration with external APIs like **Spotify**, **Plaid**, and **Sports APIs**.
-* In-app notification system and advanced gamification mechanics.
+-   **Immersive Interface:** A retro, full-screen terminal aesthetic.
+-   **Typewriter Animation:** Greentext Volumes are displayed character-by-character with randomized, subtle glitch effects for an authentic feel.
+-   **Command-Line Navigation:** Users interact with the system by typing commands like `catalogue`, `random`, `view [id]`, `next`, etc.
+
+---
+
+## Walkthrough
+
+### First Time Setup (Admin)
+
+1.  After installation, run `npm run data:import` in the `server` directory to seed the database.
+2.  Start all three services (`server`, `client-admin`, `client-public`).
+3.  Navigate to the `client-admin` application and register your primary `admin` account.
+4.  Using the admin-only links in the sidebar, navigate to "Exercise Definitions" and "Workout Templates" to create the foundational data for the Workout Tracker.
+5.  Navigate to the "Volume Manager," paste a complete raw greentext into the form, set the status to "published," and create the volume.
+6.  Navigate to the `client-public` URL to see the published volume available for viewing.
+
+### Daily User Flow
+
+1.  Log in to the `client-admin` application. You are greeted by your personalized HUD Dashboard.
+2.  Navigate to the **Habit Tracker** and mark several habits as complete. Observe your `TemuTokens` balance increase.
+3.  Go to the **Book Tracker** and update your `pagesRead` for a book you are currently reading. See your `WendyHearts` balance increase.
+4.  Visit the **Workout Tracker** and log a session using a prebuilt template, filling in reps and weight. Your `GatillaGold` balance will increase based on the number of sets completed.
+5.  With your newly earned currency, navigate to the **Shop (Gacha)** page and perform a "pull" for a new Pokémon or Snoopy.
+6.  Visit your **Profile** page to see your updated level/XP, currency balances, and manage which collectibles are displayed.
+
+---
+
+## Screenshot
+
+*(Coming soon.)*
+
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for more details.
+
+---
+
+## Contributors
+
+This is a personal project developed and maintained by Abel Gutierrez.
+For any questions, you can reach me at:
+- GitHub: [abelgtzrs](https://github.com/abelgtzrs)
+- Email: abelgtzrs@gmail.com
