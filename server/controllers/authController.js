@@ -121,57 +121,57 @@ const loginUser = async (req, res, next) => {
 // @desc    Get current logged-in user's data
 // @route   GET /api/auth/me
 // @access  Private
-const getMe = async (req, res, next) => {
-  // This function will primarily work AFTER 'protect' middleware is implemented
-  // 'protect' will add req.user from the validated token.
-  if (req.user) {
-    // req.user will be set by the 'protect' middleware
-    // Fetch fresh user data to ensure it's up-to-date, excluding password
+exports.getMe = async (req, res, next) => {
     try {
-      const user = await User.findById(req.user.id).select("-password");
-      if (!user) {
-        return res
-          .status(404)
-          .json({ success: false, message: "User not found" });
-      }
-      res.status(200).json({
-        success: true,
-        data: user,
-      });
+        // req.user is set by our 'protect' middleware. We use its ID to fetch the latest user data.
+        const userId = req.user.id;
+
+        // --- THIS IS THE UPDATED QUERY ---
+        // We find the user by their ID and then use .populate() to fetch the detailed
+        // information for each collection we want to display on the profile.
+        const user = await User.findById(userId)
+            .select('-password') // Exclude the password for security
+            .populate({
+                path: 'displayedPokemon', // The field in the User model
+                populate: {
+                    path: 'basePokemon', // The field within UserPokemon model
+                    model: 'PokemonBase' // The model to get details from
+                }
+            })
+            .populate({
+                path: 'displayedSnoopyArt',
+                populate: { path: 'snoopyArtBase', model: 'SnoopyArtBase' }
+            })
+            .populate({
+                path: 'displayedHabboRares',
+                populate: { path: 'habboRareBase', model: 'HabboRareBase' }
+            })
+            .populate({
+                path: 'displayedYugiohCards',
+                populate: { path: 'yugiohCardBase', model: 'YugiohCardBase' }
+            })
+            .populate({
+                path: 'badges',
+                populate: { path: 'badgeBase', model: 'BadgeBase' }
+            })
+            .populate({
+                path: 'equippedTitle',
+                populate: { path: 'titleBase', model: 'TitleBase' }
+            });
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        // Send the richly populated user object to the frontend.
+        res.status(200).json({ success: true, data: user });
+
     } catch (error) {
-      console.error("GetMe Error:", error);
-      res
-        .status(500)
-        .json({ success: false, message: "Server Error fetching user data" });
+        console.error('GetMe Error:', error);
+        res.status(500).json({ success: false, message: 'Server Error fetching user data' });
     }
-  } else {
-    // This case should ideally not be hit if 'protect' middleware is correctly applied.
-    // If 'protect' is NOT YET active on the route, this path will be taken.
-    // Keeping the insecure dev fallback for now, but it should be removed once 'protect' is in.
-    try {
-      const firstUser = await User.findOne()
-        .sort({ createdAt: 1 })
-        .select("-password");
-      if (firstUser) {
-        res.status(200).json({
-          success: true,
-          message:
-            "Fetched first user (DEV ONLY - SECURE THIS /me ROUTE WITH PROTECT MIDDLEWARE!)",
-          data: firstUser,
-        });
-      } else {
-        res
-          .status(404)
-          .json({ success: false, message: "No users found (DEV ONLY)" });
-      }
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: "Server error fetching user for /me (DEV ONLY)",
-      });
-    }
-  }
 };
+
 
 module.exports = {
   registerUser,
