@@ -46,8 +46,8 @@ app.use("/api/workouts", require("./routes/workoutLogRoutes"));
 app.use("/api/workouts", require("./routes/workoutLogRoutes"));
 app.use("/api/shop", require("./routes/shopRoutes"));
 app.use("/api/admin/volumes", require("./routes/VolumeRoutes"));
-app.use(
-  "/api/admin/workout-templates",
+app.use('/api/public', require('./routes/publicRoutes'));
+app.use("/api/admin/workout-templates",
   require("./routes/workoutTemplateRoutes")
 );
 app.use("/api/workout-templates", require("./routes/workoutTemplateRoutes"));
