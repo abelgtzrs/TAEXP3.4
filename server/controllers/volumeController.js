@@ -1,94 +1,76 @@
 // server/controllers/volumeController.js
 
 const Volume = require("../models/Volumes"); // Import the Volume model
-
-/**
+/*
  * --- The Parser Function ---
  * This helper function takes a block of raw text and parses it into a structured object.
  * @param {string} rawText - The full greentext pasted by the admin.
  * @returns {object} - A structured object ready to be saved as a Volume.
  */
 const parseRawGreentext = (rawText) => {
-  const lines = rawText.split("\n").map((line) => line.trim()); // Split by line and trim whitespace.
-  const parsedData = {
-    volumeNumber: null,
-    title: "",
-    bodyLines: [],
-    blessingIntro: "",
-    blessings: [],
-    dream: "",
-    edition: "",
-  };
+    // Split text into lines. We trim later to preserve indentation info if needed, though current model doesn't use it.
+    const lines = rawText.split('\n');
+    const parsedData = {
+        volumeNumber: null,
+        title: '',
+        bodyLines: [],
+        blessingIntro: '',
+        blessings: [],
+        dream: '',
+        edition: ''
+    };
 
-  // Define keywords to identify sections.
-  const BLESSING_INTRO_KEYWORD = "life is";
-  const DREAM_KEYWORD = "the dream of";
-  const EDITION_KEYWORD = "Edition";
+    // --- Define keywords to identify sections ---
+    const BLESSING_INTRO_KEYWORD = "life is";
+    const DREAM_KEYWORD = "the dream of";
 
-  // Regex to parse Title line: e.g., "The Abel Experience™: Volume 196 – Cybertruck Combat..."
-  const titleRegex = /Volume\s+(\d+)\s*–\s*(.*)/i;
-  const firstLineMatch = lines[0] ? lines[0].match(titleRegex) : null;
-  if (firstLineMatch) {
-    parsedData.volumeNumber = parseInt(firstLineMatch[1], 10);
-    parsedData.title = firstLineMatch[2].trim();
-  }
-
-  // Find the line indexes for our key sections.
-  const blessingIntroIndex = lines.findIndex((line) =>
-    line.toLowerCase().startsWith(BLESSING_INTRO_KEYWORD)
-  );
-  const dreamIndex = lines.findIndex((line) =>
-    line.toLowerCase().startsWith(DREAM_KEYWORD)
-  );
-  const editionIndex = lines.findIndex((line) =>
-    line.endsWith(EDITION_KEYWORD)
-  ); // Find the final edition line
-
-  // --- Populate the sections based on indexes ---
-
-  // Body: Lines between title (line 0) and the blessing intro.
-  if (blessingIntroIndex !== -1) {
-    parsedData.bodyLines = lines
-      .slice(1, blessingIntroIndex)
-      .filter((line) => line !== "");
-  }
-
-  // Blessing Intro
-  if (blessingIntroIndex !== -1) {
-    parsedData.blessingIntro = lines[blessingIntroIndex];
-  }
-
-  // Blessings: Lines between the blessing intro and the dream line.
-  if (blessingIntroIndex !== -1 && dreamIndex !== -1) {
-    const blessingLines = lines
-      .slice(blessingIntroIndex + 1, dreamIndex)
-      .filter((line) => line !== "");
-
-    // Regex to parse each blessing item: e.g., "The Strokes (description...)"
-    const blessingRegex = /^(.*?)(?:\s*\((.*)\))?$/;
-    for (const line of blessingLines) {
-      const match = line.match(blessingRegex);
-      if (match) {
-        parsedData.blessings.push({
-          item: match[1].trim(),
-          description: match[2] ? match[2].trim() : "", // Handle blessings with no description
-        });
-      }
+    // --- Parse Volume and Title from the first line ---
+    const titleRegex = /Volume\s+(\d+)\s*–\s*(.*)/i;
+    const firstLineMatch = lines[0]?.trim().match(titleRegex);
+    if (firstLineMatch) {
+        parsedData.volumeNumber = parseInt(firstLineMatch[1], 10);
+        parsedData.title = firstLineMatch[2].trim();
+        // FIX for Edition: Set it reliably based on the title.
+        parsedData.edition = `${parsedData.title} Edition`;
     }
-  }
 
-  // Dream
-  if (dreamIndex !== -1) {
-    parsedData.dream = lines[dreamIndex];
-  }
+    // --- Find the line indexes for our key sections ---
+    const blessingIntroIndex = lines.findIndex(line => line.trim().toLowerCase().startsWith(BLESSING_INTRO_KEYWORD));
+    const dreamIndex = lines.findIndex(line => line.trim().toLowerCase().startsWith(DREAM_KEYWORD));
 
-  // Edition
-  if (editionIndex !== -1) {
-    // Example: "The Abel Experience™: Cybertruck... Edition" -> "Cybertruck... Edition"
-    parsedData.edition = lines[editionIndex].split(":")[1]?.trim() || "";
-  }
+    // --- NEW LOGIC for determining section boundaries ---
+    // Find the first occurrence of any "special" section to mark the end of the body.
+    const specialSectionIndexes = [blessingIntroIndex, dreamIndex].filter(index => index !== -1);
+    const bodyEndIndex = specialSectionIndexes.length > 0 ? Math.min(...specialSectionIndexes) : lines.length;
+    
+    // Body: Lines between title (line 0) and the start of the first special section.
+    // We do NOT filter empty lines, as requested in the previous fix.
+    parsedData.bodyLines = lines.slice(1, bodyEndIndex).map(line => line.trimEnd()); // Trim only trailing whitespace
 
-  return parsedData;
+    // --- Blessing Parsing (no changes needed here) ---
+    if (blessingIntroIndex !== -1) {
+        parsedData.blessingIntro = lines[blessingIntroIndex].trim();
+        const endOfBlessings = dreamIndex > blessingIntroIndex ? dreamIndex : lines.length;
+        const blessingLines = lines.slice(blessingIntroIndex + 1, endOfBlessings).filter(line => line.trim() !== '');
+        
+        const blessingRegex = /^(.*?)(?:\s*\((.*)\))?$/;
+        for (const line of blessingLines) {
+            const match = line.trim().match(blessingRegex);
+            if (match) {
+                parsedData.blessings.push({
+                    item: match[1].trim(),
+                    description: match[2] ? match[2].trim() : ''
+                });
+            }
+        }
+    }
+
+    // --- Dream Parsing (no changes needed here) ---
+    if (dreamIndex !== -1) {
+        parsedData.dream = lines[dreamIndex].trim();
+    }
+
+    return parsedData;
 };
 
 // --- Controller Functions ---
