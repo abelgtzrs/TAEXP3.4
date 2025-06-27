@@ -3,8 +3,25 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
-
+// Import authentication middleware
 const { protect, authorize } = require('./middleware/authMiddleware');
+// Register models to ensure they are available for routes
+require('./models/User');
+require('./models/PokemonBase');
+require('./models/SnoopyArtBase');
+require('./models/BadgeBase');
+require('./models/TitleBase');
+require('./models/HabboRareBase');
+require('./models/YugiohCardBase');
+require('./models/AbelPersonaBase');
+require('./models/ExerciseDefinition');
+require('./models/userSpecific/UserPokemon');
+require('./models/userSpecific/UserSnoopyArt');
+require('./models/userSpecific/UserBadge');
+require('./models/userSpecific/UserTitle');
+require('./models/userSpecific/UserHabboRare');
+require('./models/userSpecific/UserYugiohCard');
+
 // Load environment variables and connect to the database
 dotenv.config();
 const app = express(); // Create an Express application

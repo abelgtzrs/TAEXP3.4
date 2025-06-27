@@ -15,6 +15,7 @@ import EditVolumePage from './pages/EditVolumePage';
 import AdminExercisesPage from './pages/AdminExercisesPage';
 import AdminTemplatesPage from './pages/AdminTemplatesPage';
 import ShopPage from './pages/ShopPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   // Notice this component now ONLY returns the Routes.
@@ -44,6 +45,7 @@ function App() {
             <Route path="/admin/volumes/edit/:volumeId" element={<EditVolumePage />} />
             <Route path="/admin/exercises" element={<AdminExercisesPage />} />
             <Route path="/admin/templates" element={<AdminTemplatesPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
         </Route>
       </Route>
 

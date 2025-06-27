@@ -38,6 +38,7 @@ const AdminLayout = () => {
                         <Link to="/admin/volumes" className="block mb-2 hover:text-teal-400">Volume Manager</Link>
                         <Link to="/admin/exercises" className="block mb-2 hover:text-teal-400">Exercise Definitions</Link>
                         <Link to="/admin/templates" className="block mb-2 hover:text-teal-400">Workout Templates</Link>
+                        <Link to="/profile" className="block p-2 rounded hover:bg-gray-700 hover:text-teal-400">Profile</Link>
                     </li>
                 )}
 
