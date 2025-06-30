@@ -54,6 +54,10 @@ const VolumeSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    favoriteCount: {
+      type: Number,
+      default: 0,
+    },
     ratings: [{ value: Number, ratedAt: Date }],
     averageRating: { type: Number, default: 0 },
     ratingCount: { type: Number, default: 0 },

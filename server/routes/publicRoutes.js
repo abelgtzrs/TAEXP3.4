@@ -1,25 +1,29 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 const {
-    getPublishedVolumeCatalogue,
-    getRandomPublishedVolume,
-    getPublishedVolumeByNumber,
-    getRandomBlessing,
-    searchVolumes,
-    getLatestVolume,
-    rateVolume
-} = require('../controllers/publicController');
+  getPublishedVolumeCatalogue,
+  getRandomPublishedVolume,
+  getPublishedVolumeByNumber,
+  getRandomBlessing,
+  searchVolumes,
+  getLatestVolume,
+  rateVolume,
+  exportVolumeRange,
+  favoriteVolume,
+} = require("../controllers/publicController");
 
 // Existing Routes
-router.get('/volumes/catalogue', getPublishedVolumeCatalogue);
-router.get('/volumes/random', getRandomPublishedVolume);
-router.get('/volumes/id/:volumeNumber', getPublishedVolumeByNumber);
+router.get("/volumes/catalogue", getPublishedVolumeCatalogue);
+router.get("/volumes/random", getRandomPublishedVolume);
+router.get("/volumes/latest", getLatestVolume);
+router.get("/volumes/search", searchVolumes);
+router.get("/volumes/id/:volumeNumber", getPublishedVolumeByNumber);
 
 // New Routes
-router.get('/motd', getRandomBlessing);
-router.get('/volumes/search', searchVolumes);
-router.get('/volumes/latest', getLatestVolume);
-router.post('/volumes/rate', rateVolume);
+router.post("/volumes/rate", rateVolume);
+router.post("/volumes/:volumeNumber/favorite", favoriteVolume);
+router.post("/volumes/export", exportVolumeRange);
+router.get("/motd", getRandomBlessing);
 
 module.exports = router;

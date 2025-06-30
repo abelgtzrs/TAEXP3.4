@@ -3,6 +3,7 @@ import axios from "axios";
 import { THEMES } from "../assets/themes";
 import HELP_TEXT from "./terminal/helpText";
 import { getAboutText, getCatText } from "./terminal/getAboutText";
+
 const api = axios.create({ baseURL: "http://localhost:5000/api/public" });
 
 // --- CONFIGURATION ---
@@ -14,19 +15,31 @@ const GLITCH_DELAY = 1;
 
 const Terminal = () => {
   // --- STATE MANAGEMENT ---
+  const [startTime] = useState(Date.now());
   const [theme, setTheme] = useState("default");
   const [favorites, setFavorites] = useState(
     () => JSON.parse(localStorage.getItem("terminalFavorites")) || []
   );
   const [lines, setLines] = useState([
     {
-      text: "The Abel Experience™ CFW v3.0 Terminal Initialized.",
+      text: "The Abel Experience™ Cognitive Framework v3.0 — Distributed Terminal Interface | Encrypted | Monitored",
       type: "system",
     },
-    { text: 'Type "help" for a list of commands.', type: "info" },
+    {
+      text: "Session initialized: Core modules linked | Memory sectors mapped | Operator input unlocked",
+      type: "system",
+    },
+    {
+      text: 'Type "help" to display available commands.',
+      type: "info",
+    },
   ]);
   const [input, setInput] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+
+  // NEW state to handle the multi-step 'connect' command
+  const [loginStep, setLoginStep] = useState("none"); // 'none', 'awaiting_password'
+  const [loginEmail, setLoginEmail] = useState("");
 
   const inputRef = useRef(null);
   const endOfLinesRef = useRef(null);
@@ -158,6 +171,60 @@ const Terminal = () => {
         await typeLines([{ text: new Date().toString(), type: "info" }]);
         break;
 
+      case "connect":
+        addLines([
+          {
+            text: "Redirecting to secure Admin Panel login...",
+            type: "system",
+          },
+        ]);
+        // The simplest, most secure way to "connect" is to open the admin panel in a new tab.
+        // Directly handling passwords here would be a security risk.
+        window.open("http://localhost:5173/login", "_blank"); // Opens your admin panel URL
+        break;
+
+      case "stats":
+        const statsNum = parseInt(args[0]);
+        if (!statsNum) {
+          await typeLines([
+            { text: "Usage: stats [volume number]", type: "error" },
+          ]);
+          break;
+        }
+        try {
+          const res = await api.get(`/volumes/id/${statsNum}`);
+          const vol = res.data.data;
+          await typeLines([
+            {
+              text: `--- STATISTICS FOR VOLUME ${vol.volumeNumber} ---`,
+              type: "system",
+            },
+            { text: `Title: ${vol.title}`, type: "info" },
+            {
+              text: `Times Favorited: ${vol.favoriteCount || 0}`,
+              type: "info",
+            },
+            {
+              text: `Number of Ratings: ${vol.ratingCount || 0}`,
+              type: "info",
+            },
+            {
+              text: `Average Rating: ${
+                vol.averageRating ? vol.averageRating.toFixed(1) : "N/A"
+              } / 100`,
+              type: "info",
+            },
+          ]);
+        } catch (error) {
+          await typeLines([
+            {
+              text: `Error: Could not retrieve stats for Volume ${statsNum}.`,
+              type: "error",
+            },
+          ]);
+        }
+        break;
+
       case "blessing":
         try {
           const res = await api.get("/motd");
@@ -271,19 +338,22 @@ const Terminal = () => {
           ]);
           break;
         }
-        if (favorites.includes(favNum)) {
+        try {
+          // Call the new backend endpoint to increment the global count
+          await api.post(`/volumes/${favNum}/favorite`);
+          // Also save to local storage for the 'favorites' command
+          if (!favorites.includes(favNum)) {
+            setFavorites((prev) => [...prev, favNum].sort((a, b) => a - b));
+          }
           await typeLines([
-            {
-              text: `Volume ${favNum} is already in your favorites.`,
-              type: "info",
-            },
+            { text: `Volume ${favNum} favorited! Thank you.`, type: "system" },
           ]);
-        } else {
-          setFavorites((prev) => [...prev, favNum]);
+        } catch (error) {
           await typeLines([
             {
-              text: `Added Volume ${favNum} to local favorites.`,
-              type: "system",
+              text:
+                error.response?.data?.message || "Could not favorite volume.",
+              type: "error",
             },
           ]);
         }
@@ -392,6 +462,49 @@ const Terminal = () => {
           await typeLines([
             {
               text: `Command not found: ${command}. Type 'help' for a list of commands.`,
+              type: "error",
+            },
+          ]);
+        }
+        break;
+
+      case "export":
+        const start = parseInt(args[0]);
+        const end = parseInt(args[1]);
+        if (!start || !end || start > end) {
+          await typeLines([
+            {
+              text: "Usage: export [start_number] [end_number]",
+              type: "error",
+            },
+          ]);
+          break;
+        }
+        try {
+          addLines([
+            { text: `Exporting volumes ${start} to ${end}...`, type: "system" },
+          ]);
+          const res = await api.post("/volumes/export", { start, end });
+          const content = res.data.data.content;
+
+          // Client-side logic to trigger a download
+          const blob = new Blob([content], {
+            type: "text/plain;charset=utf-8",
+          });
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = `Abel_Experience_Export_${start}-${end}.txt`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          await typeLines([
+            { text: "Export complete. Check your downloads.", type: "system" },
+          ]);
+        } catch (error) {
+          await typeLines([
+            {
+              text: error.response?.data?.message || "Error during export.",
               type: "error",
             },
           ]);
