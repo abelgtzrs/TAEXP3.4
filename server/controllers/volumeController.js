@@ -8,69 +8,82 @@ const Volume = require("../models/Volumes"); // Import the Volume model
  * @returns {object} - A structured object ready to be saved as a Volume.
  */
 const parseRawGreentext = (rawText) => {
-    // Split text into lines. We trim later to preserve indentation info if needed, though current model doesn't use it.
-    const lines = rawText.split('\n');
-    const parsedData = {
-        volumeNumber: null,
-        title: '',
-        bodyLines: [],
-        blessingIntro: '',
-        blessings: [],
-        dream: '',
-        edition: ''
-    };
+  // Split text into lines. We trim later to preserve indentation info if needed, though current model doesn't use it.
+  const lines = rawText.split("\n");
+  const parsedData = {
+    volumeNumber: null,
+    title: "",
+    bodyLines: [],
+    blessingIntro: "",
+    blessings: [],
+    dream: "",
+    edition: "",
+  };
 
-    // --- Define keywords to identify sections ---
-    const BLESSING_INTRO_KEYWORD = "life is";
-    const DREAM_KEYWORD = "the dream of";
+  // --- Define keywords to identify sections ---
+  const BLESSING_INTRO_KEYWORD = "life is";
+  const DREAM_KEYWORD = "the dream of";
 
-    // --- Parse Volume and Title from the first line ---
-    const titleRegex = /Volume\s+(\d+)\s*–\s*(.*)/i;
-    const firstLineMatch = lines[0]?.trim().match(titleRegex);
-    if (firstLineMatch) {
-        parsedData.volumeNumber = parseInt(firstLineMatch[1], 10);
-        parsedData.title = firstLineMatch[2].trim();
-        // FIX for Edition: Set it reliably based on the title.
-        parsedData.edition = `${parsedData.title} Edition`;
+  // --- Parse Volume and Title from the first line ---
+  const titleRegex = /Volume\s+(\d+)\s*–\s*(.*)/i;
+  const firstLineMatch = lines[0]?.trim().match(titleRegex);
+  if (firstLineMatch) {
+    parsedData.volumeNumber = parseInt(firstLineMatch[1], 10);
+    parsedData.title = firstLineMatch[2].trim();
+    // FIX for Edition: Set it reliably based on the title.
+    parsedData.edition = `${parsedData.title} Edition`;
+  }
+
+  // --- Find the line indexes for our key sections ---
+  const blessingIntroIndex = lines.findIndex((line) =>
+    line.trim().toLowerCase().startsWith(BLESSING_INTRO_KEYWORD)
+  );
+  const dreamIndex = lines.findIndex((line) =>
+    line.trim().toLowerCase().startsWith(DREAM_KEYWORD)
+  );
+
+  // --- NEW LOGIC for determining section boundaries ---
+  // Find the first occurrence of any "special" section to mark the end of the body.
+  const specialSectionIndexes = [blessingIntroIndex, dreamIndex].filter(
+    (index) => index !== -1
+  );
+  const bodyEndIndex =
+    specialSectionIndexes.length > 0
+      ? Math.min(...specialSectionIndexes)
+      : lines.length;
+
+  // Body: Lines between title (line 0) and the start of the first special section.
+  // We do NOT filter empty lines, as requested in the previous fix.
+  parsedData.bodyLines = lines
+    .slice(1, bodyEndIndex)
+    .map((line) => line.trimEnd()); // Trim only trailing whitespace
+
+  // --- Blessing Parsing ---
+  if (blessingIntroIndex !== -1) {
+    parsedData.blessingIntro = lines[blessingIntroIndex].trim();
+    const endOfBlessings =
+      dreamIndex > blessingIntroIndex ? dreamIndex : lines.length;
+    const blessingLines = lines
+      .slice(blessingIntroIndex + 1, endOfBlessings)
+      .filter((line) => line.trim() !== "");
+
+    const blessingRegex = /^(.*?)(?:\s*\((.*)\))?$/;
+    for (const line of blessingLines) {
+      const match = line.trim().match(blessingRegex);
+      if (match) {
+        parsedData.blessings.push({
+          item: match[1].trim(),
+          description: match[2] ? match[2].trim() : "",
+        });
+      }
     }
+  }
 
-    // --- Find the line indexes for our key sections ---
-    const blessingIntroIndex = lines.findIndex(line => line.trim().toLowerCase().startsWith(BLESSING_INTRO_KEYWORD));
-    const dreamIndex = lines.findIndex(line => line.trim().toLowerCase().startsWith(DREAM_KEYWORD));
+  if (dreamIndex !== -1) {
+    parsedData.dream = lines[dreamIndex].trim();
+  }
 
-    // --- NEW LOGIC for determining section boundaries ---
-    // Find the first occurrence of any "special" section to mark the end of the body.
-    const specialSectionIndexes = [blessingIntroIndex, dreamIndex].filter(index => index !== -1);
-    const bodyEndIndex = specialSectionIndexes.length > 0 ? Math.min(...specialSectionIndexes) : lines.length;
-    
-    // Body: Lines between title (line 0) and the start of the first special section.
-    // We do NOT filter empty lines, as requested in the previous fix.
-    parsedData.bodyLines = lines.slice(1, bodyEndIndex).map(line => line.trimEnd()); // Trim only trailing whitespace
-
-    // --- Blessing Parsing (no changes needed here) ---
-    if (blessingIntroIndex !== -1) {
-        parsedData.blessingIntro = lines[blessingIntroIndex].trim();
-        const endOfBlessings = dreamIndex > blessingIntroIndex ? dreamIndex : lines.length;
-        const blessingLines = lines.slice(blessingIntroIndex + 1, endOfBlessings).filter(line => line.trim() !== '');
-        
-        const blessingRegex = /^(.*?)(?:\s*\((.*)\))?$/;
-        for (const line of blessingLines) {
-            const match = line.trim().match(blessingRegex);
-            if (match) {
-                parsedData.blessings.push({
-                    item: match[1].trim(),
-                    description: match[2] ? match[2].trim() : ''
-                });
-            }
-        }
-    }
-
-    // --- Dream Parsing (no changes needed here) ---
-    if (dreamIndex !== -1) {
-        parsedData.dream = lines[dreamIndex].trim();
-    }
-
-    return parsedData;
+  return parsedData;
 };
 
 // --- Controller Functions ---
