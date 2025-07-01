@@ -1,23 +1,21 @@
 // server/controllers/userController.js
 const User = require("../models/User");
+const Habit = require("../models/userSpecific/Habit");
+const Book = require("../models/userSpecific/Book");
+const WorkoutLog = require("../models/userSpecific/WorkoutLog");
 
-// @desc    Get a user's full collection for a specific type
-// @route   GET /api/users/me/collection/:type
-exports.getUserCollection = async (req, res) => {
+// --- Define functions as constants ---
+
+const getUserCollection = async (req, res) => {
   try {
     const { type } = req.params;
     const userId = req.user.id;
 
-    // Configuration map to know which fields to populate
     const collectionConfig = {
       pokemon: { path: "pokemonCollection", populate: { path: "basePokemon" } },
-      snoopy: {
-        path: "snoopyArtCollection",
-        populate: { path: "snoopyArtBase" },
-      },
+      snoopy: { path: "snoopyArtCollection", populate: { path: "snoopyArtBase" } },
       habbo: { path: "habboRares", populate: { path: "habboRareBase" } },
       yugioh: { path: "yugiohCards", populate: { path: "yugiohCardBase" } },
-      // Add other collection types here later
     };
 
     const config = collectionConfig[type.toLowerCase()];
@@ -26,6 +24,7 @@ exports.getUserCollection = async (req, res) => {
     }
 
     const user = await User.findById(userId).populate(config);
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
 
     res.status(200).json({ success: true, data: user[config.path] });
   } catch (error) {
@@ -34,35 +33,16 @@ exports.getUserCollection = async (req, res) => {
   }
 };
 
-// @desc    Update the displayed items for a user's profile
-// @route   PUT /api/users/me/profile/display
-exports.updateDisplayedItems = async (req, res) => {
+const updateDisplayedItems = async (req, res) => {
   try {
-    const { collectionType, items } = req.body; // e.g., collectionType: 'pokemon', items: ['id1', 'id2']
+    const { collectionType, items } = req.body;
     const userId = req.user.id;
 
-    // Configuration map for validation and updating
     const displayConfig = {
-      pokemon: {
-        field: "displayedPokemon",
-        limit: 6,
-        collectionField: "pokemonCollection",
-      },
-      snoopy: {
-        field: "displayedSnoopyArt",
-        limit: 6,
-        collectionField: "snoopyArtCollection",
-      },
-      habbo: {
-        field: "displayedHabboRares",
-        limit: 6,
-        collectionField: "habboRares",
-      },
-      yugioh: {
-        field: "displayedYugiohCards",
-        limit: 6,
-        collectionField: "yugiohCards",
-      },
+      pokemon: { field: "displayedPokemon", limit: 6, collectionField: "pokemonCollection" },
+      snoopy: { field: "displayedSnoopyArt", limit: 6, collectionField: "snoopyArtCollection" },
+      habbo: { field: "displayedHabboRares", limit: 6, collectionField: "habboRares" },
+      yugioh: { field: "displayedYugiohCards", limit: 6, collectionField: "yugiohCards" },
     };
 
     const config = displayConfig[collectionType.toLowerCase()];
@@ -71,36 +51,77 @@ exports.updateDisplayedItems = async (req, res) => {
     }
 
     if (!Array.isArray(items) || items.length > config.limit) {
-      return res.status(400).json({
-        success: false,
-        message: `Invalid items array. Maximum of ${config.limit} items allowed.`,
-      });
+      return res
+        .status(400)
+        .json({ success: false, message: `Invalid items array. Maximum of ${config.limit} items allowed.` });
     }
 
     const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
 
-    // Security Check: Verify that every item ID submitted actually belongs to the user.
     const userCollectionIds = user[config.collectionField].map((id) => id.toString());
     const allItemsOwnedByUser = items.every((itemId) => userCollectionIds.includes(itemId));
 
     if (!allItemsOwnedByUser) {
-      return res.status(403).json({
-        success: false,
-        message: "Forbidden. You can only display items you own.",
-      });
+      return res.status(403).json({ success: false, message: "Forbidden. You can only display items you own." });
     }
 
-    // Update the user document and save
     user[config.field] = items;
-    await user.save({ validateBeforeSave: false }); // Skip full validation to just save the array
+    await user.save({ validateBeforeSave: false });
 
-    res.status(200).json({
-      success: true,
-      message: "Display updated successfully.",
-      data: user[config.field],
-    });
+    res.status(200).json({ success: true, message: "Display updated successfully.", data: user[config.field] });
   } catch (error) {
     console.error("Update Display Error:", error);
     res.status(500).json({ success: false, message: "Server Error" });
   }
+};
+
+const getDashboardStats = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
+
+    const habitsCompletedToday = await Habit.countDocuments({
+      user: userId,
+      lastCompletedDate: { $gte: startOfToday, $lte: endOfToday },
+    });
+
+    const booksFinished = await Book.countDocuments({
+      user: userId,
+      isFinished: true,
+    });
+
+    const userWithCollections = await User.findById(userId).select(
+      "currentLoginStreak pokemonCollection snoopyArtCollection habboRares yugiohCards"
+    );
+
+    const totalCollectibles =
+      (userWithCollections.pokemonCollection?.length || 0) +
+      (userWithCollections.snoopyArtCollection?.length || 0) +
+      (userWithCollections.habboRares?.length || 0) +
+      (userWithCollections.yugiohCards?.length || 0);
+
+    const stats = {
+      habitsCompleted: habitsCompletedToday,
+      booksFinished: booksFinished,
+      gachaPulls: totalCollectibles,
+      activeStreaks: userWithCollections.currentLoginStreak || 0,
+    };
+
+    res.status(200).json({ success: true, data: stats });
+  } catch (error) {
+    console.error("Get Dashboard Stats Error:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// --- Export all functions together in one object ---
+module.exports = {
+  getUserCollection,
+  updateDisplayedItems,
+  getDashboardStats,
 };
