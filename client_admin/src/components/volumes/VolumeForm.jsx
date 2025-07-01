@@ -1,63 +1,50 @@
-// src/components/volumes/VolumeForm.jsx
 import { useState, useEffect } from "react";
 import { parseRawGreentext } from "../../utils/greentextParser";
 
-// The component now accepts props for initial data, a submit handler, and button text.
+// The component now receives formData and a handler to change it.
 const VolumeForm = ({
-  initialData = {},
+  formData,
+  onFormChange,
   onSubmit,
   loading,
   submitButtonText = "Submit",
 }) => {
-  // State for the form inputs
-  const [rawPastedText, setRawPastedText] = useState("");
-  const [status, setStatus] = useState("draft");
-
-  // New state for the live JSON preview
+  // The JSON preview state can still live here, as it's purely for display.
   const [parsedPreview, setParsedPreview] = useState({});
 
-  // This useEffect hook populates the form when initialData is provided (for editing).
-  useEffect(() => {
-    if (initialData) {
-      setRawPastedText(initialData.rawPastedText || "");
-      setStatus(initialData.status || "draft");
-    }
-  }, [initialData]); // This effect runs whenever the initialData prop changes.
-
-  // This useEffect hook handles the live preview, just like before.
+  // This effect updates the JSON preview whenever the raw text changes.
   useEffect(() => {
     const handler = setTimeout(() => {
-      setParsedPreview(parseRawGreentext(rawPastedText));
-    }, 500);
+      // We now get the raw text from the formData prop.
+      setParsedPreview(parseRawGreentext(formData.rawPastedText || ""));
+    }, 300); // Shortened delay for a snappier preview
 
     return () => clearTimeout(handler);
-  }, [rawPastedText]);
+  }, [formData.rawPastedText]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!rawPastedText.trim()) return;
-    // Call the onSubmit function passed down from the parent page.
-    onSubmit({ rawPastedText, status });
+  // This is a local handler that calls the onFormChange function from the parent.
+  const handleChange = (e) => {
+    onFormChange({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
       className="mb-8 p-6 bg-gray-800 rounded-lg shadow-lg"
     >
-      {/* The rest of the form is mostly the same... */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label
-            htmlFor="rawText"
+            htmlFor="rawPastedText"
             className="block text-sm font-medium text-gray-300 mb-2"
           >
             Raw Greentext Content
           </label>
           <textarea
-            id="rawText"
-            value={rawPastedText}
-            onChange={(e) => setRawPastedText(e.target.value)}
+            id="rawPastedText"
+            name="rawPastedText" // Added name attribute for the handler
+            value={formData.rawPastedText || ""} // Controlled by parent's state
+            onChange={handleChange}
             required
             className="w-full h-[450px] p-3 bg-gray-900 rounded border border-gray-600 text-white font-mono text-sm focus:outline-none focus:border-teal-500"
           />
@@ -79,8 +66,9 @@ const VolumeForm = ({
           </label>
           <select
             id="status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
+            name="status" // Added name attribute
+            value={formData.status || "draft"} // Controlled by parent's state
+            onChange={handleChange}
             className="p-2 bg-gray-700 rounded border border-gray-600 text-white focus:outline-none"
           >
             <option value="draft">Draft</option>

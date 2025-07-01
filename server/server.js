@@ -4,23 +4,23 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
 // Import authentication middleware
-const { protect, authorize } = require('./middleware/authMiddleware');
+const { protect, authorize } = require("./middleware/authMiddleware");
 // Register models to ensure they are available for routes
-require('./models/User');
-require('./models/PokemonBase');
-require('./models/SnoopyArtBase');
-require('./models/BadgeBase');
-require('./models/TitleBase');
-require('./models/HabboRareBase');
-require('./models/YugiohCardBase');
-require('./models/AbelPersonaBase');
-require('./models/ExerciseDefinition');
-require('./models/userSpecific/UserPokemon');
-require('./models/userSpecific/UserSnoopyArt');
-require('./models/userSpecific/UserBadge');
-require('./models/userSpecific/UserTitle');
-require('./models/userSpecific/UserHabboRare');
-require('./models/userSpecific/UserYugiohCard');
+require("./models/User");
+require("./models/PokemonBase");
+require("./models/SnoopyArtBase");
+require("./models/BadgeBase");
+require("./models/TitleBase");
+require("./models/HabboRareBase");
+require("./models/YugiohCardBase");
+require("./models/AbelPersonaBase");
+require("./models/ExerciseDefinition");
+require("./models/userSpecific/UserPokemon");
+require("./models/userSpecific/UserSnoopyArt");
+require("./models/userSpecific/UserBadge");
+require("./models/userSpecific/UserTitle");
+require("./models/userSpecific/UserHabboRare");
+require("./models/userSpecific/UserYugiohCard");
 
 // Load environment variables and connect to the database
 dotenv.config();
@@ -45,13 +45,12 @@ app.use("/api/exercises", require("./routes/exerciseDefinitionRoutes"));
 app.use("/api/workouts", require("./routes/workoutLogRoutes"));
 app.use("/api/workouts", require("./routes/workoutLogRoutes"));
 app.use("/api/shop", require("./routes/shopRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/admin/volumes", require("./routes/VolumeRoutes"));
-app.use('/api/public', require('./routes/publicRoutes'));
-app.use("/api/admin/workout-templates",
-  require("./routes/workoutTemplateRoutes")
-);
+app.use("/api/public", require("./routes/publicRoutes"));
+app.use("/api/admin/workout-templates", require("./routes/workoutTemplateRoutes"));
 app.use("/api/workout-templates", require("./routes/workoutTemplateRoutes"));
-app.use('/api/admin/exercises', protect, authorize('admin'), require('./routes/exerciseAdminRoutes'));
+app.use("/api/admin/exercises", protect, authorize("admin"), require("./routes/exerciseAdminRoutes"));
 //app.use('/api/users', require('./routes/userRoutes'));
 //app.use('/api/volumes', require('./routes/volumeRoutes'));
 

@@ -23,10 +23,6 @@ router.use(protect, authorize("admin"));
 router.route("/").get(getAllVolumesForAdmin).post(createVolumeFromRaw);
 
 // Routes for managing a specific volume by its ID.
-router
-  .route("/:id")
-  .get(getVolumeByIdForAdmin)
-  .put(updateVolumeFromRaw)
-  .delete(deleteVolume);
+router.route("/:id").get(getVolumeByIdForAdmin).put(updateVolumeFromRaw).delete(deleteVolume);
 
 module.exports = router;

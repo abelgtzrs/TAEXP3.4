@@ -4,11 +4,7 @@ const router = express.Router();
 const { protect } = require("../middleware/authMiddleware");
 
 // We will import controller functions here later
-const {
-  registerUser,
-  loginUser,
-  getMe,
-} = require("../controllers/authController"); // We'll create this controller next
+const { registerUser, loginUser, getMe } = require("../controllers/authController"); // We'll create this controller next
 
 // We will import authentication middleware here later
 // const { protect } = require('../middleware/authMiddleware');

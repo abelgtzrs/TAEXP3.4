@@ -20,10 +20,6 @@ router.use(protect);
 router.route("/").get(getUserWorkoutLogs).post(createWorkoutLog);
 
 // Routes for getting, updating, or deleting a specific workout log by its ID.
-router
-  .route("/:logId")
-  .get(getWorkoutLogById)
-  .put(updateWorkoutLog)
-  .delete(deleteWorkoutLog);
+router.route("/:logId").get(getWorkoutLogById).put(updateWorkoutLog).delete(deleteWorkoutLog);
 
 module.exports = router;
