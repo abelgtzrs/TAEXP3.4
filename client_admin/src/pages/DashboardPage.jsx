@@ -9,6 +9,9 @@ import SystemStatusWidget from "../components/dashboard/SystemStatusWidget";
 import CurrencySourceWidget from "../components/dashboard/CurrencySourceWidget";
 import GoalsWidget from "../components/dashboard/GoalsWidget";
 import RecentAcquisitionsWidget from "../components/dashboard/RecentAcquisitionsWidget";
+import SecuritySettingsWidget from "../components/dashboard/SecuritySettingsWidget";
+import ThreatDetectionWidget from "../components/dashboard/ThreatDetectionWidget";
+import Separator from "../components/ui/Separator";
 
 const DashboardPage = () => {
   // Get the base user object from context
@@ -41,60 +44,31 @@ const DashboardPage = () => {
   }, []); // Empty array ensures this runs only once on mount
 
   return (
-    <div>
-      {/* --- Main Header --- */}
-      <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-white">Welcome back, {user?.email || "Admin"}.</h1>
-        <p className="text-gray-400">Here is the current status of the Experience.</p>
+    <div className="space-y-6">
+      {/* Top Row: Key Metrics */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* We apply the new cut-corners style to these metric cards */}
+        <MetricCard title="Habits Completed" value="74" className="widget-cut-corners" />
+        <MetricCard title="Books Finished" value="8" className="widget-cut-corners" />
+        <MetricCard title="Total Collectibles" value="128" className="widget-cut-corners" />
+        <MetricCard title="Login Streak" value="4" className="widget-cut-corners" />
       </div>
 
-      {/* --- Main Grid Layout (12 columns) --- */}
-      <div className="grid grid-cols-12 gap-6">
-        {/* Top Row: Metric Cards - Now with dynamic data */}
-        <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-          <MetricCard
-            title="Habits Completed Today"
-            value={loading ? "..." : stats.habitsCompleted}
-            change=""
-            changeType="increase"
-          />
-        </div>
-        <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-          <MetricCard
-            title="Books Finished"
-            value={loading ? "..." : stats.booksFinished}
-            change=""
-            changeType="increase"
-          />
-        </div>
-        <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-          <MetricCard
-            title="Total Collectibles"
-            value={loading ? "..." : stats.gachaPulls}
-            change=""
-            changeType="increase"
-          />
-        </div>
-        <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-          <MetricCard
-            title="Login Streak"
-            value={loading ? "..." : stats.activeStreaks}
-            change=""
-            changeType="increase"
-          />
-        </div>
+      {/* A separator line to divide sections */}
+      <Separator />
 
-        {/* Main Content Area */}
-        <div className="col-span-12 lg:col-span-8 space-y-6">
+      {/* Main Content: Two-Column Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Left (Main) Column */}
+        <div className="lg:col-span-8 space-y-6">
           <LoreChartWidget />
-          <RecentAcquisitionsWidget />
+          <CurrencySourceWidget />
         </div>
 
-        {/* Right Sidebar Area */}
-        <div className="col-span-12 lg:col-span-4 space-y-6">
-          <SystemStatusWidget />
-          <CurrencySourceWidget />
-          <GoalsWidget />
+        {/* Right (Sidebar) Column */}
+        <div className="lg:col-span-4 space-y-6">
+          <SecuritySettingsWidget />
+          <ThreatDetectionWidget />
         </div>
       </div>
     </div>

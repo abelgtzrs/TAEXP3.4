@@ -4,11 +4,13 @@ import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import AddBookForm from "../components/books/AddBookForm";
 import BookItem from "../components/books/BookItem";
+import PageHeader from "../components/ui/PageHeader";
 
 const BooksPage = () => {
-  const { user, setUser } = useAuth(); // Get user state and setter from context
+  const { user, setUser } = useAuth();
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [formLoading, setFormLoading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -18,9 +20,7 @@ const BooksPage = () => {
         const response = await api.get("/books");
         // Sort books: unfinished first, then by most recently updated
         const sortedBooks = response.data.data.sort(
-          (a, b) =>
-            a.isFinished - b.isFinished ||
-            new Date(b.updatedAt) - new Date(a.updatedAt)
+          (a, b) => a.isFinished - b.isFinished || new Date(b.updatedAt) - new Date(a.updatedAt)
         );
         setBooks(sortedBooks);
       } catch (err) {
@@ -44,11 +44,7 @@ const BooksPage = () => {
   };
 
   const handleDeleteBook = async (bookId) => {
-    if (
-      window.confirm(
-        "Are you sure you want to remove this book from your library?"
-      )
-    ) {
+    if (window.confirm("Are you sure you want to remove this book from your library?")) {
       try {
         await api.delete(`/books/${bookId}`);
         setBooks(books.filter((b) => b._id !== bookId)); // Remove from UI state
@@ -87,10 +83,7 @@ const BooksPage = () => {
 
     // If the API response included a special message, it means we got a reward.
     // Let's update the global user state.
-    if (
-      response.data.message &&
-      response.data.message.includes("Book finished!")
-    ) {
+    if (response.data.message && response.data.message.includes("Book finished!")) {
       const WENDY_HEARTS_AWARD = 25; // As defined in the backend
       const BOOK_FINISH_XP = 150; // As defined in the backend
       setUser((prevUser) => ({
@@ -104,30 +97,21 @@ const BooksPage = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-teal-400">Book Tracker</h1>
-        <div className="text-right">
-          <p className="text-lg text-white">
-            Wendy Hearts:{" "}
-            <span className="font-bold text-pink-400">
-              {user?.wendyHearts || 0} ❤️
-            </span>
-          </p>
-          <p className="text-xs text-gray-400">Earned from reading books</p>
-        </div>
+      <PageHeader title="Book Tracker" subtitle="Manage your personal library and track your reading progress." />
+      <div className="text-right mb-6 -mt-12">
+        <p className="text-lg text-white">
+          Wendy Hearts: <span className="font-bold text-pink-400">{user?.wendyHearts || 0} ❤️</span>
+        </p>
       </div>
 
-      <AddBookForm onAddBook={handleAddBook} />
+      <AddBookForm onAddBook={handleAddBook} loading={formLoading} />
 
-      {loading && (
-        <p className="text-center text-gray-400 py-8">
-          Loading your library...
-        </p>
-      )}
-      {error && <p className="text-center text-red-500 py-8">{error}</p>}
+      <h2 className="text-2xl font-semibold text-white mt-10 mb-4">Your Library</h2>
+      {loading && <p className="text-center text-text-secondary py-8">Loading...</p>}
+      {error && <p className="text-center text-status-danger py-8">{error}</p>}
 
       {!loading && !error && (
-        <div className="space-y-4">
+        <div className="space-y-6">
           {books.length > 0 ? (
             books.map((book) => (
               <BookItem
@@ -139,9 +123,9 @@ const BooksPage = () => {
               />
             ))
           ) : (
-            <p className="text-center text-gray-500 py-8">
+            <div className="text-center text-text-secondary py-8">
               Your library is empty. Add a book above to start tracking!
-            </p>
+            </div>
           )}
         </div>
       )}

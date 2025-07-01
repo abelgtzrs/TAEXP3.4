@@ -1,20 +1,24 @@
 /** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}", // Make sure this matches your file extensions
-  ],
+module.exports = {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    // Your new colors MUST be inside this 'extend' object.
     extend: {
-      // We'll add your custom HUD/Persona themes here later
       colors: {
-        // Initial placeholder for Abel Persona theming
-        "theme-primary": "var(--theme-primary, #14B8A6)", // Teal as a fallback
-        "theme-secondary": "var(--theme-secondary, #0D9488)",
-        "theme-accent": "var(--theme-accent, #2DD4BF)",
-        "theme-background": "var(--theme-background, #111827)", // Dark gray as fallback
-        "theme-text": "var(--theme-text, #E5E7EB)",
-        // ... other themeable colors
+        background: "#0D1117",
+        surface: "#161B22",
+        primary: "#2DD4BF",
+        secondary: "#67e8f9",
+        "text-main": "#E5E7EB",
+        "text-secondary": "#9CA3AF",
+        "text-tertiary": "#4B5563",
+        "status-success": "#22c55e",
+        "status-warning": "#facc15",
+        "status-danger": "#ef4444",
+        "status-info": "#38bdf8",
+      },
+      boxShadow: {
+        "glow-primary": "0 0 12px 0 rgba(45, 212, 191, 0.5)",
       },
     },
   },
