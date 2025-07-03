@@ -12,6 +12,9 @@ import RecentAcquisitionsWidget from "../components/dashboard/RecentAcquisitions
 import SecuritySettingsWidget from "../components/dashboard/SecuritySettingsWidget";
 import ThreatDetectionWidget from "../components/dashboard/ThreatDetectionWidget";
 import Separator from "../components/ui/Separator";
+import HabitTrackerWidget from "../components/dashboard/HabitTrackerWidget";
+import BookTrackerWidget from "../components/dashboard/BookTrackerWidget";
+import WorkoutTrackerWidget from "../components/dashboard/WorkoutTrackerWidget";
 
 const DashboardPage = () => {
   // Get the base user object from context
@@ -67,8 +70,10 @@ const DashboardPage = () => {
 
         {/* Right (Sidebar) Column */}
         <div className="lg:col-span-4 space-y-6">
-          <SecuritySettingsWidget />
-          <ThreatDetectionWidget />
+          <HabitTrackerWidget />
+          <BookTrackerWidget />
+          <WorkoutTrackerWidget />
+          <SystemStatusWidget />
         </div>
       </div>
     </div>

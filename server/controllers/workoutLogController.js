@@ -7,22 +7,13 @@ const User = require("../models/User"); // Import User model for rewards.
 // @route   POST /api/workouts
 exports.createWorkoutLog = async (req, res) => {
   try {
-    const {
-      date,
-      workoutName,
-      durationSessionMinutes,
-      exercises,
-      overallFeeling,
-      notesSession,
-    } = req.body;
+    const { date, workoutName, durationSessionMinutes, exercises, overallFeeling, notesSession } = req.body;
 
     if (!exercises || exercises.length === 0) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "A workout log must contain at least one exercise.",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "A workout log must contain at least one exercise.",
+      });
     }
 
     // --- NEW REWARD LOGIC ---
@@ -53,10 +44,7 @@ exports.createWorkoutLog = async (req, res) => {
     }
 
     // Calculate total XP based on the number of sets across all exercises
-    const totalSets = exercises.reduce(
-      (acc, curr) => acc + (curr.sets ? curr.sets.length : 0),
-      0
-    );
+    const totalSets = exercises.reduce((acc, curr) => acc + (curr.sets ? curr.sets.length : 0), 0);
     const totalXpAwarded = totalSets * XP_PER_SET;
 
     // Find the user to give them their reward.
@@ -93,13 +81,11 @@ exports.createWorkoutLog = async (req, res) => {
     });
   } catch (error) {
     console.error("Create Workout Log Error:", error);
-    res
-      .status(400)
-      .json({
-        success: false,
-        message: "Error creating workout log",
-        error: error.message,
-      });
+    res.status(400).json({
+      success: false,
+      message: "Error creating workout log",
+      error: error.message,
+    });
   }
 };
 
@@ -125,14 +111,10 @@ exports.getUserWorkoutLogs = async (req, res) => {
 // @route   GET /api/workouts/:logId
 exports.getWorkoutLogById = async (req, res) => {
   try {
-    const log = await WorkoutLog.findById(req.params.logId).populate(
-      "exercises.exerciseDefinition"
-    ); // Populate with full exercise details
+    const log = await WorkoutLog.findById(req.params.logId).populate("exercises.exerciseDefinition"); // Populate with full exercise details
 
     if (!log || log.user.toString() !== req.user.id) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Workout log not found" });
+      return res.status(404).json({ success: false, message: "Workout log not found" });
     }
 
     res.status(200).json({ success: true, data: log });
@@ -149,9 +131,7 @@ exports.updateWorkoutLog = async (req, res) => {
     let log = await WorkoutLog.findById(req.params.logId);
 
     if (!log || log.user.toString() !== req.user.id) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Workout log not found" });
+      return res.status(404).json({ success: false, message: "Workout log not found" });
     }
 
     log = await WorkoutLog.findByIdAndUpdate(req.params.logId, req.body, {
@@ -174,15 +154,36 @@ exports.deleteWorkoutLog = async (req, res) => {
     const log = await WorkoutLog.findById(req.params.logId);
 
     if (!log || log.user.toString() !== req.user.id) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Workout log not found" });
+      return res.status(404).json({ success: false, message: "Workout log not found" });
     }
 
     await log.remove();
-    res
-      .status(200)
-      .json({ success: true, message: "Workout log deleted", data: {} });
+    res.status(200).json({ success: true, message: "Workout log deleted", data: {} });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// @desc    Get all workout logs for a user
+// @route   GET /api/workouts
+exports.getUserWorkoutLogs = async (req, res) => {
+  try {
+    // --- THIS IS THE UPDATE ---
+    // We check for a 'limit' query parameter in the URL (e.g., /api/workouts?limit=1)
+    const limit = req.query.limit ? parseInt(req.query.limit, 10) : 0;
+
+    let query = WorkoutLog.find({ user: req.user.id })
+      .populate("exercises.exerciseDefinition", "name exerciseType")
+      .sort({ date: -1 });
+
+    // If a limit is provided, apply it to the query.
+    if (limit > 0) {
+      query = query.limit(limit);
+    }
+
+    const logs = await query;
+
+    res.status(200).json({ success: true, count: logs.length, data: logs });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server Error" });
   }
