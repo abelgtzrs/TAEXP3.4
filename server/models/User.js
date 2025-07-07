@@ -57,10 +57,10 @@ const UserSchema = new mongoose.Schema({
     default: 10,
     min: [0, "Gatilla Gold cannot be negative"],
   },
-  wendyHeats: {
+  wendyHearts: {
     type: Number,
     default: 10,
-    min: [0, "Wendy Heats cannot be negative"],
+    min: [0, "Wendy Hearts cannot be negative"],
   },
   lastLoginDate: {
     type: Date,
@@ -174,9 +174,7 @@ UserSchema.methods.comparePassword = async function (enteredPassword) {
 // When a User is removed, also remove their dependent documents.
 // This is important for data integrity, as per your requirement.
 UserSchema.pre("remove", async function (next) {
-  console.log(
-    `Removing dependent data for user <span class="math-inline">\{this\.email\} \(</span>{this._id})...`
-  );
+  console.log(`Removing dependent data for user <span class="math-inline">\{this\.email\} \(</span>{this._id})...`);
   // Example: Delete UserPokemon associated with this user
   // You would add similar lines for UserSnoopyArt, UserYugiohCard, UserHabboRare,
   // UserBadge, UserTitle, Habit, Task, Book, MediaItem, Note, WorkoutLog.
@@ -190,9 +188,7 @@ UserSchema.pre("remove", async function (next) {
   // For Volumes, we need to update their author and status, not delete them.
   // This logic might be better handled in a service layer or controller upon user deletion.
   // For now, we'll just log it. We'll refine this cascading logic as we build models.
-  console.log(
-    `Volumes created by ${this.email} will need to be handled separately.`
-  );
+  console.log(`Volumes created by ${this.email} will need to be handled separately.`);
   next();
 });
 

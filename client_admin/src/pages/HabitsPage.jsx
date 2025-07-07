@@ -45,16 +45,23 @@ const HabitsPage = () => {
 
   const handleCompleteHabit = async (habitId) => {
     try {
+      console.log("Attempting to complete habit with ID:", habitId);
       const response = await api.post(`/habits/${habitId}/complete`);
-      const updatedHabit = response.data.data;
+      console.log("Habit completion response:", response.data);
+
+      // Fix: Use habitData instead of data to match backend response
+      const updatedHabit = response.data.habitData || response.data.data;
       const updatedUserData = response.data.userData;
 
       setHabits(habits.map((h) => (h._id === habitId ? updatedHabit : h)));
 
       if (updatedUserData) {
+        console.log("Updating user with:", updatedUserData);
         setUser((prevUser) => ({ ...prevUser, ...updatedUserData }));
       }
     } catch (err) {
+      console.error("Habit completion error:", err);
+      console.error("Error response:", err.response?.data);
       setError(err.response?.data?.message || "Could not complete habit.");
     }
   };

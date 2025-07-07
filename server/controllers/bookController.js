@@ -46,38 +46,25 @@ exports.getUserBooks = async (req, res) => {
 // @route   PUT /api/books/:bookId
 exports.updateBook = async (req, res) => {
   try {
-    // --- Step 1: Find the full document first ---
-    // This brings the entire book document into our code, including 'totalPages'.
     const book = await Book.findById(req.params.bookId);
 
-    // --- Step 2: Perform Checks ---
     if (!book) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Book entry not found with that ID" });
+      return res.status(404).json({ success: false, message: "Book entry not found with that ID" });
     }
 
-    // Security check: Ensure the logged-in user owns this book entry.
     if (book.user.toString() !== req.user.id) {
-      return res.status(401).json({
-        success: false,
-        message: "Not authorized to update this entry",
-      });
+      return res.status(401).json({ success: false, message: "Not authorized to update this entry" });
     }
 
-    // --- Step 3: Check for Reward Trigger ---
-    // Capture the 'isFinished' state *before* any changes are made.
     const wasFinishedBefore = book.isFinished;
 
-    // --- Step 4: Apply Updates and Save ---
-    // This is the key change. We modify the document we found...
+    // Apply updates from the request body to the document we found
     Object.assign(book, req.body);
 
-    // ...and then we call .save(). This method triggers all document middleware,
-    // including our custom validator, which will now work correctly.
+    // Save the book. This triggers our 'pre-save' hook to auto-finish if pages match.
     const updatedBook = await book.save();
 
-    // --- Step 5: Handle Reward Logic After Successful Save ---
+    // Check if the book's status has just changed from not finished to finished.
     if (updatedBook.isFinished && !wasFinishedBefore) {
       const user = await User.findById(req.user.id);
 
@@ -87,37 +74,32 @@ exports.updateBook = async (req, res) => {
       user.wendyHearts = (user.wendyHearts || 0) + WENDY_HEARTS_AWARD;
       user.experience = (user.experience || 0) + BOOK_FINISH_XP;
 
-      // Check for user level up
       if (user.experience >= user.xpToNextLevel) {
         user.level += 1;
         user.experience -= user.xpToNextLevel;
         user.xpToNextLevel = Math.floor(user.xpToNextLevel * 1.25);
       }
 
-      // Save the updated user document.
-      const updatedUser = await user.save(); // <--- Capture the saved user
+      // --- THIS IS THE FIX ---
+      // Save the updated user document and capture the result.
+      const updatedUser = await user.save();
+      // We must remove the password before sending it back.
+      const userResponse = { ...updatedUser.toObject() };
+      delete userResponse.password;
 
-      // Return a special success response INCLUDING the updated user data
+      // Return a special success response INCLUDING the updated user data.
       return res.status(200).json({
         success: true,
         message: `Book finished! +${BOOK_FINISH_XP} XP, +${WENDY_HEARTS_AWARD} Wendy Hearts!`,
         data: updatedBook,
-        userData: updatedUser, // <--- ADD THIS to the response
+        userData: userResponse, // The frontend will use this to update its global state.
       });
     }
 
-    // If the book wasn't just finished, send a standard success response.
+    // If the book was just updated without being finished, send a standard response.
     res.status(200).json({ success: true, data: updatedBook });
   } catch (error) {
-    // Now, if a validation error occurs, it will be caught here correctly.
     console.error("Update Book Error:", error);
-
-    // Send back a more specific validation error message if that's what it is.
-    if (error.name === "ValidationError") {
-      return res.status(400).json({ success: false, message: error.message });
-    }
-
-    // Otherwise, send a generic server error.
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
@@ -129,9 +111,7 @@ exports.deleteBook = async (req, res) => {
     const book = await Book.findById(req.params.bookId);
 
     if (!book) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Book entry not found" });
+      return res.status(404).json({ success: false, message: "Book entry not found" });
     }
 
     // Security check: Ensure user owns this entry.

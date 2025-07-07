@@ -34,32 +34,51 @@ const BooksPage = () => {
 
   // --- Handler Functions ---
 
+  // Generic helper to process API response and update state
+  const processApiResponse = (response) => {
+    const updatedBook = response.data.data;
+    // Update the book in our local list
+    setBooks((prevBooks) => prevBooks.map((b) => (b._id === updatedBook._id ? updatedBook : b)));
+
+    // --- THIS IS THE FIX ---
+    // Check if the API response included our updated user data.
+    if (response.data.userData) {
+      // If it did, it means a reward was given.
+      // We use setUser to update the ENTIRE global user object with the fresh,
+      // correct data directly from the server. This state will persist.
+      setUser(response.data.userData);
+    }
+  };
+
   const handleAddBook = async (bookData) => {
+    setFormLoading(true);
     try {
       const response = await api.post("/books", bookData);
-      setBooks([response.data.data, ...books]); // Add new book to the top of the list
+      // Add new book to the top of the list
+      setBooks((prevBooks) => [response.data.data, ...prevBooks]);
     } catch (err) {
-      setError("Could not add book.");
+      setError(err.response?.data?.message || "Could not add book.");
+    } finally {
+      setFormLoading(false);
     }
   };
 
   const handleDeleteBook = async (bookId) => {
-    if (window.confirm("Are you sure you want to remove this book from your library?")) {
+    if (window.confirm("Are you sure you want to remove this book?")) {
       try {
         await api.delete(`/books/${bookId}`);
-        setBooks(books.filter((b) => b._id !== bookId)); // Remove from UI state
+        setBooks(books.filter((b) => b._id !== bookId));
       } catch (err) {
         setError("Could not delete book.");
       }
     }
   };
 
-  // Generic update function (for pagesRead)
+  // Generic update function for pagesRead
   const handleUpdateBook = async (bookId, updateData) => {
     try {
       const response = await api.put(`/books/${bookId}`, updateData);
-      // After any update, check for rewards (the backend response will tell us if it was a "finish" event)
-      handleRewardResponse(response);
+      processApiResponse(response); // Use the helper
     } catch (err) {
       setError("Could not update book progress.");
     }
@@ -68,30 +87,29 @@ const BooksPage = () => {
   // Specific function for the "Mark as Finished" button
   const handleFinishBook = async (bookId) => {
     try {
-      const response = await api.put(`/books/${bookId}`, { isFinished: true });
-      handleRewardResponse(response);
+      console.log("Attempting to finish book with ID:", bookId);
+      const response = await api.put(`/books/${bookId}`, {
+        isFinished: true,
+        finishedAt: new Date().toISOString(), // Explicitly mark when the book was finished
+      });
+
+      // Add detailed debugging to see what the server returns
+      console.log("Full finish book response:", response);
+      console.log("Response data:", response.data);
+      console.log("Response success:", response.data.success);
+      console.log("Response message:", response.data.message);
+
+      if (response.data.userData) {
+        console.log("Updated user data received:", response.data.userData);
+        console.log("New Wendy Hearts:", response.data.userData.wendyHearts);
+      } else {
+        console.log("No user data returned from server - book may have already been finished");
+      }
+
+      processApiResponse(response); // Use the helper
     } catch (err) {
+      console.error("Error finishing book:", err);
       setError("Could not mark book as finished.");
-    }
-  };
-
-  // Helper to process API response and update state
-  const handleRewardResponse = (response) => {
-    const updatedBook = response.data.data;
-    // Update the book in our local list
-    setBooks(books.map((b) => (b._id === updatedBook._id ? updatedBook : b)));
-
-    // If the API response included a special message, it means we got a reward.
-    // Let's update the global user state.
-    if (response.data.message && response.data.message.includes("Book finished!")) {
-      const WENDY_HEARTS_AWARD = 25; // As defined in the backend
-      const BOOK_FINISH_XP = 150; // As defined in the backend
-      setUser((prevUser) => ({
-        ...prevUser,
-        wendyHearts: (prevUser.wendyHearts || 0) + WENDY_HEARTS_AWARD,
-        experience: (prevUser.experience || 0) + BOOK_FINISH_XP,
-      }));
-      // We could also parse the rewards from the message string, but this is simpler for now.
     }
   };
 

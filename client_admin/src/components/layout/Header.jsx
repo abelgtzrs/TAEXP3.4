@@ -1,14 +1,14 @@
 import { Search, Bell, Mail, User, LogOut } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
-import { Link } from "react-router-dom"; // Import Link for the profile link
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const { user, logout } = useAuth();
 
   return (
-    <header className="bg-gray-800/70 backdrop-blur-md border-b border-gray-700/50 p-4 flex items-center justify-between sticky top-0 z-40">
-      {/* Left Side Placeholder */}
-      <div className="w-1/4"></div>
+    <header className="bg-surface/80 backdrop-blur-md border-b border-gray-700/50 p-1.5 flex items-center justify-between sticky top-0 z-40">
+      {/* Left Side: Can be used for a sidebar toggle or breadcrumbs */}
+      <div className="w-1/4">{/* Placeholder */}</div>
 
       {/* Center: Global Search Bar */}
       <div className="w-1/2 flex justify-center">
@@ -16,46 +16,44 @@ const Header = () => {
           <input
             type="search"
             placeholder="Search anything..."
-            className="w-full bg-gray-900/50 border border-gray-700 text-gray-300 placeholder-gray-500 rounded-md py-2 pl-10 pr-4 focus:ring-1 focus:ring-teal-400 focus:border-teal-400 focus:outline-none transition-all duration-300"
+            className="w-full bg-background/50 border border-gray-700 text-text-main placeholder-text-secondary rounded-md py-1.5 pl-8 pr-3 text-sm focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all duration-300"
           />
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search size={18} className="text-gray-500" />
+          <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+            <Search size={14} className="text-text-secondary" />
           </div>
         </div>
       </div>
 
       {/* Right Side: Action Icons and User Profile */}
-      <div className="w-1/4 flex items-center justify-end space-x-4">
-        <button className="p-2 rounded-full text-gray-400 hover:bg-gray-700/50 hover:text-teal-400 transition-colors">
-          <Bell size={20} />
+      <div className="w-1/4 flex items-center justify-end space-x-3">
+        <button className="p-1.5 rounded-full text-text-secondary hover:bg-gray-700/50 hover:text-primary transition-colors">
+          <Bell size={16} />
         </button>
-        <button className="p-2 rounded-full text-gray-400 hover:bg-gray-700/50 hover:text-teal-400 transition-colors">
-          <Mail size={20} />
+        <button className="p-1.5 rounded-full text-text-secondary hover:bg-gray-700/50 hover:text-primary transition-colors">
+          <Mail size={16} />
         </button>
 
-        <div className="h-6 w-px bg-gray-700"></div>
+        <div className="h-5 w-px bg-gray-700"></div>
 
         <div className="relative group">
-          <button className="flex items-center space-x-2 text-gray-300 hover:text-white">
-            <User size={20} />
-            <span className="text-sm font-medium hidden md:block">
-              {user?.email || "User"}
-            </span>
+          <button className="flex items-center space-x-2 text-text-secondary hover:text-white">
+            <User size={16} />
+            <span className="text-xs font-medium hidden md:block">{user?.username || "User"}</span>
           </button>
-          <div className="absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-700 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 invisible group-hover:visible">
+          <div className="absolute right-0 mt-2 w-40 bg-surface border border-gray-700 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 invisible group-hover:visible z-50">
             <div className="py-1">
               <Link
                 to="/profile"
-                className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
+                className="flex items-center w-full text-left px-3 py-1.5 text-xs text-text-secondary hover:bg-gray-700 hover:text-white"
               >
-                <User size={16} className="mr-2" />
+                <User size={14} className="mr-2" />
                 Profile
               </Link>
               <button
                 onClick={logout}
-                className="w-full flex items-center px-4 py-2 text-sm text-red-400 hover:bg-gray-700"
+                className="w-full flex items-center px-3 py-1.5 text-xs text-status-danger/80 hover:bg-gray-700 hover:text-status-danger"
               >
-                <LogOut size={16} className="mr-2" />
+                <LogOut size={14} className="mr-2" />
                 Logout
               </button>
             </div>
