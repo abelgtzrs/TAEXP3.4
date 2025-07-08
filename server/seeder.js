@@ -1,117 +1,129 @@
-// server/seeder.js
 const fs = require("fs");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-require("colors"); // Optional: for colored console output
+
 // Load env vars
-dotenv.config(); // Assumes .env is in the same directory or parent
+dotenv.config();
 
-// Load models
-const User = require("./models/User"); // Needed if you seed users or for refs
+// --- Load ALL your models here ---
+require("./models/User");
 const PokemonBase = require("./models/PokemonBase");
-const SnoopyArtBase = require("./models/SnoopyArtBase");
-const AbelPersonaBase = require("./models/AbelPersonaBase");
-const ExerciseDefinition = require("./models/ExerciseDefinition");
-const HabboRareBase = require("./models/HabboRareBase"); // Create this model file
-const BadgeBase = require("./models/BadgeBase"); // Create this model file
-const TitleBase = require("./models/TitleBase"); // Create this model file
-const YugiohCardBase = require("./models/YugiohCardBase"); // Create this model file
-// ... import other base models as you create them and their JSON files
+// ... require all other models you have created ...
 
-// Connect to DB
-mongoose.connect(process.env.MONGO_URI, {
-  // useNewUrlParser: true, // Not needed for Mongoose 6+
-  // useUnifiedTopology: true
-});
+// --- NEW: Database Connection Function ---
+// This async function handles connecting to the database and waits for it to finish.
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("MongoDB Connected for Seeder...");
+  } catch (err) {
+    console.error("Seeder DB Connection Error:", err);
+    process.exit(1); // Exit if we can't connect
+  }
+};
 
-// Read JSON files
-const pokemonBaseData = JSON.parse(
-  fs.readFileSync(`${__dirname}/data/pokemonBase.json`, "utf-8")
-);
-const snoopyArtBaseData = JSON.parse(
-  fs.readFileSync(`${__dirname}/data/snoopyArtBase.json`, "utf-8")
-);
-const abelPersonaBaseData = JSON.parse(
-  fs.readFileSync(`${__dirname}/data/abelPersonaBase.json`, "utf-8")
-);
-const exerciseDefinitionData = JSON.parse(
-  fs.readFileSync(`${__dirname}/data/exerciseDefinition.json`, "utf-8")
-);
-// const habboRareBaseData = JSON.parse(fs.readFileSync(`${__dirname}/data/habboRareBase.json`, 'utf-8'));
-// const badgeBaseData = JSON.parse(fs.readFileSync(`${__dirname}/data/badgeBase.json`, 'utf-8'));
-// const titleBaseData = JSON.parse(fs.readFileSync(`${__dirname}/data/titleBase.json`, 'utf-8'));
-// const yugiohCardBaseData = JSON.parse(fs.readFileSync(`${__dirname}/data/yugiohCardBase.json`, 'utf-8'));
-// ... load other JSON data files
+/**
+ * Capitalizes the first letter of a string.
+ * @param {string} s - The input string.
+ * @returns {string}
+ */
+const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
-// Import into DB
+/**
+ * Transforms the raw Pokémon data from your JSON file into our schema format.
+ * @param {Array<object>} rawData - The array of Pokémon from your local JSON file.
+ * @returns {Array<object>} - The transformed data ready for MongoDB.
+ */
+const transformPokemonData = (rawData) => {
+  return rawData.map((p) => {
+    // Clean up the description text
+    const cleanDescription = p.description ? p.description.replace(/[\n\f]/g, " ") : "No description available.";
+
+    // Capitalize base types
+    const baseTypes = p.baseTypes.map((t) => capitalize(t));
+
+    // Transform the forms array
+    const forms = p.forms.map((f) => ({
+      formName: capitalize(f.formName),
+      // The form's types will be the same as the base Pokémon's types
+      types: baseTypes,
+      spriteGen5Animated: f.spriteGen5Animated,
+      spriteGen6Animated: f.spriteGen6Animated,
+    }));
+
+    // --- Evolution Stage & Paths (with limitations) ---
+    // Since the source data is incomplete, we will have to make some assumptions.
+    // This is a very simplified calculation and will NOT be accurate for most Pokémon.
+    // It's a placeholder until better evolution data is provided.
+    let evolutionStage = 1; // Assume stage 1 by default
+    let evolutionPaths = []; // Will be empty as the source data is just a URL
+
+    return {
+      speciesId: p.speciesId,
+      name: capitalize(p.name),
+      generation: p.generation,
+      baseTypes: baseTypes,
+      isLegendary: p.isLegendary,
+      isMythical: p.isMythical,
+      isStarter: p.isStarter,
+      description: cleanDescription,
+      forms: forms,
+      evolutionStage: evolutionStage, // Placeholder value
+      evolutionPaths: evolutionPaths, // Will be empty
+    };
+  });
+};
+
+// --- Main Seeder Functions ---
+
 const importData = async () => {
   try {
-    await PokemonBase.deleteMany(); // Clear existing data
-    await PokemonBase.create(pokemonBaseData);
+    // Read your local JSON file
+    const rawPokemonData = JSON.parse(fs.readFileSync(`${__dirname}/data/pokemon_db_local.json`, "utf-8"));
 
-    await SnoopyArtBase.deleteMany();
-    await SnoopyArtBase.create(snoopyArtBaseData);
+    // Transform the data to fit our schema
+    const transformedData = transformPokemonData(rawPokemonData);
 
-    await AbelPersonaBase.deleteMany();
-    await AbelPersonaBase.create(abelPersonaBaseData);
+    // Clear existing Pokémon data and insert the new, transformed data
+    console.log("Deleting existing Pokémon data...");
+    await PokemonBase.deleteMany();
 
-    await ExerciseDefinition.deleteMany();
-    await ExerciseDefinition.create(exerciseDefinitionData);
+    console.log("Importing new transformed Pokémon data...");
+    await PokemonBase.create(transformedData);
 
-    // await HabboRareBase.deleteMany();
-    // await HabboRareBase.create(habboRareBaseData);
-
-    // await BadgeBase.deleteMany();
-    // await BadgeBase.create(badgeBaseData);
-
-    // await TitleBase.deleteMany();
-    // await TitleBase.create(titleBaseData);
-
-    // await YugiohCardBase.deleteMany();
-    // await YugiohCardBase.create(yugiohCardBaseData);
-
-    // ... import other data
-
-    console.log("Data Imported Successfully!".green.inverse);
-    process.exit();
+    console.log("Pokémon Data Imported Successfully!");
   } catch (err) {
-    console.error(`${err}`.red.inverse);
+    console.error(err);
     process.exit(1);
   }
 };
 
-// Delete data from DB
 const deleteData = async () => {
   try {
     await PokemonBase.deleteMany();
-    await SnoopyArtBase.deleteMany();
-    await AbelPersonaBase.deleteMany();
-    await ExerciseDefinition.deleteMany();
-    // await HabboRareBase.deleteMany();
-    // await BadgeBase.deleteMany();
-    // await TitleBase.deleteMany();
-    // await YugiohCardBase.deleteMany();
-    // ... delete other data
-
-    console.log("Data Destroyed!".red.inverse);
-    process.exit();
+    console.log("Pokémon Data Destroyed!");
   } catch (err) {
-    console.error(`${err}`.red.inverse);
+    console.error(err);
     process.exit(1);
   }
 };
 
-// Process command line arguments
-// To run: node seeder -i (to import) or node seeder -d (to delete)
-if (process.argv[2] === "-i") {
-  // For colors in console (optional, install 'colors' package: npm i colors)
-  // require('colors'); // Uncomment if you install and want to use colors
-  importData();
-} else if (process.argv[2] === "-d") {
-  // require('colors'); // Uncomment if you install and want to use colors
-  deleteData();
-} else {
-  console.log("Please use -i to import data or -d to delete data.");
-  // console.log('Example: node seeder -i');
-  process.exit();
-}
+// --- NEW: Main Execution Flow ---
+// This main async function ensures we connect to the DB *before* doing anything else.
+const run = async () => {
+  await connectDB();
+
+  if (process.argv[2] === "-i") {
+    await importData();
+  } else if (process.argv[2] === "-d") {
+    await deleteData();
+  } else {
+    console.log("Please use -i to import data or -d to delete data.");
+  }
+
+  // Disconnect from the database when done.
+  await mongoose.disconnect();
+  console.log("MongoDB Disconnected.");
+};
+
+run();

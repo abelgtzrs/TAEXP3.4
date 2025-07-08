@@ -61,6 +61,10 @@ const AdminLayout = () => {
               <NavItem to="/shop" icon={Store}>
                 Shop (Gacha)
               </NavItem>
+
+              <NavItem to="/pokedex" icon={Image}>
+                Pokédex
+              </NavItem>
             </ul>
           </div>
 
