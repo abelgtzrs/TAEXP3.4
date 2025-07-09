@@ -52,6 +52,7 @@ app.use("/api/admin/workout-templates", require("./routes/workoutTemplateRoutes"
 app.use("/api/workout-templates", require("./routes/workoutTemplateRoutes"));
 app.use("/api/admin/exercises", protect, authorize("admin"), require("./routes/exerciseAdminRoutes"));
 app.use("/api/pokemon", require("./routes/pokemonRoutes"));
+app.use("/api/admin/pokemon", protect, authorize("admin"), require("./routes/pokemonAdminRoutes"));
 //app.use('/api/users', require('./routes/userRoutes'));
 //app.use('/api/volumes', require('./routes/volumeRoutes'));
 

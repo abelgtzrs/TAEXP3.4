@@ -3,10 +3,7 @@
     "speciesId": 1,
     "name": "bulbasaur",
     "generation": 1,
-    "baseTypes": [
-      "grass",
-      "poison"
-    ],
+    "baseTypes": ["grass", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -30,10 +27,7 @@
     "speciesId": 2,
     "name": "ivysaur",
     "generation": 1,
-    "baseTypes": [
-      "grass",
-      "poison"
-    ],
+    "baseTypes": ["grass", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -57,10 +51,7 @@
     "speciesId": 3,
     "name": "venusaur",
     "generation": 1,
-    "baseTypes": [
-      "grass",
-      "poison"
-    ],
+    "baseTypes": ["grass", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -84,9 +75,7 @@
     "speciesId": 4,
     "name": "charmander",
     "generation": 1,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -110,9 +99,7 @@
     "speciesId": 5,
     "name": "charmeleon",
     "generation": 1,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -136,10 +123,7 @@
     "speciesId": 6,
     "name": "charizard",
     "generation": 1,
-    "baseTypes": [
-      "fire",
-      "flying"
-    ],
+    "baseTypes": ["fire", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -163,9 +147,7 @@
     "speciesId": 7,
     "name": "squirtle",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -189,9 +171,7 @@
     "speciesId": 8,
     "name": "wartortle",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -215,9 +195,7 @@
     "speciesId": 9,
     "name": "blastoise",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -241,9 +219,7 @@
     "speciesId": 10,
     "name": "caterpie",
     "generation": 1,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -267,9 +243,7 @@
     "speciesId": 11,
     "name": "metapod",
     "generation": 1,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -293,10 +267,7 @@
     "speciesId": 12,
     "name": "butterfree",
     "generation": 1,
-    "baseTypes": [
-      "bug",
-      "flying"
-    ],
+    "baseTypes": ["bug", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -320,10 +291,7 @@
     "speciesId": 13,
     "name": "weedle",
     "generation": 1,
-    "baseTypes": [
-      "bug",
-      "poison"
-    ],
+    "baseTypes": ["bug", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -347,10 +315,7 @@
     "speciesId": 14,
     "name": "kakuna",
     "generation": 1,
-    "baseTypes": [
-      "bug",
-      "poison"
-    ],
+    "baseTypes": ["bug", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -374,10 +339,7 @@
     "speciesId": 15,
     "name": "beedrill",
     "generation": 1,
-    "baseTypes": [
-      "bug",
-      "poison"
-    ],
+    "baseTypes": ["bug", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -401,10 +363,7 @@
     "speciesId": 16,
     "name": "pidgey",
     "generation": 1,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -428,10 +387,7 @@
     "speciesId": 17,
     "name": "pidgeotto",
     "generation": 1,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -455,10 +411,7 @@
     "speciesId": 18,
     "name": "pidgeot",
     "generation": 1,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -482,9 +435,7 @@
     "speciesId": 19,
     "name": "rattata",
     "generation": 1,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -508,9 +459,7 @@
     "speciesId": 20,
     "name": "raticate",
     "generation": 1,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -534,10 +483,7 @@
     "speciesId": 21,
     "name": "spearow",
     "generation": 1,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -561,10 +507,7 @@
     "speciesId": 22,
     "name": "fearow",
     "generation": 1,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -588,9 +531,7 @@
     "speciesId": 23,
     "name": "ekans",
     "generation": 1,
-    "baseTypes": [
-      "poison"
-    ],
+    "baseTypes": ["poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -614,9 +555,7 @@
     "speciesId": 24,
     "name": "arbok",
     "generation": 1,
-    "baseTypes": [
-      "poison"
-    ],
+    "baseTypes": ["poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -640,9 +579,7 @@
     "speciesId": 25,
     "name": "pikachu",
     "generation": 1,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -666,9 +603,7 @@
     "speciesId": 26,
     "name": "raichu",
     "generation": 1,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -692,9 +627,7 @@
     "speciesId": 27,
     "name": "sandshrew",
     "generation": 1,
-    "baseTypes": [
-      "ground"
-    ],
+    "baseTypes": ["ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -718,9 +651,7 @@
     "speciesId": 28,
     "name": "sandslash",
     "generation": 1,
-    "baseTypes": [
-      "ground"
-    ],
+    "baseTypes": ["ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -744,9 +675,7 @@
     "speciesId": 29,
     "name": "nidoran-f",
     "generation": 1,
-    "baseTypes": [
-      "poison"
-    ],
+    "baseTypes": ["poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -770,9 +699,7 @@
     "speciesId": 30,
     "name": "nidorina",
     "generation": 1,
-    "baseTypes": [
-      "poison"
-    ],
+    "baseTypes": ["poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -796,10 +723,7 @@
     "speciesId": 31,
     "name": "nidoqueen",
     "generation": 1,
-    "baseTypes": [
-      "poison",
-      "ground"
-    ],
+    "baseTypes": ["poison", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -823,9 +747,7 @@
     "speciesId": 32,
     "name": "nidoran-m",
     "generation": 1,
-    "baseTypes": [
-      "poison"
-    ],
+    "baseTypes": ["poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -834,7 +756,7 @@
       {
         "formName": "nidoran-m",
         "spriteGen5Animated": "/pokemon/gen5ani/nidoran-m.gif",
-        "spriteGen6Animated": "/pokemon/gen6ani/nidoran-m.gif"
+        "spriteGen6Animated": "/pokemon/gen6ani/nidoran.gif"
       }
     ],
     "evolutionPaths": [
@@ -849,9 +771,7 @@
     "speciesId": 33,
     "name": "nidorino",
     "generation": 1,
-    "baseTypes": [
-      "poison"
-    ],
+    "baseTypes": ["poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -875,10 +795,7 @@
     "speciesId": 34,
     "name": "nidoking",
     "generation": 1,
-    "baseTypes": [
-      "poison",
-      "ground"
-    ],
+    "baseTypes": ["poison", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -902,9 +819,7 @@
     "speciesId": 35,
     "name": "clefairy",
     "generation": 1,
-    "baseTypes": [
-      "fairy"
-    ],
+    "baseTypes": ["fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -928,9 +843,7 @@
     "speciesId": 36,
     "name": "clefable",
     "generation": 1,
-    "baseTypes": [
-      "fairy"
-    ],
+    "baseTypes": ["fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -954,9 +867,7 @@
     "speciesId": 37,
     "name": "vulpix",
     "generation": 1,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -980,9 +891,7 @@
     "speciesId": 38,
     "name": "ninetales",
     "generation": 1,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1006,10 +915,7 @@
     "speciesId": 39,
     "name": "jigglypuff",
     "generation": 1,
-    "baseTypes": [
-      "normal",
-      "fairy"
-    ],
+    "baseTypes": ["normal", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1033,10 +939,7 @@
     "speciesId": 40,
     "name": "wigglytuff",
     "generation": 1,
-    "baseTypes": [
-      "normal",
-      "fairy"
-    ],
+    "baseTypes": ["normal", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1060,10 +963,7 @@
     "speciesId": 41,
     "name": "zubat",
     "generation": 1,
-    "baseTypes": [
-      "poison",
-      "flying"
-    ],
+    "baseTypes": ["poison", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1087,10 +987,7 @@
     "speciesId": 42,
     "name": "golbat",
     "generation": 1,
-    "baseTypes": [
-      "poison",
-      "flying"
-    ],
+    "baseTypes": ["poison", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1114,10 +1011,7 @@
     "speciesId": 43,
     "name": "oddish",
     "generation": 1,
-    "baseTypes": [
-      "grass",
-      "poison"
-    ],
+    "baseTypes": ["grass", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1141,10 +1035,7 @@
     "speciesId": 44,
     "name": "gloom",
     "generation": 1,
-    "baseTypes": [
-      "grass",
-      "poison"
-    ],
+    "baseTypes": ["grass", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1168,10 +1059,7 @@
     "speciesId": 45,
     "name": "vileplume",
     "generation": 1,
-    "baseTypes": [
-      "grass",
-      "poison"
-    ],
+    "baseTypes": ["grass", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1195,10 +1083,7 @@
     "speciesId": 46,
     "name": "paras",
     "generation": 1,
-    "baseTypes": [
-      "bug",
-      "grass"
-    ],
+    "baseTypes": ["bug", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1222,10 +1107,7 @@
     "speciesId": 47,
     "name": "parasect",
     "generation": 1,
-    "baseTypes": [
-      "bug",
-      "grass"
-    ],
+    "baseTypes": ["bug", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1249,10 +1131,7 @@
     "speciesId": 48,
     "name": "venonat",
     "generation": 1,
-    "baseTypes": [
-      "bug",
-      "poison"
-    ],
+    "baseTypes": ["bug", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1276,10 +1155,7 @@
     "speciesId": 49,
     "name": "venomoth",
     "generation": 1,
-    "baseTypes": [
-      "bug",
-      "poison"
-    ],
+    "baseTypes": ["bug", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1303,9 +1179,7 @@
     "speciesId": 50,
     "name": "diglett",
     "generation": 1,
-    "baseTypes": [
-      "ground"
-    ],
+    "baseTypes": ["ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1329,9 +1203,7 @@
     "speciesId": 51,
     "name": "dugtrio",
     "generation": 1,
-    "baseTypes": [
-      "ground"
-    ],
+    "baseTypes": ["ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1355,9 +1227,7 @@
     "speciesId": 52,
     "name": "meowth",
     "generation": 1,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1381,9 +1251,7 @@
     "speciesId": 53,
     "name": "persian",
     "generation": 1,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1407,9 +1275,7 @@
     "speciesId": 54,
     "name": "psyduck",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1433,9 +1299,7 @@
     "speciesId": 55,
     "name": "golduck",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1459,9 +1323,7 @@
     "speciesId": 56,
     "name": "mankey",
     "generation": 1,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1485,9 +1347,7 @@
     "speciesId": 57,
     "name": "primeape",
     "generation": 1,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1511,9 +1371,7 @@
     "speciesId": 58,
     "name": "growlithe",
     "generation": 1,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1537,9 +1395,7 @@
     "speciesId": 59,
     "name": "arcanine",
     "generation": 1,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1563,9 +1419,7 @@
     "speciesId": 60,
     "name": "poliwag",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1589,9 +1443,7 @@
     "speciesId": 61,
     "name": "poliwhirl",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1615,10 +1467,7 @@
     "speciesId": 62,
     "name": "poliwrath",
     "generation": 1,
-    "baseTypes": [
-      "water",
-      "fighting"
-    ],
+    "baseTypes": ["water", "fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1642,9 +1491,7 @@
     "speciesId": 63,
     "name": "abra",
     "generation": 1,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1668,9 +1515,7 @@
     "speciesId": 64,
     "name": "kadabra",
     "generation": 1,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1694,9 +1539,7 @@
     "speciesId": 65,
     "name": "alakazam",
     "generation": 1,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1720,9 +1563,7 @@
     "speciesId": 66,
     "name": "machop",
     "generation": 1,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1746,9 +1587,7 @@
     "speciesId": 67,
     "name": "machoke",
     "generation": 1,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1772,9 +1611,7 @@
     "speciesId": 68,
     "name": "machamp",
     "generation": 1,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1798,10 +1635,7 @@
     "speciesId": 69,
     "name": "bellsprout",
     "generation": 1,
-    "baseTypes": [
-      "grass",
-      "poison"
-    ],
+    "baseTypes": ["grass", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1825,10 +1659,7 @@
     "speciesId": 70,
     "name": "weepinbell",
     "generation": 1,
-    "baseTypes": [
-      "grass",
-      "poison"
-    ],
+    "baseTypes": ["grass", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1852,10 +1683,7 @@
     "speciesId": 71,
     "name": "victreebel",
     "generation": 1,
-    "baseTypes": [
-      "grass",
-      "poison"
-    ],
+    "baseTypes": ["grass", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1879,10 +1707,7 @@
     "speciesId": 72,
     "name": "tentacool",
     "generation": 1,
-    "baseTypes": [
-      "water",
-      "poison"
-    ],
+    "baseTypes": ["water", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1906,10 +1731,7 @@
     "speciesId": 73,
     "name": "tentacruel",
     "generation": 1,
-    "baseTypes": [
-      "water",
-      "poison"
-    ],
+    "baseTypes": ["water", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1933,10 +1755,7 @@
     "speciesId": 74,
     "name": "geodude",
     "generation": 1,
-    "baseTypes": [
-      "rock",
-      "ground"
-    ],
+    "baseTypes": ["rock", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1960,10 +1779,7 @@
     "speciesId": 75,
     "name": "graveler",
     "generation": 1,
-    "baseTypes": [
-      "rock",
-      "ground"
-    ],
+    "baseTypes": ["rock", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -1987,10 +1803,7 @@
     "speciesId": 76,
     "name": "golem",
     "generation": 1,
-    "baseTypes": [
-      "rock",
-      "ground"
-    ],
+    "baseTypes": ["rock", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2014,9 +1827,7 @@
     "speciesId": 77,
     "name": "ponyta",
     "generation": 1,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2040,9 +1851,7 @@
     "speciesId": 78,
     "name": "rapidash",
     "generation": 1,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2066,10 +1875,7 @@
     "speciesId": 79,
     "name": "slowpoke",
     "generation": 1,
-    "baseTypes": [
-      "water",
-      "psychic"
-    ],
+    "baseTypes": ["water", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2093,10 +1899,7 @@
     "speciesId": 80,
     "name": "slowbro",
     "generation": 1,
-    "baseTypes": [
-      "water",
-      "psychic"
-    ],
+    "baseTypes": ["water", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2120,10 +1923,7 @@
     "speciesId": 81,
     "name": "magnemite",
     "generation": 1,
-    "baseTypes": [
-      "electric",
-      "steel"
-    ],
+    "baseTypes": ["electric", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2147,10 +1947,7 @@
     "speciesId": 82,
     "name": "magneton",
     "generation": 1,
-    "baseTypes": [
-      "electric",
-      "steel"
-    ],
+    "baseTypes": ["electric", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2174,10 +1971,7 @@
     "speciesId": 83,
     "name": "farfetchd",
     "generation": 1,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2201,10 +1995,7 @@
     "speciesId": 84,
     "name": "doduo",
     "generation": 1,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2228,10 +2019,7 @@
     "speciesId": 85,
     "name": "dodrio",
     "generation": 1,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2255,9 +2043,7 @@
     "speciesId": 86,
     "name": "seel",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2281,10 +2067,7 @@
     "speciesId": 87,
     "name": "dewgong",
     "generation": 1,
-    "baseTypes": [
-      "water",
-      "ice"
-    ],
+    "baseTypes": ["water", "ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2308,9 +2091,7 @@
     "speciesId": 88,
     "name": "grimer",
     "generation": 1,
-    "baseTypes": [
-      "poison"
-    ],
+    "baseTypes": ["poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2334,9 +2115,7 @@
     "speciesId": 89,
     "name": "muk",
     "generation": 1,
-    "baseTypes": [
-      "poison"
-    ],
+    "baseTypes": ["poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2360,9 +2139,7 @@
     "speciesId": 90,
     "name": "shellder",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2386,10 +2163,7 @@
     "speciesId": 91,
     "name": "cloyster",
     "generation": 1,
-    "baseTypes": [
-      "water",
-      "ice"
-    ],
+    "baseTypes": ["water", "ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2413,10 +2187,7 @@
     "speciesId": 92,
     "name": "gastly",
     "generation": 1,
-    "baseTypes": [
-      "ghost",
-      "poison"
-    ],
+    "baseTypes": ["ghost", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2440,10 +2211,7 @@
     "speciesId": 93,
     "name": "haunter",
     "generation": 1,
-    "baseTypes": [
-      "ghost",
-      "poison"
-    ],
+    "baseTypes": ["ghost", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2467,10 +2235,7 @@
     "speciesId": 94,
     "name": "gengar",
     "generation": 1,
-    "baseTypes": [
-      "ghost",
-      "poison"
-    ],
+    "baseTypes": ["ghost", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2494,10 +2259,7 @@
     "speciesId": 95,
     "name": "onix",
     "generation": 1,
-    "baseTypes": [
-      "rock",
-      "ground"
-    ],
+    "baseTypes": ["rock", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2521,9 +2283,7 @@
     "speciesId": 96,
     "name": "drowzee",
     "generation": 1,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2547,9 +2307,7 @@
     "speciesId": 97,
     "name": "hypno",
     "generation": 1,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2573,9 +2331,7 @@
     "speciesId": 98,
     "name": "krabby",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2599,9 +2355,7 @@
     "speciesId": 99,
     "name": "kingler",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2625,9 +2379,7 @@
     "speciesId": 100,
     "name": "voltorb",
     "generation": 1,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2651,9 +2403,7 @@
     "speciesId": 101,
     "name": "electrode",
     "generation": 1,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2677,10 +2427,7 @@
     "speciesId": 102,
     "name": "exeggcute",
     "generation": 1,
-    "baseTypes": [
-      "grass",
-      "psychic"
-    ],
+    "baseTypes": ["grass", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2704,10 +2451,7 @@
     "speciesId": 103,
     "name": "exeggutor",
     "generation": 1,
-    "baseTypes": [
-      "grass",
-      "psychic"
-    ],
+    "baseTypes": ["grass", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2731,9 +2475,7 @@
     "speciesId": 104,
     "name": "cubone",
     "generation": 1,
-    "baseTypes": [
-      "ground"
-    ],
+    "baseTypes": ["ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2757,9 +2499,7 @@
     "speciesId": 105,
     "name": "marowak",
     "generation": 1,
-    "baseTypes": [
-      "ground"
-    ],
+    "baseTypes": ["ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2783,9 +2523,7 @@
     "speciesId": 106,
     "name": "hitmonlee",
     "generation": 1,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2809,9 +2547,7 @@
     "speciesId": 107,
     "name": "hitmonchan",
     "generation": 1,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2835,9 +2571,7 @@
     "speciesId": 108,
     "name": "lickitung",
     "generation": 1,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2861,9 +2595,7 @@
     "speciesId": 109,
     "name": "koffing",
     "generation": 1,
-    "baseTypes": [
-      "poison"
-    ],
+    "baseTypes": ["poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2887,9 +2619,7 @@
     "speciesId": 110,
     "name": "weezing",
     "generation": 1,
-    "baseTypes": [
-      "poison"
-    ],
+    "baseTypes": ["poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2913,10 +2643,7 @@
     "speciesId": 111,
     "name": "rhyhorn",
     "generation": 1,
-    "baseTypes": [
-      "ground",
-      "rock"
-    ],
+    "baseTypes": ["ground", "rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2940,10 +2667,7 @@
     "speciesId": 112,
     "name": "rhydon",
     "generation": 1,
-    "baseTypes": [
-      "ground",
-      "rock"
-    ],
+    "baseTypes": ["ground", "rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2967,9 +2691,7 @@
     "speciesId": 113,
     "name": "chansey",
     "generation": 1,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -2993,9 +2715,7 @@
     "speciesId": 114,
     "name": "tangela",
     "generation": 1,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3019,9 +2739,7 @@
     "speciesId": 115,
     "name": "kangaskhan",
     "generation": 1,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3045,9 +2763,7 @@
     "speciesId": 116,
     "name": "horsea",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3071,9 +2787,7 @@
     "speciesId": 117,
     "name": "seadra",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3097,9 +2811,7 @@
     "speciesId": 118,
     "name": "goldeen",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3123,9 +2835,7 @@
     "speciesId": 119,
     "name": "seaking",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3149,9 +2859,7 @@
     "speciesId": 120,
     "name": "staryu",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3175,10 +2883,7 @@
     "speciesId": 121,
     "name": "starmie",
     "generation": 1,
-    "baseTypes": [
-      "water",
-      "psychic"
-    ],
+    "baseTypes": ["water", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3202,10 +2907,7 @@
     "speciesId": 122,
     "name": "mr-mime",
     "generation": 1,
-    "baseTypes": [
-      "psychic",
-      "fairy"
-    ],
+    "baseTypes": ["psychic", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3229,10 +2931,7 @@
     "speciesId": 123,
     "name": "scyther",
     "generation": 1,
-    "baseTypes": [
-      "bug",
-      "flying"
-    ],
+    "baseTypes": ["bug", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3256,10 +2955,7 @@
     "speciesId": 124,
     "name": "jynx",
     "generation": 1,
-    "baseTypes": [
-      "ice",
-      "psychic"
-    ],
+    "baseTypes": ["ice", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3283,9 +2979,7 @@
     "speciesId": 125,
     "name": "electabuzz",
     "generation": 1,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3309,9 +3003,7 @@
     "speciesId": 126,
     "name": "magmar",
     "generation": 1,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3335,9 +3027,7 @@
     "speciesId": 127,
     "name": "pinsir",
     "generation": 1,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3361,9 +3051,7 @@
     "speciesId": 128,
     "name": "tauros",
     "generation": 1,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3387,9 +3075,7 @@
     "speciesId": 129,
     "name": "magikarp",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3413,10 +3099,7 @@
     "speciesId": 130,
     "name": "gyarados",
     "generation": 1,
-    "baseTypes": [
-      "water",
-      "flying"
-    ],
+    "baseTypes": ["water", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3440,10 +3123,7 @@
     "speciesId": 131,
     "name": "lapras",
     "generation": 1,
-    "baseTypes": [
-      "water",
-      "ice"
-    ],
+    "baseTypes": ["water", "ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3467,9 +3147,7 @@
     "speciesId": 132,
     "name": "ditto",
     "generation": 1,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3493,9 +3171,7 @@
     "speciesId": 133,
     "name": "eevee",
     "generation": 1,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3519,9 +3195,7 @@
     "speciesId": 134,
     "name": "vaporeon",
     "generation": 1,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3545,9 +3219,7 @@
     "speciesId": 135,
     "name": "jolteon",
     "generation": 1,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3571,9 +3243,7 @@
     "speciesId": 136,
     "name": "flareon",
     "generation": 1,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3597,9 +3267,7 @@
     "speciesId": 137,
     "name": "porygon",
     "generation": 1,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3623,10 +3291,7 @@
     "speciesId": 138,
     "name": "omanyte",
     "generation": 1,
-    "baseTypes": [
-      "rock",
-      "water"
-    ],
+    "baseTypes": ["rock", "water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3650,10 +3315,7 @@
     "speciesId": 139,
     "name": "omastar",
     "generation": 1,
-    "baseTypes": [
-      "rock",
-      "water"
-    ],
+    "baseTypes": ["rock", "water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3677,10 +3339,7 @@
     "speciesId": 140,
     "name": "kabuto",
     "generation": 1,
-    "baseTypes": [
-      "rock",
-      "water"
-    ],
+    "baseTypes": ["rock", "water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3704,10 +3363,7 @@
     "speciesId": 141,
     "name": "kabutops",
     "generation": 1,
-    "baseTypes": [
-      "rock",
-      "water"
-    ],
+    "baseTypes": ["rock", "water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3731,10 +3387,7 @@
     "speciesId": 142,
     "name": "aerodactyl",
     "generation": 1,
-    "baseTypes": [
-      "rock",
-      "flying"
-    ],
+    "baseTypes": ["rock", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3758,9 +3411,7 @@
     "speciesId": 143,
     "name": "snorlax",
     "generation": 1,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3784,10 +3435,7 @@
     "speciesId": 144,
     "name": "articuno",
     "generation": 1,
-    "baseTypes": [
-      "ice",
-      "flying"
-    ],
+    "baseTypes": ["ice", "flying"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -3811,10 +3459,7 @@
     "speciesId": 145,
     "name": "zapdos",
     "generation": 1,
-    "baseTypes": [
-      "electric",
-      "flying"
-    ],
+    "baseTypes": ["electric", "flying"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -3838,10 +3483,7 @@
     "speciesId": 146,
     "name": "moltres",
     "generation": 1,
-    "baseTypes": [
-      "fire",
-      "flying"
-    ],
+    "baseTypes": ["fire", "flying"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -3865,9 +3507,7 @@
     "speciesId": 147,
     "name": "dratini",
     "generation": 1,
-    "baseTypes": [
-      "dragon"
-    ],
+    "baseTypes": ["dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3891,9 +3531,7 @@
     "speciesId": 148,
     "name": "dragonair",
     "generation": 1,
-    "baseTypes": [
-      "dragon"
-    ],
+    "baseTypes": ["dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3917,10 +3555,7 @@
     "speciesId": 149,
     "name": "dragonite",
     "generation": 1,
-    "baseTypes": [
-      "dragon",
-      "flying"
-    ],
+    "baseTypes": ["dragon", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -3944,9 +3579,7 @@
     "speciesId": 150,
     "name": "mewtwo",
     "generation": 1,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -3970,9 +3603,7 @@
     "speciesId": 151,
     "name": "mew",
     "generation": 1,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": true,
     "isStarter": false,
@@ -3996,9 +3627,7 @@
     "speciesId": 152,
     "name": "chikorita",
     "generation": 2,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4022,9 +3651,7 @@
     "speciesId": 153,
     "name": "bayleef",
     "generation": 2,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4048,9 +3675,7 @@
     "speciesId": 154,
     "name": "meganium",
     "generation": 2,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4074,9 +3699,7 @@
     "speciesId": 155,
     "name": "cyndaquil",
     "generation": 2,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4100,9 +3723,7 @@
     "speciesId": 156,
     "name": "quilava",
     "generation": 2,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4126,9 +3747,7 @@
     "speciesId": 157,
     "name": "typhlosion",
     "generation": 2,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4152,9 +3771,7 @@
     "speciesId": 158,
     "name": "totodile",
     "generation": 2,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4178,9 +3795,7 @@
     "speciesId": 159,
     "name": "croconaw",
     "generation": 2,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4204,9 +3819,7 @@
     "speciesId": 160,
     "name": "feraligatr",
     "generation": 2,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4230,9 +3843,7 @@
     "speciesId": 161,
     "name": "sentret",
     "generation": 2,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4256,9 +3867,7 @@
     "speciesId": 162,
     "name": "furret",
     "generation": 2,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4282,10 +3891,7 @@
     "speciesId": 163,
     "name": "hoothoot",
     "generation": 2,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4309,10 +3915,7 @@
     "speciesId": 164,
     "name": "noctowl",
     "generation": 2,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4336,10 +3939,7 @@
     "speciesId": 165,
     "name": "ledyba",
     "generation": 2,
-    "baseTypes": [
-      "bug",
-      "flying"
-    ],
+    "baseTypes": ["bug", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4363,10 +3963,7 @@
     "speciesId": 166,
     "name": "ledian",
     "generation": 2,
-    "baseTypes": [
-      "bug",
-      "flying"
-    ],
+    "baseTypes": ["bug", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4390,10 +3987,7 @@
     "speciesId": 167,
     "name": "spinarak",
     "generation": 2,
-    "baseTypes": [
-      "bug",
-      "poison"
-    ],
+    "baseTypes": ["bug", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4417,10 +4011,7 @@
     "speciesId": 168,
     "name": "ariados",
     "generation": 2,
-    "baseTypes": [
-      "bug",
-      "poison"
-    ],
+    "baseTypes": ["bug", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4444,10 +4035,7 @@
     "speciesId": 169,
     "name": "crobat",
     "generation": 2,
-    "baseTypes": [
-      "poison",
-      "flying"
-    ],
+    "baseTypes": ["poison", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4471,10 +4059,7 @@
     "speciesId": 170,
     "name": "chinchou",
     "generation": 2,
-    "baseTypes": [
-      "water",
-      "electric"
-    ],
+    "baseTypes": ["water", "electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4498,10 +4083,7 @@
     "speciesId": 171,
     "name": "lanturn",
     "generation": 2,
-    "baseTypes": [
-      "water",
-      "electric"
-    ],
+    "baseTypes": ["water", "electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4525,9 +4107,7 @@
     "speciesId": 172,
     "name": "pichu",
     "generation": 2,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4556,9 +4136,7 @@
     "speciesId": 173,
     "name": "cleffa",
     "generation": 2,
-    "baseTypes": [
-      "fairy"
-    ],
+    "baseTypes": ["fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4582,10 +4160,7 @@
     "speciesId": 174,
     "name": "igglybuff",
     "generation": 2,
-    "baseTypes": [
-      "normal",
-      "fairy"
-    ],
+    "baseTypes": ["normal", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4609,9 +4184,7 @@
     "speciesId": 175,
     "name": "togepi",
     "generation": 2,
-    "baseTypes": [
-      "fairy"
-    ],
+    "baseTypes": ["fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4635,10 +4208,7 @@
     "speciesId": 176,
     "name": "togetic",
     "generation": 2,
-    "baseTypes": [
-      "fairy",
-      "flying"
-    ],
+    "baseTypes": ["fairy", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4662,10 +4232,7 @@
     "speciesId": 177,
     "name": "natu",
     "generation": 2,
-    "baseTypes": [
-      "psychic",
-      "flying"
-    ],
+    "baseTypes": ["psychic", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4689,10 +4256,7 @@
     "speciesId": 178,
     "name": "xatu",
     "generation": 2,
-    "baseTypes": [
-      "psychic",
-      "flying"
-    ],
+    "baseTypes": ["psychic", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4716,9 +4280,7 @@
     "speciesId": 179,
     "name": "mareep",
     "generation": 2,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4742,9 +4304,7 @@
     "speciesId": 180,
     "name": "flaaffy",
     "generation": 2,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4768,9 +4328,7 @@
     "speciesId": 181,
     "name": "ampharos",
     "generation": 2,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4794,9 +4352,7 @@
     "speciesId": 182,
     "name": "bellossom",
     "generation": 2,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4820,10 +4376,7 @@
     "speciesId": 183,
     "name": "marill",
     "generation": 2,
-    "baseTypes": [
-      "water",
-      "fairy"
-    ],
+    "baseTypes": ["water", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4847,10 +4400,7 @@
     "speciesId": 184,
     "name": "azumarill",
     "generation": 2,
-    "baseTypes": [
-      "water",
-      "fairy"
-    ],
+    "baseTypes": ["water", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4874,9 +4424,7 @@
     "speciesId": 185,
     "name": "sudowoodo",
     "generation": 2,
-    "baseTypes": [
-      "rock"
-    ],
+    "baseTypes": ["rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4900,9 +4448,7 @@
     "speciesId": 186,
     "name": "politoed",
     "generation": 2,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4926,10 +4472,7 @@
     "speciesId": 187,
     "name": "hoppip",
     "generation": 2,
-    "baseTypes": [
-      "grass",
-      "flying"
-    ],
+    "baseTypes": ["grass", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4953,10 +4496,7 @@
     "speciesId": 188,
     "name": "skiploom",
     "generation": 2,
-    "baseTypes": [
-      "grass",
-      "flying"
-    ],
+    "baseTypes": ["grass", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -4980,10 +4520,7 @@
     "speciesId": 189,
     "name": "jumpluff",
     "generation": 2,
-    "baseTypes": [
-      "grass",
-      "flying"
-    ],
+    "baseTypes": ["grass", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5007,9 +4544,7 @@
     "speciesId": 190,
     "name": "aipom",
     "generation": 2,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5033,9 +4568,7 @@
     "speciesId": 191,
     "name": "sunkern",
     "generation": 2,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5059,9 +4592,7 @@
     "speciesId": 192,
     "name": "sunflora",
     "generation": 2,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5085,10 +4616,7 @@
     "speciesId": 193,
     "name": "yanma",
     "generation": 2,
-    "baseTypes": [
-      "bug",
-      "flying"
-    ],
+    "baseTypes": ["bug", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5112,10 +4640,7 @@
     "speciesId": 194,
     "name": "wooper",
     "generation": 2,
-    "baseTypes": [
-      "water",
-      "ground"
-    ],
+    "baseTypes": ["water", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5139,10 +4664,7 @@
     "speciesId": 195,
     "name": "quagsire",
     "generation": 2,
-    "baseTypes": [
-      "water",
-      "ground"
-    ],
+    "baseTypes": ["water", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5166,9 +4688,7 @@
     "speciesId": 196,
     "name": "espeon",
     "generation": 2,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5192,9 +4712,7 @@
     "speciesId": 197,
     "name": "umbreon",
     "generation": 2,
-    "baseTypes": [
-      "dark"
-    ],
+    "baseTypes": ["dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5218,10 +4736,7 @@
     "speciesId": 198,
     "name": "murkrow",
     "generation": 2,
-    "baseTypes": [
-      "dark",
-      "flying"
-    ],
+    "baseTypes": ["dark", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5245,10 +4760,7 @@
     "speciesId": 199,
     "name": "slowking",
     "generation": 2,
-    "baseTypes": [
-      "water",
-      "psychic"
-    ],
+    "baseTypes": ["water", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5272,9 +4784,7 @@
     "speciesId": 200,
     "name": "misdreavus",
     "generation": 2,
-    "baseTypes": [
-      "ghost"
-    ],
+    "baseTypes": ["ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5298,9 +4808,7 @@
     "speciesId": 201,
     "name": "unown",
     "generation": 2,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5459,9 +4967,7 @@
     "speciesId": 202,
     "name": "wobbuffet",
     "generation": 2,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5485,10 +4991,7 @@
     "speciesId": 203,
     "name": "girafarig",
     "generation": 2,
-    "baseTypes": [
-      "normal",
-      "psychic"
-    ],
+    "baseTypes": ["normal", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5512,9 +5015,7 @@
     "speciesId": 204,
     "name": "pineco",
     "generation": 2,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5538,10 +5039,7 @@
     "speciesId": 205,
     "name": "forretress",
     "generation": 2,
-    "baseTypes": [
-      "bug",
-      "steel"
-    ],
+    "baseTypes": ["bug", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5565,9 +5063,7 @@
     "speciesId": 206,
     "name": "dunsparce",
     "generation": 2,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5591,10 +5087,7 @@
     "speciesId": 207,
     "name": "gligar",
     "generation": 2,
-    "baseTypes": [
-      "ground",
-      "flying"
-    ],
+    "baseTypes": ["ground", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5618,10 +5111,7 @@
     "speciesId": 208,
     "name": "steelix",
     "generation": 2,
-    "baseTypes": [
-      "steel",
-      "ground"
-    ],
+    "baseTypes": ["steel", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5645,9 +5135,7 @@
     "speciesId": 209,
     "name": "snubbull",
     "generation": 2,
-    "baseTypes": [
-      "fairy"
-    ],
+    "baseTypes": ["fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5671,9 +5159,7 @@
     "speciesId": 210,
     "name": "granbull",
     "generation": 2,
-    "baseTypes": [
-      "fairy"
-    ],
+    "baseTypes": ["fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5697,10 +5183,7 @@
     "speciesId": 211,
     "name": "qwilfish",
     "generation": 2,
-    "baseTypes": [
-      "water",
-      "poison"
-    ],
+    "baseTypes": ["water", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5724,10 +5207,7 @@
     "speciesId": 212,
     "name": "scizor",
     "generation": 2,
-    "baseTypes": [
-      "bug",
-      "steel"
-    ],
+    "baseTypes": ["bug", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5751,10 +5231,7 @@
     "speciesId": 213,
     "name": "shuckle",
     "generation": 2,
-    "baseTypes": [
-      "bug",
-      "rock"
-    ],
+    "baseTypes": ["bug", "rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5778,10 +5255,7 @@
     "speciesId": 214,
     "name": "heracross",
     "generation": 2,
-    "baseTypes": [
-      "bug",
-      "fighting"
-    ],
+    "baseTypes": ["bug", "fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5805,10 +5279,7 @@
     "speciesId": 215,
     "name": "sneasel",
     "generation": 2,
-    "baseTypes": [
-      "dark",
-      "ice"
-    ],
+    "baseTypes": ["dark", "ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5832,9 +5303,7 @@
     "speciesId": 216,
     "name": "teddiursa",
     "generation": 2,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5858,9 +5327,7 @@
     "speciesId": 217,
     "name": "ursaring",
     "generation": 2,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5884,9 +5351,7 @@
     "speciesId": 218,
     "name": "slugma",
     "generation": 2,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5910,10 +5375,7 @@
     "speciesId": 219,
     "name": "magcargo",
     "generation": 2,
-    "baseTypes": [
-      "fire",
-      "rock"
-    ],
+    "baseTypes": ["fire", "rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5937,10 +5399,7 @@
     "speciesId": 220,
     "name": "swinub",
     "generation": 2,
-    "baseTypes": [
-      "ice",
-      "ground"
-    ],
+    "baseTypes": ["ice", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5964,10 +5423,7 @@
     "speciesId": 221,
     "name": "piloswine",
     "generation": 2,
-    "baseTypes": [
-      "ice",
-      "ground"
-    ],
+    "baseTypes": ["ice", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -5991,10 +5447,7 @@
     "speciesId": 222,
     "name": "corsola",
     "generation": 2,
-    "baseTypes": [
-      "water",
-      "rock"
-    ],
+    "baseTypes": ["water", "rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6018,9 +5471,7 @@
     "speciesId": 223,
     "name": "remoraid",
     "generation": 2,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6044,9 +5495,7 @@
     "speciesId": 224,
     "name": "octillery",
     "generation": 2,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6070,10 +5519,7 @@
     "speciesId": 225,
     "name": "delibird",
     "generation": 2,
-    "baseTypes": [
-      "ice",
-      "flying"
-    ],
+    "baseTypes": ["ice", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6097,10 +5543,7 @@
     "speciesId": 226,
     "name": "mantine",
     "generation": 2,
-    "baseTypes": [
-      "water",
-      "flying"
-    ],
+    "baseTypes": ["water", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6124,10 +5567,7 @@
     "speciesId": 227,
     "name": "skarmory",
     "generation": 2,
-    "baseTypes": [
-      "steel",
-      "flying"
-    ],
+    "baseTypes": ["steel", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6151,10 +5591,7 @@
     "speciesId": 228,
     "name": "houndour",
     "generation": 2,
-    "baseTypes": [
-      "dark",
-      "fire"
-    ],
+    "baseTypes": ["dark", "fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6178,10 +5615,7 @@
     "speciesId": 229,
     "name": "houndoom",
     "generation": 2,
-    "baseTypes": [
-      "dark",
-      "fire"
-    ],
+    "baseTypes": ["dark", "fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6205,10 +5639,7 @@
     "speciesId": 230,
     "name": "kingdra",
     "generation": 2,
-    "baseTypes": [
-      "water",
-      "dragon"
-    ],
+    "baseTypes": ["water", "dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6232,9 +5663,7 @@
     "speciesId": 231,
     "name": "phanpy",
     "generation": 2,
-    "baseTypes": [
-      "ground"
-    ],
+    "baseTypes": ["ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6258,9 +5687,7 @@
     "speciesId": 232,
     "name": "donphan",
     "generation": 2,
-    "baseTypes": [
-      "ground"
-    ],
+    "baseTypes": ["ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6284,9 +5711,7 @@
     "speciesId": 233,
     "name": "porygon2",
     "generation": 2,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6310,9 +5735,7 @@
     "speciesId": 234,
     "name": "stantler",
     "generation": 2,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6336,9 +5759,7 @@
     "speciesId": 235,
     "name": "smeargle",
     "generation": 2,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6362,9 +5783,7 @@
     "speciesId": 236,
     "name": "tyrogue",
     "generation": 2,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6388,9 +5807,7 @@
     "speciesId": 237,
     "name": "hitmontop",
     "generation": 2,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6414,10 +5831,7 @@
     "speciesId": 238,
     "name": "smoochum",
     "generation": 2,
-    "baseTypes": [
-      "ice",
-      "psychic"
-    ],
+    "baseTypes": ["ice", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6441,9 +5855,7 @@
     "speciesId": 239,
     "name": "elekid",
     "generation": 2,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6467,9 +5879,7 @@
     "speciesId": 240,
     "name": "magby",
     "generation": 2,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6493,9 +5903,7 @@
     "speciesId": 241,
     "name": "miltank",
     "generation": 2,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6519,9 +5927,7 @@
     "speciesId": 242,
     "name": "blissey",
     "generation": 2,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6545,9 +5951,7 @@
     "speciesId": 243,
     "name": "raikou",
     "generation": 2,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -6571,9 +5975,7 @@
     "speciesId": 244,
     "name": "entei",
     "generation": 2,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -6597,9 +5999,7 @@
     "speciesId": 245,
     "name": "suicune",
     "generation": 2,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -6623,10 +6023,7 @@
     "speciesId": 246,
     "name": "larvitar",
     "generation": 2,
-    "baseTypes": [
-      "rock",
-      "ground"
-    ],
+    "baseTypes": ["rock", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6650,10 +6047,7 @@
     "speciesId": 247,
     "name": "pupitar",
     "generation": 2,
-    "baseTypes": [
-      "rock",
-      "ground"
-    ],
+    "baseTypes": ["rock", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6677,10 +6071,7 @@
     "speciesId": 248,
     "name": "tyranitar",
     "generation": 2,
-    "baseTypes": [
-      "rock",
-      "dark"
-    ],
+    "baseTypes": ["rock", "dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6704,10 +6095,7 @@
     "speciesId": 249,
     "name": "lugia",
     "generation": 2,
-    "baseTypes": [
-      "psychic",
-      "flying"
-    ],
+    "baseTypes": ["psychic", "flying"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -6731,10 +6119,7 @@
     "speciesId": 250,
     "name": "ho-oh",
     "generation": 2,
-    "baseTypes": [
-      "fire",
-      "flying"
-    ],
+    "baseTypes": ["fire", "flying"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -6758,10 +6143,7 @@
     "speciesId": 251,
     "name": "celebi",
     "generation": 2,
-    "baseTypes": [
-      "psychic",
-      "grass"
-    ],
+    "baseTypes": ["psychic", "grass"],
     "isLegendary": false,
     "isMythical": true,
     "isStarter": false,
@@ -6785,9 +6167,7 @@
     "speciesId": 252,
     "name": "treecko",
     "generation": 3,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6811,9 +6191,7 @@
     "speciesId": 253,
     "name": "grovyle",
     "generation": 3,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6837,9 +6215,7 @@
     "speciesId": 254,
     "name": "sceptile",
     "generation": 3,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6863,9 +6239,7 @@
     "speciesId": 255,
     "name": "torchic",
     "generation": 3,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6889,10 +6263,7 @@
     "speciesId": 256,
     "name": "combusken",
     "generation": 3,
-    "baseTypes": [
-      "fire",
-      "fighting"
-    ],
+    "baseTypes": ["fire", "fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6916,10 +6287,7 @@
     "speciesId": 257,
     "name": "blaziken",
     "generation": 3,
-    "baseTypes": [
-      "fire",
-      "fighting"
-    ],
+    "baseTypes": ["fire", "fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6943,9 +6311,7 @@
     "speciesId": 258,
     "name": "mudkip",
     "generation": 3,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6969,10 +6335,7 @@
     "speciesId": 259,
     "name": "marshtomp",
     "generation": 3,
-    "baseTypes": [
-      "water",
-      "ground"
-    ],
+    "baseTypes": ["water", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -6996,10 +6359,7 @@
     "speciesId": 260,
     "name": "swampert",
     "generation": 3,
-    "baseTypes": [
-      "water",
-      "ground"
-    ],
+    "baseTypes": ["water", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7023,9 +6383,7 @@
     "speciesId": 261,
     "name": "poochyena",
     "generation": 3,
-    "baseTypes": [
-      "dark"
-    ],
+    "baseTypes": ["dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7049,9 +6407,7 @@
     "speciesId": 262,
     "name": "mightyena",
     "generation": 3,
-    "baseTypes": [
-      "dark"
-    ],
+    "baseTypes": ["dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7075,9 +6431,7 @@
     "speciesId": 263,
     "name": "zigzagoon",
     "generation": 3,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7101,9 +6455,7 @@
     "speciesId": 264,
     "name": "linoone",
     "generation": 3,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7127,9 +6479,7 @@
     "speciesId": 265,
     "name": "wurmple",
     "generation": 3,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7153,9 +6503,7 @@
     "speciesId": 266,
     "name": "silcoon",
     "generation": 3,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7179,10 +6527,7 @@
     "speciesId": 267,
     "name": "beautifly",
     "generation": 3,
-    "baseTypes": [
-      "bug",
-      "flying"
-    ],
+    "baseTypes": ["bug", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7206,9 +6551,7 @@
     "speciesId": 268,
     "name": "cascoon",
     "generation": 3,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7232,10 +6575,7 @@
     "speciesId": 269,
     "name": "dustox",
     "generation": 3,
-    "baseTypes": [
-      "bug",
-      "poison"
-    ],
+    "baseTypes": ["bug", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7259,10 +6599,7 @@
     "speciesId": 270,
     "name": "lotad",
     "generation": 3,
-    "baseTypes": [
-      "water",
-      "grass"
-    ],
+    "baseTypes": ["water", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7286,10 +6623,7 @@
     "speciesId": 271,
     "name": "lombre",
     "generation": 3,
-    "baseTypes": [
-      "water",
-      "grass"
-    ],
+    "baseTypes": ["water", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7313,10 +6647,7 @@
     "speciesId": 272,
     "name": "ludicolo",
     "generation": 3,
-    "baseTypes": [
-      "water",
-      "grass"
-    ],
+    "baseTypes": ["water", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7340,9 +6671,7 @@
     "speciesId": 273,
     "name": "seedot",
     "generation": 3,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7366,10 +6695,7 @@
     "speciesId": 274,
     "name": "nuzleaf",
     "generation": 3,
-    "baseTypes": [
-      "grass",
-      "dark"
-    ],
+    "baseTypes": ["grass", "dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7393,10 +6719,7 @@
     "speciesId": 275,
     "name": "shiftry",
     "generation": 3,
-    "baseTypes": [
-      "grass",
-      "dark"
-    ],
+    "baseTypes": ["grass", "dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7420,10 +6743,7 @@
     "speciesId": 276,
     "name": "taillow",
     "generation": 3,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7447,10 +6767,7 @@
     "speciesId": 277,
     "name": "swellow",
     "generation": 3,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7474,10 +6791,7 @@
     "speciesId": 278,
     "name": "wingull",
     "generation": 3,
-    "baseTypes": [
-      "water",
-      "flying"
-    ],
+    "baseTypes": ["water", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7501,10 +6815,7 @@
     "speciesId": 279,
     "name": "pelipper",
     "generation": 3,
-    "baseTypes": [
-      "water",
-      "flying"
-    ],
+    "baseTypes": ["water", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7528,10 +6839,7 @@
     "speciesId": 280,
     "name": "ralts",
     "generation": 3,
-    "baseTypes": [
-      "psychic",
-      "fairy"
-    ],
+    "baseTypes": ["psychic", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7555,10 +6863,7 @@
     "speciesId": 281,
     "name": "kirlia",
     "generation": 3,
-    "baseTypes": [
-      "psychic",
-      "fairy"
-    ],
+    "baseTypes": ["psychic", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7582,10 +6887,7 @@
     "speciesId": 282,
     "name": "gardevoir",
     "generation": 3,
-    "baseTypes": [
-      "psychic",
-      "fairy"
-    ],
+    "baseTypes": ["psychic", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7609,10 +6911,7 @@
     "speciesId": 283,
     "name": "surskit",
     "generation": 3,
-    "baseTypes": [
-      "bug",
-      "water"
-    ],
+    "baseTypes": ["bug", "water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7636,10 +6935,7 @@
     "speciesId": 284,
     "name": "masquerain",
     "generation": 3,
-    "baseTypes": [
-      "bug",
-      "flying"
-    ],
+    "baseTypes": ["bug", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7663,9 +6959,7 @@
     "speciesId": 285,
     "name": "shroomish",
     "generation": 3,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7689,10 +6983,7 @@
     "speciesId": 286,
     "name": "breloom",
     "generation": 3,
-    "baseTypes": [
-      "grass",
-      "fighting"
-    ],
+    "baseTypes": ["grass", "fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7716,9 +7007,7 @@
     "speciesId": 287,
     "name": "slakoth",
     "generation": 3,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7742,9 +7031,7 @@
     "speciesId": 288,
     "name": "vigoroth",
     "generation": 3,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7768,9 +7055,7 @@
     "speciesId": 289,
     "name": "slaking",
     "generation": 3,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7794,10 +7079,7 @@
     "speciesId": 290,
     "name": "nincada",
     "generation": 3,
-    "baseTypes": [
-      "bug",
-      "ground"
-    ],
+    "baseTypes": ["bug", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7821,10 +7103,7 @@
     "speciesId": 291,
     "name": "ninjask",
     "generation": 3,
-    "baseTypes": [
-      "bug",
-      "flying"
-    ],
+    "baseTypes": ["bug", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7848,10 +7127,7 @@
     "speciesId": 292,
     "name": "shedinja",
     "generation": 3,
-    "baseTypes": [
-      "bug",
-      "ghost"
-    ],
+    "baseTypes": ["bug", "ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7875,9 +7151,7 @@
     "speciesId": 293,
     "name": "whismur",
     "generation": 3,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7901,9 +7175,7 @@
     "speciesId": 294,
     "name": "loudred",
     "generation": 3,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7927,9 +7199,7 @@
     "speciesId": 295,
     "name": "exploud",
     "generation": 3,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7953,9 +7223,7 @@
     "speciesId": 296,
     "name": "makuhita",
     "generation": 3,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -7979,9 +7247,7 @@
     "speciesId": 297,
     "name": "hariyama",
     "generation": 3,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8005,10 +7271,7 @@
     "speciesId": 298,
     "name": "azurill",
     "generation": 3,
-    "baseTypes": [
-      "normal",
-      "fairy"
-    ],
+    "baseTypes": ["normal", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8032,9 +7295,7 @@
     "speciesId": 299,
     "name": "nosepass",
     "generation": 3,
-    "baseTypes": [
-      "rock"
-    ],
+    "baseTypes": ["rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8058,9 +7319,7 @@
     "speciesId": 300,
     "name": "skitty",
     "generation": 3,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8084,9 +7343,7 @@
     "speciesId": 301,
     "name": "delcatty",
     "generation": 3,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8110,10 +7367,7 @@
     "speciesId": 302,
     "name": "sableye",
     "generation": 3,
-    "baseTypes": [
-      "dark",
-      "ghost"
-    ],
+    "baseTypes": ["dark", "ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8137,10 +7391,7 @@
     "speciesId": 303,
     "name": "mawile",
     "generation": 3,
-    "baseTypes": [
-      "steel",
-      "fairy"
-    ],
+    "baseTypes": ["steel", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8164,10 +7415,7 @@
     "speciesId": 304,
     "name": "aron",
     "generation": 3,
-    "baseTypes": [
-      "steel",
-      "rock"
-    ],
+    "baseTypes": ["steel", "rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8191,10 +7439,7 @@
     "speciesId": 305,
     "name": "lairon",
     "generation": 3,
-    "baseTypes": [
-      "steel",
-      "rock"
-    ],
+    "baseTypes": ["steel", "rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8218,10 +7463,7 @@
     "speciesId": 306,
     "name": "aggron",
     "generation": 3,
-    "baseTypes": [
-      "steel",
-      "rock"
-    ],
+    "baseTypes": ["steel", "rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8245,10 +7487,7 @@
     "speciesId": 307,
     "name": "meditite",
     "generation": 3,
-    "baseTypes": [
-      "fighting",
-      "psychic"
-    ],
+    "baseTypes": ["fighting", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8272,10 +7511,7 @@
     "speciesId": 308,
     "name": "medicham",
     "generation": 3,
-    "baseTypes": [
-      "fighting",
-      "psychic"
-    ],
+    "baseTypes": ["fighting", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8299,9 +7535,7 @@
     "speciesId": 309,
     "name": "electrike",
     "generation": 3,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8325,9 +7559,7 @@
     "speciesId": 310,
     "name": "manectric",
     "generation": 3,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8351,9 +7583,7 @@
     "speciesId": 311,
     "name": "plusle",
     "generation": 3,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8377,9 +7607,7 @@
     "speciesId": 312,
     "name": "minun",
     "generation": 3,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8403,9 +7631,7 @@
     "speciesId": 313,
     "name": "volbeat",
     "generation": 3,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8429,9 +7655,7 @@
     "speciesId": 314,
     "name": "illumise",
     "generation": 3,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8455,10 +7679,7 @@
     "speciesId": 315,
     "name": "roselia",
     "generation": 3,
-    "baseTypes": [
-      "grass",
-      "poison"
-    ],
+    "baseTypes": ["grass", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8482,9 +7703,7 @@
     "speciesId": 316,
     "name": "gulpin",
     "generation": 3,
-    "baseTypes": [
-      "poison"
-    ],
+    "baseTypes": ["poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8508,9 +7727,7 @@
     "speciesId": 317,
     "name": "swalot",
     "generation": 3,
-    "baseTypes": [
-      "poison"
-    ],
+    "baseTypes": ["poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8534,10 +7751,7 @@
     "speciesId": 318,
     "name": "carvanha",
     "generation": 3,
-    "baseTypes": [
-      "water",
-      "dark"
-    ],
+    "baseTypes": ["water", "dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8561,10 +7775,7 @@
     "speciesId": 319,
     "name": "sharpedo",
     "generation": 3,
-    "baseTypes": [
-      "water",
-      "dark"
-    ],
+    "baseTypes": ["water", "dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8588,9 +7799,7 @@
     "speciesId": 320,
     "name": "wailmer",
     "generation": 3,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8614,9 +7823,7 @@
     "speciesId": 321,
     "name": "wailord",
     "generation": 3,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8640,10 +7847,7 @@
     "speciesId": 322,
     "name": "numel",
     "generation": 3,
-    "baseTypes": [
-      "fire",
-      "ground"
-    ],
+    "baseTypes": ["fire", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8667,10 +7871,7 @@
     "speciesId": 323,
     "name": "camerupt",
     "generation": 3,
-    "baseTypes": [
-      "fire",
-      "ground"
-    ],
+    "baseTypes": ["fire", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8694,9 +7895,7 @@
     "speciesId": 324,
     "name": "torkoal",
     "generation": 3,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8720,9 +7919,7 @@
     "speciesId": 325,
     "name": "spoink",
     "generation": 3,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8746,9 +7943,7 @@
     "speciesId": 326,
     "name": "grumpig",
     "generation": 3,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8772,9 +7967,7 @@
     "speciesId": 327,
     "name": "spinda",
     "generation": 3,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8798,9 +7991,7 @@
     "speciesId": 328,
     "name": "trapinch",
     "generation": 3,
-    "baseTypes": [
-      "ground"
-    ],
+    "baseTypes": ["ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8824,10 +8015,7 @@
     "speciesId": 329,
     "name": "vibrava",
     "generation": 3,
-    "baseTypes": [
-      "ground",
-      "dragon"
-    ],
+    "baseTypes": ["ground", "dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8851,10 +8039,7 @@
     "speciesId": 330,
     "name": "flygon",
     "generation": 3,
-    "baseTypes": [
-      "ground",
-      "dragon"
-    ],
+    "baseTypes": ["ground", "dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8878,9 +8063,7 @@
     "speciesId": 331,
     "name": "cacnea",
     "generation": 3,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8904,10 +8087,7 @@
     "speciesId": 332,
     "name": "cacturne",
     "generation": 3,
-    "baseTypes": [
-      "grass",
-      "dark"
-    ],
+    "baseTypes": ["grass", "dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8931,10 +8111,7 @@
     "speciesId": 333,
     "name": "swablu",
     "generation": 3,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8958,10 +8135,7 @@
     "speciesId": 334,
     "name": "altaria",
     "generation": 3,
-    "baseTypes": [
-      "dragon",
-      "flying"
-    ],
+    "baseTypes": ["dragon", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -8985,9 +8159,7 @@
     "speciesId": 335,
     "name": "zangoose",
     "generation": 3,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9011,9 +8183,7 @@
     "speciesId": 336,
     "name": "seviper",
     "generation": 3,
-    "baseTypes": [
-      "poison"
-    ],
+    "baseTypes": ["poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9037,10 +8207,7 @@
     "speciesId": 337,
     "name": "lunatone",
     "generation": 3,
-    "baseTypes": [
-      "rock",
-      "psychic"
-    ],
+    "baseTypes": ["rock", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9064,10 +8231,7 @@
     "speciesId": 338,
     "name": "solrock",
     "generation": 3,
-    "baseTypes": [
-      "rock",
-      "psychic"
-    ],
+    "baseTypes": ["rock", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9091,10 +8255,7 @@
     "speciesId": 339,
     "name": "barboach",
     "generation": 3,
-    "baseTypes": [
-      "water",
-      "ground"
-    ],
+    "baseTypes": ["water", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9118,10 +8279,7 @@
     "speciesId": 340,
     "name": "whiscash",
     "generation": 3,
-    "baseTypes": [
-      "water",
-      "ground"
-    ],
+    "baseTypes": ["water", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9145,9 +8303,7 @@
     "speciesId": 341,
     "name": "corphish",
     "generation": 3,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9171,10 +8327,7 @@
     "speciesId": 342,
     "name": "crawdaunt",
     "generation": 3,
-    "baseTypes": [
-      "water",
-      "dark"
-    ],
+    "baseTypes": ["water", "dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9198,10 +8351,7 @@
     "speciesId": 343,
     "name": "baltoy",
     "generation": 3,
-    "baseTypes": [
-      "ground",
-      "psychic"
-    ],
+    "baseTypes": ["ground", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9225,10 +8375,7 @@
     "speciesId": 344,
     "name": "claydol",
     "generation": 3,
-    "baseTypes": [
-      "ground",
-      "psychic"
-    ],
+    "baseTypes": ["ground", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9252,10 +8399,7 @@
     "speciesId": 345,
     "name": "lileep",
     "generation": 3,
-    "baseTypes": [
-      "rock",
-      "grass"
-    ],
+    "baseTypes": ["rock", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9279,10 +8423,7 @@
     "speciesId": 346,
     "name": "cradily",
     "generation": 3,
-    "baseTypes": [
-      "rock",
-      "grass"
-    ],
+    "baseTypes": ["rock", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9306,10 +8447,7 @@
     "speciesId": 347,
     "name": "anorith",
     "generation": 3,
-    "baseTypes": [
-      "rock",
-      "bug"
-    ],
+    "baseTypes": ["rock", "bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9333,10 +8471,7 @@
     "speciesId": 348,
     "name": "armaldo",
     "generation": 3,
-    "baseTypes": [
-      "rock",
-      "bug"
-    ],
+    "baseTypes": ["rock", "bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9360,9 +8495,7 @@
     "speciesId": 349,
     "name": "feebas",
     "generation": 3,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9386,9 +8519,7 @@
     "speciesId": 350,
     "name": "milotic",
     "generation": 3,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9412,9 +8543,7 @@
     "speciesId": 351,
     "name": "castform",
     "generation": 3,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9438,9 +8567,7 @@
     "speciesId": 352,
     "name": "kecleon",
     "generation": 3,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9464,9 +8591,7 @@
     "speciesId": 353,
     "name": "shuppet",
     "generation": 3,
-    "baseTypes": [
-      "ghost"
-    ],
+    "baseTypes": ["ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9490,9 +8615,7 @@
     "speciesId": 354,
     "name": "banette",
     "generation": 3,
-    "baseTypes": [
-      "ghost"
-    ],
+    "baseTypes": ["ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9516,9 +8639,7 @@
     "speciesId": 355,
     "name": "duskull",
     "generation": 3,
-    "baseTypes": [
-      "ghost"
-    ],
+    "baseTypes": ["ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9542,9 +8663,7 @@
     "speciesId": 356,
     "name": "dusclops",
     "generation": 3,
-    "baseTypes": [
-      "ghost"
-    ],
+    "baseTypes": ["ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9568,10 +8687,7 @@
     "speciesId": 357,
     "name": "tropius",
     "generation": 3,
-    "baseTypes": [
-      "grass",
-      "flying"
-    ],
+    "baseTypes": ["grass", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9595,9 +8711,7 @@
     "speciesId": 358,
     "name": "chimecho",
     "generation": 3,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9621,9 +8735,7 @@
     "speciesId": 359,
     "name": "absol",
     "generation": 3,
-    "baseTypes": [
-      "dark"
-    ],
+    "baseTypes": ["dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9647,9 +8759,7 @@
     "speciesId": 360,
     "name": "wynaut",
     "generation": 3,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9673,9 +8783,7 @@
     "speciesId": 361,
     "name": "snorunt",
     "generation": 3,
-    "baseTypes": [
-      "ice"
-    ],
+    "baseTypes": ["ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9699,9 +8807,7 @@
     "speciesId": 362,
     "name": "glalie",
     "generation": 3,
-    "baseTypes": [
-      "ice"
-    ],
+    "baseTypes": ["ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9725,10 +8831,7 @@
     "speciesId": 363,
     "name": "spheal",
     "generation": 3,
-    "baseTypes": [
-      "ice",
-      "water"
-    ],
+    "baseTypes": ["ice", "water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9752,10 +8855,7 @@
     "speciesId": 364,
     "name": "sealeo",
     "generation": 3,
-    "baseTypes": [
-      "ice",
-      "water"
-    ],
+    "baseTypes": ["ice", "water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9779,10 +8879,7 @@
     "speciesId": 365,
     "name": "walrein",
     "generation": 3,
-    "baseTypes": [
-      "ice",
-      "water"
-    ],
+    "baseTypes": ["ice", "water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9806,9 +8903,7 @@
     "speciesId": 366,
     "name": "clamperl",
     "generation": 3,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9832,9 +8927,7 @@
     "speciesId": 367,
     "name": "huntail",
     "generation": 3,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9858,9 +8951,7 @@
     "speciesId": 368,
     "name": "gorebyss",
     "generation": 3,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9884,10 +8975,7 @@
     "speciesId": 369,
     "name": "relicanth",
     "generation": 3,
-    "baseTypes": [
-      "water",
-      "rock"
-    ],
+    "baseTypes": ["water", "rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9911,9 +8999,7 @@
     "speciesId": 370,
     "name": "luvdisc",
     "generation": 3,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9937,9 +9023,7 @@
     "speciesId": 371,
     "name": "bagon",
     "generation": 3,
-    "baseTypes": [
-      "dragon"
-    ],
+    "baseTypes": ["dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9963,9 +9047,7 @@
     "speciesId": 372,
     "name": "shelgon",
     "generation": 3,
-    "baseTypes": [
-      "dragon"
-    ],
+    "baseTypes": ["dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -9989,10 +9071,7 @@
     "speciesId": 373,
     "name": "salamence",
     "generation": 3,
-    "baseTypes": [
-      "dragon",
-      "flying"
-    ],
+    "baseTypes": ["dragon", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10016,10 +9095,7 @@
     "speciesId": 374,
     "name": "beldum",
     "generation": 3,
-    "baseTypes": [
-      "steel",
-      "psychic"
-    ],
+    "baseTypes": ["steel", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10043,10 +9119,7 @@
     "speciesId": 375,
     "name": "metang",
     "generation": 3,
-    "baseTypes": [
-      "steel",
-      "psychic"
-    ],
+    "baseTypes": ["steel", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10070,10 +9143,7 @@
     "speciesId": 376,
     "name": "metagross",
     "generation": 3,
-    "baseTypes": [
-      "steel",
-      "psychic"
-    ],
+    "baseTypes": ["steel", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10097,9 +9167,7 @@
     "speciesId": 377,
     "name": "regirock",
     "generation": 3,
-    "baseTypes": [
-      "rock"
-    ],
+    "baseTypes": ["rock"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -10123,9 +9191,7 @@
     "speciesId": 378,
     "name": "regice",
     "generation": 3,
-    "baseTypes": [
-      "ice"
-    ],
+    "baseTypes": ["ice"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -10149,9 +9215,7 @@
     "speciesId": 379,
     "name": "registeel",
     "generation": 3,
-    "baseTypes": [
-      "steel"
-    ],
+    "baseTypes": ["steel"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -10175,10 +9239,7 @@
     "speciesId": 380,
     "name": "latias",
     "generation": 3,
-    "baseTypes": [
-      "dragon",
-      "psychic"
-    ],
+    "baseTypes": ["dragon", "psychic"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -10202,10 +9263,7 @@
     "speciesId": 381,
     "name": "latios",
     "generation": 3,
-    "baseTypes": [
-      "dragon",
-      "psychic"
-    ],
+    "baseTypes": ["dragon", "psychic"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -10229,9 +9287,7 @@
     "speciesId": 382,
     "name": "kyogre",
     "generation": 3,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -10255,9 +9311,7 @@
     "speciesId": 383,
     "name": "groudon",
     "generation": 3,
-    "baseTypes": [
-      "ground"
-    ],
+    "baseTypes": ["ground"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -10281,10 +9335,7 @@
     "speciesId": 384,
     "name": "rayquaza",
     "generation": 3,
-    "baseTypes": [
-      "dragon",
-      "flying"
-    ],
+    "baseTypes": ["dragon", "flying"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -10308,10 +9359,7 @@
     "speciesId": 385,
     "name": "jirachi",
     "generation": 3,
-    "baseTypes": [
-      "steel",
-      "psychic"
-    ],
+    "baseTypes": ["steel", "psychic"],
     "isLegendary": false,
     "isMythical": true,
     "isStarter": false,
@@ -10335,9 +9383,7 @@
     "speciesId": 386,
     "name": "deoxys-normal",
     "generation": 3,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": true,
     "isStarter": false,
@@ -10361,9 +9407,7 @@
     "speciesId": 387,
     "name": "turtwig",
     "generation": 4,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10387,9 +9431,7 @@
     "speciesId": 388,
     "name": "grotle",
     "generation": 4,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10413,10 +9455,7 @@
     "speciesId": 389,
     "name": "torterra",
     "generation": 4,
-    "baseTypes": [
-      "grass",
-      "ground"
-    ],
+    "baseTypes": ["grass", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10440,9 +9479,7 @@
     "speciesId": 390,
     "name": "chimchar",
     "generation": 4,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10466,10 +9503,7 @@
     "speciesId": 391,
     "name": "monferno",
     "generation": 4,
-    "baseTypes": [
-      "fire",
-      "fighting"
-    ],
+    "baseTypes": ["fire", "fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10493,10 +9527,7 @@
     "speciesId": 392,
     "name": "infernape",
     "generation": 4,
-    "baseTypes": [
-      "fire",
-      "fighting"
-    ],
+    "baseTypes": ["fire", "fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10520,9 +9551,7 @@
     "speciesId": 393,
     "name": "piplup",
     "generation": 4,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10546,9 +9575,7 @@
     "speciesId": 394,
     "name": "prinplup",
     "generation": 4,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10572,10 +9599,7 @@
     "speciesId": 395,
     "name": "empoleon",
     "generation": 4,
-    "baseTypes": [
-      "water",
-      "steel"
-    ],
+    "baseTypes": ["water", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10599,10 +9623,7 @@
     "speciesId": 396,
     "name": "starly",
     "generation": 4,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10626,10 +9647,7 @@
     "speciesId": 397,
     "name": "staravia",
     "generation": 4,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10653,10 +9671,7 @@
     "speciesId": 398,
     "name": "staraptor",
     "generation": 4,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10680,9 +9695,7 @@
     "speciesId": 399,
     "name": "bidoof",
     "generation": 4,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10706,10 +9719,7 @@
     "speciesId": 400,
     "name": "bibarel",
     "generation": 4,
-    "baseTypes": [
-      "normal",
-      "water"
-    ],
+    "baseTypes": ["normal", "water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10733,9 +9743,7 @@
     "speciesId": 401,
     "name": "kricketot",
     "generation": 4,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10759,9 +9767,7 @@
     "speciesId": 402,
     "name": "kricketune",
     "generation": 4,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10785,9 +9791,7 @@
     "speciesId": 403,
     "name": "shinx",
     "generation": 4,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10811,9 +9815,7 @@
     "speciesId": 404,
     "name": "luxio",
     "generation": 4,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10837,9 +9839,7 @@
     "speciesId": 405,
     "name": "luxray",
     "generation": 4,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10863,10 +9863,7 @@
     "speciesId": 406,
     "name": "budew",
     "generation": 4,
-    "baseTypes": [
-      "grass",
-      "poison"
-    ],
+    "baseTypes": ["grass", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10890,10 +9887,7 @@
     "speciesId": 407,
     "name": "roserade",
     "generation": 4,
-    "baseTypes": [
-      "grass",
-      "poison"
-    ],
+    "baseTypes": ["grass", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10917,9 +9911,7 @@
     "speciesId": 408,
     "name": "cranidos",
     "generation": 4,
-    "baseTypes": [
-      "rock"
-    ],
+    "baseTypes": ["rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10943,9 +9935,7 @@
     "speciesId": 409,
     "name": "rampardos",
     "generation": 4,
-    "baseTypes": [
-      "rock"
-    ],
+    "baseTypes": ["rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10969,10 +9959,7 @@
     "speciesId": 410,
     "name": "shieldon",
     "generation": 4,
-    "baseTypes": [
-      "rock",
-      "steel"
-    ],
+    "baseTypes": ["rock", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -10996,10 +9983,7 @@
     "speciesId": 411,
     "name": "bastiodon",
     "generation": 4,
-    "baseTypes": [
-      "rock",
-      "steel"
-    ],
+    "baseTypes": ["rock", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11023,9 +10007,7 @@
     "speciesId": 412,
     "name": "burmy",
     "generation": 4,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11059,10 +10041,7 @@
     "speciesId": 413,
     "name": "wormadam-plant",
     "generation": 4,
-    "baseTypes": [
-      "bug",
-      "grass"
-    ],
+    "baseTypes": ["bug", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11070,8 +10049,8 @@
     "forms": [
       {
         "formName": "wormadam-plant",
-        "spriteGen5Animated": "/pokemon/gen5ani/wormadam-plant.gif",
-        "spriteGen6Animated": "/pokemon/gen6ani/wormadam-plant.gif"
+        "spriteGen5Animated": "/pokemon/gen5ani/wormadam.gif",
+        "spriteGen6Animated": "/pokemon/gen6ani/wormadam.gif"
       }
     ],
     "evolutionPaths": [
@@ -11086,10 +10065,7 @@
     "speciesId": 414,
     "name": "mothim",
     "generation": 4,
-    "baseTypes": [
-      "bug",
-      "flying"
-    ],
+    "baseTypes": ["bug", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11123,10 +10099,7 @@
     "speciesId": 415,
     "name": "combee",
     "generation": 4,
-    "baseTypes": [
-      "bug",
-      "flying"
-    ],
+    "baseTypes": ["bug", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11150,10 +10123,7 @@
     "speciesId": 416,
     "name": "vespiquen",
     "generation": 4,
-    "baseTypes": [
-      "bug",
-      "flying"
-    ],
+    "baseTypes": ["bug", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11177,9 +10147,7 @@
     "speciesId": 417,
     "name": "pachirisu",
     "generation": 4,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11203,9 +10171,7 @@
     "speciesId": 418,
     "name": "buizel",
     "generation": 4,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11229,9 +10195,7 @@
     "speciesId": 419,
     "name": "floatzel",
     "generation": 4,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11255,9 +10219,7 @@
     "speciesId": 420,
     "name": "cherubi",
     "generation": 4,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11281,9 +10243,7 @@
     "speciesId": 421,
     "name": "cherrim",
     "generation": 4,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11312,9 +10272,7 @@
     "speciesId": 422,
     "name": "shellos",
     "generation": 4,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11343,10 +10301,7 @@
     "speciesId": 423,
     "name": "gastrodon",
     "generation": 4,
-    "baseTypes": [
-      "water",
-      "ground"
-    ],
+    "baseTypes": ["water", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11375,9 +10330,7 @@
     "speciesId": 424,
     "name": "ambipom",
     "generation": 4,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11401,10 +10354,7 @@
     "speciesId": 425,
     "name": "drifloon",
     "generation": 4,
-    "baseTypes": [
-      "ghost",
-      "flying"
-    ],
+    "baseTypes": ["ghost", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11428,10 +10378,7 @@
     "speciesId": 426,
     "name": "drifblim",
     "generation": 4,
-    "baseTypes": [
-      "ghost",
-      "flying"
-    ],
+    "baseTypes": ["ghost", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11455,9 +10402,7 @@
     "speciesId": 427,
     "name": "buneary",
     "generation": 4,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11481,9 +10426,7 @@
     "speciesId": 428,
     "name": "lopunny",
     "generation": 4,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11507,9 +10450,7 @@
     "speciesId": 429,
     "name": "mismagius",
     "generation": 4,
-    "baseTypes": [
-      "ghost"
-    ],
+    "baseTypes": ["ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11533,10 +10474,7 @@
     "speciesId": 430,
     "name": "honchkrow",
     "generation": 4,
-    "baseTypes": [
-      "dark",
-      "flying"
-    ],
+    "baseTypes": ["dark", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11560,9 +10498,7 @@
     "speciesId": 431,
     "name": "glameow",
     "generation": 4,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11586,9 +10522,7 @@
     "speciesId": 432,
     "name": "purugly",
     "generation": 4,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11612,9 +10546,7 @@
     "speciesId": 433,
     "name": "chingling",
     "generation": 4,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11638,10 +10570,7 @@
     "speciesId": 434,
     "name": "stunky",
     "generation": 4,
-    "baseTypes": [
-      "poison",
-      "dark"
-    ],
+    "baseTypes": ["poison", "dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11665,10 +10594,7 @@
     "speciesId": 435,
     "name": "skuntank",
     "generation": 4,
-    "baseTypes": [
-      "poison",
-      "dark"
-    ],
+    "baseTypes": ["poison", "dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11692,10 +10618,7 @@
     "speciesId": 436,
     "name": "bronzor",
     "generation": 4,
-    "baseTypes": [
-      "steel",
-      "psychic"
-    ],
+    "baseTypes": ["steel", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11719,10 +10642,7 @@
     "speciesId": 437,
     "name": "bronzong",
     "generation": 4,
-    "baseTypes": [
-      "steel",
-      "psychic"
-    ],
+    "baseTypes": ["steel", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11746,9 +10666,7 @@
     "speciesId": 438,
     "name": "bonsly",
     "generation": 4,
-    "baseTypes": [
-      "rock"
-    ],
+    "baseTypes": ["rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11772,10 +10690,7 @@
     "speciesId": 439,
     "name": "mime-jr",
     "generation": 4,
-    "baseTypes": [
-      "psychic",
-      "fairy"
-    ],
+    "baseTypes": ["psychic", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11783,8 +10698,8 @@
     "forms": [
       {
         "formName": "mime-jr",
-        "spriteGen5Animated": "/pokemon/gen5ani/mime-jr.gif",
-        "spriteGen6Animated": "/pokemon/gen6ani/mime-jr.gif"
+        "spriteGen5Animated": "/pokemon/gen5ani/mimejr.gif",
+        "spriteGen6Animated": "/pokemon/gen6ani/mimejr.gif"
       }
     ],
     "evolutionPaths": [
@@ -11799,9 +10714,7 @@
     "speciesId": 440,
     "name": "happiny",
     "generation": 4,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11825,10 +10738,7 @@
     "speciesId": 441,
     "name": "chatot",
     "generation": 4,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11852,10 +10762,7 @@
     "speciesId": 442,
     "name": "spiritomb",
     "generation": 4,
-    "baseTypes": [
-      "ghost",
-      "dark"
-    ],
+    "baseTypes": ["ghost", "dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11879,10 +10786,7 @@
     "speciesId": 443,
     "name": "gible",
     "generation": 4,
-    "baseTypes": [
-      "dragon",
-      "ground"
-    ],
+    "baseTypes": ["dragon", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11906,10 +10810,7 @@
     "speciesId": 444,
     "name": "gabite",
     "generation": 4,
-    "baseTypes": [
-      "dragon",
-      "ground"
-    ],
+    "baseTypes": ["dragon", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11933,10 +10834,7 @@
     "speciesId": 445,
     "name": "garchomp",
     "generation": 4,
-    "baseTypes": [
-      "dragon",
-      "ground"
-    ],
+    "baseTypes": ["dragon", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11960,9 +10858,7 @@
     "speciesId": 446,
     "name": "munchlax",
     "generation": 4,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -11986,9 +10882,7 @@
     "speciesId": 447,
     "name": "riolu",
     "generation": 4,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12012,10 +10906,7 @@
     "speciesId": 448,
     "name": "lucario",
     "generation": 4,
-    "baseTypes": [
-      "fighting",
-      "steel"
-    ],
+    "baseTypes": ["fighting", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12039,9 +10930,7 @@
     "speciesId": 449,
     "name": "hippopotas",
     "generation": 4,
-    "baseTypes": [
-      "ground"
-    ],
+    "baseTypes": ["ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12065,9 +10954,7 @@
     "speciesId": 450,
     "name": "hippowdon",
     "generation": 4,
-    "baseTypes": [
-      "ground"
-    ],
+    "baseTypes": ["ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12091,10 +10978,7 @@
     "speciesId": 451,
     "name": "skorupi",
     "generation": 4,
-    "baseTypes": [
-      "poison",
-      "bug"
-    ],
+    "baseTypes": ["poison", "bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12118,10 +11002,7 @@
     "speciesId": 452,
     "name": "drapion",
     "generation": 4,
-    "baseTypes": [
-      "poison",
-      "dark"
-    ],
+    "baseTypes": ["poison", "dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12145,10 +11026,7 @@
     "speciesId": 453,
     "name": "croagunk",
     "generation": 4,
-    "baseTypes": [
-      "poison",
-      "fighting"
-    ],
+    "baseTypes": ["poison", "fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12172,10 +11050,7 @@
     "speciesId": 454,
     "name": "toxicroak",
     "generation": 4,
-    "baseTypes": [
-      "poison",
-      "fighting"
-    ],
+    "baseTypes": ["poison", "fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12199,9 +11074,7 @@
     "speciesId": 455,
     "name": "carnivine",
     "generation": 4,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12225,9 +11098,7 @@
     "speciesId": 456,
     "name": "finneon",
     "generation": 4,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12251,9 +11122,7 @@
     "speciesId": 457,
     "name": "lumineon",
     "generation": 4,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12277,10 +11146,7 @@
     "speciesId": 458,
     "name": "mantyke",
     "generation": 4,
-    "baseTypes": [
-      "water",
-      "flying"
-    ],
+    "baseTypes": ["water", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12304,10 +11170,7 @@
     "speciesId": 459,
     "name": "snover",
     "generation": 4,
-    "baseTypes": [
-      "grass",
-      "ice"
-    ],
+    "baseTypes": ["grass", "ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12331,10 +11194,7 @@
     "speciesId": 460,
     "name": "abomasnow",
     "generation": 4,
-    "baseTypes": [
-      "grass",
-      "ice"
-    ],
+    "baseTypes": ["grass", "ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12358,10 +11218,7 @@
     "speciesId": 461,
     "name": "weavile",
     "generation": 4,
-    "baseTypes": [
-      "dark",
-      "ice"
-    ],
+    "baseTypes": ["dark", "ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12385,10 +11242,7 @@
     "speciesId": 462,
     "name": "magnezone",
     "generation": 4,
-    "baseTypes": [
-      "electric",
-      "steel"
-    ],
+    "baseTypes": ["electric", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12412,9 +11266,7 @@
     "speciesId": 463,
     "name": "lickilicky",
     "generation": 4,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12438,10 +11290,7 @@
     "speciesId": 464,
     "name": "rhyperior",
     "generation": 4,
-    "baseTypes": [
-      "ground",
-      "rock"
-    ],
+    "baseTypes": ["ground", "rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12465,9 +11314,7 @@
     "speciesId": 465,
     "name": "tangrowth",
     "generation": 4,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12491,9 +11338,7 @@
     "speciesId": 466,
     "name": "electivire",
     "generation": 4,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12517,9 +11362,7 @@
     "speciesId": 467,
     "name": "magmortar",
     "generation": 4,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12543,10 +11386,7 @@
     "speciesId": 468,
     "name": "togekiss",
     "generation": 4,
-    "baseTypes": [
-      "fairy",
-      "flying"
-    ],
+    "baseTypes": ["fairy", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12570,10 +11410,7 @@
     "speciesId": 469,
     "name": "yanmega",
     "generation": 4,
-    "baseTypes": [
-      "bug",
-      "flying"
-    ],
+    "baseTypes": ["bug", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12597,9 +11434,7 @@
     "speciesId": 470,
     "name": "leafeon",
     "generation": 4,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12623,9 +11458,7 @@
     "speciesId": 471,
     "name": "glaceon",
     "generation": 4,
-    "baseTypes": [
-      "ice"
-    ],
+    "baseTypes": ["ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12649,10 +11482,7 @@
     "speciesId": 472,
     "name": "gliscor",
     "generation": 4,
-    "baseTypes": [
-      "ground",
-      "flying"
-    ],
+    "baseTypes": ["ground", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12676,10 +11506,7 @@
     "speciesId": 473,
     "name": "mamoswine",
     "generation": 4,
-    "baseTypes": [
-      "ice",
-      "ground"
-    ],
+    "baseTypes": ["ice", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12703,9 +11530,7 @@
     "speciesId": 474,
     "name": "porygon-z",
     "generation": 4,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12713,8 +11538,8 @@
     "forms": [
       {
         "formName": "porygon-z",
-        "spriteGen5Animated": "/pokemon/gen5ani/porygon-z.gif",
-        "spriteGen6Animated": "/pokemon/gen6ani/porygon-z.gif"
+        "spriteGen5Animated": "/pokemon/gen5ani/porygonz.gif",
+        "spriteGen6Animated": "/pokemon/gen6ani/porygonz.gif"
       }
     ],
     "evolutionPaths": [
@@ -12729,10 +11554,7 @@
     "speciesId": 475,
     "name": "gallade",
     "generation": 4,
-    "baseTypes": [
-      "psychic",
-      "fighting"
-    ],
+    "baseTypes": ["psychic", "fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12756,10 +11578,7 @@
     "speciesId": 476,
     "name": "probopass",
     "generation": 4,
-    "baseTypes": [
-      "rock",
-      "steel"
-    ],
+    "baseTypes": ["rock", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12783,9 +11602,7 @@
     "speciesId": 477,
     "name": "dusknoir",
     "generation": 4,
-    "baseTypes": [
-      "ghost"
-    ],
+    "baseTypes": ["ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12809,10 +11626,7 @@
     "speciesId": 478,
     "name": "froslass",
     "generation": 4,
-    "baseTypes": [
-      "ice",
-      "ghost"
-    ],
+    "baseTypes": ["ice", "ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12836,10 +11650,7 @@
     "speciesId": 479,
     "name": "rotom",
     "generation": 4,
-    "baseTypes": [
-      "electric",
-      "ghost"
-    ],
+    "baseTypes": ["electric", "ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -12863,9 +11674,7 @@
     "speciesId": 480,
     "name": "uxie",
     "generation": 4,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -12889,9 +11698,7 @@
     "speciesId": 481,
     "name": "mesprit",
     "generation": 4,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -12915,9 +11722,7 @@
     "speciesId": 482,
     "name": "azelf",
     "generation": 4,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -12941,10 +11746,7 @@
     "speciesId": 483,
     "name": "dialga",
     "generation": 4,
-    "baseTypes": [
-      "steel",
-      "dragon"
-    ],
+    "baseTypes": ["steel", "dragon"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -12968,10 +11770,7 @@
     "speciesId": 484,
     "name": "palkia",
     "generation": 4,
-    "baseTypes": [
-      "water",
-      "dragon"
-    ],
+    "baseTypes": ["water", "dragon"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -12995,10 +11794,7 @@
     "speciesId": 485,
     "name": "heatran",
     "generation": 4,
-    "baseTypes": [
-      "fire",
-      "steel"
-    ],
+    "baseTypes": ["fire", "steel"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -13022,9 +11818,7 @@
     "speciesId": 486,
     "name": "regigigas",
     "generation": 4,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -13048,10 +11842,7 @@
     "speciesId": 487,
     "name": "giratina-altered",
     "generation": 4,
-    "baseTypes": [
-      "ghost",
-      "dragon"
-    ],
+    "baseTypes": ["ghost", "dragon"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -13059,8 +11850,8 @@
     "forms": [
       {
         "formName": "giratina-altered",
-        "spriteGen5Animated": "/pokemon/gen5ani/giratina-altered.gif",
-        "spriteGen6Animated": "/pokemon/gen6ani/giratina-altered.gif"
+        "spriteGen5Animated": "/pokemon/gen5ani/giratina.gif",
+        "spriteGen6Animated": "/pokemon/gen6ani/giratina.gif"
       }
     ],
     "evolutionPaths": [
@@ -13075,9 +11866,7 @@
     "speciesId": 488,
     "name": "cresselia",
     "generation": 4,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -13101,9 +11890,7 @@
     "speciesId": 489,
     "name": "phione",
     "generation": 4,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": true,
     "isStarter": false,
@@ -13127,9 +11914,7 @@
     "speciesId": 490,
     "name": "manaphy",
     "generation": 4,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": true,
     "isStarter": false,
@@ -13153,9 +11938,7 @@
     "speciesId": 491,
     "name": "darkrai",
     "generation": 4,
-    "baseTypes": [
-      "dark"
-    ],
+    "baseTypes": ["dark"],
     "isLegendary": false,
     "isMythical": true,
     "isStarter": false,
@@ -13179,9 +11962,7 @@
     "speciesId": 492,
     "name": "shaymin-land",
     "generation": 4,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": true,
     "isStarter": false,
@@ -13189,8 +11970,8 @@
     "forms": [
       {
         "formName": "shaymin-land",
-        "spriteGen5Animated": "/pokemon/gen5ani/shaymin-land.gif",
-        "spriteGen6Animated": "/pokemon/gen6ani/shaymin-land.gif"
+        "spriteGen5Animated": "/pokemon/gen5ani/shaymin.gif",
+        "spriteGen6Animated": "/pokemon/gen6ani/shaymin.gif"
       }
     ],
     "evolutionPaths": [
@@ -13205,9 +11986,7 @@
     "speciesId": 493,
     "name": "arceus",
     "generation": 4,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": true,
     "isStarter": false,
@@ -13321,10 +12100,7 @@
     "speciesId": 494,
     "name": "victini",
     "generation": 5,
-    "baseTypes": [
-      "psychic",
-      "fire"
-    ],
+    "baseTypes": ["psychic", "fire"],
     "isLegendary": false,
     "isMythical": true,
     "isStarter": false,
@@ -13348,9 +12124,7 @@
     "speciesId": 495,
     "name": "snivy",
     "generation": 5,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13374,9 +12148,7 @@
     "speciesId": 496,
     "name": "servine",
     "generation": 5,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13400,9 +12172,7 @@
     "speciesId": 497,
     "name": "serperior",
     "generation": 5,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13426,9 +12196,7 @@
     "speciesId": 498,
     "name": "tepig",
     "generation": 5,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13452,10 +12220,7 @@
     "speciesId": 499,
     "name": "pignite",
     "generation": 5,
-    "baseTypes": [
-      "fire",
-      "fighting"
-    ],
+    "baseTypes": ["fire", "fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13479,10 +12244,7 @@
     "speciesId": 500,
     "name": "emboar",
     "generation": 5,
-    "baseTypes": [
-      "fire",
-      "fighting"
-    ],
+    "baseTypes": ["fire", "fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13506,9 +12268,7 @@
     "speciesId": 501,
     "name": "oshawott",
     "generation": 5,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13532,9 +12292,7 @@
     "speciesId": 502,
     "name": "dewott",
     "generation": 5,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13558,9 +12316,7 @@
     "speciesId": 503,
     "name": "samurott",
     "generation": 5,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13584,9 +12340,7 @@
     "speciesId": 504,
     "name": "patrat",
     "generation": 5,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13610,9 +12364,7 @@
     "speciesId": 505,
     "name": "watchog",
     "generation": 5,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13636,9 +12388,7 @@
     "speciesId": 506,
     "name": "lillipup",
     "generation": 5,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13662,9 +12412,7 @@
     "speciesId": 507,
     "name": "herdier",
     "generation": 5,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13688,9 +12436,7 @@
     "speciesId": 508,
     "name": "stoutland",
     "generation": 5,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13714,9 +12460,7 @@
     "speciesId": 509,
     "name": "purrloin",
     "generation": 5,
-    "baseTypes": [
-      "dark"
-    ],
+    "baseTypes": ["dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13740,9 +12484,7 @@
     "speciesId": 510,
     "name": "liepard",
     "generation": 5,
-    "baseTypes": [
-      "dark"
-    ],
+    "baseTypes": ["dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13766,9 +12508,7 @@
     "speciesId": 511,
     "name": "pansage",
     "generation": 5,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13792,9 +12532,7 @@
     "speciesId": 512,
     "name": "simisage",
     "generation": 5,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13818,9 +12556,7 @@
     "speciesId": 513,
     "name": "pansear",
     "generation": 5,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13844,9 +12580,7 @@
     "speciesId": 514,
     "name": "simisear",
     "generation": 5,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13870,9 +12604,7 @@
     "speciesId": 515,
     "name": "panpour",
     "generation": 5,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13896,9 +12628,7 @@
     "speciesId": 516,
     "name": "simipour",
     "generation": 5,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13922,9 +12652,7 @@
     "speciesId": 517,
     "name": "munna",
     "generation": 5,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13948,9 +12676,7 @@
     "speciesId": 518,
     "name": "musharna",
     "generation": 5,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -13974,10 +12700,7 @@
     "speciesId": 519,
     "name": "pidove",
     "generation": 5,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14001,10 +12724,7 @@
     "speciesId": 520,
     "name": "tranquill",
     "generation": 5,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14028,10 +12748,7 @@
     "speciesId": 521,
     "name": "unfezant",
     "generation": 5,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14055,9 +12772,7 @@
     "speciesId": 522,
     "name": "blitzle",
     "generation": 5,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14081,9 +12796,7 @@
     "speciesId": 523,
     "name": "zebstrika",
     "generation": 5,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14107,9 +12820,7 @@
     "speciesId": 524,
     "name": "roggenrola",
     "generation": 5,
-    "baseTypes": [
-      "rock"
-    ],
+    "baseTypes": ["rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14133,9 +12844,7 @@
     "speciesId": 525,
     "name": "boldore",
     "generation": 5,
-    "baseTypes": [
-      "rock"
-    ],
+    "baseTypes": ["rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14159,9 +12868,7 @@
     "speciesId": 526,
     "name": "gigalith",
     "generation": 5,
-    "baseTypes": [
-      "rock"
-    ],
+    "baseTypes": ["rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14185,10 +12892,7 @@
     "speciesId": 527,
     "name": "woobat",
     "generation": 5,
-    "baseTypes": [
-      "psychic",
-      "flying"
-    ],
+    "baseTypes": ["psychic", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14212,10 +12916,7 @@
     "speciesId": 528,
     "name": "swoobat",
     "generation": 5,
-    "baseTypes": [
-      "psychic",
-      "flying"
-    ],
+    "baseTypes": ["psychic", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14239,9 +12940,7 @@
     "speciesId": 529,
     "name": "drilbur",
     "generation": 5,
-    "baseTypes": [
-      "ground"
-    ],
+    "baseTypes": ["ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14265,10 +12964,7 @@
     "speciesId": 530,
     "name": "excadrill",
     "generation": 5,
-    "baseTypes": [
-      "ground",
-      "steel"
-    ],
+    "baseTypes": ["ground", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14292,9 +12988,7 @@
     "speciesId": 531,
     "name": "audino",
     "generation": 5,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14318,9 +13012,7 @@
     "speciesId": 532,
     "name": "timburr",
     "generation": 5,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14344,9 +13036,7 @@
     "speciesId": 533,
     "name": "gurdurr",
     "generation": 5,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14370,9 +13060,7 @@
     "speciesId": 534,
     "name": "conkeldurr",
     "generation": 5,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14396,9 +13084,7 @@
     "speciesId": 535,
     "name": "tympole",
     "generation": 5,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14422,10 +13108,7 @@
     "speciesId": 536,
     "name": "palpitoad",
     "generation": 5,
-    "baseTypes": [
-      "water",
-      "ground"
-    ],
+    "baseTypes": ["water", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14449,10 +13132,7 @@
     "speciesId": 537,
     "name": "seismitoad",
     "generation": 5,
-    "baseTypes": [
-      "water",
-      "ground"
-    ],
+    "baseTypes": ["water", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14476,9 +13156,7 @@
     "speciesId": 538,
     "name": "throh",
     "generation": 5,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14502,9 +13180,7 @@
     "speciesId": 539,
     "name": "sawk",
     "generation": 5,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14528,10 +13204,7 @@
     "speciesId": 540,
     "name": "sewaddle",
     "generation": 5,
-    "baseTypes": [
-      "bug",
-      "grass"
-    ],
+    "baseTypes": ["bug", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14555,10 +13228,7 @@
     "speciesId": 541,
     "name": "swadloon",
     "generation": 5,
-    "baseTypes": [
-      "bug",
-      "grass"
-    ],
+    "baseTypes": ["bug", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14582,10 +13252,7 @@
     "speciesId": 542,
     "name": "leavanny",
     "generation": 5,
-    "baseTypes": [
-      "bug",
-      "grass"
-    ],
+    "baseTypes": ["bug", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14609,10 +13276,7 @@
     "speciesId": 543,
     "name": "venipede",
     "generation": 5,
-    "baseTypes": [
-      "bug",
-      "poison"
-    ],
+    "baseTypes": ["bug", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14636,10 +13300,7 @@
     "speciesId": 544,
     "name": "whirlipede",
     "generation": 5,
-    "baseTypes": [
-      "bug",
-      "poison"
-    ],
+    "baseTypes": ["bug", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14663,10 +13324,7 @@
     "speciesId": 545,
     "name": "scolipede",
     "generation": 5,
-    "baseTypes": [
-      "bug",
-      "poison"
-    ],
+    "baseTypes": ["bug", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14690,10 +13348,7 @@
     "speciesId": 546,
     "name": "cottonee",
     "generation": 5,
-    "baseTypes": [
-      "grass",
-      "fairy"
-    ],
+    "baseTypes": ["grass", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14717,10 +13372,7 @@
     "speciesId": 547,
     "name": "whimsicott",
     "generation": 5,
-    "baseTypes": [
-      "grass",
-      "fairy"
-    ],
+    "baseTypes": ["grass", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14744,9 +13396,7 @@
     "speciesId": 548,
     "name": "petilil",
     "generation": 5,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14770,9 +13420,7 @@
     "speciesId": 549,
     "name": "lilligant",
     "generation": 5,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14796,9 +13444,7 @@
     "speciesId": 550,
     "name": "basculin-red-striped",
     "generation": 5,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14806,8 +13452,8 @@
     "forms": [
       {
         "formName": "basculin-red-striped",
-        "spriteGen5Animated": "/pokemon/gen5ani/basculin-red-striped.gif",
-        "spriteGen6Animated": "/pokemon/gen6ani/basculin-red-striped.gif"
+        "spriteGen5Animated": "/pokemon/gen5ani/basculin.gif",
+        "spriteGen6Animated": "/pokemon/gen6ani/basculin.gif"
       }
     ],
     "evolutionPaths": [
@@ -14822,10 +13468,7 @@
     "speciesId": 551,
     "name": "sandile",
     "generation": 5,
-    "baseTypes": [
-      "ground",
-      "dark"
-    ],
+    "baseTypes": ["ground", "dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14849,10 +13492,7 @@
     "speciesId": 552,
     "name": "krokorok",
     "generation": 5,
-    "baseTypes": [
-      "ground",
-      "dark"
-    ],
+    "baseTypes": ["ground", "dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14876,10 +13516,7 @@
     "speciesId": 553,
     "name": "krookodile",
     "generation": 5,
-    "baseTypes": [
-      "ground",
-      "dark"
-    ],
+    "baseTypes": ["ground", "dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14903,9 +13540,7 @@
     "speciesId": 554,
     "name": "darumaka",
     "generation": 5,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14929,9 +13564,7 @@
     "speciesId": 555,
     "name": "darmanitan-standard",
     "generation": 5,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14939,8 +13572,8 @@
     "forms": [
       {
         "formName": "darmanitan-standard",
-        "spriteGen5Animated": "/pokemon/gen5ani/darmanitan-standard.gif",
-        "spriteGen6Animated": "/pokemon/gen6ani/darmanitan-standard.gif"
+        "spriteGen5Animated": "/pokemon/gen5ani/darmanitan.gif",
+        "spriteGen6Animated": "/pokemon/gen6ani/darmanitan.gif"
       }
     ],
     "evolutionPaths": [
@@ -14955,9 +13588,7 @@
     "speciesId": 556,
     "name": "maractus",
     "generation": 5,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -14981,10 +13612,7 @@
     "speciesId": 557,
     "name": "dwebble",
     "generation": 5,
-    "baseTypes": [
-      "bug",
-      "rock"
-    ],
+    "baseTypes": ["bug", "rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15008,10 +13636,7 @@
     "speciesId": 558,
     "name": "crustle",
     "generation": 5,
-    "baseTypes": [
-      "bug",
-      "rock"
-    ],
+    "baseTypes": ["bug", "rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15035,10 +13660,7 @@
     "speciesId": 559,
     "name": "scraggy",
     "generation": 5,
-    "baseTypes": [
-      "dark",
-      "fighting"
-    ],
+    "baseTypes": ["dark", "fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15062,10 +13684,7 @@
     "speciesId": 560,
     "name": "scrafty",
     "generation": 5,
-    "baseTypes": [
-      "dark",
-      "fighting"
-    ],
+    "baseTypes": ["dark", "fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15089,10 +13708,7 @@
     "speciesId": 561,
     "name": "sigilyph",
     "generation": 5,
-    "baseTypes": [
-      "psychic",
-      "flying"
-    ],
+    "baseTypes": ["psychic", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15116,9 +13732,7 @@
     "speciesId": 562,
     "name": "yamask",
     "generation": 5,
-    "baseTypes": [
-      "ghost"
-    ],
+    "baseTypes": ["ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15142,9 +13756,7 @@
     "speciesId": 563,
     "name": "cofagrigus",
     "generation": 5,
-    "baseTypes": [
-      "ghost"
-    ],
+    "baseTypes": ["ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15168,10 +13780,7 @@
     "speciesId": 564,
     "name": "tirtouga",
     "generation": 5,
-    "baseTypes": [
-      "water",
-      "rock"
-    ],
+    "baseTypes": ["water", "rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15195,10 +13804,7 @@
     "speciesId": 565,
     "name": "carracosta",
     "generation": 5,
-    "baseTypes": [
-      "water",
-      "rock"
-    ],
+    "baseTypes": ["water", "rock"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15222,10 +13828,7 @@
     "speciesId": 566,
     "name": "archen",
     "generation": 5,
-    "baseTypes": [
-      "rock",
-      "flying"
-    ],
+    "baseTypes": ["rock", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15249,10 +13852,7 @@
     "speciesId": 567,
     "name": "archeops",
     "generation": 5,
-    "baseTypes": [
-      "rock",
-      "flying"
-    ],
+    "baseTypes": ["rock", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15276,9 +13876,7 @@
     "speciesId": 568,
     "name": "trubbish",
     "generation": 5,
-    "baseTypes": [
-      "poison"
-    ],
+    "baseTypes": ["poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15302,9 +13900,7 @@
     "speciesId": 569,
     "name": "garbodor",
     "generation": 5,
-    "baseTypes": [
-      "poison"
-    ],
+    "baseTypes": ["poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15328,9 +13924,7 @@
     "speciesId": 570,
     "name": "zorua",
     "generation": 5,
-    "baseTypes": [
-      "dark"
-    ],
+    "baseTypes": ["dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15354,9 +13948,7 @@
     "speciesId": 571,
     "name": "zoroark",
     "generation": 5,
-    "baseTypes": [
-      "dark"
-    ],
+    "baseTypes": ["dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15380,9 +13972,7 @@
     "speciesId": 572,
     "name": "minccino",
     "generation": 5,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15406,9 +13996,7 @@
     "speciesId": 573,
     "name": "cinccino",
     "generation": 5,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15432,9 +14020,7 @@
     "speciesId": 574,
     "name": "gothita",
     "generation": 5,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15458,9 +14044,7 @@
     "speciesId": 575,
     "name": "gothorita",
     "generation": 5,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15484,9 +14068,7 @@
     "speciesId": 576,
     "name": "gothitelle",
     "generation": 5,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15510,9 +14092,7 @@
     "speciesId": 577,
     "name": "solosis",
     "generation": 5,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15536,9 +14116,7 @@
     "speciesId": 578,
     "name": "duosion",
     "generation": 5,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15562,9 +14140,7 @@
     "speciesId": 579,
     "name": "reuniclus",
     "generation": 5,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15588,10 +14164,7 @@
     "speciesId": 580,
     "name": "ducklett",
     "generation": 5,
-    "baseTypes": [
-      "water",
-      "flying"
-    ],
+    "baseTypes": ["water", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15615,10 +14188,7 @@
     "speciesId": 581,
     "name": "swanna",
     "generation": 5,
-    "baseTypes": [
-      "water",
-      "flying"
-    ],
+    "baseTypes": ["water", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15642,9 +14212,7 @@
     "speciesId": 582,
     "name": "vanillite",
     "generation": 5,
-    "baseTypes": [
-      "ice"
-    ],
+    "baseTypes": ["ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15668,9 +14236,7 @@
     "speciesId": 583,
     "name": "vanillish",
     "generation": 5,
-    "baseTypes": [
-      "ice"
-    ],
+    "baseTypes": ["ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15694,9 +14260,7 @@
     "speciesId": 584,
     "name": "vanilluxe",
     "generation": 5,
-    "baseTypes": [
-      "ice"
-    ],
+    "baseTypes": ["ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15720,10 +14284,7 @@
     "speciesId": 585,
     "name": "deerling",
     "generation": 5,
-    "baseTypes": [
-      "normal",
-      "grass"
-    ],
+    "baseTypes": ["normal", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15762,10 +14323,7 @@
     "speciesId": 586,
     "name": "sawsbuck",
     "generation": 5,
-    "baseTypes": [
-      "normal",
-      "grass"
-    ],
+    "baseTypes": ["normal", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15804,10 +14362,7 @@
     "speciesId": 587,
     "name": "emolga",
     "generation": 5,
-    "baseTypes": [
-      "electric",
-      "flying"
-    ],
+    "baseTypes": ["electric", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15831,9 +14386,7 @@
     "speciesId": 588,
     "name": "karrablast",
     "generation": 5,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15857,10 +14410,7 @@
     "speciesId": 589,
     "name": "escavalier",
     "generation": 5,
-    "baseTypes": [
-      "bug",
-      "steel"
-    ],
+    "baseTypes": ["bug", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15884,10 +14434,7 @@
     "speciesId": 590,
     "name": "foongus",
     "generation": 5,
-    "baseTypes": [
-      "grass",
-      "poison"
-    ],
+    "baseTypes": ["grass", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15911,10 +14458,7 @@
     "speciesId": 591,
     "name": "amoonguss",
     "generation": 5,
-    "baseTypes": [
-      "grass",
-      "poison"
-    ],
+    "baseTypes": ["grass", "poison"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15938,10 +14482,7 @@
     "speciesId": 592,
     "name": "frillish",
     "generation": 5,
-    "baseTypes": [
-      "water",
-      "ghost"
-    ],
+    "baseTypes": ["water", "ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15965,10 +14506,7 @@
     "speciesId": 593,
     "name": "jellicent",
     "generation": 5,
-    "baseTypes": [
-      "water",
-      "ghost"
-    ],
+    "baseTypes": ["water", "ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -15992,9 +14530,7 @@
     "speciesId": 594,
     "name": "alomomola",
     "generation": 5,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16018,10 +14554,7 @@
     "speciesId": 595,
     "name": "joltik",
     "generation": 5,
-    "baseTypes": [
-      "bug",
-      "electric"
-    ],
+    "baseTypes": ["bug", "electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16045,10 +14578,7 @@
     "speciesId": 596,
     "name": "galvantula",
     "generation": 5,
-    "baseTypes": [
-      "bug",
-      "electric"
-    ],
+    "baseTypes": ["bug", "electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16072,10 +14602,7 @@
     "speciesId": 597,
     "name": "ferroseed",
     "generation": 5,
-    "baseTypes": [
-      "grass",
-      "steel"
-    ],
+    "baseTypes": ["grass", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16099,10 +14626,7 @@
     "speciesId": 598,
     "name": "ferrothorn",
     "generation": 5,
-    "baseTypes": [
-      "grass",
-      "steel"
-    ],
+    "baseTypes": ["grass", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16126,9 +14650,7 @@
     "speciesId": 599,
     "name": "klink",
     "generation": 5,
-    "baseTypes": [
-      "steel"
-    ],
+    "baseTypes": ["steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16152,9 +14674,7 @@
     "speciesId": 600,
     "name": "klang",
     "generation": 5,
-    "baseTypes": [
-      "steel"
-    ],
+    "baseTypes": ["steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16178,9 +14698,7 @@
     "speciesId": 601,
     "name": "klinklang",
     "generation": 5,
-    "baseTypes": [
-      "steel"
-    ],
+    "baseTypes": ["steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16204,9 +14722,7 @@
     "speciesId": 602,
     "name": "tynamo",
     "generation": 5,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16230,9 +14746,7 @@
     "speciesId": 603,
     "name": "eelektrik",
     "generation": 5,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16256,9 +14770,7 @@
     "speciesId": 604,
     "name": "eelektross",
     "generation": 5,
-    "baseTypes": [
-      "electric"
-    ],
+    "baseTypes": ["electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16282,9 +14794,7 @@
     "speciesId": 605,
     "name": "elgyem",
     "generation": 5,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16308,9 +14818,7 @@
     "speciesId": 606,
     "name": "beheeyem",
     "generation": 5,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16334,10 +14842,7 @@
     "speciesId": 607,
     "name": "litwick",
     "generation": 5,
-    "baseTypes": [
-      "ghost",
-      "fire"
-    ],
+    "baseTypes": ["ghost", "fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16361,10 +14866,7 @@
     "speciesId": 608,
     "name": "lampent",
     "generation": 5,
-    "baseTypes": [
-      "ghost",
-      "fire"
-    ],
+    "baseTypes": ["ghost", "fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16388,10 +14890,7 @@
     "speciesId": 609,
     "name": "chandelure",
     "generation": 5,
-    "baseTypes": [
-      "ghost",
-      "fire"
-    ],
+    "baseTypes": ["ghost", "fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16415,9 +14914,7 @@
     "speciesId": 610,
     "name": "axew",
     "generation": 5,
-    "baseTypes": [
-      "dragon"
-    ],
+    "baseTypes": ["dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16441,9 +14938,7 @@
     "speciesId": 611,
     "name": "fraxure",
     "generation": 5,
-    "baseTypes": [
-      "dragon"
-    ],
+    "baseTypes": ["dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16467,9 +14962,7 @@
     "speciesId": 612,
     "name": "haxorus",
     "generation": 5,
-    "baseTypes": [
-      "dragon"
-    ],
+    "baseTypes": ["dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16493,9 +14986,7 @@
     "speciesId": 613,
     "name": "cubchoo",
     "generation": 5,
-    "baseTypes": [
-      "ice"
-    ],
+    "baseTypes": ["ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16519,9 +15010,7 @@
     "speciesId": 614,
     "name": "beartic",
     "generation": 5,
-    "baseTypes": [
-      "ice"
-    ],
+    "baseTypes": ["ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16545,9 +15034,7 @@
     "speciesId": 615,
     "name": "cryogonal",
     "generation": 5,
-    "baseTypes": [
-      "ice"
-    ],
+    "baseTypes": ["ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16571,9 +15058,7 @@
     "speciesId": 616,
     "name": "shelmet",
     "generation": 5,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16597,9 +15082,7 @@
     "speciesId": 617,
     "name": "accelgor",
     "generation": 5,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16623,10 +15106,7 @@
     "speciesId": 618,
     "name": "stunfisk",
     "generation": 5,
-    "baseTypes": [
-      "ground",
-      "electric"
-    ],
+    "baseTypes": ["ground", "electric"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16650,9 +15130,7 @@
     "speciesId": 619,
     "name": "mienfoo",
     "generation": 5,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16676,9 +15154,7 @@
     "speciesId": 620,
     "name": "mienshao",
     "generation": 5,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16702,9 +15178,7 @@
     "speciesId": 621,
     "name": "druddigon",
     "generation": 5,
-    "baseTypes": [
-      "dragon"
-    ],
+    "baseTypes": ["dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16728,10 +15202,7 @@
     "speciesId": 622,
     "name": "golett",
     "generation": 5,
-    "baseTypes": [
-      "ground",
-      "ghost"
-    ],
+    "baseTypes": ["ground", "ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16755,10 +15226,7 @@
     "speciesId": 623,
     "name": "golurk",
     "generation": 5,
-    "baseTypes": [
-      "ground",
-      "ghost"
-    ],
+    "baseTypes": ["ground", "ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16782,10 +15250,7 @@
     "speciesId": 624,
     "name": "pawniard",
     "generation": 5,
-    "baseTypes": [
-      "dark",
-      "steel"
-    ],
+    "baseTypes": ["dark", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16809,10 +15274,7 @@
     "speciesId": 625,
     "name": "bisharp",
     "generation": 5,
-    "baseTypes": [
-      "dark",
-      "steel"
-    ],
+    "baseTypes": ["dark", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16836,9 +15298,7 @@
     "speciesId": 626,
     "name": "bouffalant",
     "generation": 5,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16862,10 +15322,7 @@
     "speciesId": 627,
     "name": "rufflet",
     "generation": 5,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16889,10 +15346,7 @@
     "speciesId": 628,
     "name": "braviary",
     "generation": 5,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16916,10 +15370,7 @@
     "speciesId": 629,
     "name": "vullaby",
     "generation": 5,
-    "baseTypes": [
-      "dark",
-      "flying"
-    ],
+    "baseTypes": ["dark", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16943,10 +15394,7 @@
     "speciesId": 630,
     "name": "mandibuzz",
     "generation": 5,
-    "baseTypes": [
-      "dark",
-      "flying"
-    ],
+    "baseTypes": ["dark", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16970,9 +15418,7 @@
     "speciesId": 631,
     "name": "heatmor",
     "generation": 5,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -16996,10 +15442,7 @@
     "speciesId": 632,
     "name": "durant",
     "generation": 5,
-    "baseTypes": [
-      "bug",
-      "steel"
-    ],
+    "baseTypes": ["bug", "steel"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17023,10 +15466,7 @@
     "speciesId": 633,
     "name": "deino",
     "generation": 5,
-    "baseTypes": [
-      "dark",
-      "dragon"
-    ],
+    "baseTypes": ["dark", "dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17050,10 +15490,7 @@
     "speciesId": 634,
     "name": "zweilous",
     "generation": 5,
-    "baseTypes": [
-      "dark",
-      "dragon"
-    ],
+    "baseTypes": ["dark", "dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17077,10 +15514,7 @@
     "speciesId": 635,
     "name": "hydreigon",
     "generation": 5,
-    "baseTypes": [
-      "dark",
-      "dragon"
-    ],
+    "baseTypes": ["dark", "dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17104,10 +15538,7 @@
     "speciesId": 636,
     "name": "larvesta",
     "generation": 5,
-    "baseTypes": [
-      "bug",
-      "fire"
-    ],
+    "baseTypes": ["bug", "fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17131,10 +15562,7 @@
     "speciesId": 637,
     "name": "volcarona",
     "generation": 5,
-    "baseTypes": [
-      "bug",
-      "fire"
-    ],
+    "baseTypes": ["bug", "fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17158,10 +15586,7 @@
     "speciesId": 638,
     "name": "cobalion",
     "generation": 5,
-    "baseTypes": [
-      "steel",
-      "fighting"
-    ],
+    "baseTypes": ["steel", "fighting"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -17185,10 +15610,7 @@
     "speciesId": 639,
     "name": "terrakion",
     "generation": 5,
-    "baseTypes": [
-      "rock",
-      "fighting"
-    ],
+    "baseTypes": ["rock", "fighting"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -17212,10 +15634,7 @@
     "speciesId": 640,
     "name": "virizion",
     "generation": 5,
-    "baseTypes": [
-      "grass",
-      "fighting"
-    ],
+    "baseTypes": ["grass", "fighting"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -17237,11 +15656,9 @@
   },
   {
     "speciesId": 641,
-    "name": "tornadus-incarnate",
+    "name": "tornadus",
     "generation": 5,
-    "baseTypes": [
-      "flying"
-    ],
+    "baseTypes": ["flying"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -17263,12 +15680,9 @@
   },
   {
     "speciesId": 642,
-    "name": "thundurus-incarnate",
+    "name": "thundurus",
     "generation": 5,
-    "baseTypes": [
-      "electric",
-      "flying"
-    ],
+    "baseTypes": ["electric", "flying"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -17292,10 +15706,7 @@
     "speciesId": 643,
     "name": "reshiram",
     "generation": 5,
-    "baseTypes": [
-      "dragon",
-      "fire"
-    ],
+    "baseTypes": ["dragon", "fire"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -17319,10 +15730,7 @@
     "speciesId": 644,
     "name": "zekrom",
     "generation": 5,
-    "baseTypes": [
-      "dragon",
-      "electric"
-    ],
+    "baseTypes": ["dragon", "electric"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -17346,10 +15754,7 @@
     "speciesId": 645,
     "name": "landorus-incarnate",
     "generation": 5,
-    "baseTypes": [
-      "ground",
-      "flying"
-    ],
+    "baseTypes": ["ground", "flying"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -17357,8 +15762,8 @@
     "forms": [
       {
         "formName": "landorus-incarnate",
-        "spriteGen5Animated": "/pokemon/gen5ani/landorus-incarnate.gif",
-        "spriteGen6Animated": "/pokemon/gen6ani/landorus-incarnate.gif"
+        "spriteGen5Animated": "/pokemon/gen5ani/landorus.gif",
+        "spriteGen6Animated": "/pokemon/gen6ani/landorus.gif"
       }
     ],
     "evolutionPaths": [
@@ -17373,10 +15778,7 @@
     "speciesId": 646,
     "name": "kyurem",
     "generation": 5,
-    "baseTypes": [
-      "dragon",
-      "ice"
-    ],
+    "baseTypes": ["dragon", "ice"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -17400,19 +15802,16 @@
     "speciesId": 647,
     "name": "keldeo-ordinary",
     "generation": 5,
-    "baseTypes": [
-      "water",
-      "fighting"
-    ],
+    "baseTypes": ["water", "fighting"],
     "isLegendary": false,
     "isMythical": true,
     "isStarter": false,
     "description": "By blasting water from its hooves, it can\nglide across water. It excels at using\nleg moves while battling.",
     "forms": [
       {
-        "formName": "keldeo-ordinary",
-        "spriteGen5Animated": "/pokemon/gen5ani/keldeo-ordinary.gif",
-        "spriteGen6Animated": "/pokemon/gen6ani/keldeo-ordinary.gif"
+        "formName": "keldeo",
+        "spriteGen5Animated": "/pokemon/gen5ani/keldeo.gif",
+        "spriteGen6Animated": "/pokemon/gen6ani/keldeo.gif"
       }
     ],
     "evolutionPaths": [
@@ -17425,19 +15824,16 @@
   },
   {
     "speciesId": 648,
-    "name": "meloetta-aria",
+    "name": "meloetta",
     "generation": 5,
-    "baseTypes": [
-      "normal",
-      "psychic"
-    ],
+    "baseTypes": ["normal", "psychic"],
     "isLegendary": false,
     "isMythical": true,
     "isStarter": false,
     "description": "Its melodies are sung with a special vocalization\nmethod that can control the feelings of those who\nhear it.",
     "forms": [
       {
-        "formName": "meloetta-aria",
+        "formName": "meloetta",
         "spriteGen5Animated": "/pokemon/gen5ani/meloetta-aria.gif",
         "spriteGen6Animated": "/pokemon/gen6ani/meloetta-aria.gif"
       }
@@ -17454,10 +15850,7 @@
     "speciesId": 649,
     "name": "genesect",
     "generation": 5,
-    "baseTypes": [
-      "bug",
-      "steel"
-    ],
+    "baseTypes": ["bug", "steel"],
     "isLegendary": false,
     "isMythical": true,
     "isStarter": false,
@@ -17501,9 +15894,7 @@
     "speciesId": 650,
     "name": "chespin",
     "generation": 6,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17511,7 +15902,7 @@
     "forms": [
       {
         "formName": "chespin",
-        "spriteGen5Animated": "/pokemon/gen5ani/chespin.gif",
+        "spriteGen5Animated": "/pokemon/gen5ani/chespin.png",
         "spriteGen6Animated": "/pokemon/gen6ani/chespin.gif"
       }
     ],
@@ -17527,9 +15918,7 @@
     "speciesId": 651,
     "name": "quilladin",
     "generation": 6,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17553,10 +15942,7 @@
     "speciesId": 652,
     "name": "chesnaught",
     "generation": 6,
-    "baseTypes": [
-      "grass",
-      "fighting"
-    ],
+    "baseTypes": ["grass", "fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17580,9 +15966,7 @@
     "speciesId": 653,
     "name": "fennekin",
     "generation": 6,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17606,9 +15990,7 @@
     "speciesId": 654,
     "name": "braixen",
     "generation": 6,
-    "baseTypes": [
-      "fire"
-    ],
+    "baseTypes": ["fire"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17632,10 +16014,7 @@
     "speciesId": 655,
     "name": "delphox",
     "generation": 6,
-    "baseTypes": [
-      "fire",
-      "psychic"
-    ],
+    "baseTypes": ["fire", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17643,7 +16022,7 @@
     "forms": [
       {
         "formName": "delphox",
-        "spriteGen5Animated": "/pokemon/gen5ani/delphox.gif",
+        "spriteGen5Animated": "/pokemon/gen5ani/delphox.png",
         "spriteGen6Animated": "/pokemon/gen6ani/delphox.gif"
       }
     ],
@@ -17659,9 +16038,7 @@
     "speciesId": 656,
     "name": "froakie",
     "generation": 6,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17685,9 +16062,7 @@
     "speciesId": 657,
     "name": "frogadier",
     "generation": 6,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17695,7 +16070,7 @@
     "forms": [
       {
         "formName": "frogadier",
-        "spriteGen5Animated": "/pokemon/gen5ani/frogadier.gif",
+        "spriteGen5Animated": "/pokemon/gen5ani/frogadier.png",
         "spriteGen6Animated": "/pokemon/gen6ani/frogadier.gif"
       }
     ],
@@ -17711,10 +16086,7 @@
     "speciesId": 658,
     "name": "greninja",
     "generation": 6,
-    "baseTypes": [
-      "water",
-      "dark"
-    ],
+    "baseTypes": ["water", "dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17738,9 +16110,7 @@
     "speciesId": 659,
     "name": "bunnelby",
     "generation": 6,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17764,10 +16134,7 @@
     "speciesId": 660,
     "name": "diggersby",
     "generation": 6,
-    "baseTypes": [
-      "normal",
-      "ground"
-    ],
+    "baseTypes": ["normal", "ground"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17791,10 +16158,7 @@
     "speciesId": 661,
     "name": "fletchling",
     "generation": 6,
-    "baseTypes": [
-      "normal",
-      "flying"
-    ],
+    "baseTypes": ["normal", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17818,10 +16182,7 @@
     "speciesId": 662,
     "name": "fletchinder",
     "generation": 6,
-    "baseTypes": [
-      "fire",
-      "flying"
-    ],
+    "baseTypes": ["fire", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17845,10 +16206,7 @@
     "speciesId": 663,
     "name": "talonflame",
     "generation": 6,
-    "baseTypes": [
-      "fire",
-      "flying"
-    ],
+    "baseTypes": ["fire", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17872,9 +16230,7 @@
     "speciesId": 664,
     "name": "scatterbug",
     "generation": 6,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -17993,9 +16349,7 @@
     "speciesId": 665,
     "name": "spewpa",
     "generation": 6,
-    "baseTypes": [
-      "bug"
-    ],
+    "baseTypes": ["bug"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18114,10 +16468,7 @@
     "speciesId": 666,
     "name": "vivillon",
     "generation": 6,
-    "baseTypes": [
-      "bug",
-      "flying"
-    ],
+    "baseTypes": ["bug", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18236,10 +16587,7 @@
     "speciesId": 667,
     "name": "litleo",
     "generation": 6,
-    "baseTypes": [
-      "fire",
-      "normal"
-    ],
+    "baseTypes": ["fire", "normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18263,10 +16611,7 @@
     "speciesId": 668,
     "name": "pyroar",
     "generation": 6,
-    "baseTypes": [
-      "fire",
-      "normal"
-    ],
+    "baseTypes": ["fire", "normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18290,9 +16635,7 @@
     "speciesId": 669,
     "name": "flabebe",
     "generation": 6,
-    "baseTypes": [
-      "fairy"
-    ],
+    "baseTypes": ["fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18336,9 +16679,7 @@
     "speciesId": 670,
     "name": "floette",
     "generation": 6,
-    "baseTypes": [
-      "fairy"
-    ],
+    "baseTypes": ["fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18382,9 +16723,7 @@
     "speciesId": 671,
     "name": "florges",
     "generation": 6,
-    "baseTypes": [
-      "fairy"
-    ],
+    "baseTypes": ["fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18428,9 +16767,7 @@
     "speciesId": 672,
     "name": "skiddo",
     "generation": 6,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18454,9 +16791,7 @@
     "speciesId": 673,
     "name": "gogoat",
     "generation": 6,
-    "baseTypes": [
-      "grass"
-    ],
+    "baseTypes": ["grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18464,7 +16799,7 @@
     "forms": [
       {
         "formName": "gogoat",
-        "spriteGen5Animated": "/pokemon/gen5ani/gogoat.gif",
+        "spriteGen5Animated": "/pokemon/gen5ani/gogoat.png",
         "spriteGen6Animated": "/pokemon/gen6ani/gogoat.gif"
       }
     ],
@@ -18480,9 +16815,7 @@
     "speciesId": 674,
     "name": "pancham",
     "generation": 6,
-    "baseTypes": [
-      "fighting"
-    ],
+    "baseTypes": ["fighting"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18506,10 +16839,7 @@
     "speciesId": 675,
     "name": "pangoro",
     "generation": 6,
-    "baseTypes": [
-      "fighting",
-      "dark"
-    ],
+    "baseTypes": ["fighting", "dark"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18533,9 +16863,7 @@
     "speciesId": 676,
     "name": "furfrou",
     "generation": 6,
-    "baseTypes": [
-      "normal"
-    ],
+    "baseTypes": ["normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18543,7 +16871,7 @@
     "forms": [
       {
         "formName": "furfrou-natural",
-        "spriteGen5Animated": "/pokemon/gen5ani/furfrou.gif",
+        "spriteGen5Animated": "/pokemon/gen5ani/furfrou.png",
         "spriteGen6Animated": "/pokemon/gen6ani/furfrou.gif"
       },
       {
@@ -18604,9 +16932,7 @@
     "speciesId": 677,
     "name": "espurr",
     "generation": 6,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18614,7 +16940,7 @@
     "forms": [
       {
         "formName": "espurr",
-        "spriteGen5Animated": "/pokemon/gen5ani/espurr.gif",
+        "spriteGen5Animated": "/pokemon/gen5ani/espurr.png",
         "spriteGen6Animated": "/pokemon/gen6ani/espurr.gif"
       }
     ],
@@ -18630,9 +16956,7 @@
     "speciesId": 678,
     "name": "meowstic-male",
     "generation": 6,
-    "baseTypes": [
-      "psychic"
-    ],
+    "baseTypes": ["psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18640,8 +16964,8 @@
     "forms": [
       {
         "formName": "meowstic-male",
-        "spriteGen5Animated": "/pokemon/gen5ani/meowstic-male.gif",
-        "spriteGen6Animated": "/pokemon/gen6ani/meowstic-male.gif"
+        "spriteGen5Animated": "/pokemon/gen5ani/meowstic.png",
+        "spriteGen6Animated": "/pokemon/gen6ani/meowstic.gif"
       }
     ],
     "evolutionPaths": [
@@ -18656,10 +16980,7 @@
     "speciesId": 679,
     "name": "honedge",
     "generation": 6,
-    "baseTypes": [
-      "steel",
-      "ghost"
-    ],
+    "baseTypes": ["steel", "ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18683,10 +17004,7 @@
     "speciesId": 680,
     "name": "doublade",
     "generation": 6,
-    "baseTypes": [
-      "steel",
-      "ghost"
-    ],
+    "baseTypes": ["steel", "ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18694,7 +17012,7 @@
     "forms": [
       {
         "formName": "doublade",
-        "spriteGen5Animated": "/pokemon/gen5ani/doublade.gif",
+        "spriteGen5Animated": "/pokemon/gen5ani/doublade.png",
         "spriteGen6Animated": "/pokemon/gen6ani/doublade.gif"
       }
     ],
@@ -18710,10 +17028,7 @@
     "speciesId": 681,
     "name": "aegislash-shield",
     "generation": 6,
-    "baseTypes": [
-      "steel",
-      "ghost"
-    ],
+    "baseTypes": ["steel", "ghost"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18721,8 +17036,8 @@
     "forms": [
       {
         "formName": "aegislash-shield",
-        "spriteGen5Animated": "/pokemon/gen5ani/aegislash-shield.gif",
-        "spriteGen6Animated": "/pokemon/gen6ani/aegislash-shield.gif"
+        "spriteGen5Animated": "/pokemon/gen5ani/aegislash.png",
+        "spriteGen6Animated": "/pokemon/gen6ani/aegislash.gif"
       }
     ],
     "evolutionPaths": [
@@ -18737,9 +17052,7 @@
     "speciesId": 682,
     "name": "spritzee",
     "generation": 6,
-    "baseTypes": [
-      "fairy"
-    ],
+    "baseTypes": ["fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18763,9 +17076,7 @@
     "speciesId": 683,
     "name": "aromatisse",
     "generation": 6,
-    "baseTypes": [
-      "fairy"
-    ],
+    "baseTypes": ["fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18773,7 +17084,7 @@
     "forms": [
       {
         "formName": "aromatisse",
-        "spriteGen5Animated": "/pokemon/gen5ani/aromatisse.gif",
+        "spriteGen5Animated": "/pokemon/gen5ani/aromatisse.png",
         "spriteGen6Animated": "/pokemon/gen6ani/aromatisse.gif"
       }
     ],
@@ -18789,9 +17100,7 @@
     "speciesId": 684,
     "name": "swirlix",
     "generation": 6,
-    "baseTypes": [
-      "fairy"
-    ],
+    "baseTypes": ["fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18815,9 +17124,7 @@
     "speciesId": 685,
     "name": "slurpuff",
     "generation": 6,
-    "baseTypes": [
-      "fairy"
-    ],
+    "baseTypes": ["fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18841,10 +17148,7 @@
     "speciesId": 686,
     "name": "inkay",
     "generation": 6,
-    "baseTypes": [
-      "dark",
-      "psychic"
-    ],
+    "baseTypes": ["dark", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18868,10 +17172,7 @@
     "speciesId": 687,
     "name": "malamar",
     "generation": 6,
-    "baseTypes": [
-      "dark",
-      "psychic"
-    ],
+    "baseTypes": ["dark", "psychic"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18895,10 +17196,7 @@
     "speciesId": 688,
     "name": "binacle",
     "generation": 6,
-    "baseTypes": [
-      "rock",
-      "water"
-    ],
+    "baseTypes": ["rock", "water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18922,10 +17220,7 @@
     "speciesId": 689,
     "name": "barbaracle",
     "generation": 6,
-    "baseTypes": [
-      "rock",
-      "water"
-    ],
+    "baseTypes": ["rock", "water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18933,7 +17228,7 @@
     "forms": [
       {
         "formName": "barbaracle",
-        "spriteGen5Animated": "/pokemon/gen5ani/barbaracle.gif",
+        "spriteGen5Animated": "/pokemon/gen5ani/barbaracle.png",
         "spriteGen6Animated": "/pokemon/gen6ani/barbaracle.gif"
       }
     ],
@@ -18949,10 +17244,7 @@
     "speciesId": 690,
     "name": "skrelp",
     "generation": 6,
-    "baseTypes": [
-      "poison",
-      "water"
-    ],
+    "baseTypes": ["poison", "water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -18960,7 +17252,7 @@
     "forms": [
       {
         "formName": "skrelp",
-        "spriteGen5Animated": "/pokemon/gen5ani/skrelp.gif",
+        "spriteGen5Animated": "/pokemon/gen5ani/skrelp.png",
         "spriteGen6Animated": "/pokemon/gen6ani/skrelp.gif"
       }
     ],
@@ -18976,10 +17268,7 @@
     "speciesId": 691,
     "name": "dragalge",
     "generation": 6,
-    "baseTypes": [
-      "poison",
-      "dragon"
-    ],
+    "baseTypes": ["poison", "dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19003,9 +17292,7 @@
     "speciesId": 692,
     "name": "clauncher",
     "generation": 6,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19029,9 +17316,7 @@
     "speciesId": 693,
     "name": "clawitzer",
     "generation": 6,
-    "baseTypes": [
-      "water"
-    ],
+    "baseTypes": ["water"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19055,10 +17340,7 @@
     "speciesId": 694,
     "name": "helioptile",
     "generation": 6,
-    "baseTypes": [
-      "electric",
-      "normal"
-    ],
+    "baseTypes": ["electric", "normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19082,10 +17364,7 @@
     "speciesId": 695,
     "name": "heliolisk",
     "generation": 6,
-    "baseTypes": [
-      "electric",
-      "normal"
-    ],
+    "baseTypes": ["electric", "normal"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19093,7 +17372,7 @@
     "forms": [
       {
         "formName": "heliolisk",
-        "spriteGen5Animated": "/pokemon/gen5ani/heliolisk.gif",
+        "spriteGen5Animated": "/pokemon/gen5ani/heliolisk.png",
         "spriteGen6Animated": "/pokemon/gen6ani/heliolisk.gif"
       }
     ],
@@ -19109,10 +17388,7 @@
     "speciesId": 696,
     "name": "tyrunt",
     "generation": 6,
-    "baseTypes": [
-      "rock",
-      "dragon"
-    ],
+    "baseTypes": ["rock", "dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19136,10 +17412,7 @@
     "speciesId": 697,
     "name": "tyrantrum",
     "generation": 6,
-    "baseTypes": [
-      "rock",
-      "dragon"
-    ],
+    "baseTypes": ["rock", "dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19163,10 +17436,7 @@
     "speciesId": 698,
     "name": "amaura",
     "generation": 6,
-    "baseTypes": [
-      "rock",
-      "ice"
-    ],
+    "baseTypes": ["rock", "ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19190,10 +17460,7 @@
     "speciesId": 699,
     "name": "aurorus",
     "generation": 6,
-    "baseTypes": [
-      "rock",
-      "ice"
-    ],
+    "baseTypes": ["rock", "ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19201,7 +17468,7 @@
     "forms": [
       {
         "formName": "aurorus",
-        "spriteGen5Animated": "/pokemon/gen5ani/aurorus.gif",
+        "spriteGen5Animated": "/pokemon/gen5ani/aurorus.png",
         "spriteGen6Animated": "/pokemon/gen6ani/aurorus.gif"
       }
     ],
@@ -19217,9 +17484,7 @@
     "speciesId": 700,
     "name": "sylveon",
     "generation": 6,
-    "baseTypes": [
-      "fairy"
-    ],
+    "baseTypes": ["fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19243,10 +17508,7 @@
     "speciesId": 701,
     "name": "hawlucha",
     "generation": 6,
-    "baseTypes": [
-      "fighting",
-      "flying"
-    ],
+    "baseTypes": ["fighting", "flying"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19254,7 +17516,7 @@
     "forms": [
       {
         "formName": "hawlucha",
-        "spriteGen5Animated": "/pokemon/gen5ani/hawlucha.gif",
+        "spriteGen5Animated": "/pokemon/gen5ani/hawlucha.png",
         "spriteGen6Animated": "/pokemon/gen6ani/hawlucha.gif"
       }
     ],
@@ -19270,10 +17532,7 @@
     "speciesId": 702,
     "name": "dedenne",
     "generation": 6,
-    "baseTypes": [
-      "electric",
-      "fairy"
-    ],
+    "baseTypes": ["electric", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19297,10 +17556,7 @@
     "speciesId": 703,
     "name": "carbink",
     "generation": 6,
-    "baseTypes": [
-      "rock",
-      "fairy"
-    ],
+    "baseTypes": ["rock", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19324,9 +17580,7 @@
     "speciesId": 704,
     "name": "goomy",
     "generation": 6,
-    "baseTypes": [
-      "dragon"
-    ],
+    "baseTypes": ["dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19350,9 +17604,7 @@
     "speciesId": 705,
     "name": "sliggoo",
     "generation": 6,
-    "baseTypes": [
-      "dragon"
-    ],
+    "baseTypes": ["dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19376,9 +17628,7 @@
     "speciesId": 706,
     "name": "goodra",
     "generation": 6,
-    "baseTypes": [
-      "dragon"
-    ],
+    "baseTypes": ["dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19402,10 +17652,7 @@
     "speciesId": 707,
     "name": "klefki",
     "generation": 6,
-    "baseTypes": [
-      "steel",
-      "fairy"
-    ],
+    "baseTypes": ["steel", "fairy"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19429,10 +17676,7 @@
     "speciesId": 708,
     "name": "phantump",
     "generation": 6,
-    "baseTypes": [
-      "ghost",
-      "grass"
-    ],
+    "baseTypes": ["ghost", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19456,10 +17700,7 @@
     "speciesId": 709,
     "name": "trevenant",
     "generation": 6,
-    "baseTypes": [
-      "ghost",
-      "grass"
-    ],
+    "baseTypes": ["ghost", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19483,10 +17724,7 @@
     "speciesId": 710,
     "name": "pumpkaboo-average",
     "generation": 6,
-    "baseTypes": [
-      "ghost",
-      "grass"
-    ],
+    "baseTypes": ["ghost", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19494,8 +17732,8 @@
     "forms": [
       {
         "formName": "pumpkaboo-average",
-        "spriteGen5Animated": "/pokemon/gen5ani/pumpkaboo-average.gif",
-        "spriteGen6Animated": "/pokemon/gen6ani/pumpkaboo-average.gif"
+        "spriteGen5Animated": "/pokemon/gen5ani/pumpkaboo.png",
+        "spriteGen6Animated": "/pokemon/gen6ani/pumpkaboo.gif"
       }
     ],
     "evolutionPaths": [
@@ -19510,10 +17748,7 @@
     "speciesId": 711,
     "name": "gourgeist-average",
     "generation": 6,
-    "baseTypes": [
-      "ghost",
-      "grass"
-    ],
+    "baseTypes": ["ghost", "grass"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19521,7 +17756,7 @@
     "forms": [
       {
         "formName": "gourgeist-average",
-        "spriteGen5Animated": "/pokemon/gen5ani/gourgeist-average.gif",
+        "spriteGen5Animated": "/pokemon/gen5ani/gourgeist.png",
         "spriteGen6Animated": "/pokemon/gen6ani/gourgeist-average.gif"
       }
     ],
@@ -19537,9 +17772,7 @@
     "speciesId": 712,
     "name": "bergmite",
     "generation": 6,
-    "baseTypes": [
-      "ice"
-    ],
+    "baseTypes": ["ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19563,9 +17796,7 @@
     "speciesId": 713,
     "name": "avalugg",
     "generation": 6,
-    "baseTypes": [
-      "ice"
-    ],
+    "baseTypes": ["ice"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19589,10 +17820,7 @@
     "speciesId": 714,
     "name": "noibat",
     "generation": 6,
-    "baseTypes": [
-      "flying",
-      "dragon"
-    ],
+    "baseTypes": ["flying", "dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19616,10 +17844,7 @@
     "speciesId": 715,
     "name": "noivern",
     "generation": 6,
-    "baseTypes": [
-      "flying",
-      "dragon"
-    ],
+    "baseTypes": ["flying", "dragon"],
     "isLegendary": false,
     "isMythical": false,
     "isStarter": false,
@@ -19643,9 +17868,7 @@
     "speciesId": 716,
     "name": "xerneas",
     "generation": 6,
-    "baseTypes": [
-      "fairy"
-    ],
+    "baseTypes": ["fairy"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -19674,10 +17897,7 @@
     "speciesId": 717,
     "name": "yveltal",
     "generation": 6,
-    "baseTypes": [
-      "dark",
-      "flying"
-    ],
+    "baseTypes": ["dark", "flying"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -19701,10 +17921,7 @@
     "speciesId": 718,
     "name": "zygarde-50",
     "generation": 6,
-    "baseTypes": [
-      "dragon",
-      "ground"
-    ],
+    "baseTypes": ["dragon", "ground"],
     "isLegendary": true,
     "isMythical": false,
     "isStarter": false,
@@ -19712,8 +17929,8 @@
     "forms": [
       {
         "formName": "zygarde-50",
-        "spriteGen5Animated": "/pokemon/gen5ani/zygarde-50.gif",
-        "spriteGen6Animated": "/pokemon/gen6ani/zygarde-50.gif"
+        "spriteGen5Animated": "/pokemon/gen5ani/zygarde.gif",
+        "spriteGen6Animated": "/pokemon/gen6ani/zygarde.gif"
       }
     ],
     "evolutionPaths": [
@@ -19728,10 +17945,7 @@
     "speciesId": 719,
     "name": "diancie",
     "generation": 6,
-    "baseTypes": [
-      "rock",
-      "fairy"
-    ],
+    "baseTypes": ["rock", "fairy"],
     "isLegendary": false,
     "isMythical": true,
     "isStarter": false,
@@ -19755,10 +17969,7 @@
     "speciesId": 720,
     "name": "hoopa",
     "generation": 6,
-    "baseTypes": [
-      "psychic",
-      "ghost"
-    ],
+    "baseTypes": ["psychic", "ghost"],
     "isLegendary": false,
     "isMythical": true,
     "isStarter": false,
@@ -19782,10 +17993,7 @@
     "speciesId": 721,
     "name": "volcanion",
     "generation": 6,
-    "baseTypes": [
-      "fire",
-      "water"
-    ],
+    "baseTypes": ["fire", "water"],
     "isLegendary": false,
     "isMythical": true,
     "isStarter": false,

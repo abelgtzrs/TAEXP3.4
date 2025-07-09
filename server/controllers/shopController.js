@@ -64,20 +64,16 @@ exports.pullFromGacha = async (req, res) => {
 
     const config = GACHA_CONFIG[category.toLowerCase()];
     if (!config) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Gacha category not found." });
+      return res.status(404).json({ success: false, message: "Gacha category not found." });
     }
 
     const user = await User.findById(userId);
 
     if (user[config.currency] < config.cost) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: `Insufficient funds. Requires ${config.cost} ${config.currency}.`,
-        });
+      return res.status(400).json({
+        success: false,
+        message: `Insufficient funds. Requires ${config.cost} ${config.currency}.`,
+      });
     }
 
     let pulledItem; // We will define this based on the category
@@ -93,10 +89,35 @@ exports.pullFromGacha = async (req, res) => {
       };
 
       // --- Step 2.2: Fetch and Categorize Available Pokémon ---
+      console.log("Fetching Pokemon from database...");
       const allPokemon = await PokemonBase.find({});
-      const stage1Pool = allPokemon.filter((p) => p.evolutionStage === 1);
-      const stage2Pool = allPokemon.filter((p) => p.evolutionStage === 2);
-      const stage3Pool = allPokemon.filter((p) => p.evolutionStage === 3);
+      console.log(`Found ${allPokemon.length} Pokemon in database`);
+
+      if (allPokemon.length === 0) {
+        return res.status(500).json({
+          success: false,
+          message: "No Pokémon data found. Please run the seeder to populate the database.",
+        });
+      }
+
+      // Check if evolutionStage field exists, if not use different logic
+      const hasEvolutionStage = allPokemon[0].evolutionStage !== undefined;
+      let stage1Pool, stage2Pool, stage3Pool;
+
+      if (hasEvolutionStage) {
+        stage1Pool = allPokemon.filter((p) => p.evolutionStage === 1);
+        stage2Pool = allPokemon.filter((p) => p.evolutionStage === 2);
+        stage3Pool = allPokemon.filter((p) => p.evolutionStage === 3);
+      } else {
+        // Fallback: categorize by legendary/mythical status if evolutionStage doesn't exist
+        stage1Pool = allPokemon.filter((p) => !p.isLegendary && !p.isMythical);
+        stage2Pool = allPokemon.filter((p) => p.isStarter);
+        stage3Pool = allPokemon.filter((p) => p.isLegendary || p.isMythical);
+      }
+
+      console.log(
+        `Stage pools - Stage 1: ${stage1Pool.length}, Stage 2: ${stage2Pool.length}, Stage 3: ${stage3Pool.length}`
+      );
 
       // --- Step 2.3: First Roll - Determine the Rarity/Stage ---
       const roll = Math.random();
@@ -115,12 +136,10 @@ exports.pullFromGacha = async (req, res) => {
         selectedPool = stage1Pool;
       }
       if (selectedPool.length === 0) {
-        return res
-          .status(500)
-          .json({
-            success: false,
-            message: "No Pokémon available in the pull pool.",
-          });
+        return res.status(500).json({
+          success: false,
+          message: "No Pokémon available in the pull pool.",
+        });
       }
 
       // --- Step 2.4: Second Roll - Pick a Random Pokémon from the Chosen Pool ---
@@ -130,24 +149,20 @@ exports.pullFromGacha = async (req, res) => {
       // --- Original Logic for all other categories ---
       const count = await config.BaseModel.countDocuments();
       if (count === 0) {
-        return res
-          .status(500)
-          .json({
-            success: false,
-            message: `No items available in the ${category} pool.`,
-          });
+        return res.status(500).json({
+          success: false,
+          message: `No items available in the ${category} pool.`,
+        });
       }
       const random = Math.floor(Math.random() * count);
       pulledItem = await config.BaseModel.findOne().skip(random);
     }
 
     if (!pulledItem) {
-      return res
-        .status(500)
-        .json({
-          success: false,
-          message: "Failed to pull an item. Please try again.",
-        });
+      return res.status(500).json({
+        success: false,
+        message: "Failed to pull an item. Please try again.",
+      });
     }
 
     // --- The rest of the logic for awarding, handling duplicates, and saving remains the same ---
@@ -210,12 +225,10 @@ exports.pullFromGacha = async (req, res) => {
     });
   } catch (error) {
     console.error("Gacha Pull Error:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Server Error during gacha pull.",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Server Error during gacha pull.",
+      error: error.message,
+    });
   }
 };

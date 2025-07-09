@@ -1,7 +1,7 @@
 const PokemonCard = ({ pokemon, useGen6Sprites = false }) => {
   // Use the first form for the primary display
   const defaultForm = pokemon.forms[0];
-  
+
   // Choose sprite based on the preference
   const spriteUrl = useGen6Sprites ? defaultForm.spriteGen6Animated : defaultForm.spriteGen5Animated;
   const typeColorMap = {
@@ -26,7 +26,7 @@ const PokemonCard = ({ pokemon, useGen6Sprites = false }) => {
   };
 
   return (
-    <div className="widget-container p-4 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-glow-primary">
+    <div className="widget-container p-4 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-glow-primary relative group">
       <div className="w-24 h-24 mb-2 flex items-center justify-center">
         {/* Use the selected sprite generation */}
         <img src={spriteUrl} alt={pokemon.name} className="max-w-full max-h-full object-contain" />
@@ -44,6 +44,58 @@ const PokemonCard = ({ pokemon, useGen6Sprites = false }) => {
             {type}
           </span>
         ))}
+      </div>
+
+      {/* Hover Tooltip */}
+      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-72 bg-surface border border-gray-600 rounded-lg p-4 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50">
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <h4 className="font-bold text-text-main">{pokemon.name}</h4>
+            <div className="flex gap-1">
+              {pokemon.isLegendary && (
+                <span className="text-xs bg-yellow-600/20 text-yellow-400 px-2 py-0.5 rounded">Legendary</span>
+              )}
+              {pokemon.isMythical && (
+                <span className="text-xs bg-purple-600/20 text-purple-400 px-2 py-0.5 rounded">Mythical</span>
+              )}
+              {pokemon.isStarter && (
+                <span className="text-xs bg-green-600/20 text-green-400 px-2 py-0.5 rounded">Starter</span>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div>
+              <span className="text-text-secondary">Generation:</span>
+              <span className="text-text-main ml-1">{pokemon.generation}</span>
+            </div>
+            <div>
+              <span className="text-text-secondary">Evolution Stage:</span>
+              <span className="text-text-main ml-1">{pokemon.evolutionStage}</span>
+            </div>
+          </div>
+
+          {pokemon.evolutionPaths && pokemon.evolutionPaths.length > 0 && (
+            <div>
+              <span className="text-text-secondary text-xs">Evolves to:</span>
+              <div className="text-xs text-text-main mt-1">
+                {pokemon.evolutionPaths.map((evo, index) => (
+                  <div key={index}>
+                    #{evo.toSpeciesId} via {evo.method} {evo.detail && `(${evo.detail})`}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div>
+            <span className="text-text-secondary text-xs">Description:</span>
+            <p className="text-xs text-text-main mt-1 leading-relaxed">{pokemon.description}</p>
+          </div>
+        </div>
+
+        {/* Arrow pointing down */}
+        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-600"></div>
       </div>
     </div>
   );

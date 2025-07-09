@@ -19,6 +19,7 @@ import ProfilePage from "./pages/ProfilePage";
 import CollectionsPage from "./pages/CollectionsPage";
 import CollectionDetailPage from "./pages/CollectionDetailPage";
 import PokedexPage from "./pages/PokedexPage";
+import AdminEditPokemonPage from "./pages/AdminEditPokemonPage";
 
 function App() {
   // Notice this component now ONLY returns the Routes.
@@ -52,6 +53,7 @@ function App() {
           <Route path="/collections" element={<CollectionsPage />} />
           <Route path="/collections/:collectionType" element={<CollectionDetailPage />} />
           <Route path="/pokedex" element={<PokedexPage />} />
+          <Route path="/admin/pokemon/edit/:id" element={<AdminEditPokemonPage />} />
         </Route>
       </Route>
 
