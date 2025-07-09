@@ -1,6 +1,6 @@
 // server/controllers/habitController.js
 
-const Habit = require("../models/userSpecific/Habit"); // Import Habit model
+const Habit = require("../models/UserSpecific/Habit"); // Import Habit model
 const User = require("../models/User"); // Import User model for rewards
 
 // --- HELPER FUNCTIONS ---
@@ -69,9 +69,7 @@ exports.getHabitById = async (req, res) => {
 
     // Make sure habit exists and belongs to the user
     if (!habit || habit.user.toString() !== req.user.id) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Habit not found" });
+      return res.status(404).json({ success: false, message: "Habit not found" });
     }
 
     res.status(200).json({ success: true, data: habit });
@@ -87,9 +85,7 @@ exports.updateHabit = async (req, res) => {
     let habit = await Habit.findById(req.params.habitId);
 
     if (!habit || habit.user.toString() !== req.user.id) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Habit not found or not authorized" });
+      return res.status(404).json({ success: false, message: "Habit not found or not authorized" });
     }
 
     habit = await Habit.findByIdAndUpdate(req.params.habitId, req.body, {
@@ -110,15 +106,11 @@ exports.deleteHabit = async (req, res) => {
     const habit = await Habit.findById(req.params.habitId);
 
     if (!habit || habit.user.toString() !== req.user.id) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Habit not found or not authorized" });
+      return res.status(404).json({ success: false, message: "Habit not found or not authorized" });
     }
 
     await habit.deleteOne();
-    res
-      .status(200)
-      .json({ success: true, message: "Habit deleted successfully", data: {} });
+    res.status(200).json({ success: true, message: "Habit deleted successfully", data: {} });
   } catch (error) {
     console.error("Delete Habit Error:", error);
     res.status(500).json({ success: false, message: "Server Error" });
@@ -130,20 +122,13 @@ exports.deleteHabit = async (req, res) => {
 exports.completeHabit = async (req, res) => {
   try {
     // Find both the habit to update and the user to reward in parallel.
-    const [habit, user] = await Promise.all([
-      Habit.findById(req.params.habitId),
-      User.findById(req.user.id),
-    ]);
+    const [habit, user] = await Promise.all([Habit.findById(req.params.habitId), User.findById(req.user.id)]);
 
     if (!habit) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Habit not found" });
+      return res.status(404).json({ success: false, message: "Habit not found" });
     }
     if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
+      return res.status(404).json({ success: false, message: "User not found" });
     }
 
     if (typeof user.xpToNextLevel !== "number" || isNaN(user.xpToNextLevel)) {
@@ -152,16 +137,12 @@ exports.completeHabit = async (req, res) => {
 
     // Security check: User must own the habit.
     if (habit.user.toString() !== req.user.id) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Not authorized" });
+      return res.status(401).json({ success: false, message: "Not authorized" });
     }
 
     // Prevent completing the same habit multiple times in one day.
     if (isToday(habit.lastCompletedDate)) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Habit already completed today" });
+      return res.status(400).json({ success: false, message: "Habit already completed today" });
     }
 
     // --- Update Streak Logic ---
@@ -191,10 +172,7 @@ exports.completeHabit = async (req, res) => {
     }
 
     // Save both documents. Using Promise.all is efficient.
-    const [updatedHabit, updatedUser] = await Promise.all([
-      habit.save(),
-      user.save(),
-    ]);
+    const [updatedHabit, updatedUser] = await Promise.all([habit.save(), user.save()]);
 
     // Create a user object to send back, excluding the password
     const userResponse = { ...updatedUser.toObject() };
@@ -208,8 +186,6 @@ exports.completeHabit = async (req, res) => {
     });
   } catch (error) {
     console.error("Complete Habit Error:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Server Error while completing habit" });
+    res.status(500).json({ success: false, message: "Server Error while completing habit" });
   }
 };

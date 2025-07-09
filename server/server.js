@@ -15,12 +15,12 @@ require("./models/HabboRareBase");
 require("./models/YugiohCardBase");
 require("./models/AbelPersonaBase");
 require("./models/ExerciseDefinition");
-require("./models/userSpecific/UserPokemon");
-require("./models/userSpecific/UserSnoopyArt");
-require("./models/userSpecific/UserBadge");
-require("./models/userSpecific/UserTitle");
-require("./models/userSpecific/UserHabboRare");
-require("./models/userSpecific/UserYugiohCard");
+require("./models/UserSpecific/UserPokemon");
+require("./models/UserSpecific/UserSnoopyArt");
+require("./models/UserSpecific/UserBadge");
+require("./models/UserSpecific/UserTitle");
+require("./models/UserSpecific/UserHabboRare");
+require("./models/UserSpecific/UserYugiohCard");
 
 // Load environment variables and connect to the database
 dotenv.config();

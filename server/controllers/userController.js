@@ -1,8 +1,8 @@
 // server/controllers/userController.js
 const User = require("../models/User");
-const Habit = require("../models/userSpecific/Habit");
-const Book = require("../models/userSpecific/Book");
-const WorkoutLog = require("../models/userSpecific/WorkoutLog");
+const Habit = require("../models/UserSpecific/Habit");
+const Book = require("../models/UserSpecific/Book");
+const WorkoutLog = require("../models/UserSpecific/WorkoutLog");
 
 // --- Define functions as constants ---
 

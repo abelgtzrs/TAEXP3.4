@@ -1,12 +1,12 @@
 const User = require("../models/User");
 const PokemonBase = require("../models/PokemonBase");
-const UserPokemon = require("../models/userSpecific/UserPokemon");
+const UserPokemon = require("../models/UserSpecific/UserPokemon");
 const SnoopyArtBase = require("../models/SnoopyArtBase");
-const UserSnoopyArt = require("../models/userSpecific/UserSnoopyArt");
+const UserSnoopyArt = require("../models/UserSpecific/UserSnoopyArt");
 const YugiohCardBase = require("../models/YugiohCardBase");
-const UserYugiohCard = require("../models/userSpecific/UserYugiohCard");
+const UserYugiohCard = require("../models/UserSpecific/UserYugiohCard");
 const HabboRareBase = require("../models/HabboRareBase");
-const UserHabboRare = require("../models/userSpecific/UserHabboRare");
+const UserHabboRare = require("../models/UserSpecific/UserHabboRare");
 const AbelPersonaBase = require("../models/AbelPersonaBase");
 
 // --- GACHA CONFIGURATION ---
