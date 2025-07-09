@@ -61,7 +61,6 @@ const AdminLayout = () => {
               <NavItem to="/shop" icon={Store}>
                 Shop (Gacha)
               </NavItem>
-
               <NavItem to="/pokedex" icon={Image}>
                 Pokédex
               </NavItem>
@@ -97,6 +96,10 @@ const AdminLayout = () => {
                 <NavItem to="/admin/templates" icon={Settings}>
                   Workout Templates
                 </NavItem>
+                <NavItem to="/admin/pokemon-editor" icon={PenSquare}>
+                  Pokémon Editor
+                </NavItem>
+
                 {/* Add links for User Management and Showcases here later */}
               </ul>
             </div>
