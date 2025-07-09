@@ -24,7 +24,7 @@ require("./models/UserSpecific/UserYugiohCard");
 
 // Load environment variables and connect to the database
 dotenv.config();
-const app = express(); // Create an Express application
+const app = express();
 connectDB();
 
 // Middleware setup
