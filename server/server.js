@@ -15,12 +15,12 @@ require("./models/HabboRareBase");
 require("./models/YugiohCardBase");
 require("./models/AbelPersonaBase");
 require("./models/ExerciseDefinition");
-require("./models/UserSpecific/UserPokemon");
-require("./models/UserSpecific/UserSnoopyArt");
-require("./models/UserSpecific/UserBadge");
-require("./models/UserSpecific/UserTitle");
-require("./models/UserSpecific/UserHabboRare");
-require("./models/UserSpecific/UserYugiohCard");
+require("./models/userSpecific/UserPokemon");
+require("./models/userSpecific/UserSnoopyArt");
+require("./models/userSpecific/UserBadge");
+require("./models/userSpecific/UserTitle");
+require("./models/userSpecific/userHabboRare");
+require("./models/userSpecific/UserYugiohCard");
 
 // Load environment variables and connect to the database
 dotenv.config();
@@ -42,7 +42,6 @@ app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/habits", require("./routes/habitRoutes"));
 app.use("/api/books", require("./routes/bookRoutes"));
 app.use("/api/exercises", require("./routes/exerciseDefinitionRoutes"));
-app.use("/api/workouts", require("./routes/workoutLogRoutes"));
 app.use("/api/workouts", require("./routes/workoutLogRoutes"));
 app.use("/api/shop", require("./routes/shopRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
