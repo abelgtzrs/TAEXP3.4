@@ -1,12 +1,10 @@
-/** @type {import('tailwindcss').Config} */
+// This file should use module.exports because of the .cjs extension
 module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}", // This tells Tailwind to scan all your component files for classes
-  ],
+  // This 'content' array is crucial. It tells Tailwind to look for class names
+  // in all of your .html and .jsx files inside the src directory.
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      // This is where your custom color palette from the styling phase should go
       colors: {
         background: "#0D1117",
         surface: "#161B22",
