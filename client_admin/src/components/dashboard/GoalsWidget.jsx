@@ -1,5 +1,5 @@
 import { RadialBarChart, RadialBar, ResponsiveContainer, PolarAngleAxis } from "recharts";
-import Widget from "../ui/Widget";
+import Widget from "./Widget";
 
 const GoalWidget = ({ title, percentage, color }) => {
   const data = [{ name: title, value: percentage }];

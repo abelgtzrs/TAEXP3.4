@@ -4,10 +4,10 @@ import api from "../services/api";
 
 // UI Components
 import PageHeader from "../components/ui/PageHeader";
-import Separator from "../components/ui/Separator";
+import Widget from "../components/ui/Widget";
 
 // Dashboard Widgets
-import StatBox from "../components/dashboard/StatBox";
+import StatBoxRow from "../components/dashboard/StatBoxRow";
 import LoreChartWidget from "../components/dashboard/LoreChartWidget";
 import SecuritySettingsWidget from "../components/dashboard/SecuritySettingsWidget";
 import ThreatDetectionWidget from "../components/dashboard/ThreatDetectionWidget";
@@ -19,17 +19,12 @@ import TopProductsWidget from "../components/dashboard/TopProductsWidget";
 import HabitTrackerWidget from "../components/dashboard/HabitTrackerWidget";
 import BookTrackerWidget from "../components/dashboard/BookTrackerWidget";
 import WorkoutTrackerWidget from "../components/dashboard/WorkoutTrackerWidget";
+import ClockWidget from "../components/dashboard/ClockWidget";
+import WeatherWidget from "../components/dashboard/WeatherWidget";
 
 const DashboardPage = () => {
   const { user } = useAuth();
-  const [stats, setStats] = useState({
-    habitsCompleted: 0,
-    booksFinished: 0,
-    gachaPulls: 0,
-    activeStreaks: 0,
-    totalWorkouts: 0,
-    volumesPublished: 0,
-  });
+  const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -50,79 +45,49 @@ const DashboardPage = () => {
     <div className="space-y-6">
       <PageHeader title="Dashboard" subtitle={`Cognitive Framework Status for ${user?.email || "Admin"}.`} />
 
-      {/* --- Top Row: 6-Item Stat Box Container (Now Responsive) --- */}
-      {/* On small screens, it's a 2-column grid. On medium, 3 columns. On large, all 6 are in a row. */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:flex lg:flex-row bg-surface border border-gray-700/50 rounded-lg overflow-hidden">
-        <StatBox
-          title="Habits Completed Today"
-          value={loading ? "..." : stats.habitsCompleted}
-          change="+5.0%"
-          changeType="increase"
-          period="yesterday"
-        />
-        <StatBox
-          title="Total Workouts"
-          value={loading ? "..." : stats.totalWorkouts}
-          change="+2"
-          changeType="increase"
-          period="last week"
-        />
-        <StatBox
-          title="Books Finished"
-          value={loading ? "..." : stats.booksFinished}
-          change="-1"
-          changeType="decrease"
-          period="last month"
-        />
-        <StatBox
-          title="Login Streak"
-          value={loading ? "..." : stats.activeStreaks}
-          change="+1"
-          changeType="increase"
-          period="today"
-        />
-        <StatBox
-          title="Total Collectibles"
-          value={loading ? "..." : stats.gachaPulls}
-          change="+12"
-          changeType="increase"
-          period="this week"
-        />
-        <StatBox
-          title="Volumes Published"
-          value={loading ? "..." : stats.volumesPublished}
-          change="+0"
-          changeType="increase"
-          period="this quarter"
-        />
-      </div>
-
-      <Separator />
-
-      {/* --- Main Content: Responsive Three-Column Layout --- */}
-      {/* On mobile, all widgets are in a single column.
-          On large screens (lg), it expands to a three-column layout. */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Column (col-span-4 on large screens) */}
-        <div className="lg:col-span-4 space-y-6">
-          <HabitTrackerWidget />
-          <BookTrackerWidget />
-          <WorkoutTrackerWidget />
-          <SocialSalesWidget />
+      {/* --- Main Dashboard Grid --- */}
+      <div className="grid grid-cols-6 auto-rows-fr gap-2">
+        {/* Row 1: Full-width Stat Box */}
+        <div className="col-span-6">
+          <StatBoxRow stats={stats} loading={loading} />
         </div>
 
-        {/* Center Column (col-span-5 on large screens) */}
-        <div className="lg:col-span-5 space-y-6">
+        {/* --- Precise Widget Placement --- */}
+
+        {/* A 4x4 Chart */}
+        <div className="col-span-6 md:col-span-4 row-span-4">
           <LoreChartWidget />
-          <TopProductsWidget />
-          <RecentAcquisitionsWidget />
         </div>
 
-        {/* Right Column (col-span-3 on large screens) */}
-        <div className="lg:col-span-3 space-y-6">
-          <SecuritySettingsWidget />
+        {/* A 2x2 Clock */}
+        <div className="col-span-6 sm:col-span-3 md:col-span-2 row-span-2">
+          <ClockWidget />
+        </div>
+
+        {/* A 2x2 Weather Widget */}
+        <div className="col-span-6 sm:col-span-3 md:col-span-2 row-span-2">
+          <WeatherWidget />
+        </div>
+
+        {/* The Tracker Widgets, each taking up 2 columns */}
+        <div className="col-span-6 md:col-span-2 row-span-3">
+          <HabitTrackerWidget />
+        </div>
+        <div className="col-span-6 md:col-span-2 row-span-3">
+          <BookTrackerWidget />
+        </div>
+        <div className="col-span-6 md:col-span-2 row-span-3">
+          <WorkoutTrackerWidget />
+        </div>
+
+        {/* The rest of the widgets filling the remaining space */}
+        <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-3">
           <ThreatDetectionWidget />
-          <CurrencySourceWidget />
+        </div>
+        <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-3">
+          <SecuritySettingsWidget />
+        </div>
+        <div className="col-span-6 lg:col-span-2 row-span-3">
           <GoalsWidget />
         </div>
       </div>

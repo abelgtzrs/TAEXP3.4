@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../../services/api";
-import Widget from "../ui/Widget";
+import Widget from "./Widget";
+import StyledButton from "../ui/StyledButton";
 
 const WorkoutTrackerWidget = () => {
   const [lastLog, setLastLog] = useState(null);
@@ -30,9 +31,7 @@ const WorkoutTrackerWidget = () => {
         <p className="text-sm text-text-tertiary">No workouts logged yet.</p>
       )}
       <Link to="/workouts/log">
-        <button className="w-full mt-4 bg-primary hover:opacity-80 text-background font-bold py-3 rounded-lg transition duration-300">
-          Log New Workout
-        </button>
+        <StyledButton className="w-full mt-4">Log New Workout</StyledButton>
       </Link>
     </Widget>
   );

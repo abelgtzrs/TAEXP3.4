@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
-import Widget from "../ui/Widget";
+import Widget from "./Widget";
 import { CheckSquare } from "lucide-react";
 
 const HabitTrackerWidget = () => {

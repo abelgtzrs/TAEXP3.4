@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../../services/api";
-import Widget from "../ui/Widget";
+import Widget from "./Widget";
 
 const BookTrackerWidget = () => {
   const [currentBook, setCurrentBook] = useState(null);
