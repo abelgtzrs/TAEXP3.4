@@ -6,7 +6,7 @@ const UserSnoopyArt = require("../models/UserSpecific/UserSnoopyArt");
 const YugiohCardBase = require("../models/YugiohCardBase");
 const UserYugiohCard = require("../models/UserSpecific/UserYugiohCard");
 const HabboRareBase = require("../models/HabboRareBase");
-const UserHabboRare = require("../models/UserSpecific/UserHabboRare");
+const UserHabboRare = require("../models/userSpecific/userHabboRare");
 const AbelPersonaBase = require("../models/AbelPersonaBase");
 
 // --- GACHA CONFIGURATION ---
