@@ -1,6 +1,6 @@
 // server/controllers/workoutLogController.js
 
-const WorkoutLog = require("../models/UserSpecific/WorkoutLog"); // Import the WorkoutLog model.
+const WorkoutLog = require("../models/userSpecific/WorkoutLog"); // Import the WorkoutLog model.
 const User = require("../models/User"); // Import User model for rewards.
 
 // @desc    Create a new workout log

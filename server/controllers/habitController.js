@@ -1,6 +1,6 @@
 // server/controllers/habitController.js
 
-const Habit = require("../models/UserSpecific/Habit"); // Import Habit model
+const Habit = require("../models/userSpecific/Habit"); // Import Habit model
 const User = require("../models/User"); // Import User model for rewards
 
 // --- HELPER FUNCTIONS ---

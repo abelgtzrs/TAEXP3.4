@@ -1,6 +1,6 @@
 // server/controllers/bookController.js
 
-const Book = require("../models/UserSpecific/Book"); // Import the Book model.
+const Book = require("../models/userSpecific/Book"); // Import the Book model.
 const User = require("../models/User"); // Import User model for rewards.
 
 // @desc    Create a new book entry for the logged-in user
