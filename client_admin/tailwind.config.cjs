@@ -1,9 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}", // This tells Tailwind to scan all your component files for classes
+  ],
   theme: {
-    // Your new colors MUST be inside this 'extend' object.
     extend: {
+      // This is where your custom color palette from the styling phase should go
       colors: {
         background: "#0D1117",
         surface: "#161B22",
