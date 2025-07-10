@@ -1,4 +1,4 @@
-const Volume = require("../models/Volumes");
+const Volume = require("../models/Volume");
 
 exports.favoriteVolume = async (req, res) => {
   try {
@@ -7,9 +7,7 @@ exports.favoriteVolume = async (req, res) => {
       status: "published",
     });
     if (!volume) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Volume not found." });
+      return res.status(404).json({ success: false, message: "Volume not found." });
     }
     // Increment the favorite count and save.
     volume.favoriteCount = (volume.favoriteCount || 0) + 1;
@@ -27,15 +25,8 @@ exports.exportVolumeRange = async (req, res) => {
   try {
     const { start, end } = req.body;
 
-    if (
-      typeof start !== "number" ||
-      typeof end !== "number" ||
-      start > end ||
-      start < 1
-    ) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid volume range provided." });
+    if (typeof start !== "number" || typeof end !== "number" || start > end || start < 1) {
+      return res.status(400).json({ success: false, message: "Invalid volume range provided." });
     }
 
     const volumes = await Volume.find({
@@ -88,9 +79,7 @@ exports.exportVolumeRange = async (req, res) => {
     res.status(200).json({ success: true, data: { content: fileContent } });
   } catch (error) {
     console.error("Export error:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Server Error during export." });
+    res.status(500).json({ success: false, message: "Server Error during export." });
   }
 };
 
@@ -102,9 +91,7 @@ exports.getRandomBlessing = async (req, res) => {
       { $sample: { size: 1 } },
     ]);
     if (!randomBlessing || randomBlessing.length === 0)
-      return res
-        .status(404)
-        .json({ success: false, message: "No blessings found." });
+      return res.status(404).json({ success: false, message: "No blessings found." });
     res.status(200).json({ success: true, data: randomBlessing[0].blessings });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server Error" });
@@ -114,10 +101,7 @@ exports.getRandomBlessing = async (req, res) => {
 exports.searchVolumes = async (req, res) => {
   try {
     const keyword = req.query.q;
-    if (!keyword)
-      return res
-        .status(400)
-        .json({ success: false, message: "Please provide a search keyword." });
+    if (!keyword) return res.status(400).json({ success: false, message: "Please provide a search keyword." });
     const results = await Volume.find(
       { $text: { $search: keyword }, status: "published" },
       { score: { $meta: "textScore" } }
@@ -135,10 +119,7 @@ exports.getLatestVolume = async (req, res) => {
     const latestVolume = await Volume.findOne({ status: "published" }).sort({
       createdAt: -1,
     });
-    if (!latestVolume)
-      return res
-        .status(404)
-        .json({ success: false, message: "No published volumes found." });
+    if (!latestVolume) return res.status(404).json({ success: false, message: "No published volumes found." });
     res.status(200).json({ success: true, data: latestVolume });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server Error" });
@@ -157,16 +138,10 @@ exports.rateVolume = async (req, res) => {
       volumeNumber: volumeNumber,
       status: "published",
     });
-    if (!volume)
-      return res
-        .status(404)
-        .json({ success: false, message: "Volume not found." });
+    if (!volume) return res.status(404).json({ success: false, message: "Volume not found." });
     volume.ratings.push({ value: rating });
     volume.ratingCount = volume.ratings.length;
-    const totalRating = volume.ratings.reduce(
-      (acc, curr) => acc + curr.value,
-      0
-    );
+    const totalRating = volume.ratings.reduce((acc, curr) => acc + curr.value, 0);
     volume.averageRating = totalRating / volume.ratingCount;
     await volume.save();
     res.status(200).json({
@@ -180,9 +155,7 @@ exports.rateVolume = async (req, res) => {
 
 exports.getPublishedVolumeCatalogue = async (req, res) => {
   try {
-    const catalogue = await Volume.find({ status: "published" })
-      .sort({ volumeNumber: 1 })
-      .select("volumeNumber title");
+    const catalogue = await Volume.find({ status: "published" }).sort({ volumeNumber: 1 }).select("volumeNumber title");
     res.status(200).json({ success: true, data: catalogue });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server Error" });
@@ -191,14 +164,9 @@ exports.getPublishedVolumeCatalogue = async (req, res) => {
 
 exports.getRandomPublishedVolume = async (req, res) => {
   try {
-    const randomVolume = await Volume.aggregate([
-      { $match: { status: "published" } },
-      { $sample: { size: 1 } },
-    ]);
+    const randomVolume = await Volume.aggregate([{ $match: { status: "published" } }, { $sample: { size: 1 } }]);
     if (!randomVolume || randomVolume.length === 0)
-      return res
-        .status(404)
-        .json({ success: false, message: "No published volumes found." });
+      return res.status(404).json({ success: false, message: "No published volumes found." });
     res.status(200).json({ success: true, data: randomVolume[0] });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server Error" });

@@ -1,6 +1,6 @@
 // server/controllers/volumeController.js
 
-const Volume = require("../models/Volumes"); // Import the Volume model
+const Volume = require("../models/Volume"); // Import the Volume model
 /*
  * --- The Parser Function ---
  * This helper function takes a block of raw text and parses it into a structured object.
@@ -35,37 +35,23 @@ const parseRawGreentext = (rawText) => {
   }
 
   // --- Find the line indexes for our key sections ---
-  const blessingIntroIndex = lines.findIndex((line) =>
-    line.trim().toLowerCase().startsWith(BLESSING_INTRO_KEYWORD)
-  );
-  const dreamIndex = lines.findIndex((line) =>
-    line.trim().toLowerCase().startsWith(DREAM_KEYWORD)
-  );
+  const blessingIntroIndex = lines.findIndex((line) => line.trim().toLowerCase().startsWith(BLESSING_INTRO_KEYWORD));
+  const dreamIndex = lines.findIndex((line) => line.trim().toLowerCase().startsWith(DREAM_KEYWORD));
 
   // --- NEW LOGIC for determining section boundaries ---
   // Find the first occurrence of any "special" section to mark the end of the body.
-  const specialSectionIndexes = [blessingIntroIndex, dreamIndex].filter(
-    (index) => index !== -1
-  );
-  const bodyEndIndex =
-    specialSectionIndexes.length > 0
-      ? Math.min(...specialSectionIndexes)
-      : lines.length;
+  const specialSectionIndexes = [blessingIntroIndex, dreamIndex].filter((index) => index !== -1);
+  const bodyEndIndex = specialSectionIndexes.length > 0 ? Math.min(...specialSectionIndexes) : lines.length;
 
   // Body: Lines between title (line 0) and the start of the first special section.
   // We do NOT filter empty lines, as requested in the previous fix.
-  parsedData.bodyLines = lines
-    .slice(1, bodyEndIndex)
-    .map((line) => line.trimEnd()); // Trim only trailing whitespace
+  parsedData.bodyLines = lines.slice(1, bodyEndIndex).map((line) => line.trimEnd()); // Trim only trailing whitespace
 
   // --- Blessing Parsing ---
   if (blessingIntroIndex !== -1) {
     parsedData.blessingIntro = lines[blessingIntroIndex].trim();
-    const endOfBlessings =
-      dreamIndex > blessingIntroIndex ? dreamIndex : lines.length;
-    const blessingLines = lines
-      .slice(blessingIntroIndex + 1, endOfBlessings)
-      .filter((line) => line.trim() !== "");
+    const endOfBlessings = dreamIndex > blessingIntroIndex ? dreamIndex : lines.length;
+    const blessingLines = lines.slice(blessingIntroIndex + 1, endOfBlessings).filter((line) => line.trim() !== "");
 
     const blessingRegex = /^(.*?)(?:\s*\((.*)\))?$/;
     for (const line of blessingLines) {
@@ -94,9 +80,7 @@ exports.createVolumeFromRaw = async (req, res) => {
   try {
     const { rawPastedText, status } = req.body;
     if (!rawPastedText) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Raw text content is required." });
+      return res.status(400).json({ success: false, message: "Raw text content is required." });
     }
 
     // Parse the raw text into our structured format.
@@ -134,12 +118,8 @@ exports.createVolumeFromRaw = async (req, res) => {
 // @route   GET /api/admin/volumes
 exports.getAllVolumesForAdmin = async (req, res) => {
   try {
-    const volumes = await Volume.find()
-      .populate("createdBy", "email")
-      .sort({ volumeNumber: -1 });
-    res
-      .status(200)
-      .json({ success: true, count: volumes.length, data: volumes });
+    const volumes = await Volume.find().populate("createdBy", "email").sort({ volumeNumber: -1 });
+    res.status(200).json({ success: true, count: volumes.length, data: volumes });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server Error" });
   }
@@ -151,9 +131,7 @@ exports.getVolumeByIdForAdmin = async (req, res) => {
   try {
     const volume = await Volume.findById(req.params.id);
     if (!volume) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Volume not found" });
+      return res.status(404).json({ success: false, message: "Volume not found" });
     }
     res.status(200).json({ success: true, data: volume });
   } catch (error) {
@@ -178,15 +156,11 @@ exports.updateVolumeFromRaw = async (req, res) => {
     });
 
     if (!volume) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Volume not found" });
+      return res.status(404).json({ success: false, message: "Volume not found" });
     }
     res.status(200).json({ success: true, data: volume });
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "Server Error", error: error.message });
+    res.status(500).json({ success: false, message: "Server Error", error: error.message });
   }
 };
 
@@ -196,14 +170,10 @@ exports.deleteVolume = async (req, res) => {
   try {
     const volume = await Volume.findById(req.params.id);
     if (!volume) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Volume not found" });
+      return res.status(404).json({ success: false, message: "Volume not found" });
     }
     await volume.remove();
-    res
-      .status(200)
-      .json({ success: true, message: "Volume deleted successfully" });
+    res.status(200).json({ success: true, message: "Volume deleted successfully" });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server Error" });
   }

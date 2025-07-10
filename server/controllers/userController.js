@@ -3,8 +3,9 @@ const User = require("../models/User");
 const Habit = require("../models/userSpecific/Habit");
 const Book = require("../models/userSpecific/Book");
 const WorkoutLog = require("../models/userSpecific/WorkoutLog");
+const Volume = require("../models/Volume");
 
-// --- Define functions as constants ---
+// --- Define all functions as constants before exporting ---
 
 const getUserCollection = async (req, res) => {
   try {
@@ -79,25 +80,21 @@ const updateDisplayedItems = async (req, res) => {
 const getDashboardStats = async (req, res) => {
   try {
     const userId = req.user.id;
+    const userRole = req.user.role;
 
     const startOfToday = new Date();
     startOfToday.setHours(0, 0, 0, 0);
     const endOfToday = new Date();
     endOfToday.setHours(23, 59, 59, 999);
 
-    const habitsCompletedToday = await Habit.countDocuments({
-      user: userId,
-      lastCompletedDate: { $gte: startOfToday, $lte: endOfToday },
-    });
-
-    const booksFinished = await Book.countDocuments({
-      user: userId,
-      isFinished: true,
-    });
-
-    const userWithCollections = await User.findById(userId).select(
-      "currentLoginStreak pokemonCollection snoopyArtCollection habboRares yugiohCards"
-    );
+    const [habitsCompletedToday, booksFinished, userWithCollections, totalWorkouts, volumesPublished] =
+      await Promise.all([
+        Habit.countDocuments({ user: userId, lastCompletedDate: { $gte: startOfToday, $lte: endOfToday } }),
+        Book.countDocuments({ user: userId, isFinished: true }),
+        User.findById(userId).select("currentLoginStreak pokemonCollection snoopyArtCollection habboRares yugiohCards"),
+        WorkoutLog.countDocuments({ user: userId }),
+        userRole === "admin" ? Volume.countDocuments({ createdBy: userId, status: "published" }) : Promise.resolve(0),
+      ]);
 
     const totalCollectibles =
       (userWithCollections.pokemonCollection?.length || 0) +
@@ -110,6 +107,8 @@ const getDashboardStats = async (req, res) => {
       booksFinished: booksFinished,
       gachaPulls: totalCollectibles,
       activeStreaks: userWithCollections.currentLoginStreak || 0,
+      totalWorkouts: totalWorkouts,
+      volumesPublished: volumesPublished,
     };
 
     res.status(200).json({ success: true, data: stats });
