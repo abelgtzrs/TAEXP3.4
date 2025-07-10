@@ -11,6 +11,13 @@ const getMockWeatherData = async () => {
     icon: "Cloud",
     windSpeed: 15, // km/h
     humidity: 75,
+    forecast: [
+      { day: "Mon", temp: 29, icon: "Sun" },
+      { day: "Tue", temp: 26, icon: "CloudRain" },
+      { day: "Wed", temp: 24, icon: "CloudRain" },
+      { day: "Thu", temp: 27, icon: "Cloud" },
+      { day: "Fri", temp: 30, icon: "Sun" },
+    ],
   };
 };
 
@@ -52,22 +59,53 @@ const WeatherWidget = () => {
   }
 
   return (
-    <Widget title="Weather Status" padding="p-4">
-      <div className="flex flex-col items-center justify-center h-full text-center">
-        <p className="font-semibold text-text-secondary">{weather.location}</p>
-        <div className="my-2 text-primary">
-          <WeatherIcon icon={weather.icon} className="w-16 h-16" />
-        </div>
-        <p className="text-5xl font-bold text-white">{weather.temperature}°C</p>
-        <p className="text-text-secondary">{weather.condition}</p>
-        <div className="flex justify-around w-full mt-4 text-xs text-text-secondary">
-          <div>
-            <p className="font-bold text-white">{weather.humidity}%</p>
-            <p>Humidity</p>
+    <Widget title="Weather Status">
+      <div className="h-full grid grid-cols-2 gap-3 pb-8">
+        {/* Left Column - Current Weather */}
+        <div className="flex flex-col justify-between h-full pb-2">
+          {/* Location */}
+          <div className="text-center">
+            <p className="text-xs font-semibold text-text-secondary truncate">{weather.location}</p>
           </div>
-          <div>
-            <p className="font-bold text-white">{weather.windSpeed} km/h</p>
-            <p>Wind</p>
+
+          {/* Current Weather */}
+          <div className="flex flex-col items-center text-center">
+            <div className="text-primary mb-1">
+              <WeatherIcon icon={weather.icon} className="w-8 h-8" />
+            </div>
+            <p className="text-xl font-bold text-white">{weather.temperature}°C</p>
+            <p className="text-xs text-text-secondary truncate">{weather.condition}</p>
+          </div>
+
+          {/* Current Weather Details */}
+          <div className="grid grid-cols-2 gap-1 text-center pb-2">
+            <div>
+              <p className="text-xs font-bold text-white">{weather.humidity}%</p>
+              <p className="text-xs text-text-secondary">Humidity</p>
+            </div>
+            <div>
+              <p className="text-xs font-bold text-white">{weather.windSpeed}</p>
+              <p className="text-xs text-text-secondary">km/h</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column - 5-Day Forecast */}
+        <div className="flex flex-col h-full pb-2">
+          <div className="text-center mb-2">
+            <p className="text-xs font-semibold text-text-secondary">5-Day Forecast</p>
+          </div>
+
+          <div className="flex-1 space-y-1">
+            {weather.forecast.map((day, index) => (
+              <div key={index} className="flex items-center justify-between">
+                <span className="text-xs text-text-secondary w-8">{day.day}</span>
+                <div className="text-primary">
+                  <WeatherIcon icon={day.icon} className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-semibold text-white w-8 text-right">{day.temp}°</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

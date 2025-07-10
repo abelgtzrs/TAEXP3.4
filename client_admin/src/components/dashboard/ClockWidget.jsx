@@ -21,9 +21,9 @@ const ClockWidget = () => {
   };
 
   return (
-    <Widget title="System Time" className="widget-cut-corners">
-      <div className="text-center py-12">
-        <p className="text-[60px] font-mono font-bold text-tertiary text-glow">
+    <Widget title="System Time">
+      <div className="text-center py-4 pb-12">
+        <p className="text-[40px] font-mono font-bold text-tertiary text-glow">
           {time.toLocaleTimeString("en-US", { hour12: true })}
         </p>
         <p className="text-sm text-text-secondary mt-2">{formatDate(time)}</p>
