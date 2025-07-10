@@ -48,28 +48,31 @@ const HabitTrackerWidget = () => {
     return today.toDateString() === lastCompletion.toDateString();
   };
 
-  // --- THIS IS THE FIX ---
-  // We add .filter(Boolean) here as well to ensure we don't process invalid habit entries.
-  const uncompletedHabits = habits
-    .filter(Boolean)
-    .filter((h) => !isCompletedToday(h))
-    .slice(0, 5);
+  // Show up to 10 habits, completed or not
+  const shownHabits = habits.filter(Boolean).slice(0, 10);
 
   return (
     <Widget title="Today's Directives">
       <div className="space-y-3">
-        {uncompletedHabits.length > 0 ? (
-          uncompletedHabits.map((habit) => (
-            <div key={habit._id} className="flex items-center justify-between text-sm">
-              <span className="text-text-secondary">{habit.name}</span>
-              <button
-                onClick={() => handleCompleteHabit(habit._id)}
-                className="p-1 text-gray-500 hover:text-status-success"
-              >
-                <CheckSquare size={18} />
-              </button>
-            </div>
-          ))
+        {shownHabits.length > 0 ? (
+          shownHabits.map((habit) => {
+            const completed = isCompletedToday(habit);
+            return (
+              <div key={habit._id} className="flex items-center justify-between text-sm">
+                <span className={completed ? "text-text-tertiary line-through" : "text-text-secondary"}>
+                  {habit.name}
+                </span>
+                <button
+                  onClick={() => handleCompleteHabit(habit._id)}
+                  className={`p-1 ${completed ? "text-status-success" : "text-gray-500 hover:text-status-success"}`}
+                  disabled={completed}
+                  aria-label={completed ? "Completed" : "Mark as complete"}
+                >
+                  <CheckSquare size={18} />
+                </button>
+              </div>
+            );
+          })
         ) : (
           <p className="text-sm text-text-tertiary">All habits completed for today!</p>
         )}

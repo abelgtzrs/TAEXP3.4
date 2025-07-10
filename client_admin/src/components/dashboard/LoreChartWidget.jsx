@@ -1,22 +1,44 @@
-// --- FILE: client-admin/src/components/dashboard/LoreChartWidget.jsx (Corrected) ---
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import Widget from "./Widget";
 
 // Mock data to make the chart look interesting
 const chartData = [
-  { name: "T-72h", coherence: 98.5, anomaly: 2, drift: 0.1 },
-  { name: "T-60h", coherence: 98.6, anomaly: 3, drift: 0.12 },
+  { name: "T-144h", coherence: 91.2, anomaly: 4, drift: 0.2 },
+  { name: "T-138h", coherence: 92.1, anomaly: 3, drift: 0.19 },
+  { name: "T-132h", coherence: 92.7, anomaly: 5, drift: 0.18 },
+  { name: "T-126h", coherence: 93.4, anomaly: 4, drift: 0.17 },
+  { name: "T-120h", coherence: 93.9, anomaly: 4, drift: 0.17 },
+  { name: "T-114h", coherence: 94.0, anomaly: 3, drift: 0.16 },
+  { name: "T-108h", coherence: 94.3, anomaly: 3, drift: 0.16 },
+  { name: "T-102h", coherence: 94.8, anomaly: 4, drift: 0.15 },
+  { name: "T-96h", coherence: 95.1, anomaly: 100, drift: 0.15 },
+  { name: "T-90h", coherence: 95.3, anomaly: 4, drift: 0.14 },
+  { name: "T-84h", coherence: 95.7, anomaly: 3, drift: 0.14 },
+  { name: "T-78h", coherence: 96.0, anomaly: 2, drift: 0.13 },
+  { name: "T-72h", coherence: 94.5, anomaly: 2, drift: 0.1 },
+  { name: "T-66h", coherence: 95.0, anomaly: 2, drift: 0.1 },
+  { name: "T-60h", coherence: 95.6, anomaly: 3, drift: 0.12 },
+  { name: "T-54h", coherence: 96.2, anomaly: 2, drift: 0.12 },
   { name: "T-48h", coherence: 98.4, anomaly: 2, drift: 0.11 },
-  { name: "T-36h", coherence: 98.7, anomaly: 5, drift: 0.15 },
+  { name: "T-42h", coherence: 97.9, anomaly: 3, drift: 0.11 },
+  { name: "T-36h", coherence: 97.2, anomaly: 5, drift: 0.15 },
+  { name: "T-30h", coherence: 97.5, anomaly: 4, drift: 0.14 },
   { name: "T-24h", coherence: 98.6, anomaly: 4, drift: 0.14 },
-  { name: "T-12h", coherence: 98.8, anomaly: 1, drift: 0.09 },
-  { name: "Current", coherence: 98.7, anomaly: 2, drift: 0.1 },
+  { name: "T-18h", coherence: 98.1, anomaly: 3, drift: 0.12 },
+  { name: "T-12h", coherence: 97.8, anomaly: 1, drift: 0.09 },
+  { name: "T-9h", coherence: 97.9, anomaly: 2, drift: 0.1 },
+  { name: "T-6h", coherence: 98.2, anomaly: 2, drift: 0.1 },
+  { name: "T-5h", coherence: 98.4, anomaly: 1, drift: 0.09 },
+  { name: "T-4h", coherence: 99.0, anomaly: 1, drift: 0.09 },
+  { name: "T-3h", coherence: 99.6, anomaly: 1, drift: 0.1 },
+  { name: "T-2h", coherence: 100.0, anomaly: 2, drift: 0.1 },
+  { name: "Current", coherence: 100.7, anomaly: 2, drift: 0.1 },
 ];
 
 const LoreChartWidget = () => {
   return (
     <Widget title="System Integrity: Narrative Coherence Index">
-      <div className="h-80 w-full">
+      <div className="h-64 w-full">
         <ResponsiveContainer>
           <AreaChart data={chartData} margin={{ top: 5, right: 20, left: -15, bottom: 5 }}>
             {/* The <defs> and <linearGradient> tags are standard SVG elements.
@@ -29,7 +51,7 @@ const LoreChartWidget = () => {
               </linearGradient>
             </defs>
 
-            <XAxis dataKey="name" stroke="#6b7280" tick={{ fill: "#9ca3af", fontSize: 12 }} />
+            <XAxis dataKey="name" stroke="#6b7250" tick={{ fill: "#9ca3af", fontSize: 12 }} />
             <YAxis
               stroke="#6b7280"
               domain={["dataMin - 0.5", "dataMax + 0.5"]}

@@ -11,11 +11,11 @@ const BookTrackerWidget = () => {
       const response = await api.get("/books");
       const books = response.data.data;
 
-      // Get last 3 modified active books (unfinished books sorted by updatedAt)
+      // Get last 4 modified active books (unfinished books sorted by updatedAt)
       const activeBooks = books
         .filter((b) => !b.isFinished)
         .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
-        .slice(0, 3);
+        .slice(0, 4);
       setRecentBooks(activeBooks);
 
       // Initialize page updates state with current pages
