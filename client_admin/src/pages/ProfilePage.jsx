@@ -1,55 +1,82 @@
-// src/pages/ProfilePage.jsx
-import { useAuth } from '../context/AuthContext';
-import UserProfileHeader from '../components/profile/UserProfileHeader';
-import DisplayedCollection from '../components/profile/DisplayedCollection';
+import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import api from "../services/api";
+import PageHeader from "../components/ui/PageHeader";
+import UserInfoCard from "../components/profile/UserInfoCard";
+import BadgeDisplay from "../components/profile/BadgeDisplay";
+import UserStatsWidget from "../components/profile/UserStatsWidget";
+import DisplayedCollection from "../components/profile/DisplayedCollection";
 
 const ProfilePage = () => {
-    // Get the comprehensive, populated user object from our global state
-    const { user, loading, isAuthenticated } = useAuth();
+  const { user } = useAuth(); // We get the populated user object from our context
 
-    if (loading) {
-        return <p className="text-white">Loading Profile...</p>;
-    }
+  // State for data fetched specifically for this page
+  const [allBadges, setAllBadges] = useState([]);
+  const [dashboardStats, setDashboardStats] = useState({});
+  const [loading, setLoading] = useState(true);
 
-    if (!isAuthenticated || !user) {
-        return <p className="text-red-500">Could not load user profile.</p>;
-    }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch all data needed for the profile page in parallel
+        const [badgesRes, statsRes] = await Promise.all([
+          api.get("/badges/base"),
+          api.get("/users/me/dashboard-stats"),
+        ]);
+        setAllBadges(badgesRes.data.data);
+        setDashboardStats(statsRes.data.data);
+      } catch (error) {
+        console.error("Failed to load profile page data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
-    return (
-        <div className="space-y-8">
-            <UserProfileHeader user={user} />
+  if (loading || !user) {
+    return <p className="text-white text-center">Loading Profile...</p>;
+  }
 
-            <DisplayedCollection 
-                title="Displayed Pokémon"
-                items={user.displayedPokemon || []}
-                baseField="basePokemon"
-            />
-            
-            <DisplayedCollection 
-                title="Displayed Snoopys"
-                items={user.displayedSnoopyArt || []}
-                baseField="snoopyArtBase"
-            />
+  return (
+    <div>
+      <PageHeader title="Operator Profile" subtitle="Your personal sanctuary and collection overview." />
 
-            <DisplayedCollection 
-                title="Displayed Habbo Rares"
-                items={user.displayedHabboRares || []}
-                baseField="habboRareBase"
-            />
-
-            <DisplayedCollection 
-                title="Displayed Yu-Gi-Oh! Cards"
-                items={user.displayedYugiohCards || []}
-                baseField="yugiohCardBase"
-            />
-            
-            {/* The Badge Display will be added here in a future step */}
-            <div className="widget-container p-6">
-                <h2 className="text-xl font-bold text-white mb-4">Badges</h2>
-                <p className="text-gray-400">Badge display will be implemented here.</p>
-            </div>
+      {/* --- Main 3-Column Grid Layout --- */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-2 items-start">
+        {/* === Left Column (1/4 width) === */}
+        <div className="lg:col-span-1 space-y-6">
+          <UserInfoCard />
+          <BadgeDisplay allBadges={allBadges} earnedBadges={user.badges} />
         </div>
-    );
+
+        {/* === Middle Column (1/2 width) === */}
+        <div className="lg:col-span-2 space-y-6">
+          <DisplayedCollection title="Displayed Pokémon" items={user.displayedPokemon || []} baseField="basePokemon" />
+          <DisplayedCollection
+            title="Displayed Snoopys"
+            items={user.displayedSnoopyArt || []}
+            baseField="snoopyArtBase"
+          />
+          <DisplayedCollection
+            title="Displayed Habbo Rares"
+            items={user.displayedHabboRares || []}
+            baseField="habboRareBase"
+          />
+          <DisplayedCollection
+            title="Displayed Yu-Gi-Oh! Cards"
+            items={user.displayedYugiohCards || []}
+            baseField="yugiohCardBase"
+          />
+        </div>
+
+        {/* === Right Column (1/4 width) === */}
+        <div className="lg:col-span-1 space-y-6">
+          <UserStatsWidget stats={dashboardStats} />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ProfilePage;

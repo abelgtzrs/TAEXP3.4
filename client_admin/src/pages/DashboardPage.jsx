@@ -44,7 +44,7 @@ const DashboardPage = () => {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Dashboard" subtitle={`Cognitive Framework Status for ${user?.email || "Admin"}.`} />
+      <PageHeader title="Dashboard" subtitle={`Cognitive Framework Status for ${user.username || "Admin"}.`} />
 
       {/* --- Main Dashboard Grid --- */}
       <div className="grid grid-cols-6 gap-1">
