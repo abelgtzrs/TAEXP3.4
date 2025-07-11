@@ -15,6 +15,25 @@ const InputWithLabel = ({ label, id, ...props }) => (
   </div>
 );
 
+// Success toast/modal for update
+const SuccessToast = ({ open, message, duration = 2500, onClose }) => {
+  // Auto-close after duration
+  useEffect(() => {
+    if (!open) return;
+    const timer = setTimeout(onClose, duration);
+    return () => clearTimeout(timer);
+  }, [open, duration, onClose]);
+  if (!open) return null;
+  return (
+    <div className="fixed top-17 right-[340px] z-50">
+      <div className="bg-gray-800 border border-primary rounded-lg px-6 py-4 shadow-lg flex items-center gap-3 animate-fade-in">
+        <span className="text-status-success font-bold">Success</span>
+        <span className="text-white">{message}</span>
+      </div>
+    </div>
+  );
+};
+
 const PokemonEditorPage = () => {
   const navigate = useNavigate();
 
@@ -31,6 +50,7 @@ const PokemonEditorPage = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
 
   // Fetch the list of all Pokémon for the dropdown on initial load
   useEffect(() => {
@@ -141,7 +161,7 @@ const PokemonEditorPage = () => {
     setLoading(true);
     try {
       await api.put(`/admin/pokemon/${selectedPokemonId}`, pokemon);
-      alert("Pokémon updated successfully!");
+      setSuccessModalOpen(true); // Show toast instead of alert
       const logsRes = await api.get(`/admin/pokemon/${selectedPokemonId}/logs`);
       setChangeLogs(logsRes.data.data);
     } catch (err) {
@@ -161,18 +181,24 @@ const PokemonEditorPage = () => {
 
   return (
     <div className="flex h-screen">
+      {/* Success Toast */}
+      <SuccessToast
+        open={successModalOpen}
+        onClose={() => setSuccessModalOpen(false)}
+        message="Pokémon updated successfully!"
+      />
       {/* Main Content Area */}
-      <div className="flex-1 pr-80 overflow-y-auto">
-        <div className="p-6">
+      <div className="flex-2 pr-80 overflow-y-auto">
+        <div className="p-2">
           <PageHeader title="Pokémon Database Editor" subtitle="Select a Pokémon to view and modify its data." />
 
           {loading && <p className="text-white text-center">Loading Data...</p>}
           {error && <p className="text-red-500 text-center">{error}</p>}
 
           {pokemon && !loading && (
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-2">
               {/* --- Basic Info Section --- */}
-              <div className="p-6 bg-gray-800 rounded-lg">
+              <div className="p-2 bg-gray-800 rounded-lg">
                 <h3 className="text-lg font-semibold text-white mb-4">Basic Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <InputWithLabel
@@ -247,7 +273,7 @@ const PokemonEditorPage = () => {
               </div>
 
               {/* --- Forms Section --- */}
-              <div className="p-6 bg-gray-800 rounded-lg">
+              <div className="p-1 bg-gray-800 rounded-lg">
                 <h3 className="text-lg font-semibold text-white mb-4">Forms</h3>
                 <div className="space-y-4">
                   {pokemon.forms.map((form, index) => (

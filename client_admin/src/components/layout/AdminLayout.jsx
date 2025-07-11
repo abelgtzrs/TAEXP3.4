@@ -87,6 +87,9 @@ const AdminLayout = () => {
               <NavItem to="/shop" icon={Store} isCollapsed={isSidebarCollapsed}>
                 Shop
               </NavItem>
+              <NavItem to="/collections" icon={Store} isCollapsed={isSidebarCollapsed}>
+                Collections
+              </NavItem>
             </ul>
           </div>
 

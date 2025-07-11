@@ -142,7 +142,7 @@ const ClockWidget = () => {
         {/* Fictional System Status */}
         <div className="mt-4 flex items-center justify-center gap-2 text-xs text-green-400">
           <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-          <span>System Sync: Nominal</span>
+          <span>API Link: Responsive</span>
         </div>
       </div>
     </Widget>

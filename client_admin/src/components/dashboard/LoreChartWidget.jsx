@@ -13,14 +13,6 @@ const chartData = [
   { name: "T-102h", coherence: 94.8, anomaly: 4, drift: 0.15 },
   { name: "T-96h", coherence: 95.1, anomaly: 100, drift: 0.15 },
   { name: "T-90h", coherence: 95.3, anomaly: 4, drift: 0.14 },
-  { name: "T-84h", coherence: 95.7, anomaly: 3, drift: 0.14 },
-  { name: "T-78h", coherence: 96.0, anomaly: 2, drift: 0.13 },
-  { name: "T-72h", coherence: 94.5, anomaly: 2, drift: 0.1 },
-  { name: "T-66h", coherence: 95.0, anomaly: 2, drift: 0.1 },
-  { name: "T-60h", coherence: 95.6, anomaly: 3, drift: 0.12 },
-  { name: "T-54h", coherence: 96.2, anomaly: 2, drift: 0.12 },
-  { name: "T-48h", coherence: 98.4, anomaly: 2, drift: 0.11 },
-  { name: "T-42h", coherence: 97.9, anomaly: 3, drift: 0.11 },
   { name: "T-36h", coherence: 97.2, anomaly: 5, drift: 0.15 },
   { name: "T-30h", coherence: 97.5, anomaly: 4, drift: 0.14 },
   { name: "T-24h", coherence: 98.6, anomaly: 4, drift: 0.14 },
@@ -38,7 +30,7 @@ const chartData = [
 const LoreChartWidget = () => {
   return (
     <Widget title="System Integrity: Narrative Coherence Index">
-      <div className="h-64 w-full">
+      <div className="py-8 h-[100%] w-full">
         <ResponsiveContainer>
           <AreaChart data={chartData} margin={{ top: 5, right: 20, left: -15, bottom: 5 }}>
             {/* The <defs> and <linearGradient> tags are standard SVG elements.
@@ -46,35 +38,30 @@ const LoreChartWidget = () => {
                 This was the source of the error. */}
             <defs>
               <linearGradient id="colorCoherence" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#2dd4bf" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#2dd4bf" stopOpacity={0} />
+                <stop offset="50%" stopColor="#c34014ff" stopOpacity={0.4} />
+                <stop offset="95%" stopColor="#ec7e24ff" stopOpacity={0} />
               </linearGradient>
             </defs>
 
             <XAxis dataKey="name" stroke="#6b7250" tick={{ fill: "#9ca3af", fontSize: 12 }} />
-            <YAxis
-              stroke="#6b7280"
-              domain={["dataMin - 0.5", "dataMax + 0.5"]}
-              tick={{ fill: "#9ca3af", fontSize: 12 }}
-            />
+            <YAxis stroke="#6b7280" domain={["dataMin - 5", "dataMax + 5"]} tick={{ fill: "#9ca3af", fontSize: 12 }} />
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
             <Tooltip
               contentStyle={{
                 backgroundColor: "rgba(15, 23, 42, 0.9)",
-                borderColor: "#2dd4bf",
+                borderColor: "#d45f2dff",
                 color: "#e5e7eb",
-                borderRadius: "0.5rem",
               }}
               labelStyle={{ fontWeight: "bold" }}
             />
             <Area
               type="monotone"
               dataKey="coherence"
-              stroke="#2dd4bf"
-              strokeWidth={2}
+              stroke="#d42d2dff"
+              strokeWidth={1}
               fillOpacity={1}
               fill="url(#colorCoherence)"
-              dot={{ r: 4, fill: "#2dd4bf" }}
+              dot={{ r: 3, fill: "#d42d2dff" }}
             />
           </AreaChart>
         </ResponsiveContainer>

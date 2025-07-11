@@ -21,6 +21,7 @@ import BookTrackerWidget from "../components/dashboard/BookTrackerWidget";
 import WorkoutTrackerWidget from "../components/dashboard/WorkoutTrackerWidget";
 import ClockWidget from "../components/dashboard/ClockWidget";
 import WeatherWidget from "../components/dashboard/WeatherWidget";
+import MetricCard from "../components/dashboard/MetricCard";
 
 const DashboardPage = () => {
   const { user } = useAuth();
@@ -89,6 +90,16 @@ const DashboardPage = () => {
         </div>
         <div className="col-span-6 lg:col-span-2 row-span-2">
           <GoalsWidget />
+        </div>
+        {/* Additional Widgets */}
+        <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2">
+          <RecentAcquisitionsWidget />
+        </div>
+        <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2">
+          <TopProductsWidget />
+        </div>
+        <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2">
+          <CurrencySourceWidget />
         </div>
       </div>
     </div>
