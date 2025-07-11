@@ -21,7 +21,6 @@ import BookTrackerWidget from "../components/dashboard/BookTrackerWidget";
 import WorkoutTrackerWidget from "../components/dashboard/WorkoutTrackerWidget";
 import ClockWidget from "../components/dashboard/ClockWidget";
 import WeatherWidget from "../components/dashboard/WeatherWidget";
-import MetricCard from "../components/dashboard/MetricCard";
 
 const DashboardPage = () => {
   const { user } = useAuth();
@@ -43,11 +42,11 @@ const DashboardPage = () => {
   }, []);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2">
       <PageHeader title="Dashboard" subtitle={`Cognitive Framework Status for ${user.username || "Admin"}.`} />
 
       {/* --- Main Dashboard Grid --- */}
-      <div className="grid grid-cols-6 gap-1">
+      <div className="grid grid-cols-6 gap-4">
         {/* Row 1: Full-width Stat Box */}
         <div className="col-span-6">
           <StatBoxRow stats={stats} loading={loading} />

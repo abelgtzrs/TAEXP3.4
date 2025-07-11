@@ -81,7 +81,7 @@ const AdminLayout = () => {
               <NavItem to="/profile" icon={User} isCollapsed={isSidebarCollapsed}>
                 Profile
               </NavItem>
-              <NavItem to="/pokedex" icon={Image}>
+              <NavItem to="/pokedex" icon={Image} isCollapsed={isSidebarCollapsed}>
                 Pokédex
               </NavItem>
               <NavItem to="/shop" icon={Store} isCollapsed={isSidebarCollapsed}>
@@ -133,7 +133,7 @@ const AdminLayout = () => {
                 <NavItem to="/admin/templates" icon={Settings} isCollapsed={isSidebarCollapsed}>
                   Workout Management
                 </NavItem>
-                <NavItem to="/admin/pokemon-editor" icon={PenSquare}>
+                <NavItem to="/admin/pokemon-editor" icon={PenSquare} isCollapsed={isSidebarCollapsed}>
                   Pokémon Editor
                 </NavItem>
               </ul>

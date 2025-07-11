@@ -25,7 +25,7 @@ const SuccessToast = ({ open, message, duration = 2500, onClose }) => {
   }, [open, duration, onClose]);
   if (!open) return null;
   return (
-    <div className="fixed top-17 right-[340px] z-50">
+    <div className="fixed top-17 right-[220px] z-50">
       <div className="bg-gray-800 border border-primary rounded-lg px-6 py-4 shadow-lg flex items-center gap-3 animate-fade-in">
         <span className="text-status-success font-bold">Success</span>
         <span className="text-white">{message}</span>
@@ -188,8 +188,8 @@ const PokemonEditorPage = () => {
         message="Pokémon updated successfully!"
       />
       {/* Main Content Area */}
-      <div className="flex-2 pr-80 overflow-y-auto">
-        <div className="p-2">
+      <div className="flex-2 pr-56 overflow-y-auto">
+        <div>
           <PageHeader title="Pokémon Database Editor" subtitle="Select a Pokémon to view and modify its data." />
 
           {loading && <p className="text-white text-center">Loading Data...</p>}
@@ -198,7 +198,7 @@ const PokemonEditorPage = () => {
           {pokemon && !loading && (
             <form onSubmit={handleSubmit} className="space-y-2">
               {/* --- Basic Info Section --- */}
-              <div className="p-2 bg-gray-800 rounded-lg">
+              <div className="p-4 bg-gray-800 rounded-lg">
                 <h3 className="text-lg font-semibold text-white mb-4">Basic Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <InputWithLabel
@@ -273,7 +273,7 @@ const PokemonEditorPage = () => {
               </div>
 
               {/* --- Forms Section --- */}
-              <div className="p-1 bg-gray-800 rounded-lg">
+              <div className="p-4 bg-gray-800 rounded-lg">
                 <h3 className="text-lg font-semibold text-white mb-4">Forms</h3>
                 <div className="space-y-4">
                   {pokemon.forms.map((form, index) => (
@@ -338,7 +338,7 @@ const PokemonEditorPage = () => {
               </div>
 
               {/* --- Evolution Paths Section --- */}
-              <div className="p-6 bg-gray-800 rounded-lg">
+              <div className="p-4 bg-gray-800 rounded-lg">
                 <h3 className="text-lg font-semibold text-white mb-4">Evolution Paths</h3>
                 <div className="space-y-4">
                   {pokemon.evolutionPaths.map((path, index) => (
@@ -406,7 +406,7 @@ const PokemonEditorPage = () => {
       </div>
 
       {/* Right Sidebar - Pokemon Selector */}
-      <div className="fixed right-0 top-0 w-80 h-full bg-gray-900 border-l border-gray-700 flex flex-col z-50">
+      <div className="fixed right-0 top-0 w-60 h-full bg-gray-900 border-l border-gray-700 flex flex-col z-50">
         <div className="p-4 border-b border-gray-700">
           <h3 className="text-lg font-semibold text-white mb-3">Select Pokémon</h3>
           {/* Search Input */}

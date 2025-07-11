@@ -1,20 +1,20 @@
-// src/pages/CollectionDetailPage.jsx
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
+import PageHeader from "../components/ui/PageHeader";
 import CollectionItemCard from "../components/collections/CollectionItemCard";
 
 const collectionConfig = {
-  pokemon: { title: "Pokédex", baseField: "basePokemon", displayField: "displayedPokemon", limit: 6 },
+  pokemon: { title: "Pokédex Collection", baseField: "basePokemon", displayField: "displayedPokemon", limit: 6 },
   snoopy: { title: "Snoopy Gallery", baseField: "snoopyArtBase", displayField: "displayedSnoopyArt", limit: 6 },
   habbo: { title: "Habbo Rare Furni", baseField: "habboRareBase", displayField: "displayedHabboRares", limit: 6 },
   yugioh: { title: "Yu-Gi-Oh! Binder", baseField: "yugiohCardBase", displayField: "displayedYugiohCards", limit: 6 },
 };
 
 const CollectionDetailPage = () => {
-  const { collectionType } = useParams(); // Gets 'pokemon', 'snoopy', etc. from the URL
-  const { user, setUser } = useAuth(); // Global user state
+  const { collectionType } = useParams();
+  const { user, setUser } = useAuth();
 
   const [collection, setCollection] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,7 +25,7 @@ const CollectionDetailPage = () => {
   useEffect(() => {
     const fetchCollection = async () => {
       if (!config) {
-        setError("Invalid collection type.");
+        setError("Invalid collection type specified.");
         setLoading(false);
         return;
       }
@@ -42,7 +42,11 @@ const CollectionDetailPage = () => {
   }, [collectionType, config]);
 
   const handleUpdateDisplay = async (itemId, isCurrentlyDisplayed) => {
-    const displayedItems = user[config.displayField].map((item) => item._id);
+    // --- THIS IS THE FIX ---
+    // We safely get the array of displayed items, defaulting to an empty array if it doesn't exist.
+    const displayedItems = Array.isArray(user[config.displayField])
+      ? user[config.displayField].map((item) => item._id)
+      : [];
     let newDisplayedIds;
 
     if (isCurrentlyDisplayed) {
@@ -60,7 +64,6 @@ const CollectionDetailPage = () => {
         collectionType: collectionType,
         items: newDisplayedIds,
       });
-      // To update the UI instantly, we fetch the full user profile again.
       const updatedUserRes = await api.get("/auth/me");
       setUser(updatedUserRes.data.data);
       alert("Profile display updated!");
@@ -69,11 +72,14 @@ const CollectionDetailPage = () => {
     }
   };
 
-  if (!config) return <div className="text-red-500 text-2xl">Error: Unknown Collection Type</div>;
-  if (loading) return <p className="text-white">Loading Collection...</p>;
+  if (!config) return <div className="text-red-500 text-2xl">Error: Unknown Collection Type "{collectionType}"</div>;
+  if (loading) return <p className="text-white text-center">Loading Collection...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
-  const displayedIds = user[config.displayField]?.map((item) => item._id) || [];
+  // We use the same safe array check here before calling .map()
+  const displayedIds = Array.isArray(user[config.displayField])
+    ? user[config.displayField].map((item) => item._id)
+    : [];
 
   return (
     <div>
@@ -82,13 +88,14 @@ const CollectionDetailPage = () => {
           &larr; Back to Collections Hub
         </Link>
       </div>
-      <h1 className="text-3xl font-bold text-teal-400 mb-8">{config.title}</h1>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+      <PageHeader title={config.title} subtitle={`You have collected ${collection.length} items.`} />
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
         {collection.map((item) => (
           <CollectionItemCard
             key={item._id}
             item={item}
-            baseField={config.baseField}
+            config={config}
             isDisplayed={displayedIds.includes(item._id)}
             isDisplayFull={displayedIds.length >= config.limit}
             onSelect={handleUpdateDisplay}

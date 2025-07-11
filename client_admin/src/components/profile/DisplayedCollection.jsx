@@ -1,27 +1,29 @@
-import Widget from "../dashboard/Widget";
+import Widget from "../ui/Widget";
 
-const DisplayedCollection = ({ title, items = [], baseField, placeholderText = "Nothing displayed yet." }) => {
-  // Ensure items is always an array before using spread operator
-  const safeItems = Array.isArray(items) ? items : [];
-  const displayItems = [...safeItems];
+const DisplayedCollection = ({ title, items, baseField }) => {
+  // --- THIS IS THE FIX ---
+  // We ensure that 'items' is treated as an array, even if it's undefined or null.
+  // We also create a new array to avoid modifying the original.
+  const displayItems = Array.isArray(items) ? [...items] : [];
+
+  // Fill the rest of the grid with nulls for consistent spacing.
   while (displayItems.length < 6) {
     displayItems.push(null);
   }
 
   return (
     <Widget title={title}>
-      <div className="grid grid-cols-6 gap-4" style={{ aspectRatio: "5/1" }}>
+      <div className="grid grid-cols-6 gap-4">
         {displayItems.map((item, index) => {
           const baseItem = item ? item[baseField] : null;
 
           return (
             <div
               key={item?._id || index}
-              className="p-2 bg-gray-900/50 rounded-lg flex flex-col items-center justify-center text-center h-full"
+              className="p-2 bg-gray-900/50 rounded-lg aspect-square flex flex-col items-center justify-center text-center"
             >
               {baseItem ? (
                 <>
-                  {/* This div now takes a fraction of the parent's height for better spacing */}
                   <div className="w-full h-3/4 flex items-center justify-center">
                     {baseItem.imageUrl ? (
                       <img

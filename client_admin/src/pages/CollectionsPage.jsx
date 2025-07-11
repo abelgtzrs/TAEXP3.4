@@ -1,12 +1,10 @@
-// src/pages/CollectionsPage.jsx
 import { Link } from "react-router-dom";
 
 const collectionLinks = [
-  { type: "pokemon", name: "My Pokédex" },
-  { type: "snoopy", name: "Snoopy Gallery" },
-  { type: "habbo", name: "Habbo Rare Furni" },
-  { type: "yugioh", name: "Yu-Gi-Oh! Binder" },
-  // Add more links here later for Badges, Titles etc.
+  { type: "pokemon", name: "My Pokédex", icon: "🐾" },
+  { type: "snoopy", name: "Snoopy Gallery", icon: "🐶" },
+  { type: "habbo", name: "Habbo Rare Furni", icon: "🛋️" },
+  { type: "yugioh", name: "Yu-Gi-Oh! Binder", icon: "🃏" }, // Correct type 'yugioh'
 ];
 
 const CollectionsPage = () => {
