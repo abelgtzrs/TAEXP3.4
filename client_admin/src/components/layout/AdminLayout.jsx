@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { Outlet, Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import Header from "./Header"; // This imports the Header component
+import Header from "./Header";
 import {
   LayoutDashboard,
   CheckSquare,
@@ -18,20 +19,22 @@ import {
   Clapperboard,
 } from "lucide-react";
 
-// Reusable NavItem component for sidebar links
-const NavItem = ({ to, icon: Icon, children }) => {
+const NavItem = ({ to, icon: Icon, children, isCollapsed }) => {
   return (
     <li>
       <NavLink
         to={to}
         className={({ isActive }) =>
-          `flex items-center p-2 rounded-md transition-colors duration-200 text-xs text-text-secondary hover:bg-gray-700/50 hover:text-white ${
+          `flex items-center p-2 rounded-md transition-colors duration-200 text-text-secondary hover:bg-gray-700/50 hover:text-white ${
             isActive ? "bg-primary/10 text-white" : ""
           }`
         }
       >
-        <Icon size={16} className="mr-2 flex-shrink-0" />
-        <span>{children}</span>
+        <Icon size={20} className="mr-3 flex-shrink-0" />
+        {/* The text label is now conditionally rendered */}
+        <span className={`transition-opacity duration-200 ${isCollapsed ? "opacity-0" : "opacity-100"}`}>
+          {children}
+        </span>
       </NavLink>
     </li>
   );
@@ -39,90 +42,121 @@ const NavItem = ({ to, icon: Icon, children }) => {
 
 const AdminLayout = () => {
   const { user, logout } = useAuth();
+  // State to control the sidebar's collapsed status
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (
     <div className="flex h-screen bg-background text-text-main">
       {/* --- Sidebar --- */}
-      <aside className="w-48 bg-surface p-3 flex-shrink-0 flex flex-col border-r border-gray-700/50">
-        <div className="flex items-center gap-2 px-2 pb-4 mb-3 border-b border-gray-700/50">
-          <h1 className="text-white font-bold text-xs">The Abel Experience™</h1>
+      {/* The width of the sidebar now changes based on state */}
+      <aside
+        className={`bg-surface p-4 flex-shrink-0 flex flex-col border-r border-gray-700/50 transition-all duration-500 ease-in-out ${
+          isSidebarCollapsed ? "w-20" : "w-54"
+        }`}
+      >
+        <div className="flex items-center gap-2 py-4 pb-14 mb-4">
+          {/* The main title text is now conditionally rendered */}
+          <div
+            className={`overflow-hidden transition-all duration-500 ease-in-out ${
+              isSidebarCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"
+            }`}
+          >
+            <h1 className="text-white font-bold text-[12px] whitespace-nowrap">The Abel Experience™ CFW v3.4</h1>
+          </div>
         </div>
 
-        <nav className="flex-grow space-y-4 overflow-y-auto">
+        <nav className="flex-grow space-y-6 overflow-y-auto">
           <div>
-            <p className="px-2 text-xs font-semibold text-text-tertiary uppercase mb-1">Main</p>
+            <p
+              className={`px-2 text-xs font-semibold text-text-tertiary uppercase mb-2 transition-all duration-500 ease-in-out ${
+                isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-2"
+              }`}
+            >
+              Main
+            </p>
             <ul className="space-y-1">
-              <NavItem to="/dashboard" icon={LayoutDashboard}>
+              <NavItem to="/dashboard" icon={LayoutDashboard} isCollapsed={isSidebarCollapsed}>
                 Dashboard
               </NavItem>
-              <NavItem to="/profile" icon={User}>
+              <NavItem to="/profile" icon={User} isCollapsed={isSidebarCollapsed}>
                 Profile
               </NavItem>
-              <NavItem to="/shop" icon={Store}>
-                Shop (Gacha)
-              </NavItem>
-              <NavItem to="/pokedex" icon={Image}>
+              <NavItem to="/pokedex" icon={Image} isCollapsed={isSidebarCollapsed}>
                 Pokédex
+              </NavItem>
+              <NavItem to="/shop" icon={Store} isCollapsed={isSidebarCollapsed}>
+                Shop
+              </NavItem>
+              <NavItem to="/collections" icon={Store} isCollapsed={isSidebarCollapsed}>
+                Collections
               </NavItem>
             </ul>
           </div>
 
           <div>
-            <p className="px-2 text-xs font-semibold text-text-tertiary uppercase mb-1">Trackers</p>
+            <p
+              className={`px-2 text-xs font-semibold text-text-tertiary uppercase mb-2 transition-all duration-500 ease-in-out ${
+                isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-2"
+              }`}
+            >
+              {isSidebarCollapsed ? " " : "Trackers"}
+            </p>
             <ul className="space-y-1">
-              <NavItem to="/habits" icon={CheckSquare}>
-                Habit Tracker
+              <NavItem to="/habits" icon={CheckSquare} isCollapsed={isSidebarCollapsed}>
+                Habits
               </NavItem>
-              <NavItem to="/books" icon={BookOpen}>
-                Book Tracker
+              <NavItem to="/books" icon={BookOpen} isCollapsed={isSidebarCollapsed}>
+                Books
               </NavItem>
-              <NavItem to="/workouts" icon={Dumbbell}>
-                Workout Tracker
+              <NavItem to="/workouts" icon={Dumbbell} isCollapsed={isSidebarCollapsed}>
+                Workouts
               </NavItem>
-              {/* You can add Task, Note, and Media trackers here later */}
             </ul>
           </div>
 
           {user?.role === "admin" && (
             <div>
-              <p className="px-2 text-xs font-semibold text-text-tertiary uppercase mb-1">Admin Panel</p>
+              <p
+                className={`px-2 text-xs font-semibold text-text-tertiary uppercase mb-2 ${
+                  isSidebarCollapsed ? "text-center" : ""
+                }`}
+              >
+                {isSidebarCollapsed ? " " : "Admin"}
+              </p>
               <ul className="space-y-1">
-                <NavItem to="/admin/volumes" icon={Library}>
-                  Volume Manager
+                <NavItem to="/admin/volumes" icon={Library} isCollapsed={isSidebarCollapsed}>
+                  Volume Administration
                 </NavItem>
-                <NavItem to="/admin/exercises" icon={Settings}>
-                  Exercise Definitions
+                <NavItem to="/admin/exercises" icon={Settings} isCollapsed={isSidebarCollapsed}>
+                  Exercise Definition
                 </NavItem>
-                <NavItem to="/admin/templates" icon={Settings}>
-                  Workout Templates
+                <NavItem to="/admin/templates" icon={Settings} isCollapsed={isSidebarCollapsed}>
+                  Workout Management
                 </NavItem>
-                <NavItem to="/admin/pokemon-editor" icon={PenSquare}>
+                <NavItem to="/admin/pokemon-editor" icon={PenSquare} isCollapsed={isSidebarCollapsed}>
                   Pokémon Editor
                 </NavItem>
-
-                {/* Add links for User Management and Showcases here later */}
               </ul>
             </div>
           )}
         </nav>
 
-        <div className="mt-auto flex-shrink-0 border-t border-gray-700/50 pt-3">
+        <div className="mt-auto flex-shrink-0 border-t border-gray-700/50 pt-4">
           <button
             onClick={logout}
-            className="w-full flex items-center p-2 rounded-md text-xs text-text-secondary hover:bg-red-800/50 hover:text-white transition-colors"
+            className={`w-full flex items-center p-2 mt-2 rounded-md text-sm text-text-secondary hover:bg-red-800/50 hover:text-white transition-colors ${
+              isSidebarCollapsed ? "justify-center" : ""
+            }`}
           >
-            <LogOut size={16} className="mr-2" />
-            <span>Logout</span>
+            <LogOut size={20} className={isSidebarCollapsed ? "" : "mr-3"} />
+            {!isSidebarCollapsed && <span>Logout</span>}
           </button>
         </div>
       </aside>
 
       {/* --- Main Content Area --- */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* The Header is rendered at the top */}
-        <Header />
-
-        {/* The page content will scroll independently below the fixed header */}
+        <Header isSidebarCollapsed={isSidebarCollapsed} setIsSidebarCollapsed={setIsSidebarCollapsed} />
         <main className="flex-1 p-6 lg:p-8 overflow-y-auto">
           <Outlet />
         </main>

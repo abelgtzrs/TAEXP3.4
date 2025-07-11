@@ -1,4 +1,4 @@
-import Widget from "../ui/Widget";
+import Widget from "./Widget";
 import { RadialBarChart, RadialBar, ResponsiveContainer, PolarAngleAxis } from "recharts";
 
 const ThreatGauge = ({ value, label, color }) => {

@@ -1,4 +1,4 @@
-import Widget from "../ui/Widget";
+import Widget from "./Widget";
 
 // In a real app, you would fetch this data. For now, it's mocked.
 const mockAcquisitions = [

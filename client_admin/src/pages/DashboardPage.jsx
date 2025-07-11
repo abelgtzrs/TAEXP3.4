@@ -1,35 +1,32 @@
-// --- FILE: client-admin/src/pages/DashboardPage.jsx (Corrected) ---
-
-import { useState, useEffect } from "react"; // <-- THIS IS THE FIX
+import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
-import MetricCard from "../components/dashboard/MetricCard";
+
+// UI Components
+import PageHeader from "../components/ui/PageHeader";
+import Widget from "../components/ui/Widget";
+
+// Dashboard Widgets
+import StatBoxRow from "../components/dashboard/StatBoxRow";
 import LoreChartWidget from "../components/dashboard/LoreChartWidget";
-import SystemStatusWidget from "../components/dashboard/SystemStatusWidget";
+import SecuritySettingsWidget from "../components/dashboard/SecuritySettingsWidget";
+import ThreatDetectionWidget from "../components/dashboard/ThreatDetectionWidget";
 import CurrencySourceWidget from "../components/dashboard/CurrencySourceWidget";
 import GoalsWidget from "../components/dashboard/GoalsWidget";
 import RecentAcquisitionsWidget from "../components/dashboard/RecentAcquisitionsWidget";
-import SecuritySettingsWidget from "../components/dashboard/SecuritySettingsWidget";
-import ThreatDetectionWidget from "../components/dashboard/ThreatDetectionWidget";
-import Separator from "../components/ui/Separator";
+import SocialSalesWidget from "../components/dashboard/SocialSalesWidget";
+import TopProductsWidget from "../components/dashboard/TopProductsWidget";
 import HabitTrackerWidget from "../components/dashboard/HabitTrackerWidget";
 import BookTrackerWidget from "../components/dashboard/BookTrackerWidget";
 import WorkoutTrackerWidget from "../components/dashboard/WorkoutTrackerWidget";
+import ClockWidget from "../components/dashboard/ClockWidget";
+import WeatherWidget from "../components/dashboard/WeatherWidget";
 
 const DashboardPage = () => {
-  // Get the base user object from context
   const { user } = useAuth();
-
-  // State for our dynamic stats, now with useState correctly imported
-  const [stats, setStats] = useState({
-    habitsCompleted: 0,
-    booksFinished: 0,
-    gachaPulls: 0,
-    activeStreaks: 0,
-  });
+  const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
 
-  // useEffect hook to fetch data when the page loads
   useEffect(() => {
     const fetchDashboardStats = async () => {
       try {
@@ -37,43 +34,71 @@ const DashboardPage = () => {
         setStats(response.data.data);
       } catch (error) {
         console.error("Failed to fetch dashboard stats:", error);
-        // In case of error, the stats will just remain at their default '0' values
       } finally {
         setLoading(false);
       }
     };
-
     fetchDashboardStats();
-  }, []); // Empty array ensures this runs only once on mount
+  }, []);
 
   return (
-    <div className="space-y-6">
-      {/* Top Row: Key Metrics */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* We apply the new cut-corners style to these metric cards */}
-        <MetricCard title="Habits Completed" value="74" className="widget-cut-corners" />
-        <MetricCard title="Books Finished" value="8" className="widget-cut-corners" />
-        <MetricCard title="Total Collectibles" value="128" className="widget-cut-corners" />
-        <MetricCard title="Login Streak" value="4" className="widget-cut-corners" />
-      </div>
+    <div className="space-y-2">
+      <PageHeader title="Dashboard" subtitle={`Cognitive Framework Status for ${user.username || "Admin"}.`} />
 
-      {/* A separator line to divide sections */}
-      <Separator />
-
-      {/* Main Content: Two-Column Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left (Main) Column */}
-        <div className="lg:col-span-8 space-y-6">
-          <LoreChartWidget />
-          <CurrencySourceWidget />
+      {/* --- Main Dashboard Grid --- */}
+      <div className="grid grid-cols-6 gap-4">
+        {/* Row 1: Full-width Stat Box */}
+        <div className="col-span-6">
+          <StatBoxRow stats={stats} loading={loading} />
         </div>
 
-        {/* Right (Sidebar) Column */}
-        <div className="lg:col-span-4 space-y-6">
+        {/* --- Precise Widget Placement --- */}
+
+        {/* A 4x4 Chart */}
+        <div className="col-span-3 md:col-span-4 row-span-2">
+          <LoreChartWidget />
+        </div>
+
+        {/* A 2x2 Clock */}
+        <div className="col-span-6 sm:col-span-2 md:col-span-2 h-50">
+          <ClockWidget />
+        </div>
+
+        {/* A 2x2 Weather Widget */}
+        <div className="col-span-6 sm:col-span-2 md:col-span-2 h-50">
+          <WeatherWidget />
+        </div>
+
+        {/* The Tracker Widgets, each taking up 2 columns */}
+        <div className="col-span-6 md:col-span-2 row-span-2">
           <HabitTrackerWidget />
+        </div>
+        <div className="col-span-6 md:col-span-2 row-span-2">
           <BookTrackerWidget />
+        </div>
+        <div className="col-span-6 md:col-span-2 row-span-2">
           <WorkoutTrackerWidget />
-          <SystemStatusWidget />
+        </div>
+
+        {/* The rest of the widgets filling the remaining space */}
+        <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2">
+          <ThreatDetectionWidget />
+        </div>
+        <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2">
+          <SecuritySettingsWidget />
+        </div>
+        <div className="col-span-6 lg:col-span-2 row-span-2">
+          <GoalsWidget />
+        </div>
+        {/* Additional Widgets */}
+        <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2">
+          <RecentAcquisitionsWidget />
+        </div>
+        <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2">
+          <TopProductsWidget />
+        </div>
+        <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2">
+          <CurrencySourceWidget />
         </div>
       </div>
     </div>
