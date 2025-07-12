@@ -32,7 +32,11 @@ const HELP_TEXT = [
   },
   {
     text: "> view [num]            - View a specific volume by number.",
-    type: " info",
+    type: "info",
+  },
+  {
+    text: "> voidz [num]           - Access a volume through the VOIDZ with scrambling effects.",
+    type: "info",
   },
   {
     text: "> favorite [num]        - Add a volume to your local favorites & global count.",
