@@ -28,28 +28,42 @@ const chartData = [
 ];
 
 const LoreChartWidget = () => {
+  // Get CSS custom properties for dynamic color updates
+  const primaryColor = getComputedStyle(document.documentElement).getPropertyValue("--color-primary") || "#426280ff";
+  const secondaryColor =
+    getComputedStyle(document.documentElement).getPropertyValue("--color-secondary") || "#144573ff";
+  const textSecondaryColor =
+    getComputedStyle(document.documentElement).getPropertyValue("--color-text-secondary") || "#9ca3af";
+
   return (
     <Widget title="System Integrity: Narrative Coherence Index">
       <div className="py-8 h-[100%] w-full">
         <ResponsiveContainer>
           <AreaChart data={chartData} margin={{ top: 5, right: 20, left: -15, bottom: 5 }}>
-            {/* The <defs> and <linearGradient> tags are standard SVG elements.
-                Recharts knows how to render them without needing a specific import.
-                This was the source of the error. */}
             <defs>
               <linearGradient id="colorCoherence" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="50%" stopColor="#c34014ff" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#ec7e24ff" stopOpacity={0} />
+                <stop offset="50%" stopColor={primaryColor} stopOpacity={0.4} />
+                <stop offset="95%" stopColor={secondaryColor} stopOpacity={0} />
               </linearGradient>
             </defs>
 
-            <XAxis dataKey="name" stroke="#6b7250" tick={{ fill: "#9ca3af", fontSize: 12 }} />
-            <YAxis stroke="#6b7280" domain={["dataMin - 5", "dataMax + 5"]} tick={{ fill: "#9ca3af", fontSize: 12 }} />
+            <XAxis
+              dataKey="name"
+              stroke={primaryColor}
+              tick={{ fill: textSecondaryColor, fontSize: 12 }}
+              tickCount={12}
+            />
+            <YAxis
+              stroke={primaryColor}
+              domain={["dataMin - 5", "dataMax + 5"]}
+              tick={{ fill: textSecondaryColor, fontSize: 12 }}
+              tickCount={12}
+            />
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
             <Tooltip
               contentStyle={{
                 backgroundColor: "rgba(15, 23, 42, 0.9)",
-                borderColor: "#d45f2dff",
+                borderColor: primaryColor,
                 color: "#e5e7eb",
               }}
               labelStyle={{ fontWeight: "bold" }}
@@ -57,11 +71,11 @@ const LoreChartWidget = () => {
             <Area
               type="monotone"
               dataKey="coherence"
-              stroke="#d42d2dff"
+              stroke={primaryColor}
               strokeWidth={1}
               fillOpacity={1}
               fill="url(#colorCoherence)"
-              dot={{ r: 3, fill: "#d42d2dff" }}
+              dot={{ r: 3, fill: primaryColor }}
             />
           </AreaChart>
         </ResponsiveContainer>

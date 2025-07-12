@@ -6,13 +6,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "#0D1117",
-        surface: "#161B22",
-        primary: "#1374cf",
-        secondary: "#1374cf",
+        background: "#020a16ff",
+        surface: "#0c1d34ff",
+        primary: "#426280ff",
+        secondary: "#144573ff",
         "text-main": "#ffffff",
         "text-secondary": "#9CA3AF",
-        "text-tertiary": "#fff",
+        "text-tertiary": "#1f4365ff",
         "status-success": "#22c55e",
         "status-warning": "#facc15",
         "status-danger": "#ef4444",
@@ -23,5 +23,17 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addBase, theme }) {
+      addBase({
+        ":root": {
+          "--color-primary": theme("colors.primary"),
+          "--color-secondary": theme("colors.secondary"),
+          "--color-text-secondary": theme("colors.text-secondary"),
+          "--color-background": theme("colors.background"),
+          "--color-surface": theme("colors.surface"),
+        },
+      });
+    },
+  ],
 };

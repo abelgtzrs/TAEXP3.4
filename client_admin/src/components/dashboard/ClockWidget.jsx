@@ -102,8 +102,8 @@ const ClockWidget = () => {
         {/* Top section with analog and digital clocks */}
         <div className="flex items-center justify-around gap-4">
           <AnalogClock time={time} />
-          <div className="text-right">
-            <p className="text-4xl font-mono font-bold text-primary text-glow">
+          <div className="text-right flex-1 min-w-0">
+            <p className="text-xl sm:text-2xl lg:text-4xl font-mono font-bold text-primary text-glow break-all">
               {time.toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -111,7 +111,7 @@ const ClockWidget = () => {
                 hour12: false,
               })}
             </p>
-            <p className="text-sm text-text-secondary">
+            <p className="text-xs sm:text-sm text-text-secondary">
               UTC:{" "}
               {time.toLocaleTimeString("en-US", { timeZone: "UTC", hour: "2-digit", minute: "2-digit", hour12: false })}
             </p>
@@ -120,7 +120,7 @@ const ClockWidget = () => {
 
         {/* Middle section with full date */}
         <div className="text-center my-4">
-          <p className="text-base text-text-secondary">{formatDate(time)}</p>
+          <p className="text-sm sm:text-base text-text-secondary">{formatDate(time)}</p>
         </div>
 
         {/* Bottom section with detailed information */}
