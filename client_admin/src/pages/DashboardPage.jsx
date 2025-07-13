@@ -46,7 +46,7 @@ const DashboardPage = () => {
       <PageHeader title="Dashboard" subtitle={`Cognitive Framework Status for ${user.username || "Admin"}.`} />
 
       {/* --- Main Dashboard Grid --- */}
-      <div className="grid grid-cols-6 gap-4">
+      <div className="grid grid-cols-6 gap-4 ">
         {/* Row 1: Full-width Stat Box */}
         <div className="col-span-6">
           <StatBoxRow stats={stats} loading={loading} />
@@ -55,17 +55,17 @@ const DashboardPage = () => {
         {/* --- Precise Widget Placement --- */}
 
         {/* A 4x4 Chart */}
-        <div className="col-span-3 md:col-span-4 row-span-2">
+        <div className="col-span-6 md:col-span-4 row-span-2">
           <LoreChartWidget />
         </div>
 
         {/* A 2x2 Clock */}
-        <div className="col-span-6 sm:col-span-2 md:col-span-2 h-50">
+        <div className="col-span-3 md:col-span-2 h-50">
           <ClockWidget />
         </div>
 
         {/* A 2x2 Weather Widget */}
-        <div className="col-span-6 sm:col-span-2 md:col-span-2 h-50">
+        <div className="col-span-3 md:col-span-2 h-50">
           <WeatherWidget />
         </div>
 
