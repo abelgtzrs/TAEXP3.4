@@ -4,7 +4,7 @@ import { THEMES } from "../assets/themes";
 import HELP_TEXT from "./terminal/helpText";
 import { getAboutText, getCatText } from "./terminal/getAboutText";
 
-const api = axios.create({ baseURL: "http://localhost:5000/api/public" });
+const api = axios.create({ baseURL: "https://taexp3-0.onrender.com/api/public" });
 
 // --- CONFIGURATION ---
 const BASE_TYPE_DELAY = 1;
