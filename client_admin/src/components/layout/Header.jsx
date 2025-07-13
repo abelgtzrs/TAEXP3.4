@@ -34,9 +34,6 @@ const Header = ({ isSidebarCollapsed, setIsSidebarCollapsed }) => {
       {/* Right Side: Action Icons and User Profile */}
       <div className="w-1/4 flex items-center justify-end space-x-4">
         <button className="p-2 rounded-full text-text-secondary hover:bg-gray-700/50 hover:text-primary transition-colors">
-          <Bell size={20} />
-        </button>
-        <button className="p-2 rounded-full text-text-secondary hover:bg-gray-700/50 hover:text-primary transition-colors">
           <Mail size={20} />
         </button>
 
