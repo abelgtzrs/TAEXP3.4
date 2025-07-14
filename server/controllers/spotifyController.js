@@ -1,7 +1,7 @@
 const axios = require("axios");
 const querystring = require("querystring");
 const User = require("../models/User");
-const SpotifyLog = require("../models/SpotifyLog");
+const SpotifyLog = require("../models/SpotifyLogs");
 
 const SPOTIFY_AUTH_URL = "https://accounts.spotify.com/authorize";
 const SPOTIFY_TOKEN_URL = "https://accounts.spotify.com/api/token";

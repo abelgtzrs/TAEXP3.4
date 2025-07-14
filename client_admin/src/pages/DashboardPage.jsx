@@ -15,7 +15,7 @@ import ThreatDetectionWidget from "../components/dashboard/ThreatDetectionWidget
 import CurrencySourceWidget from "../components/dashboard/CurrencySourceWidget";
 import GoalsWidget from "../components/dashboard/GoalsWidget";
 import RecentAcquisitionsWidget from "../components/dashboard/RecentAcquisitionsWidget";
-import SocialSalesWidget from "../components/dashboard/SocialSalesWidget";
+import SpotifyWidget from "../components/dashboard/SpotifyWidget";
 import TopProductsWidget from "../components/dashboard/TopProductsWidget";
 import HabitTrackerWidget from "../components/dashboard/HabitTrackerWidget";
 import BookTrackerWidget from "../components/dashboard/BookTrackerWidget";
@@ -148,6 +148,15 @@ const DashboardPage = () => {
           className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
         >
           <ThreatDetectionWidget />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.5 }}
+          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+          className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
+        >
+          <SpotifyWidget />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
