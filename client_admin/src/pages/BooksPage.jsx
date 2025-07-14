@@ -1,5 +1,6 @@
 // src/pages/BooksPage.jsx
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import AddBookForm from "../components/books/AddBookForm";
@@ -114,40 +115,102 @@ const BooksPage = () => {
   };
 
   return (
-    <div>
-      <PageHeader title="Book Tracker" subtitle="Manage your personal library and track your reading progress." />
-      <div className="text-right mb-6 -mt-12">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <PageHeader title="Book Tracker" subtitle="Manage your personal library and track your reading progress." />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="text-right mb-6 -mt-12"
+      >
         <p className="text-lg text-white">
           Wendy Hearts: <span className="font-bold text-pink-400">{user?.wendyHearts || 0} ❤️</span>
         </p>
-      </div>
+      </motion.div>
 
-      <AddBookForm onAddBook={handleAddBook} loading={formLoading} />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+      >
+        <AddBookForm onAddBook={handleAddBook} loading={formLoading} />
+      </motion.div>
 
-      <h2 className="text-2xl font-semibold text-white mt-10 mb-4">Your Library</h2>
-      {loading && <p className="text-center text-text-secondary py-8">Loading...</p>}
-      {error && <p className="text-center text-status-danger py-8">{error}</p>}
+      <motion.h2
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+        className="text-2xl font-semibold text-white mt-10 mb-4"
+      >
+        Your Library
+      </motion.h2>
+
+      {loading && (
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-text-secondary py-8">
+          Loading...
+        </motion.p>
+      )}
+
+      {error && (
+        <motion.p
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+          className="text-center text-status-danger py-8"
+        >
+          {error}
+        </motion.p>
+      )}
 
       {!loading && !error && (
-        <div className="space-y-6">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="space-y-6"
+        >
           {books.length > 0 ? (
-            books.map((book) => (
-              <BookItem
+            books.map((book, index) => (
+              <motion.div
                 key={book._id}
-                book={book}
-                onUpdate={handleUpdateBook}
-                onDelete={handleDeleteBook}
-                onFinish={handleFinishBook}
-              />
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.9 + index * 0.1 }}
+                whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+              >
+                <BookItem
+                  book={book}
+                  onUpdate={handleUpdateBook}
+                  onDelete={handleDeleteBook}
+                  onFinish={handleFinishBook}
+                />
+              </motion.div>
             ))
           ) : (
-            <div className="text-center text-text-secondary py-8">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.9 }}
+              className="text-center text-text-secondary py-8"
+            >
               Your library is empty. Add a book above to start tracking!
-            </div>
+            </motion.div>
           )}
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

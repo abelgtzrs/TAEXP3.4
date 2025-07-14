@@ -60,6 +60,22 @@ const UserSchema = new mongoose.Schema({
     default: 10,
     min: [0, "Wendy Hearts cannot be negative"],
   },
+  spotifyConnected: {
+    type: Boolean,
+    default: false,
+  },
+  spotifyUserId: {
+    type: String,
+  },
+  spotifyAccessToken: {
+    type: String,
+  },
+  spotifyRefreshToken: {
+    type: String,
+  },
+  spotifyTokenExpiresAt: {
+    type: Date,
+  },
   lastLoginDate: {
     type: Date,
     default: Date.now,
@@ -91,43 +107,47 @@ const UserSchema = new mongoose.Schema({
       ref: "UserPokemon",
     },
   ],
-  displayedPokemon: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "UserPokemon",
-    default: null,
-  },
+  displayedPokemon: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UserPokemon",
+    },
+  ],
   snoopyArtCollection: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "UserSnoopyArt",
     },
   ],
-  displayedSnoopyArt: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "UserSnoopyArt",
-    default: null,
-  },
+  displayedSnoopyArt: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UserSnoopyArt",
+    },
+  ],
   yugiohCards: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "UserYugiohCard",
     default: null,
   },
-  displayedYugiohCards: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "UserYugiohCard",
-    default: null,
-  },
+  displayedYugiohCards: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UserYugiohCard",
+    },
+  ],
   habboRares: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "UserHabboRare",
     },
   ],
-  displayedHabboRares: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "UserHabboRare",
-    default: null,
-  },
+  displayedHabboRares: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UserHabboRare",
+    },
+  ],
   badges: [
     {
       type: mongoose.Schema.Types.ObjectId,

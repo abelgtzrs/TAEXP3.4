@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 
@@ -42,66 +43,160 @@ const DashboardPage = () => {
   }, []);
 
   return (
-    <div className="space-y-2">
-      <PageHeader title="Dashboard" subtitle={`Cognitive Framework Status for ${user.username || "Admin"}.`} />
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="space-y-2"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <PageHeader title="Dashboard" subtitle={`Cognitive Framework Status for ${user.username || "Admin"}.`} />
+      </motion.div>
 
       {/* --- Main Dashboard Grid --- */}
-      <div className="grid grid-cols-6 gap-4 ">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+        className="grid grid-cols-6 gap-4"
+      >
         {/* Row 1: Full-width Stat Box */}
-        <div className="col-span-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+          className="col-span-6"
+        >
           <StatBoxRow stats={stats} loading={loading} />
-        </div>
+        </motion.div>
 
         {/* --- Precise Widget Placement --- */}
 
         {/* A 4x4 Chart */}
-        <div className="col-span-6 md:col-span-4 row-span-2">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+          className="col-span-6 md:col-span-4 row-span-2"
+        >
           <LoreChartWidget />
-        </div>
+        </motion.div>
 
         {/* A 2x2 Clock */}
-        <div className="col-span-3 md:col-span-2 h-50">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.0 }}
+          whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+          className="col-span-3 md:col-span-2 h-50"
+        >
           <ClockWidget />
-        </div>
+        </motion.div>
 
         {/* A 2x2 Weather Widget */}
-        <div className="col-span-3 md:col-span-2 h-50">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.1 }}
+          whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+          className="col-span-3 md:col-span-2 h-50"
+        >
           <WeatherWidget />
-        </div>
+        </motion.div>
 
         {/* The Tracker Widgets, each taking up 2 columns */}
-        <div className="col-span-6 md:col-span-2 row-span-2">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 1.2 }}
+          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+          className="col-span-6 md:col-span-2 row-span-2"
+        >
           <HabitTrackerWidget />
-        </div>
-        <div className="col-span-6 md:col-span-2 row-span-2">
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 1.3 }}
+          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+          className="col-span-6 md:col-span-2 row-span-2"
+        >
           <BookTrackerWidget />
-        </div>
-        <div className="col-span-6 md:col-span-2 row-span-2">
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 1.4 }}
+          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+          className="col-span-6 md:col-span-2 row-span-2"
+        >
           <WorkoutTrackerWidget />
-        </div>
+        </motion.div>
 
         {/* The rest of the widgets filling the remaining space */}
-        <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.5 }}
+          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+          className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
+        >
           <ThreatDetectionWidget />
-        </div>
-        <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2">
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.6 }}
+          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+          className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
+        >
           <SecuritySettingsWidget />
-        </div>
-        <div className="col-span-6 lg:col-span-2 row-span-2">
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.7 }}
+          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+          className="col-span-6 lg:col-span-2 row-span-2"
+        >
           <GoalsWidget />
-        </div>
+        </motion.div>
         {/* Additional Widgets */}
-        <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 1.8 }}
+          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+          className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
+        >
           <RecentAcquisitionsWidget />
-        </div>
-        <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2">
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 1.9 }}
+          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+          className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
+        >
           <TopProductsWidget />
-        </div>
-        <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2">
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 2.0 }}
+          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+          className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
+        >
           <CurrencySourceWidget />
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 };
 

@@ -1,6 +1,7 @@
 import { CheckCircle, PlusCircle } from "lucide-react";
+import { motion } from "framer-motion";
 
-const CollectionItemCard = ({ item, config, onSelect, isDisplayed, isDisplayFull }) => {
+const CollectionItemCard = ({ item, config, onSelect, isDisplayed, isDisplayFull, isCompact = false }) => {
   // Safely get the base item which contains the name, image, etc.
   const baseItem = item ? item[config.baseField] : null;
 
@@ -31,43 +32,65 @@ const CollectionItemCard = ({ item, config, onSelect, isDisplayed, isDisplayFull
   }
 
   return (
-    <div
-      className={`widget-container p-4 flex flex-col text-center transition-all duration-300 group ${
-        isDisplayed ? "border-teal-400" : ""
-      }`}
+    <motion.div
+      whileHover={{ y: -2, transition: { duration: 0.2 } }}
+      className="flex flex-col text-center transition-all duration-300 group h-full"
     >
-      <div className="w-full h-32 mb-2 flex items-center justify-center">
-        {imageUrl ? (
-          <img src={imageUrl} alt={baseItem.name} className="max-w-full max-h-full object-contain" />
-        ) : (
-          <div className="w-full h-full bg-gray-700 rounded flex items-center justify-center text-xs text-gray-500">
-            [IMG]
-          </div>
-        )}
-      </div>
-      <p className="text-sm font-semibold text-white flex-grow">{baseItem.name}</p>
-      {item.variant && item.variant !== "Normal" && <p className="text-xs text-yellow-400">{item.variant}</p>}
-
-      <button
-        onClick={() => onSelect(item._id, isDisplayed)}
-        disabled={buttonDisabled}
-        className={`w-full mt-2 text-xs font-bold py-2 rounded-md transition duration-300 flex items-center justify-center gap-1 ${buttonClass}`}
+      <div
+        className={`widget-container p-4 flex flex-col flex-grow ${
+          isDisplayed ? "border-teal-400 bg-teal-900/20" : ""
+        }`}
       >
-        {/* For the remove button, we show a different text on hover */}
-        {isDisplayed ? (
-          <>
-            <span className="group-hover:hidden">
+        <div className={`w-full ${isCompact ? "aspect-square" : "h-80"} mb-4 flex items-center justify-center`}>
+          {imageUrl ? (
+            <motion.img
+              whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
+              src={imageUrl}
+              alt={baseItem.name}
+              className="max-w-full max-h-full object-contain"
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-700 rounded flex items-center justify-center text-xs text-gray-500">
+              [IMG]
+            </div>
+          )}
+        </div>
+        <div className="flex-grow" />
+        <motion.button
+          whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => onSelect(item._id, isDisplayed)}
+          disabled={buttonDisabled}
+          className={`w-full mt-2 text-xs font-bold py-2 rounded-md transition duration-300 flex items-center justify-center gap-1 ${buttonClass}`}
+        >
+          {/* For the remove button, we show a different text on hover */}
+          {isDisplayed ? (
+            <>
+              <motion.span
+                className="group-hover:hidden flex items-center gap-1"
+                initial={{ opacity: 1 }}
+                whileHover={{ opacity: 0 }}
+              >
+                {buttonIcon} {buttonText}
+              </motion.span>
+              <motion.span className="hidden group-hover:inline" initial={{ opacity: 0 }} whileHover={{ opacity: 1 }}>
+                Remove from Profile
+              </motion.span>
+            </>
+          ) : (
+            <motion.span className="flex items-center gap-1">
               {buttonIcon} {buttonText}
-            </span>
-            <span className="hidden group-hover:inline">Remove from Profile</span>
-          </>
-        ) : (
-          <>
-            {buttonIcon} {buttonText}
-          </>
-        )}
-      </button>
-    </div>
+            </motion.span>
+          )}
+        </motion.button>
+      </div>
+      <div className="mt-2 px-1 h-12 flex flex-col justify-center items-center">
+        <p className="text-sm font-semibold text-white leading-tight whitespace-normal break-words max-w-full">
+          {baseItem.name}
+        </p>
+        {item.variant && item.variant !== "Normal" && <p className="text-xs text-yellow-400 mt-0.5">{item.variant}</p>}
+      </div>
+    </motion.div>
   );
 };
 

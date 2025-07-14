@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import PageHeader from "../components/ui/PageHeader";
@@ -35,47 +36,99 @@ const ProfilePage = () => {
   }, []);
 
   if (loading || !user) {
-    return <p className="text-white text-center">Loading Profile...</p>;
+    return (
+      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-white text-center">
+        Loading Profile...
+      </motion.p>
+    );
   }
 
   return (
-    <div>
-      <PageHeader title="Operator Profile" subtitle="Your personal sanctuary and collection overview." />
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <PageHeader title="Operator Profile" subtitle="Your personal sanctuary and collection overview." />
+      </motion.div>
 
       {/* --- Main 3-Column Grid Layout --- */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-2 items-start">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="grid grid-cols-1 lg:grid-cols-4 gap-2 items-start"
+      >
         {/* === Left Column (1/4 width) === */}
-        <div className="lg:col-span-1 space-y-6">
-          <UserInfoCard />
-          <BadgeDisplay allBadges={allBadges} earnedBadges={user.badges} />
-        </div>
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="lg:col-span-1 space-y-6"
+        >
+          <motion.div whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}>
+            <UserInfoCard />
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}>
+            <BadgeDisplay allBadges={allBadges} earnedBadges={user.badges} />
+          </motion.div>
+        </motion.div>
 
         {/* === Middle Column (1/2 width) === */}
-        <div className="lg:col-span-2 space-y-6">
-          <DisplayedCollection title="Displayed Pokémon" items={user.displayedPokemon || []} baseField="basePokemon" />
-          <DisplayedCollection
-            title="Displayed Snoopys"
-            items={user.displayedSnoopyArt || []}
-            baseField="snoopyArtBase"
-          />
-          <DisplayedCollection
-            title="Displayed Habbo Rares"
-            items={user.displayedHabboRares || []}
-            baseField="habboRareBase"
-          />
-          <DisplayedCollection
-            title="Displayed Yu-Gi-Oh! Cards"
-            items={user.displayedYugiohCards || []}
-            baseField="yugiohCardBase"
-          />
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          className="lg:col-span-2 space-y-6"
+        >
+          <motion.div whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}>
+            <DisplayedCollection
+              title="Displayed Pokémon"
+              items={user.displayedPokemon || []}
+              baseField="basePokemon"
+            />
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}>
+            <DisplayedCollection
+              title="Displayed Snoopys"
+              items={user.displayedSnoopyArt || []}
+              baseField="snoopyArtBase"
+            />
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}>
+            <DisplayedCollection
+              title="Displayed Habbo Rares"
+              items={user.displayedHabboRares || []}
+              baseField="habboRareBase"
+            />
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}>
+            <DisplayedCollection
+              title="Displayed Yu-Gi-Oh! Cards"
+              items={user.displayedYugiohCards || []}
+              baseField="yugiohCardBase"
+            />
+          </motion.div>
+        </motion.div>
 
         {/* === Right Column (1/4 width) === */}
-        <div className="lg:col-span-1 space-y-6">
-          <UserStatsWidget stats={dashboardStats} />
-        </div>
-      </div>
-    </div>
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 1.0 }}
+          className="lg:col-span-1 space-y-6"
+        >
+          <motion.div whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}>
+            <UserStatsWidget stats={dashboardStats} />
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 };
 

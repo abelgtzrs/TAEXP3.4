@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import api from "../services/api";
 import VolumeForm from "../components/volumes/VolumeForm"; // Import the refactored form
@@ -78,18 +79,14 @@ const VolumesPage = () => {
       resetForm(); // Reset the form fields after success
       await fetchVolumes(); // Refresh the list
     } catch (err) {
-      setError(
-        err.response?.data?.message || "An error occurred while saving."
-      );
+      setError(err.response?.data?.message || "An error occurred while saving.");
     } finally {
       setFormLoading(false);
     }
   };
 
   const handleDeleteVolume = async (volumeId) => {
-    if (
-      window.confirm("Are you sure you want to permanently delete this volume?")
-    ) {
+    if (window.confirm("Are you sure you want to permanently delete this volume?")) {
       try {
         await api.delete(`/admin/volumes/${volumeId}`);
         await fetchVolumes();
@@ -100,41 +97,92 @@ const VolumesPage = () => {
   };
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-teal-400 mb-6">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="text-3xl font-bold text-teal-400 mb-6"
+      >
         Greentext Volume Manager
-      </h1>
+      </motion.h1>
 
       {/* --- The Form Section --- */}
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl text-white font-semibold mb-4">
-          {editingId ? "Edit Volume" : "Create New Volume"}
-        </h2>
-        {editingId && (
-          <button
-            onClick={resetForm}
-            className="text-sm text-teal-400 hover:text-teal-300 mb-4"
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        whileHover={{ scale: 1.005, transition: { duration: 0.2 } }}
+      >
+        <div className="flex justify-between items-center">
+          <motion.h2
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="text-xl text-white font-semibold mb-4"
           >
-            Cancel Edit
-          </button>
-        )}
-      </div>
-      <VolumeForm
-        formData={formData}
-        onFormChange={handleFormChange}
-        onSubmit={handleSubmit}
-        loading={formLoading}
-        submitButtonText={editingId ? "Update Volume" : "Create Volume"}
-      />
+            {editingId ? "Edit Volume" : "Create New Volume"}
+          </motion.h2>
+          {editingId && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, delay: 0.6 }}
+              whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+              onClick={resetForm}
+              className="text-sm text-teal-400 hover:text-teal-300 mb-4"
+            >
+              Cancel Edit
+            </motion.button>
+          )}
+        </div>
+        <VolumeForm
+          formData={formData}
+          onFormChange={handleFormChange}
+          onSubmit={handleSubmit}
+          loading={formLoading}
+          submitButtonText={editingId ? "Update Volume" : "Create Volume"}
+        />
+      </motion.div>
 
       {/* --- The List Section --- */}
-      <h2 className="text-2xl font-semibold text-white mt-10 mb-4">
+      <motion.h2
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay: 0.8 }}
+        className="text-2xl font-semibold text-white mt-10 mb-4"
+      >
         Existing Volumes
-      </h2>
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+      </motion.h2>
 
-      <div className="bg-gray-800 rounded-lg overflow-hidden">
+      {loading && (
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          Loading...
+        </motion.p>
+      )}
+
+      {error && (
+        <motion.p
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+          className="text-red-500"
+        >
+          {error}
+        </motion.p>
+      )}
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.0 }}
+        whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+        className="bg-gray-800 rounded-lg overflow-hidden"
+      >
         <table className="min-w-full text-left text-sm text-gray-300">
           <thead className="bg-gray-900 text-xs uppercase">
             <tr>
@@ -146,48 +194,52 @@ const VolumesPage = () => {
             </tr>
           </thead>
           <tbody>
-            {volumes.map((vol) => (
-              <tr
+            {volumes.map((vol, index) => (
+              <motion.tr
                 key={vol._id}
-                className="border-b border-gray-700 hover:bg-gray-700/50"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 1.2 + index * 0.1 }}
+                whileHover={{ backgroundColor: "rgba(55, 65, 81, 0.5)", transition: { duration: 0.2 } }}
+                className="border-b border-gray-700"
               >
                 <td className="p-3 font-bold">{vol.volumeNumber}</td>
                 <td className="p-3">{vol.title}</td>
                 <td className="p-3">
                   <span
                     className={`px-2 py-1 text-xs rounded-full ${
-                      vol.status === "published"
-                        ? "bg-green-500/20 text-green-300"
-                        : "bg-yellow-500/20 text-yellow-300"
+                      vol.status === "published" ? "bg-green-500/20 text-green-300" : "bg-yellow-500/20 text-yellow-300"
                     }`}
                   >
                     {vol.status}
                   </span>
                 </td>
-                <td className="p-3">
-                  {new Date(vol.createdAt).toLocaleDateString()}
-                </td>
+                <td className="p-3">{new Date(vol.createdAt).toLocaleDateString()}</td>
                 <td className="p-3 space-x-4">
                   {/* The Edit button now just populates the form on this page */}
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => handleEditClick(vol)}
                     className="font-medium text-blue-400 hover:text-blue-300"
                   >
                     Edit
-                  </button>
-                  <button
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => handleDeleteVolume(vol._id)}
                     className="text-red-500 hover:text-red-400"
                   >
                     Delete
-                  </button>
+                  </motion.button>
                 </td>
-              </tr>
+              </motion.tr>
             ))}
           </tbody>
         </table>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

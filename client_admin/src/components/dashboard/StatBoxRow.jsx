@@ -1,4 +1,5 @@
 import StatBox from "./StatBox";
+import Widget from "./Widget";
 
 const StatBoxRow = ({ stats, loading }) => {
   return (

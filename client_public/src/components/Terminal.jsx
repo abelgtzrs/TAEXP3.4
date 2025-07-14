@@ -1,3 +1,5 @@
+// Main terminal component for my Abel Experience public interface
+// This recreates that retro terminal feel I want for the public site
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { THEMES } from "../assets/themes";
@@ -5,55 +7,64 @@ import HELP_TEXT from "./terminal/helpText";
 import { getAboutText, getCatText } from "./terminal/getAboutText";
 import { TextScramble } from "../utils/textScramble";
 
+// Using my deployed backend for the public API calls
 const api = axios.create({ baseURL: "https://taexp3-0.onrender.com/api/public" });
 
-// --- CONFIGURATION ---
-const BASE_TYPE_DELAY = 1;
-const RANDOM_TYPE_DELAY = 15;
-const GLITCH_CHANCE = 0.1;
-const GLITCH_CHARS = "█▓▒░^&*%$#@!+";
-const GLITCH_DELAY = 1;
+// --- TYPEWRITER EFFECT CONFIGURATION ---
+// I fine-tuned these values to get that perfect retro terminal typing feel
+const BASE_TYPE_DELAY = 1; // Minimum delay between each character
+const RANDOM_TYPE_DELAY = 15; // Random additional delay to make typing feel more natural
+const GLITCH_CHANCE = 0.1; // 10% chance for each character to glitch - adds that cyberpunk feel
+const GLITCH_CHARS = "█▓▒░^&*%$#@!+"; // Characters to use for glitch effects
+const GLITCH_DELAY = 1; // How long to show the glitch character before the real one
 
+// Component for the special scrambling animation effect used in the voidz command
+// This handles the sci-fi text scrambling that cycles through phrases
 const ScrambleOutput = ({ phrases, onComplete }) => {
-  const elRef = useRef(null); // A ref to the DOM element we want to animate
-  const fxRef = useRef(null); // A ref to hold our TextScramble instance
+  const elRef = useRef(null); // DOM element reference for the scrambling animation
+  const fxRef = useRef(null); // TextScramble instance reference
 
   useEffect(() => {
-    // Initialize the TextScramble instance once the component mounts
+    // Initialize my TextScramble utility once the component mounts
     fxRef.current = new TextScramble(elRef.current);
 
     let counter = 0;
+    // Recursive function to cycle through all phrases with scrambling effect
     const next = () => {
       if (counter < phrases.length) {
         fxRef.current.setText(phrases[counter]).then(() => {
           setTimeout(() => {
             counter++;
-            next();
-          }, 800); // Pause between phrases
+            next(); // Move to next phrase
+          }, 800); // 800ms pause between phrases feels right for dramatic effect
         });
       } else {
-        // When all phrases are done, call the onComplete callback.
+        // All phrases complete - notify parent component to clean up
         if (onComplete) {
           onComplete();
         }
       }
     };
-    next(); // Start the animation cycle
-  }, [phrases, onComplete]); // Rerun if phrases change
+    next(); // Start the animation sequence
+  }, [phrases, onComplete]); // Re-run if phrases change
 
-  // The 'scrambling-char' class gives us a hook for styling the effect
+  // Rose color matches my terminal aesthetic
   return <div ref={elRef} className="text-rose-400 font-mono" />;
 };
 
 const Terminal = () => {
   // --- STATE MANAGEMENT ---
-  const [startTime] = useState(Date.now());
-  const [theme, setTheme] = useState("default");
+  const [startTime] = useState(Date.now()); // Track session start for potential uptime display
+  const [theme, setTheme] = useState("default"); // Current terminal theme - users can switch with 'theme' command
+
+  // Persistent favorites stored in localStorage - I want users to keep their favorites between sessions
   const [favorites, setFavorites] = useState(() => JSON.parse(localStorage.getItem("terminalFavorites")) || []);
+
+  // Main terminal lines array - each line has text, type (for styling), and optional isTyping flag
   const [lines, setLines] = useState([
     {
       text: "The Abel Experience™ Cognitive Framework v3.0 — Distributed Terminal Interface | Encrypted | Monitored",
-      type: "system",
+      type: "system", // System messages get special styling
     },
     {
       text: "Session initialized: Core modules linked | Memory sectors mapped | Operator input unlocked",
@@ -61,48 +72,59 @@ const Terminal = () => {
     },
     {
       text: 'Type "help" to display available commands.',
-      type: "info",
+      type: "info", // Info messages are more neutral
     },
   ]);
-  const [input, setInput] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [scrambleData, setScrambleData] = useState(null);
 
-  // NEW state to handle the multi-step 'connect' command
+  const [input, setInput] = useState(""); // Current user input
+  const [isProcessing, setIsProcessing] = useState(false); // Prevents input during command execution
+  const [scrambleData, setScrambleData] = useState(null); // Data for the voidz scrambling animation
+
+  // Login state for the connect command - not used yet but keeping for future expansion
   const [loginStep, setLoginStep] = useState("none"); // 'none', 'awaiting_password'
   const [loginEmail, setLoginEmail] = useState("");
 
+  // DOM references for focus management and auto-scrolling
   const inputRef = useRef(null);
   const endOfLinesRef = useRef(null);
 
   // --- EFFECTS ---
+  // Keep input focused so users can type immediately without clicking
   useEffect(() => {
     inputRef.current?.focus();
   }, [isProcessing]);
+
+  // Auto-scroll to bottom when new lines are added - essential for terminal feel
   useEffect(() => {
     endOfLinesRef.current?.scrollIntoView();
   }, [lines]);
-  // Save favorites to localStorage whenever they change
+
+  // Persist favorites to localStorage whenever they change - don't want users to lose their lists
   useEffect(() => {
     localStorage.setItem("terminalFavorites", JSON.stringify(favorites));
   }, [favorites]);
 
   // --- HELPER FUNCTIONS ---
+  // Simple helper to add new lines to the terminal output
   const addLines = (newLines) => setLines((prev) => [...prev, ...newLines]);
 
-  // --- THIS FUNCTION IS UPDATED with speed config and glitch effects ---
+  // --- TYPEWRITER EFFECT WITH GLITCHES ---
+  // This is the core function that creates the retro terminal typing animation
+  // I spent a lot of time tweaking this to get the perfect feel
   const typeLines = async (linesToType) => {
-    setIsProcessing(true);
+    setIsProcessing(true); // Block input during typing animation
+
     for (const line of linesToType) {
       let currentText = "";
+      // Add a new line with isTyping flag for the cursor animation
       setLines((prev) => [...prev, { text: "", type: line.type, isTyping: true }]);
 
+      // Type each character individually with delays and potential glitches
       for (let i = 0; i < line.text.length; i++) {
-        // Check if this character should glitch
+        // Random glitch effect - skip spaces since they don't look good glitched
         if (Math.random() < GLITCH_CHANCE && line.text[i] !== " ") {
-          // --- Glitch Effect Logic ---
+          // Show a random glitch character first
           const randomGlitchChar = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
-          // Show the glitch character
           setLines((prev) => {
             const nextLines = [...prev];
             nextLines[nextLines.length - 1].text = currentText + randomGlitchChar;
@@ -111,7 +133,7 @@ const Terminal = () => {
           await new Promise((resolve) => setTimeout(resolve, GLITCH_DELAY));
         }
 
-        // Add the correct character
+        // Add the actual character
         currentText += line.text[i];
         setLines((prev) => {
           const nextLines = [...prev];
@@ -119,36 +141,44 @@ const Terminal = () => {
           return nextLines;
         });
 
-        // Wait for the configured typing delay
+        // Variable delay to make typing feel more human
         const delay = BASE_TYPE_DELAY + Math.random() * RANDOM_TYPE_DELAY;
         await new Promise((resolve) => setTimeout(resolve, delay));
       }
-      // Mark the line as finished typing
+
+      // Mark line as finished typing (removes cursor)
       setLines((prev) => {
         const nextLines = [...prev];
         nextLines[nextLines.length - 1].isTyping = false;
         return nextLines;
       });
     }
-    setIsProcessing(false);
+    setIsProcessing(false); // Re-enable input
   };
 
+  // --- NORMAL VOLUME DISPLAY ---
+  // Standard way to display volume content with typing animation
+  // Used by commands like 'view', 'latest', 'random'
   const displayVolume = async (volumeData) => {
     let linesToDisplay = [];
+
+    // Header with volume info
     linesToDisplay.push({
       text: `--- Initializing The Abel Experience™ Volume ${volumeData.volumeNumber}: ${volumeData.title} ---`,
       type: "system",
     });
-    linesToDisplay.push({ text: ` `, type: "info" });
+    linesToDisplay.push({ text: ` `, type: "info" }); // Empty line for spacing
 
+    // Main content with greentext formatting (> prefix)
     volumeData.bodyLines.forEach((line) => {
       const formattedLine = line.trim() === "" ? "" : `> ${line}`;
       linesToDisplay.push({
         text: formattedLine,
-        type: "greentext",
+        type: "greentext", // Special greentext styling
       });
     });
 
+    // Optional blessings section - not all volumes have these
     if (volumeData.blessings && volumeData.blessings.length > 0) {
       linesToDisplay.push({ text: ` `, type: "info" });
       linesToDisplay.push({ text: volumeData.blessingIntro, type: "system" });
@@ -157,20 +187,28 @@ const Terminal = () => {
         linesToDisplay.push({ text: formattedBlessing, type: "info" });
       });
     }
+
+    // Optional dream section
     if (volumeData.dream) {
       linesToDisplay.push({ text: ` `, type: "info" });
       linesToDisplay.push({ text: volumeData.dream, type: "system" });
     }
+
+    // Optional edition info
     if (volumeData.edition) {
       linesToDisplay.push({ text: ` `, type: "info" });
       const formattedEdition = `The Abel Experience™: ${volumeData.edition}`;
       linesToDisplay.push({ text: formattedEdition, type: "system" });
     }
+
     await typeLines(linesToDisplay);
   };
 
+  // --- VOIDZ SCRAMBLED VOLUME DISPLAY ---
+  // Special display mode for the 'voidz' command - shows content with line-by-line scrambling
+  // This was tricky to implement because I needed to coordinate DOM updates with the TextScramble animation
   const displayVolumeScrambled = async (volumeData) => {
-    // Start with header
+    // Start with a special VOIDZ header
     await typeLines([
       {
         text: `--- VOIDZ ACCESS: Volume ${volumeData.volumeNumber}: ${volumeData.title} ---`,
@@ -179,72 +217,83 @@ const Terminal = () => {
       { text: ` `, type: "info" },
     ]);
 
-    // Prepare all lines to be scrambled
+    // Prepare all content lines in advance so I can scramble them one by one
     let allLines = [];
 
+    // Add main content lines
     volumeData.bodyLines.forEach((line) => {
       const formattedLine = line.trim() === "" ? "" : `> ${line}`;
       allLines.push(formattedLine);
     });
 
+    // Add blessings if they exist
     if (volumeData.blessings && volumeData.blessings.length > 0) {
-      allLines.push(""); // Empty line
+      allLines.push(""); // Empty line for spacing
       allLines.push(volumeData.blessingIntro);
       volumeData.blessings.forEach((b) => {
         const formattedBlessing = `- ${b.item} (${b.description})`;
         allLines.push(formattedBlessing);
       });
     }
+
+    // Add dream section if it exists
     if (volumeData.dream) {
       allLines.push(""); // Empty line
       allLines.push(volumeData.dream);
     }
+
+    // Add edition info if it exists
     if (volumeData.edition) {
       allLines.push(""); // Empty line
       const formattedEdition = `The Abel Experience™: ${volumeData.edition}`;
       allLines.push(formattedEdition);
     }
 
-    // Display each line with scrambling effect
+    // Now display each line with scrambling effect
     for (const line of allLines) {
       if (line === "") {
-        // Add empty lines immediately
+        // Empty lines don't need scrambling - just add them immediately
         addLines([{ text: "", type: "info" }]);
-        await new Promise((resolve) => setTimeout(resolve, 100)); // Small delay
+        await new Promise((resolve) => setTimeout(resolve, 100)); // Brief pause for pacing
       } else {
-        // Add a placeholder line that will be scrambled
+        // Add a placeholder line that will be targeted for scrambling
         let currentLineIndex;
         setLines((prev) => {
-          currentLineIndex = prev.length; // Get the index before adding
-          return [...prev, { text: "", type: "scrambling" }];
+          currentLineIndex = prev.length; // Get index before adding the line
+          return [...prev, { text: "", type: "scrambling" }]; // Special type for scrambling lines
         });
 
-        // Wait for the DOM to update
-        await new Promise((resolve) => setTimeout(resolve, 200));
+        // Wait for React to update the DOM before trying to find the element
+        await new Promise((resolve) => setTimeout(resolve, 100));
 
-        // Find the DOM element for this line and apply scrambling
+        // Find the DOM element and apply the scrambling animation
+        // Using data-line-index attribute to target the specific line
         const lineElement = document.querySelector(`[data-line-index="${currentLineIndex}"]`);
         if (lineElement) {
           const scrambler = new TextScramble(lineElement);
-          await scrambler.setText(line);
+          await scrambler.setText(line); // This returns a promise when animation completes
         }
 
-        // Small delay between lines for effect
-        await new Promise((resolve) => setTimeout(resolve, 400));
+        // Small delay between lines for dramatic effect
+        await new Promise((resolve) => setTimeout(resolve, 150));
       }
     }
   };
 
-  // --- COMMAND PROCESSING ---
+  // --- COMMAND PROCESSING ENGINE ---
+  // This is the heart of the terminal - parses commands and executes them
+  // I organized it as a big switch statement for clarity and easy expansion
   const processCommand = async (command) => {
     const [cmd, ...args] = command.trim().toLowerCase().split(" ");
-    setIsProcessing(true);
+    setIsProcessing(true); // Block input during command execution
 
     switch (cmd) {
+      // Show available commands - pulls from external help file
       case "help":
         await typeLines(HELP_TEXT);
         break;
 
+      // Display information about The Abel Experience project
       case "about":
         const aboutLines = getAboutText()
           .split("\n")
@@ -252,6 +301,7 @@ const Terminal = () => {
         await typeLines(aboutLines);
         break;
 
+      // Fun ASCII cat easter egg
       case "cat":
         const catLines = getCatText()
           .split("\n")
@@ -259,10 +309,12 @@ const Terminal = () => {
         await typeLines(catLines);
         break;
 
+      // Simple date command like real terminals
       case "date":
         await typeLines([{ text: new Date().toString(), type: "info" }]);
         break;
 
+      // Redirect to admin panel login - keeping it simple and secure
       case "connect":
         addLines([
           {
@@ -270,11 +322,11 @@ const Terminal = () => {
             type: "system",
           },
         ]);
-        // The simplest, most secure way to "connect" is to open the admin panel in a new tab.
-        // Directly handling passwords here would be a security risk.
-        window.open("http://localhost:5173/login", "_blank"); // Opens your admin panel URL
+        // Opening in new tab is safer than trying to handle auth in the terminal
+        window.open("http://localhost:5173/login", "_blank");
         break;
 
+      // Display statistics for a specific volume - useful for seeing engagement
       case "stats":
         const statsNum = parseInt(args[0]);
         if (!statsNum) {
@@ -313,6 +365,7 @@ const Terminal = () => {
         }
         break;
 
+      // Get a random blessing/message of the day from the API
       case "blessing":
         try {
           const res = await api.get("/motd");
@@ -333,6 +386,7 @@ const Terminal = () => {
         }
         break;
 
+      // Display the most recently published volume
       case "latest":
         try {
           const res = await api.get("/volumes/latest");
@@ -342,6 +396,7 @@ const Terminal = () => {
         }
         break;
 
+      // Search volumes by keyword - very useful for finding specific content
       case "search":
         if (!args[0]) {
           await typeLines([{ text: "Usage: search [keyword]", type: "error" }]);
@@ -369,6 +424,7 @@ const Terminal = () => {
         }
         break;
 
+      // Change terminal theme - I have multiple themes defined in assets/themes
       case "theme":
         const inputTheme = args[0];
         if (!inputTheme) {
@@ -381,7 +437,7 @@ const Terminal = () => {
           break;
         }
 
-        // Find theme case-insensitively
+        // Case-insensitive theme matching
         const availableThemes = Object.keys(THEMES);
         const matchedTheme = availableThemes.find((theme) => theme.toLowerCase() === inputTheme.toLowerCase());
 
@@ -398,6 +454,7 @@ const Terminal = () => {
         }
         break;
 
+      // List all available themes
       case "themes":
         const themeLines = Object.keys(THEMES).map((themeName) => ({
           text: `${themeName}`,
@@ -410,6 +467,7 @@ const Terminal = () => {
         await typeLines(themeLines);
         break;
 
+      // Favorite a volume - updates both local storage and global count on server
       case "favorite":
         const favNum = parseInt(args[0]);
         if (!favNum) {
@@ -417,9 +475,9 @@ const Terminal = () => {
           break;
         }
         try {
-          // Call the new backend endpoint to increment the global count
+          // Hit the backend to increment global favorite count
           await api.post(`/volumes/${favNum}/favorite`);
-          // Also save to local storage for the 'favorites' command
+          // Also save locally for the 'favorites' command
           if (!favorites.includes(favNum)) {
             setFavorites((prev) => [...prev, favNum].sort((a, b) => a - b));
           }
@@ -434,6 +492,7 @@ const Terminal = () => {
         }
         break;
 
+      // Show user's personal favorites list
       case "favorites":
         let favLines = favorites.map((num) => ({
           text: `Volume ${num}`,
@@ -452,6 +511,7 @@ const Terminal = () => {
         await typeLines(favLines);
         break;
 
+      // Rate a volume from 1-100 - helps with engagement metrics
       case "rate":
         const rateNum = parseInt(args[0]);
         const ratingVal = parseInt(args[1]);
@@ -480,9 +540,12 @@ const Terminal = () => {
         }
         break;
 
+      // Clear terminal screen - simple reset
       case "clear":
         setLines([]);
         break;
+
+      // List all published volumes
       case "catalogue":
         try {
           const res = await api.get("/volumes/catalogue");
@@ -499,6 +562,8 @@ const Terminal = () => {
           await typeLines([{ text: "Error: Could not fetch volume catalogue.", type: "error" }]);
         }
         break;
+
+      // Display a random volume - good for discovery
       case "random":
         try {
           const res = await api.get("/volumes/random");
@@ -507,6 +572,7 @@ const Terminal = () => {
           await typeLines([{ text: "Error: Could not fetch random volume.", type: "error" }]);
         }
         break;
+      // View a specific volume by number
       case "view":
         if (!args[0] || isNaN(parseInt(args[0]))) {
           await typeLines([
@@ -529,11 +595,13 @@ const Terminal = () => {
           ]);
         }
         break;
+
+      // VOIDZ command - my favorite feature! Either shows scrambling animation or volume with effects
       case "voidz":
         if (!args[0] || isNaN(parseInt(args[0]))) {
-          // If no volume number provided, show the original scramble effect
+          // No volume number = show the original scrambling phrases
           setScrambleData({
-            key: Date.now(),
+            key: Date.now(), // Unique key to trigger re-render
             phrases: [
               "INITIATING COGNITIVE SYNC...",
               "ACCESSING THE VOIDZ...",
@@ -543,7 +611,7 @@ const Terminal = () => {
             ],
           });
         } else {
-          // If volume number provided, display that volume with scrambling effects
+          // Volume number provided = show that volume with line-by-line scrambling
           try {
             const res = await api.get(`/volumes/id/${args[0]}`);
             await displayVolumeScrambled(res.data.data);
@@ -557,6 +625,7 @@ const Terminal = () => {
           }
         }
         break;
+      // Export a range of volumes as a text file - useful for backups
       case "export":
         const start = parseInt(args[0]);
         const end = parseInt(args[1]);
@@ -574,7 +643,7 @@ const Terminal = () => {
           const res = await api.post("/volumes/export", { start, end });
           const content = res.data.data.content;
 
-          // Client-side logic to trigger a download
+          // Client-side file download using Blob API
           const blob = new Blob([content], {
             type: "text/plain;charset=utf-8",
           });
@@ -582,8 +651,8 @@ const Terminal = () => {
           link.href = URL.createObjectURL(blob);
           link.download = `Abel_Experience_Export_${start}-${end}.txt`;
           document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+          link.click(); // Trigger download
+          document.body.removeChild(link); // Clean up
 
           await typeLines([{ text: "Export complete. Check your downloads.", type: "system" }]);
         } catch (error) {
@@ -595,6 +664,8 @@ const Terminal = () => {
           ]);
         }
         break;
+
+      // Default case for unrecognized commands
       default:
         if (command.trim() !== "") {
           await typeLines([
@@ -606,35 +677,38 @@ const Terminal = () => {
         }
         break;
     }
-    setIsProcessing(false);
+    setIsProcessing(false); // Re-enable input after command completes
   };
 
+  // --- INPUT HANDLING ---
+  // Handle Enter key to submit commands
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !isProcessing) {
       const command = input.trim();
-      addLines([{ text: `> ${command}`, type: "user" }]);
+      addLines([{ text: `> ${command}`, type: "user" }]); // Echo command back to terminal
       processCommand(command);
-      setInput("");
+      setInput(""); // Clear input field
     }
   };
 
-  // --- JSX RENDER ---
+  // --- RENDER LOGIC ---
   const currentTheme = THEMES[theme] || THEMES.default;
   return (
+    // Full screen terminal with click-to-focus behavior
     <div className={`w-full h-[95vh] p-2 text-xs`} onClick={() => inputRef.current?.focus()}>
       <div className="overflow-y-auto h-full">
-        {/* Render the normal command history */}
+        {/* Render all terminal lines */}
         {lines.map((line, index) => {
-          const lineStyle = currentTheme[line.type] || currentTheme.info;
-          const displayText = line.text.trim() === "" ? "\u00A0" : line.text;
+          const lineStyle = currentTheme[line.type] || currentTheme.info; // Fallback to info style
+          const displayText = line.text.trim() === "" ? "\u00A0" : line.text; // Non-breaking space for empty lines
 
-          // Special handling for scrambling lines
+          // Special handling for scrambling lines - need data attribute for targeting
           if (line.type === "scrambling") {
             return (
               <div key={index} className="flex">
                 <pre
                   className={`whitespace-pre-wrap leading-relaxed ${currentTheme.greentext}`}
-                  data-line-index={index}
+                  data-line-index={index} // This is how I target lines for scrambling
                 >
                   {displayText}
                 </pre>
@@ -642,6 +716,7 @@ const Terminal = () => {
             );
           }
 
+          // Normal line rendering with optional typing cursor
           return (
             <div key={index} className="flex">
               <pre className={`whitespace-pre-wrap leading-relaxed ${lineStyle}`}>{displayText}</pre>
@@ -650,19 +725,20 @@ const Terminal = () => {
           );
         })}
 
-        {/* --- Conditionally render the scramble component --- */}
+        {/* Conditionally render the ScrambleOutput component for voidz command */}
         {scrambleData && (
           <ScrambleOutput
-            key={scrambleData.key}
+            key={scrambleData.key} // Force re-render with new key
             phrases={scrambleData.phrases}
-            onComplete={() => setScrambleData(null)} // Clear the data when animation finishes
+            onComplete={() => setScrambleData(null)} // Clean up when animation finishes
           />
         )}
 
+        {/* Invisible div for auto-scrolling to bottom */}
         <div ref={endOfLinesRef} />
       </div>
 
-      {/* Input area remains the same */}
+      {/* Terminal input area */}
       <div className="flex mt-2">
         <span className={`${currentTheme.user}`}>&gt;</span>
         <input
@@ -671,9 +747,9 @@ const Terminal = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          disabled={isProcessing}
+          disabled={isProcessing} // Disable during command execution
           className={`flex-grow bg-transparent border-none focus:ring-0 focus:outline-none ml-2 ${currentTheme.user}`}
-          autoComplete="off"
+          autoComplete="off" // Prevent browser autocomplete
         />
       </div>
     </div>

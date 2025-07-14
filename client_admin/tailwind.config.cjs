@@ -10,6 +10,7 @@ module.exports = {
         surface: "#0c1d34ff",
         primary: "#426280ff",
         secondary: "#144573ff",
+        tertiary: "#73aee6ff",
         "text-main": "#ffffff",
         "text-secondary": "#9CA3AF",
         "text-tertiary": "#1f4365ff",

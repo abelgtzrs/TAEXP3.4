@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import AddHabitForm from "../components/habits/AddHabitForm";
@@ -78,47 +79,101 @@ const HabitsPage = () => {
   };
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="flex justify-between items-center mb-6"
+      >
         <PageHeader title="Habit Tracker" subtitle="Build consistency, earn rewards." />
-        <div className="text-right">
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="text-right"
+        >
           <p className="text-lg text-white">
             Temu Tokens: <span className="font-bold text-yellow-400">{user?.temuTokens || 0}</span>
           </p>
           <p className="text-xs text-gray-400">Earned from completing habits</p>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      <AddHabitForm onAddHabit={handleAddHabit} loading={formLoading} />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+      >
+        <AddHabitForm onAddHabit={handleAddHabit} loading={formLoading} />
+      </motion.div>
 
-      <h2 className="text-2xl font-semibold text-white mt-10 mb-4">Your Habits</h2>
-      {loading && <p className="text-center text-gray-500 py-8">Loading habits...</p>}
-      {error && <p className="text-center text-red-500 py-8">{error}</p>}
+      <motion.h2
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+        className="text-2xl font-semibold text-white mt-10 mb-4"
+      >
+        Your Habits
+      </motion.h2>
+
+      {loading && (
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-gray-500 py-8">
+          Loading habits...
+        </motion.p>
+      )}
+
+      {error && (
+        <motion.p
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+          className="text-center text-red-500 py-8"
+        >
+          {error}
+        </motion.p>
+      )}
 
       {!loading && !error && (
-        <div className="space-y-4">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="space-y-4"
+        >
           {habits.length > 0 ? (
             // --- THIS IS THE FIX ---
             // We add .filter(Boolean) to safely remove any null or undefined entries
             // from the array before we try to render them.
-            habits
-              .filter(Boolean)
-              .map((habit) => (
-                <HabitItem
-                  key={habit._id}
-                  habit={habit}
-                  onComplete={handleCompleteHabit}
-                  onDelete={handleDeleteHabit}
-                />
-              ))
+            habits.filter(Boolean).map((habit, index) => (
+              <motion.div
+                key={habit._id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.9 + index * 0.1 }}
+                whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+              >
+                <HabitItem habit={habit} onComplete={handleCompleteHabit} onDelete={handleDeleteHabit} />
+              </motion.div>
+            ))
           ) : (
-            <p className="text-center text-gray-500 py-8">
+            <motion.p
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.9 }}
+              className="text-center text-gray-500 py-8"
+            >
               You haven't added any habits yet. Add one above to get started!
-            </p>
+            </motion.p>
           )}
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 };
 
