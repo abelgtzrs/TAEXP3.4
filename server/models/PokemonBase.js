@@ -57,4 +57,4 @@ const PokemonBaseSchema = new mongoose.Schema(
 
 PokemonBaseSchema.index({ name: "text" });
 
-module.exports = mongoose.model("PokemonBase", PokemonBaseSchema);
+module.exports = mongoose.models.PokemonBase || mongoose.model("PokemonBase", PokemonBaseSchema);

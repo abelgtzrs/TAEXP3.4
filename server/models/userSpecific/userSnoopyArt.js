@@ -29,4 +29,4 @@ const UserSnoopyArtSchema = new mongoose.Schema(
 // For collectibles, usually a user owns one instance of a specific collectible type.
 UserSnoopyArtSchema.index({ user: 1, snoopyArtBase: 1 }, { unique: true });
 
-module.exports = mongoose.model("UserSnoopyArt", UserSnoopyArtSchema);
+module.exports = mongoose.models.UserSnoopyArt || mongoose.model("UserSnoopyArt", UserSnoopyArtSchema);

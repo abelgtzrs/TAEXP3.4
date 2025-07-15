@@ -114,8 +114,8 @@ const CollectionDetailPage = () => {
     ? user[config.displayField].map((item) => item._id)
     : [];
 
-  // Get the actual displayed items from the collection
-  const displayedItems = collection.filter((item) => displayedIds.includes(item._id));
+  // Get the actual displayed items from the collection - ensure collection is an array
+  const displayedItems = Array.isArray(collection) ? collection.filter((item) => displayedIds.includes(item._id)) : [];
 
   return (
     <motion.div
@@ -139,7 +139,10 @@ const CollectionDetailPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
       >
-        <PageHeader title={config.title} subtitle={`You have collected ${collection.length} items.`} />
+        <PageHeader
+          title={config.title}
+          subtitle={`You have collected ${Array.isArray(collection) ? collection.length : 0} items.`}
+        />
       </motion.div>
 
       {/* Profile Display Counter and Status */}
@@ -229,16 +232,18 @@ const CollectionDetailPage = () => {
           transition={{ duration: 0.8, delay: displayedItems.length > 0 ? 1.4 : 0.8 }}
           className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
         >
-          {collection.map((item, index) => (
-            <CollectionItemCard
-              item={item}
-              config={config}
-              isDisplayed={displayedIds.includes(item._id)}
-              isDisplayFull={displayedIds.length >= config.limit}
-              onSelect={handleUpdateDisplay}
-              isCompact={true}
-            />
-          ))}
+          {Array.isArray(collection) &&
+            collection.map((item, index) => (
+              <CollectionItemCard
+                key={item._id}
+                item={item}
+                config={config}
+                isDisplayed={displayedIds.includes(item._id)}
+                isDisplayFull={displayedIds.length >= config.limit}
+                onSelect={handleUpdateDisplay}
+                isCompact={true}
+              />
+            ))}
         </motion.div>
       </motion.div>
     </motion.div>

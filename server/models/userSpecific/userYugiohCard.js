@@ -34,4 +34,4 @@ const UserYugiohCardSchema = new mongoose.Schema(
 // If quantity handles multiples, then this index ensures only one document per card type per user.
 UserYugiohCardSchema.index({ user: 1, yugiohCardBase: 1 }, { unique: true });
 
-module.exports = mongoose.model("UserYugiohCard", UserYugiohCardSchema);
+module.exports = mongoose.models.UserYugiohCard || mongoose.model("UserYugiohCard", UserYugiohCardSchema);

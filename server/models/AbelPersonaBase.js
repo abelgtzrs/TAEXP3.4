@@ -36,4 +36,4 @@ const AbelPersonaBaseSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("AbelPersonaBase", AbelPersonaBaseSchema);
+module.exports = mongoose.models.AbelPersonaBase || mongoose.model("AbelPersonaBase", AbelPersonaBaseSchema);

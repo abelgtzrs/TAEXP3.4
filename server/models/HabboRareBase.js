@@ -27,13 +27,7 @@ const HabboRareBaseSchema = new mongoose.Schema(
     // Rarity could be based on its original Habbo Hotel rarity/value or your own system
     rarityCategory: {
       type: String,
-      enum: [
-        "common_rare",
-        "uncommon_rare",
-        "rare_rare",
-        "super_rare",
-        "ultra_rare",
-      ],
+      enum: ["common_rare", "uncommon_rare", "rare_rare", "super_rare", "ultra_rare"],
       default: "common_rare",
       required: true,
     },
@@ -46,4 +40,4 @@ const HabboRareBaseSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("HabboRareBase", HabboRareBaseSchema);
+module.exports = mongoose.models.HabboRareBase || mongoose.model("HabboRareBase", HabboRareBaseSchema);

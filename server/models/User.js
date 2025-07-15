@@ -125,11 +125,12 @@ const UserSchema = new mongoose.Schema({
       ref: "UserSnoopyArt",
     },
   ],
-  yugiohCards: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "UserYugiohCard",
-    default: null,
-  },
+  yugiohCards: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UserYugiohCard",
+    },
+  ],
   displayedYugiohCards: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -213,4 +214,4 @@ UserSchema.pre("remove", async function (next) {
 // Export the model
 // mongoose.model('ModelName', Schema) compiles the schema into a model.
 // A model is a constructor compiled from a Mongoose schema. Instances of these constructors represent documents which can be saved to and retrieved from MongoDB.
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.models.User || mongoose.model("User", UserSchema);

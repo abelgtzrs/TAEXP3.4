@@ -57,4 +57,4 @@ const UserPokemonSchema = new mongoose.Schema(
 // What makes a UserPokemon unique is its own _id.
 // UserPokemonSchema.index({ user: 1, basePokemon: 1 }, { unique: true }); // Reconsider this
 
-module.exports = mongoose.model("UserPokemon", UserPokemonSchema);
+module.exports = mongoose.models.UserPokemon || mongoose.model("UserPokemon", UserPokemonSchema);

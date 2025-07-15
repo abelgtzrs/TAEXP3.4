@@ -34,4 +34,4 @@ const SnoopyArtBaseSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("SnoopyArtBase", SnoopyArtBaseSchema);
+module.exports = mongoose.models.SnoopyArtBase || mongoose.model("SnoopyArtBase", SnoopyArtBaseSchema);

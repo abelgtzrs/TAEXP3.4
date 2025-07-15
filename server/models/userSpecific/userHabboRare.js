@@ -26,4 +26,4 @@ const UserHabboRareSchema = new mongoose.Schema(
 // Typically, a user owns one instance of a specific rare furniture item.
 UserHabboRareSchema.index({ user: 1, habboRareBase: 1 }, { unique: true });
 
-module.exports = mongoose.model("UserHabboRare", UserHabboRareSchema);
+module.exports = mongoose.models.UserHabboRare || mongoose.model("UserHabboRare", UserHabboRareSchema);
