@@ -62,8 +62,8 @@ const AdminLayout = () => {
         <Header />
       </div>
 
-      {/* --- Main Content Area (with right margin for sidebar and top padding for header) --- */}
-      <div className="flex-1 flex flex-col overflow-hidden mr-20 pt-16">
+      {/* --- Main Content Area (with left margin for sidebar and top padding for header) --- */}
+      <div className="flex-1 flex flex-col overflow-hidden ml-20 pt-16">
         <main className="flex-1 p-6 lg:p-8 overflow-y-auto scrollbar-hide">
           <Outlet />
         </main>
@@ -79,7 +79,7 @@ const AdminLayout = () => {
 
       {/* --- Floating Sidebar --- */}
       <aside
-        className={`fixed right-0 top-1/2 transform -translate-y-1/2 bg-surface/40 backdrop-blur-md border border-gray-700/80 rounded-l-2xl shadow-2xl z-50 flex flex-col transition-all duration-500 ease-in-out ${
+        className={`fixed left-0 top-1/2 transform -translate-y-1/2 bg-surface/40 backdrop-blur-md border border-gray-700/80 rounded-r-2xl shadow-2xl z-50 flex flex-col transition-all duration-500 ease-in-out ${
           isSidebarCollapsed ? "w-16 translate-x-0 shadow-lg" : "w-80 translate-x-0 shadow-2xl shadow-primary/10"
         }`}
         style={{ maxHeight: "80vh" }}
@@ -87,13 +87,13 @@ const AdminLayout = () => {
         {/* Toggle Button */}
         <button
           onClick={toggleSidebar}
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-full bg-surface/80 backdrop-blur-md border border-gray-700/30 rounded-l-lg p-2 hover:bg-gray-700/50 transition-all duration-300 shadow-lg group"
+          className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-full bg-surface/80 backdrop-blur-md border border-gray-700/30 rounded-r-lg p-2 hover:bg-gray-700/50 transition-all duration-300 shadow-lg group"
         >
           <div className="transition-transform duration-300 group-hover:scale-110">
             {isSidebarCollapsed ? (
-              <ChevronLeft size={20} className="text-white" />
-            ) : (
               <ChevronRight size={20} className="text-white" />
+            ) : (
+              <ChevronLeft size={20} className="text-white" />
             )}
           </div>
         </button>
