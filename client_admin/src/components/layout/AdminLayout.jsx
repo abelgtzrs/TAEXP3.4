@@ -17,6 +17,7 @@ import {
   PenSquare,
   ClipboardList,
   Clapperboard,
+  Boxes,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -56,9 +57,13 @@ const AdminLayout = () => {
 
   return (
     <div className="flex h-screen bg-background text-text-main relative">
-      {/* --- Main Content Area (with right margin for sidebar) --- */}
-      <div className="flex-1 flex flex-col overflow-hidden mr-20">
+      {/* --- Header (Full Width) --- */}
+      <div className="fixed top-0 left-0 right-0 z-30">
         <Header />
+      </div>
+
+      {/* --- Main Content Area (with right margin for sidebar and top padding for header) --- */}
+      <div className="flex-1 flex flex-col overflow-hidden mr-20 pt-16">
         <main className="flex-1 p-6 lg:p-8 overflow-y-auto scrollbar-hide">
           <Outlet />
         </main>
@@ -74,7 +79,7 @@ const AdminLayout = () => {
 
       {/* --- Floating Sidebar --- */}
       <aside
-        className={`fixed right-0 top-1/2 transform -translate-y-1/2 bg-surface/95 backdrop-blur-md border border-gray-700/50 rounded-l-2xl shadow-2xl z-50 flex flex-col transition-all duration-500 ease-in-out ${
+        className={`fixed right-0 top-1/2 transform -translate-y-1/2 bg-surface/40 backdrop-blur-md border border-gray-700/80 rounded-l-2xl shadow-2xl z-50 flex flex-col transition-all duration-500 ease-in-out ${
           isSidebarCollapsed ? "w-16 translate-x-0 shadow-lg" : "w-80 translate-x-0 shadow-2xl shadow-primary/10"
         }`}
         style={{ maxHeight: "80vh" }}
@@ -82,7 +87,7 @@ const AdminLayout = () => {
         {/* Toggle Button */}
         <button
           onClick={toggleSidebar}
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-full bg-surface/95 backdrop-blur-md border border-gray-700/50 rounded-l-lg p-2 hover:bg-gray-700/50 transition-all duration-300 shadow-lg group"
+          className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-full bg-surface/80 backdrop-blur-md border border-gray-700/30 rounded-l-lg p-2 hover:bg-gray-700/50 transition-all duration-300 shadow-lg group"
         >
           <div className="transition-transform duration-300 group-hover:scale-110">
             {isSidebarCollapsed ? (
@@ -101,7 +106,7 @@ const AdminLayout = () => {
                 isSidebarCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"
               }`}
             >
-              <h1 className="text-white font-bold text-xs whitespace-nowrap">Abel Experience™</h1>
+              <h1 className="text-white font-bold text-xs whitespace-nowrap">The Abel Experience™ CFW</h1>
             </div>
             {isSidebarCollapsed && (
               <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
@@ -133,7 +138,7 @@ const AdminLayout = () => {
               <NavItem to="/shop" icon={Store} isCollapsed={isSidebarCollapsed}>
                 Shop
               </NavItem>
-              <NavItem to="/collections" icon={Store} isCollapsed={isSidebarCollapsed}>
+              <NavItem to="/collections" icon={Boxes} isCollapsed={isSidebarCollapsed}>
                 Collections
               </NavItem>
             </ul>

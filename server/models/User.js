@@ -166,6 +166,10 @@ const UserSchema = new mongoose.Schema({
     ref: "UserTitle",
     default: null,
   },
+  unlockedGenerations: {
+    type: [Number],
+    default: [1],
+  },
   createdAt: {
     type: Date,
     default: Date.now,

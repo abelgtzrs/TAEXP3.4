@@ -36,6 +36,9 @@ const BadgeBaseSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    unlocksGeneration: {
+      type: Number,
+    },
     orderInCategory: { type: Number }, //  for predefined display order
   },
   { timestamps: true }
