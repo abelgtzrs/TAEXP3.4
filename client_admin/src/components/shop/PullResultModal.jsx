@@ -66,7 +66,7 @@ const PullResultModal = ({ result, onClose }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-2xl font-bold text-white mb-4">{message}</h2>
-        
+
         {isPack ? (
           // Pack display - grid of cards
           <div className="my-6">
@@ -76,15 +76,9 @@ const PullResultModal = ({ result, onClose }) => {
                 return (
                   <div key={index} className="p-3 bg-gray-900/50 rounded-lg">
                     {displayImageUrl ? (
-                      <img 
-                        src={displayImageUrl} 
-                        alt={item.name} 
-                        className="h-32 mx-auto object-contain mb-2" 
-                      />
+                      <img src={displayImageUrl} alt={item.name} className="h-32 mx-auto object-contain mb-2" />
                     ) : (
-                      <div className="h-32 flex items-center justify-center text-gray-500 mb-2">
-                        [No Image]
-                      </div>
+                      <div className="h-32 flex items-center justify-center text-gray-500 mb-2">[No Image]</div>
                     )}
                     <p className="text-sm font-semibold text-white mb-1">{item.name}</p>
                     {displayRarity && (
@@ -105,15 +99,9 @@ const PullResultModal = ({ result, onClose }) => {
               return (
                 <>
                   {displayImageUrl ? (
-                    <img 
-                      src={displayImageUrl} 
-                      alt={displayItems[0].name} 
-                      className="h-40 mx-auto object-contain" 
-                    />
+                    <img src={displayImageUrl} alt={displayItems[0].name} className="h-40 mx-auto object-contain" />
                   ) : (
-                    <div className="h-40 flex items-center justify-center text-gray-500">
-                      [No Image]
-                    </div>
+                    <div className="h-40 flex items-center justify-center text-gray-500">[No Image]</div>
                   )}
                   <p className="mt-4 text-xl font-semibold text-white">{displayItems[0].name}</p>
                   {displayRarity && (
@@ -126,7 +114,7 @@ const PullResultModal = ({ result, onClose }) => {
             })()}
           </div>
         )}
-        
+
         <button
           onClick={onClose}
           className="w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 rounded-lg transition"

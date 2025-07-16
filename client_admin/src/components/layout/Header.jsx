@@ -1,24 +1,24 @@
-import { Search, Bell, Mail, User, LogOut, PanelLeft } from "lucide-react";
+import { Search, Bell, Mail, User, LogOut } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 
-const Header = ({ isSidebarCollapsed, setIsSidebarCollapsed }) => {
+const Header = () => {
   const { user, logout } = useAuth();
 
   return (
     <header className="bg-surface/80 backdrop-blur-md border-b border-gray-700/50 p-4 flex items-center justify-between sticky top-0 z-40">
-      {/* Left Side: Sidebar Toggle Button */}
-      <div className="w-1/4">
-        <button
-          onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-          className="p-2 rounded-full text-text-secondary hover:bg-gray-700/50 hover:text-primary transition-colors"
-        >
-          <PanelLeft size={20} />
-        </button>
+      {/* Left Side: Logo/Brand */}
+      <div className="flex items-center">
+        <div className="flex items-center space-x-3">
+          <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+            <span className="text-primary font-bold text-sm">AEX</span>
+          </div>
+          <h1 className="text-white font-bold text-lg hidden sm:block">taexp.cfw</h1>
+        </div>
       </div>
 
       {/* Center: Global Search Bar */}
-      <div className="w-1/2 flex justify-center">
+      <div className="flex justify-center flex-1 mx-8">
         <div className="relative w-full max-w-md">
           <input
             type="search"
@@ -32,7 +32,7 @@ const Header = ({ isSidebarCollapsed, setIsSidebarCollapsed }) => {
       </div>
 
       {/* Right Side: Action Icons and User Profile */}
-      <div className="w-1/4 flex items-center justify-end space-x-4">
+      <div className="flex items-center space-x-4">
         <button className="p-2 rounded-full text-text-secondary hover:bg-gray-700/50 hover:text-primary transition-colors">
           <Mail size={20} />
         </button>
@@ -42,7 +42,7 @@ const Header = ({ isSidebarCollapsed, setIsSidebarCollapsed }) => {
         <div className="relative group">
           <button className="flex items-center space-x-2 text-text-secondary hover:text-white">
             <User size={20} />
-            <span className="text-sm font-medium hidden md:block">{user?.email || "User"}</span>
+            <span className="text-sm font-medium hidden md:block">{user?.username || "User"}</span>
           </button>
           <div className="absolute right-0 mt-2 w-48 bg-surface border border-gray-700 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 invisible group-hover:visible z-50">
             <div className="py-1">

@@ -17,6 +17,8 @@ import {
   PenSquare,
   ClipboardList,
   Clapperboard,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 const NavItem = ({ to, icon: Icon, children, isCollapsed }) => {
@@ -25,14 +27,17 @@ const NavItem = ({ to, icon: Icon, children, isCollapsed }) => {
       <NavLink
         to={to}
         className={({ isActive }) =>
-          `flex items-center p-2 rounded-md transition-colors duration-200 text-text-secondary hover:bg-gray-700/50 hover:text-white ${
-            isActive ? "bg-primary/10 text-white" : ""
-          }`
+          `flex items-center p-3 rounded-lg transition-all duration-300 text-text-secondary hover:bg-gray-700/50 hover:text-white group ${
+            isActive ? "bg-primary/20 text-white shadow-lg" : ""
+          } ${isCollapsed ? "justify-center" : ""}`
         }
       >
-        <Icon size={20} className="mr-3 flex-shrink-0" />
-        {/* The text label is now conditionally rendered */}
-        <span className={`transition-opacity duration-200 ${isCollapsed ? "opacity-0" : "opacity-100"}`}>
+        <Icon size={20} className={`flex-shrink-0 ${isCollapsed ? "" : "mr-3"}`} />
+        <span
+          className={`transition-all duration-300 overflow-hidden whitespace-nowrap ${
+            isCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"
+          }`}
+        >
           {children}
         </span>
       </NavLink>
@@ -43,38 +48,79 @@ const NavItem = ({ to, icon: Icon, children, isCollapsed }) => {
 const AdminLayout = () => {
   const { user, logout } = useAuth();
   // State to control the sidebar's collapsed status
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true); // Start collapsed
+
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
 
   return (
-    <div className="flex h-screen bg-background text-text-main">
-      {/* --- Sidebar --- */}
-      {/* The width of the sidebar now changes based on state */}
+    <div className="flex h-screen bg-background text-text-main relative">
+      {/* --- Main Content Area (with right margin for sidebar) --- */}
+      <div className="flex-1 flex flex-col overflow-hidden mr-20">
+        <Header />
+        <main className="flex-1 p-6 lg:p-8 overflow-y-auto scrollbar-hide">
+          <Outlet />
+        </main>
+      </div>
+
+      {/* --- Backdrop (when sidebar is expanded) --- */}
+      {!isSidebarCollapsed && (
+        <div
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 transition-opacity duration-500"
+          onClick={toggleSidebar}
+        />
+      )}
+
+      {/* --- Floating Sidebar --- */}
       <aside
-        className={`bg-surface p-4 flex-shrink-0 flex flex-col border-r border-gray-700/50 transition-all duration-500 ease-in-out ${
-          isSidebarCollapsed ? "w-20" : "w-54"
+        className={`fixed right-0 top-1/2 transform -translate-y-1/2 bg-surface/95 backdrop-blur-md border border-gray-700/50 rounded-l-2xl shadow-2xl z-50 flex flex-col transition-all duration-500 ease-in-out ${
+          isSidebarCollapsed ? "w-16 translate-x-0 shadow-lg" : "w-80 translate-x-0 shadow-2xl shadow-primary/10"
         }`}
+        style={{ maxHeight: "80vh" }}
       >
-        <div className="flex items-center gap-2 py-4 pb-14 mb-4">
-          {/* The main title text is now conditionally rendered */}
-          <div
-            className={`overflow-hidden transition-all duration-500 ease-in-out ${
-              isSidebarCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"
-            }`}
-          >
-            <h1 className="text-white font-bold text-[12px] whitespace-nowrap">The Abel Experience™ CFW v3.4</h1>
+        {/* Toggle Button */}
+        <button
+          onClick={toggleSidebar}
+          className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-full bg-surface/95 backdrop-blur-md border border-gray-700/50 rounded-l-lg p-2 hover:bg-gray-700/50 transition-all duration-300 shadow-lg group"
+        >
+          <div className="transition-transform duration-300 group-hover:scale-110">
+            {isSidebarCollapsed ? (
+              <ChevronLeft size={20} className="text-white" />
+            ) : (
+              <ChevronRight size={20} className="text-white" />
+            )}
+          </div>
+        </button>
+
+        <div className="p-4 flex-shrink-0">
+          {/* Header */}
+          <div className={`flex items-center gap-2 py-2 mb-4 ${isSidebarCollapsed ? "justify-center" : ""}`}>
+            <div
+              className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                isSidebarCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"
+              }`}
+            >
+              <h1 className="text-white font-bold text-xs whitespace-nowrap">Abel Experience™</h1>
+            </div>
+            {isSidebarCollapsed && (
+              <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+                <span className="text-primary font-bold text-sm">AE</span>
+              </div>
+            )}
           </div>
         </div>
 
-        <nav className="flex-grow space-y-6 overflow-y-auto">
+        <nav className="flex-grow space-y-4 overflow-y-auto scrollbar-hide px-2">
           <div>
             <p
-              className={`px-2 text-xs font-semibold text-text-tertiary uppercase mb-2 transition-all duration-500 ease-in-out ${
-                isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-2"
+              className={`px-2 text-xs font-semibold text-text-tertiary uppercase mb-3 transition-all duration-500 ease-in-out ${
+                isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-3"
               }`}
             >
               Main
             </p>
-            <ul className="space-y-1">
+            <ul className="space-y-2">
               <NavItem to="/dashboard" icon={LayoutDashboard} isCollapsed={isSidebarCollapsed}>
                 Dashboard
               </NavItem>
@@ -95,13 +141,13 @@ const AdminLayout = () => {
 
           <div>
             <p
-              className={`px-2 text-xs font-semibold text-text-tertiary uppercase mb-2 transition-all duration-500 ease-in-out ${
-                isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-2"
+              className={`px-2 text-xs font-semibold text-text-tertiary uppercase mb-3 transition-all duration-500 ease-in-out ${
+                isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-3"
               }`}
             >
-              {isSidebarCollapsed ? " " : "Trackers"}
+              Trackers
             </p>
-            <ul className="space-y-1">
+            <ul className="space-y-2">
               <NavItem to="/habits" icon={CheckSquare} isCollapsed={isSidebarCollapsed}>
                 Habits
               </NavItem>
@@ -117,13 +163,13 @@ const AdminLayout = () => {
           {user?.role === "admin" && (
             <div>
               <p
-                className={`px-2 text-xs font-semibold text-text-tertiary uppercase mb-2 ${
-                  isSidebarCollapsed ? "text-center" : ""
+                className={`px-2 text-xs font-semibold text-text-tertiary uppercase mb-3 transition-all duration-500 ease-in-out ${
+                  isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-3"
                 }`}
               >
-                {isSidebarCollapsed ? " " : "Admin"}
+                Admin
               </p>
-              <ul className="space-y-1">
+              <ul className="space-y-2">
                 <NavItem to="/admin/volumes" icon={Library} isCollapsed={isSidebarCollapsed}>
                   Volume Administration
                 </NavItem>
@@ -141,26 +187,24 @@ const AdminLayout = () => {
           )}
         </nav>
 
-        <div className="mt-auto flex-shrink-0 border-t border-gray-700/50 pt-4">
+        <div className="mt-auto flex-shrink-0 border-t border-gray-700/50 pt-4 px-2">
           <button
             onClick={logout}
-            className={`w-full flex items-center p-2 mt-2 rounded-md text-sm text-text-secondary hover:bg-red-800/50 hover:text-white transition-colors ${
+            className={`w-full flex items-center p-3 rounded-lg text-sm text-text-secondary hover:bg-red-800/50 hover:text-white transition-all duration-300 ${
               isSidebarCollapsed ? "justify-center" : ""
             }`}
           >
             <LogOut size={20} className={isSidebarCollapsed ? "" : "mr-3"} />
-            {!isSidebarCollapsed && <span>Logout</span>}
+            <span
+              className={`transition-all duration-300 overflow-hidden whitespace-nowrap ${
+                isSidebarCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"
+              }`}
+            >
+              Logout
+            </span>
           </button>
         </div>
       </aside>
-
-      {/* --- Main Content Area --- */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Header isSidebarCollapsed={isSidebarCollapsed} setIsSidebarCollapsed={setIsSidebarCollapsed} />
-        <main className="flex-1 p-6 lg:p-8 overflow-y-auto">
-          <Outlet />
-        </main>
-      </div>
     </div>
   );
 };

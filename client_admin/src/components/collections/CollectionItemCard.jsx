@@ -133,9 +133,8 @@ const CollectionItemCard = ({ item, config, onSelect, isDisplayed, isDisplayFull
   };
 
   // Get rarity glow for Yu-Gi-Oh cards
-  const rarityGlow = config.baseField === "yugiohCardBase" && baseItem?.systemRarity 
-    ? getRarityGlow(baseItem.systemRarity) 
-    : "";
+  const rarityGlow =
+    config.baseField === "yugiohCardBase" && baseItem?.systemRarity ? getRarityGlow(baseItem.systemRarity) : "";
 
   // Special animation for Secret Rare cards
   const isSecretRare = config.baseField === "yugiohCardBase" && baseItem?.systemRarity?.toLowerCase() === "secret rare";
@@ -145,9 +144,7 @@ const CollectionItemCard = ({ item, config, onSelect, isDisplayed, isDisplayFull
       <div
         className={`widget-container transition-all duration-300 group ${isDisplayed ? "border-teal-400" : ""} ${
           isCompact ? "p-3" : "p-4"
-        } flex flex-col text-center ${rarityGlow} ${
-          isSecretRare ? "animate-pulse" : ""
-        }`}
+        } flex flex-col text-center ${rarityGlow} ${isSecretRare ? "animate-pulse" : ""}`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -163,8 +160,8 @@ const CollectionItemCard = ({ item, config, onSelect, isDisplayed, isDisplayFull
           className={`w-full ${
             isCompact ? "h-24" : "h-32"
           } mb-2 flex items-center justify-center bg-black/20 rounded-md ${
-            config.baseField === "yugiohCardBase" && baseItem?.systemRarity 
-              ? `border ${getRarityGlow(baseItem.systemRarity).split(' ').pop()}` 
+            config.baseField === "yugiohCardBase" && baseItem?.systemRarity
+              ? `border ${getRarityGlow(baseItem.systemRarity).split(" ").pop()}`
               : ""
           }`}
         >

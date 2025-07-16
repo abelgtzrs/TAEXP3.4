@@ -1,0 +1,842 @@
+[
+  {
+    "habboRareId": "aloe",
+    "name": "Aloe Plant",
+    "description": "A rare decorative aloe plant from the classic Habbo era.",
+    "imageUrl": "/habborares/classic/Aloe.gif",
+    "rarityCategory": "common_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "amber_blue",
+    "name": "Blue Amber Lamp",
+    "description": "A mysterious blue amber lamp with ancient powers.",
+    "imageUrl": "/habborares/classic/Amber_blue.gif",
+    "rarityCategory": "rare_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "blue_kimberlite_fountain",
+    "name": "Blue Kimberlite Fountain",
+    "description": "An elegant fountain made from precious blue kimberlite.",
+    "imageUrl": "/habborares/classic/Blue_Kimberlite_Fountain.png",
+    "rarityCategory": "super_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "bronze_elephant",
+    "name": "Bronze Elephant",
+    "description": "A majestic bronze elephant statue, symbol of wisdom and strength.",
+    "imageUrl": "/habborares/classic/Bronze_Elephant.png",
+    "rarityCategory": "uncommon_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "bronze_trophy",
+    "name": "Bronze Trophy",
+    "description": "A bronze trophy awarded to third place winners.",
+    "imageUrl": "/habborares/classic/Bronze_Trophy.png",
+    "rarityCategory": "common_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "dj_2",
+    "name": "DJ Booth",
+    "description": "Professional DJ equipment for mixing the hottest tracks.",
+    "imageUrl": "/habborares/classic/Dj_2.png",
+    "rarityCategory": "rare_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "dragon_egg",
+    "name": "Dragon Egg",
+    "description": "A mystical dragon egg rumored to contain ancient magic.",
+    "imageUrl": "/habborares/classic/Dragon_Egg.png",
+    "rarityCategory": "ultra_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "golden_elephant",
+    "name": "Golden Elephant",
+    "description": "A prestigious golden elephant statue, the ultimate symbol of prosperity.",
+    "imageUrl": "/habborares/classic/Golden_Elephant.png",
+    "rarityCategory": "ultra_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "gold_trophy_2",
+    "name": "Gold Trophy",
+    "description": "A gleaming gold trophy for the ultimate champion.",
+    "imageUrl": "/habborares/classic/Gold_Trophy_2.png",
+    "rarityCategory": "super_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "granite_fountain",
+    "name": "Granite Fountain",
+    "description": "A sturdy granite fountain with timeless elegance.",
+    "imageUrl": "/habborares/classic/Granite_Fountain.png",
+    "rarityCategory": "uncommon_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "green_parasol",
+    "name": "Green Parasol",
+    "description": "A stylish green parasol perfect for sunny days.",
+    "imageUrl": "/habborares/classic/Green_Parasol.png",
+    "rarityCategory": "common_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "grey_fountain",
+    "name": "Grey Fountain",
+    "description": "A classic grey fountain with a minimalist design.",
+    "imageUrl": "/habborares/classic/Grey_Fountain.png",
+    "rarityCategory": "common_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "habbo_cola_machine",
+    "name": "Habbo Cola Machine",
+    "description": "The iconic Habbo Cola vending machine, serving refreshment since day one.",
+    "imageUrl": "/habborares/classic/Habbo_Cola_Machine.png",
+    "rarityCategory": "rare_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "habbo_globe",
+    "name": "Habbo Globe",
+    "description": "A spinning globe showing all the Habbo hotels around the world.",
+    "imageUrl": "/habborares/classic/Habbo_Globe.png",
+    "rarityCategory": "rare_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "hammock",
+    "name": "Hammock",
+    "description": "A comfortable hammock for ultimate relaxation.",
+    "imageUrl": "/habborares/classic/Hammock.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "holoboys",
+    "name": "Holoboys",
+    "description": "Futuristic holographic entertainment system.",
+    "imageUrl": "/habborares/classic/Holoboys.png",
+    "rarityCategory": "super_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "hologirl1",
+    "name": "Hologirl",
+    "description": "Advanced holographic companion technology.",
+    "imageUrl": "/habborares/classic/Hologirl1.gif",
+    "rarityCategory": "super_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "infobus",
+    "name": "Infobus",
+    "description": "The legendary Infobus that travels between Habbo hotels.",
+    "imageUrl": "/habborares/classic/Infobus.gif",
+    "rarityCategory": "ultra_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "jade_birdbath",
+    "name": "Jade Birdbath",
+    "description": "An exquisite jade birdbath for feathered friends.",
+    "imageUrl": "/habborares/classic/Jade_Birdbath.png",
+    "rarityCategory": "rare_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "parasol_orange",
+    "name": "Orange Parasol",
+    "description": "A vibrant orange parasol that stands out in any crowd.",
+    "imageUrl": "/habborares/classic/Parasol_orange.gif",
+    "rarityCategory": "common_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "petal",
+    "name": "Petal Patch",
+    "description": "A delicate arrangement of colorful flower petals.",
+    "imageUrl": "/habborares/classic/Petal.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "red_amber_lamp",
+    "name": "Red Amber Lamp",
+    "description": "A passionate red amber lamp that glows with warmth.",
+    "imageUrl": "/habborares/classic/Red_Amber_Lamp.png",
+    "rarityCategory": "rare_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "russian_samovar",
+    "name": "Russian Samovar",
+    "description": "An authentic Russian samovar for traditional tea ceremonies.",
+    "imageUrl": "/habborares/classic/Russian_Samovar.png",
+    "rarityCategory": "super_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "silver_elephant",
+    "name": "Silver Elephant",
+    "description": "A noble silver elephant statue representing good fortune.",
+    "imageUrl": "/habborares/classic/Silver_Elephant.png",
+    "rarityCategory": "rare_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "silver_trophy",
+    "name": "Silver Trophy",
+    "description": "A shining silver trophy for second place achievements.",
+    "imageUrl": "/habborares/classic/Silver_Trophy.png",
+    "rarityCategory": "uncommon_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "speakers_corner",
+    "name": "Speaker's Corner",
+    "description": "A democratic platform for free speech and debate.",
+    "imageUrl": "/habborares/classic/Speaker's_Corner.png",
+    "rarityCategory": "rare_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "throne1",
+    "name": "Royal Throne",
+    "description": "The ultimate symbol of power and authority in Habbo.",
+    "imageUrl": "/habborares/classic/Throne1.gif",
+    "rarityCategory": "ultra_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "typewriter",
+    "name": "Vintage Typewriter",
+    "description": "A classic typewriter for composing important documents.",
+    "imageUrl": "/habborares/classic/Typewriter.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "violet_parasol",
+    "name": "Violet Parasol",
+    "description": "An elegant violet parasol with a royal touch.",
+    "imageUrl": "/habborares/classic/Violet_Parasol.png",
+    "rarityCategory": "uncommon_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "yellamber_1",
+    "name": "Yellow Amber Lamp",
+    "description": "A bright yellow amber lamp radiating golden light.",
+    "imageUrl": "/habborares/classic/Yellamber_1.png",
+    "rarityCategory": "rare_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "yellow_para",
+    "name": "Yellow Parasol",
+    "description": "A cheerful yellow parasol bringing sunshine to any room.",
+    "imageUrl": "/habborares/classic/Yellow_para.gif",
+    "rarityCategory": "common_rare",
+    "series": "Classic Rares"
+  },
+  {
+    "habboRareId": "dragon_azure",
+    "name": "Azure Dragon Lamp",
+    "description": "A mystical azure dragon lamp with celestial powers.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_azure.png",
+    "rarityCategory": "super_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_black",
+    "name": "Black Dragon Lamp",
+    "description": "A fearsome black dragon lamp emanating dark energy.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_black.gif",
+    "rarityCategory": "ultra_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_blue",
+    "name": "Blue Dragon Lamp",
+    "description": "A majestic blue dragon lamp guarding ancient secrets.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_blue.gif",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_bonnieblonde",
+    "name": "Bonnie Blonde Dragon Lamp",
+    "description": "A unique blonde dragon lamp with a playful spirit.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_bonnieblonde.png",
+    "rarityCategory": "super_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_bronze",
+    "name": "Bronze Dragon Lamp",
+    "description": "A sturdy bronze dragon lamp forged in ancient fires.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_bronze.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_brown",
+    "name": "Brown Dragon Lamp",
+    "description": "An earthy brown dragon lamp connected to nature's power.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_brown.png",
+    "rarityCategory": "common_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_darkstart",
+    "name": "Dark Star Dragon Lamp",
+    "description": "A cosmic dragon lamp channeling the power of dark stars.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_darkstart.png",
+    "rarityCategory": "ultra_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_diamond",
+    "name": "Diamond Dragon Lamp",
+    "description": "The most precious dragon lamp, crafted from pure diamond.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_diamond.png",
+    "rarityCategory": "ultra_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_duckblue",
+    "name": "Duck Blue Dragon Lamp",
+    "description": "A whimsical duck blue dragon lamp with aquatic charm.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_duckblue.png",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_emerald",
+    "name": "Emerald Dragon Lamp",
+    "description": "A brilliant emerald dragon lamp pulsing with life energy.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_emerald.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_fire",
+    "name": "Fire Dragon Lamp",
+    "description": "A blazing fire dragon lamp that never burns out.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_fire.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_forest",
+    "name": "Forest Dragon Lamp",
+    "description": "A verdant forest dragon lamp protecting woodland realms.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_forest.gif",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_frost",
+    "name": "Frost Dragon Lamp",
+    "description": "An icy frost dragon lamp bringing eternal winter.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_frost.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_gold",
+    "name": "Gold Dragon Lamp",
+    "description": "A legendary gold dragon lamp, the pinnacle of luxury.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_gold.gif",
+    "rarityCategory": "ultra_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_ice",
+    "name": "Ice Dragon Lamp",
+    "description": "A crystalline ice dragon lamp from frozen wastelands.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_ice.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_jade",
+    "name": "Jade Dragon Lamp",
+    "description": "A serene jade dragon lamp bringing harmony and balance.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_jade.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_lilac",
+    "name": "Lilac Dragon Lamp",
+    "description": "A delicate lilac dragon lamp with enchanting fragrance.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_lilac.png",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_maroon",
+    "name": "Maroon Dragon Lamp",
+    "description": "A deep maroon dragon lamp exuding noble strength.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_maroon.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_pink",
+    "name": "Pink Dragon Lamp",
+    "description": "A lovely pink dragon lamp spreading joy and happiness.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_pink.png",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_rainbow",
+    "name": "Rainbow Dragon Lamp",
+    "description": "The ultimate rainbow dragon lamp containing all colors of magic.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_rainbow.png",
+    "rarityCategory": "ultra_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_rosegold",
+    "name": "Rose Gold Dragon Lamp",
+    "description": "An elegant rose gold dragon lamp combining beauty and power.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_rosegold.png",
+    "rarityCategory": "ultra_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_sand",
+    "name": "Sand Dragon Lamp",
+    "description": "A mysterious sand dragon lamp from desert ruins.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_sand.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_silver",
+    "name": "Silver Dragon Lamp",
+    "description": "A gleaming silver dragon lamp reflecting moonlight.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_silver.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_sky",
+    "name": "Sky Dragon Lamp",
+    "description": "A celestial sky dragon lamp soaring through clouds.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_sky.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "dragon_teal",
+    "name": "Teal Dragon Lamp",
+    "description": "A tranquil teal dragon lamp from ocean depths.",
+    "imageUrl": "/habborares/v7/dragonlamps/dragon_teal.png",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Dragon Collection"
+  },
+  {
+    "habboRareId": "blue_powered_fan",
+    "name": "Blue Powered Fan",
+    "description": "A high-tech blue fan providing cool comfort.",
+    "imageUrl": "/habborares/v7/fans/Blue_powered_fan.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "V7 Tech Collection"
+  },
+  {
+    "habboRareId": "brown_powered_fan",
+    "name": "Brown Powered Fan",
+    "description": "A rustic brown fan with vintage charm.",
+    "imageUrl": "/habborares/v7/fans/Brown_powered_fan.gif",
+    "rarityCategory": "common_rare",
+    "series": "V7 Tech Collection"
+  },
+  {
+    "habboRareId": "fucsia_powered_fan",
+    "name": "Fuchsia Powered Fan",
+    "description": "A vibrant fuchsia fan that makes a bold statement.",
+    "imageUrl": "/habborares/v7/fans/Fucsia_powered_fan.gif",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Tech Collection"
+  },
+  {
+    "habboRareId": "green_powered_fan",
+    "name": "Green Powered Fan",
+    "description": "An eco-friendly green fan powered by nature.",
+    "imageUrl": "/habborares/v7/fans/Green_powered_fan.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "V7 Tech Collection"
+  },
+  {
+    "habboRareId": "orange_powered_fan",
+    "name": "Orange Powered Fan",
+    "description": "An energetic orange fan bringing warmth to cool spaces.",
+    "imageUrl": "/habborares/v7/fans/Orange_powered_fan.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "V7 Tech Collection"
+  },
+  {
+    "habboRareId": "purple_powered_fan",
+    "name": "Purple Powered Fan",
+    "description": "A royal purple fan fit for nobility.",
+    "imageUrl": "/habborares/v7/fans/Purple_powered_fan.gif",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Tech Collection"
+  },
+  {
+    "habboRareId": "red_powered_fan",
+    "name": "Red Powered Fan",
+    "description": "A passionate red fan with powerful airflow.",
+    "imageUrl": "/habborares/v7/fans/Red_powered_fan.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "V7 Tech Collection"
+  },
+  {
+    "habboRareId": "superlove_pink_fan",
+    "name": "Superlove Pink Fan",
+    "description": "A special pink fan spreading love and positive vibes.",
+    "imageUrl": "/habborares/v7/fans/Superlove_pink_fan.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Tech Collection"
+  },
+  {
+    "habboRareId": "turqoise_powered_fan",
+    "name": "Turquoise Powered Fan",
+    "description": "A tropical turquoise fan bringing ocean breezes indoors.",
+    "imageUrl": "/habborares/v7/fans/Turqoise_powered_fan.gif",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Tech Collection"
+  },
+  {
+    "habboRareId": "yellow_powered_fan",
+    "name": "Yellow Powered Fan",
+    "description": "A sunny yellow fan brightening up any space.",
+    "imageUrl": "/habborares/v7/fans/Yellow_powered_fan.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "V7 Tech Collection"
+  },
+  {
+    "habboRareId": "aqua_ice_cream_maker",
+    "name": "Aqua Ice Cream Maker",
+    "description": "A refreshing aqua ice cream maker for tropical treats.",
+    "imageUrl": "/habborares/v7/icecream/Aqua_ice_cream_maker.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "V7 Dessert Collection"
+  },
+  {
+    "habboRareId": "blue_ice_cream_maker",
+    "name": "Blue Ice Cream Maker",
+    "description": "A cool blue ice cream maker for blueberry delights.",
+    "imageUrl": "/habborares/v7/icecream/Blue_ice_cream_maker.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "V7 Dessert Collection"
+  },
+  {
+    "habboRareId": "choco_ice_cream_maker",
+    "name": "Chocolate Ice Cream Maker",
+    "description": "A rich chocolate ice cream maker for decadent desserts.",
+    "imageUrl": "/habborares/v7/icecream/Choco_ice_cream_maker.gif",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Dessert Collection"
+  },
+  {
+    "habboRareId": "fuchsia_ice_cream_maker",
+    "name": "Fuchsia Ice Cream Maker",
+    "description": "A vibrant fuchsia ice cream maker for berry flavors.",
+    "imageUrl": "/habborares/v7/icecream/Fuchsia_ice_cream_maker.gif",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Dessert Collection"
+  },
+  {
+    "habboRareId": "gold_ice_cream_maker",
+    "name": "Gold Ice Cream Maker",
+    "description": "A luxurious gold ice cream maker for premium desserts.",
+    "imageUrl": "/habborares/v7/icecream/Gold_ice_cream_maker.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Dessert Collection"
+  },
+  {
+    "habboRareId": "ochre_ice_cream_maker",
+    "name": "Ochre Ice Cream Maker",
+    "description": "An earthy ochre ice cream maker for caramel treats.",
+    "imageUrl": "/habborares/v7/icecream/Ochre_ice_cream_maker.gif",
+    "rarityCategory": "common_rare",
+    "series": "V7 Dessert Collection"
+  },
+  {
+    "habboRareId": "pink_ice_cream_maker",
+    "name": "Pink Ice Cream Maker",
+    "description": "A sweet pink ice cream maker for strawberry dreams.",
+    "imageUrl": "/habborares/v7/icecream/Pink_ice_cream_maker.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "V7 Dessert Collection"
+  },
+  {
+    "habboRareId": "purple_ice_cream_maker",
+    "name": "Purple Ice Cream Maker",
+    "description": "A royal purple ice cream maker for grape and lavender flavors.",
+    "imageUrl": "/habborares/v7/icecream/Purple_ice_cream_maker.gif",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Dessert Collection"
+  },
+  {
+    "habboRareId": "red_ice_cream_maker",
+    "name": "Red Ice Cream Maker",
+    "description": "A passionate red ice cream maker for cherry delights.",
+    "imageUrl": "/habborares/v7/icecream/Red_ice_cream_maker.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "V7 Dessert Collection"
+  },
+  {
+    "habboRareId": "shamrock_shake_machine",
+    "name": "Shamrock Shake Machine",
+    "description": "A lucky shamrock shake machine for minty fresh treats.",
+    "imageUrl": "/habborares/v7/icecream/Shamrock_shake_machine.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Dessert Collection"
+  },
+  {
+    "habboRareId": "black_laser_portal",
+    "name": "Black Laser Portal",
+    "description": "A mysterious black laser portal to unknown dimensions.",
+    "imageUrl": "/habborares/v7/laser/Black_laser_portal.gif",
+    "rarityCategory": "ultra_rare",
+    "series": "V7 Portal Collection"
+  },
+  {
+    "habboRareId": "blue_laser_portal",
+    "name": "Blue Laser Portal",
+    "description": "A brilliant blue laser portal crackling with energy.",
+    "imageUrl": "/habborares/v7/laser/Blue_laser_portal.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Portal Collection"
+  },
+  {
+    "habboRareId": "golden_plasma_gate",
+    "name": "Golden Plasma Gate",
+    "description": "The ultimate golden plasma gate for interdimensional travel.",
+    "imageUrl": "/habborares/v7/laser/Golden_plasma_gate.gif",
+    "rarityCategory": "ultra_rare",
+    "series": "V7 Portal Collection"
+  },
+  {
+    "habboRareId": "jade_laser_portal",
+    "name": "Jade Laser Portal",
+    "description": "A serene jade laser portal harmonizing space and time.",
+    "imageUrl": "/habborares/v7/laser/Jade_laser_portal.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Portal Collection"
+  },
+  {
+    "habboRareId": "pink_laser_portal",
+    "name": "Pink Laser Portal",
+    "description": "A lovely pink laser portal spreading joy across dimensions.",
+    "imageUrl": "/habborares/v7/laser/Pink_Laser_Portal.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Portal Collection"
+  },
+  {
+    "habboRareId": "purple_laser_portal",
+    "name": "Purple Laser Portal",
+    "description": "A royal purple laser portal pulsing with mystical energy.",
+    "imageUrl": "/habborares/v7/laser/Purple_laser_portal.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Portal Collection"
+  },
+  {
+    "habboRareId": "red_laser_door",
+    "name": "Red Laser Door",
+    "description": "A secure red laser door for high-security areas.",
+    "imageUrl": "/habborares/v7/laser/Red_laser_door.gif",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Portal Collection"
+  },
+  {
+    "habboRareId": "turqoise_laser_portal",
+    "name": "Turquoise Laser Portal",
+    "description": "A tropical turquoise laser portal to oceanic realms.",
+    "imageUrl": "/habborares/v7/laser/Turqoise_laser_portal.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Portal Collection"
+  },
+  {
+    "habboRareId": "violet_laser_portal",
+    "name": "Violet Laser Portal",
+    "description": "An elegant violet laser portal with ethereal beauty.",
+    "imageUrl": "/habborares/v7/laser/Violet_laser_portal.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Portal Collection"
+  },
+  {
+    "habboRareId": "white_laser_portal",
+    "name": "White Laser Portal",
+    "description": "A pure white laser portal radiating divine light.",
+    "imageUrl": "/habborares/v7/laser/White_laser_portal.gif",
+    "rarityCategory": "ultra_rare",
+    "series": "V7 Portal Collection"
+  },
+  {
+    "habboRareId": "aqua_marquee",
+    "name": "Aqua Marquee",
+    "description": "A dazzling aqua marquee sign for grand announcements.",
+    "imageUrl": "/habborares/v7/marquee/Aqua_marquee.gif",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Marquee Collection"
+  },
+  {
+    "habboRareId": "blue_marquee",
+    "name": "Blue Marquee",
+    "description": "A brilliant blue marquee sign lighting up the night.",
+    "imageUrl": "/habborares/v7/marquee/Blue_marquee.gif",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Marquee Collection"
+  },
+  {
+    "habboRareId": "graphite_marquee",
+    "name": "Graphite Marquee",
+    "description": "A sleek graphite marquee sign with modern elegance.",
+    "imageUrl": "/habborares/v7/marquee/Graphite_marquee.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "V7 Marquee Collection"
+  },
+  {
+    "habboRareId": "green_marquee",
+    "name": "Green Marquee",
+    "description": "A vibrant green marquee sign for eco-friendly messages.",
+    "imageUrl": "/habborares/v7/marquee/Green_marquee.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "V7 Marquee Collection"
+  },
+  {
+    "habboRareId": "pink_marquee",
+    "name": "Pink Marquee",
+    "description": "A charming pink marquee sign spreading love and joy.",
+    "imageUrl": "/habborares/v7/marquee/Pink_marquee.gif",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Marquee Collection"
+  },
+  {
+    "habboRareId": "purple_marquee",
+    "name": "Purple Marquee",
+    "description": "A royal purple marquee sign for majestic announcements.",
+    "imageUrl": "/habborares/v7/marquee/Purple_marquee.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Marquee Collection"
+  },
+  {
+    "habboRareId": "red_marquee",
+    "name": "Red Marquee",
+    "description": "A bold red marquee sign commanding attention.",
+    "imageUrl": "/habborares/v7/marquee/Red_marquee.gif",
+    "rarityCategory": "rare_rare",
+    "series": "V7 Marquee Collection"
+  },
+  {
+    "habboRareId": "white_marquee",
+    "name": "White Marquee",
+    "description": "A classic white marquee sign with timeless appeal.",
+    "imageUrl": "/habborares/v7/marquee/White_marquee.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "V7 Marquee Collection"
+  },
+  {
+    "habboRareId": "yellow_marquee",
+    "name": "Yellow Marquee",
+    "description": "A sunny yellow marquee sign brightening any event.",
+    "imageUrl": "/habborares/v7/marquee/Yellow_marquee.gif",
+    "rarityCategory": "uncommon_rare",
+    "series": "V7 Marquee Collection"
+  },
+  {
+    "habboRareId": "aqua_spaceship_door",
+    "name": "Aqua Spaceship Door",
+    "description": "A futuristic aqua spaceship door for cosmic adventures.",
+    "imageUrl": "/habborares/v7/monolisth/Aqua_spaceship_door.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Space Collection"
+  },
+  {
+    "habboRareId": "blue_spaceship_door",
+    "name": "Blue Spaceship Door",
+    "description": "A high-tech blue spaceship door for interstellar travel.",
+    "imageUrl": "/habborares/v7/monolisth/Blue_spaceship_door.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Space Collection"
+  },
+  {
+    "habboRareId": "jade_spaceship_door",
+    "name": "Jade Spaceship Door",
+    "description": "A mystical jade spaceship door to peaceful worlds.",
+    "imageUrl": "/habborares/v7/monolisth/Jade_spaceship_door.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Space Collection"
+  },
+  {
+    "habboRareId": "pink_spaceship_door",
+    "name": "Pink Spaceship Door",
+    "description": "A lovely pink spaceship door for romantic space journeys.",
+    "imageUrl": "/habborares/v7/monolisth/Pink_spaceship_door.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Space Collection"
+  },
+  {
+    "habboRareId": "purple_spaceship_door",
+    "name": "Purple Spaceship Door",
+    "description": "A royal purple spaceship door for noble space exploration.",
+    "imageUrl": "/habborares/v7/monolisth/Purple_spaceship_door.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Space Collection"
+  },
+  {
+    "habboRareId": "sky_spaceship_door",
+    "name": "Sky Spaceship Door",
+    "description": "A celestial sky spaceship door soaring through space.",
+    "imageUrl": "/habborares/v7/monolisth/Sky_spaceship_door.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Space Collection"
+  },
+  {
+    "habboRareId": "the_black_monolith",
+    "name": "The Black Monolith",
+    "description": "The legendary black monolith from the depths of space and time.",
+    "imageUrl": "/habborares/v7/monolisth/The_black_monolith.gif",
+    "rarityCategory": "ultra_rare",
+    "series": "V7 Space Collection"
+  },
+  {
+    "habboRareId": "violet_spaceship_door",
+    "name": "Violet Spaceship Door",
+    "description": "An elegant violet spaceship door with ethereal beauty.",
+    "imageUrl": "/habborares/v7/monolisth/Violet_spaceship_door.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Space Collection"
+  },
+  {
+    "habboRareId": "white_spaceship_door",
+    "name": "White Spaceship Door",
+    "description": "A pure white spaceship door radiating cosmic light.",
+    "imageUrl": "/habborares/v7/monolisth/White_spaceship_door.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Space Collection"
+  },
+  {
+    "habboRareId": "yellow_spaceship_door",
+    "name": "Yellow Spaceship Door",
+    "description": "A bright yellow spaceship door bringing sunshine to space.",
+    "imageUrl": "/habborares/v7/monolisth/Yellow_spaceship_door.gif",
+    "rarityCategory": "super_rare",
+    "series": "V7 Space Collection"
+  }
+]

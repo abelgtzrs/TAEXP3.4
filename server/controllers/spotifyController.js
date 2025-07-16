@@ -5,7 +5,7 @@ const SpotifyLog = require("../models/SpotifyLogs");
 
 const SPOTIFY_AUTH_URL = "https://accounts.spotify.com/authorize";
 const SPOTIFY_TOKEN_URL = "https://accounts.spotify.com/api/token";
-const REDIRECT_URI = "http://localhost:5000/api/spotify/callback";
+const REDIRECT_URI = "https://localhost:5000/api/spotify/callback";
 
 // @desc    Generate the URL for Spotify authorization
 // @route   GET /api/spotify/login
