@@ -1,5 +1,6 @@
 // --- FILE: client-admin/src/App.jsx (Corrected) ---
 import { Routes, Route, Navigate } from "react-router-dom";
+import { useTheme } from "./hooks/useTheme";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import HabitsPage from "./pages/HabitsPage";
@@ -20,10 +21,11 @@ import CollectionsPage from "./pages/CollectionsPage";
 import CollectionDetailPage from "./pages/CollectionDetailPage";
 import PokedexPage from "./pages/PokedexPage";
 import PokemonEditorPage from "./pages/PokemonEditorPage";
+import SettingsPage from "./pages/SettingsPage";
 
 function App() {
-  // Notice this component now ONLY returns the Routes.
-  // The Browser Router and Auth Provider will wrap this component in main.jsx
+  useTheme();
+
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
@@ -39,6 +41,7 @@ function App() {
           <Route path="/workouts/new/template" element={<SelectTemplatePage />} />
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Route>
       </Route>
 

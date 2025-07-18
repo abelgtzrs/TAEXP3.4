@@ -7,6 +7,39 @@ const Volume = require("../models/Volume");
 
 // --- Define all functions as constants before exporting ---
 
+exports.setActivePersona = async (req, res) => {
+  try {
+    const { personaId } = req.body;
+    const user = await User.findById(req.user.id);
+
+    // Security check: ensure the user has unlocked this persona before activating.
+    // We also allow `null` to be passed to deactivate a persona.
+    if (personaId && !user.unlockedAbelPersonas.includes(personaId)) {
+      return res.status(403).json({ success: false, message: "Persona not unlocked." });
+    }
+
+    // Set the active persona field to the new ID or null.
+    user.activeAbelPersona = personaId || null;
+    await user.save({ validateBeforeSave: false });
+
+    // --- CRUCIAL FIX ---
+    // After saving, we re-fetch the user and explicitly populate the 'activeAbelPersona' field.
+    // This ensures the full theme data is sent back to the frontend.
+    const updatedUser = await User.findById(req.user.id).populate({
+      path: "activeAbelPersona",
+      model: "AbelPersonaBase", // Explicitly specify the model to populate from
+    });
+
+    // We also need to repopulate other fields for consistency if the user object is used elsewhere.
+    // For now, focusing on the persona.
+
+    res.status(200).json({ success: true, data: updatedUser });
+  } catch (error) {
+    console.error("Set Active Persona Error:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
 const getUserCollection = async (req, res) => {
   try {
     const { type } = req.params;

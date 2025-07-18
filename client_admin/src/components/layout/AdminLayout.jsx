@@ -20,6 +20,7 @@ import {
   Boxes,
   ChevronLeft,
   ChevronRight,
+  Settings2,
 } from "lucide-react";
 
 const NavItem = ({ to, icon: Icon, children, isCollapsed }) => {
@@ -186,6 +187,9 @@ const AdminLayout = () => {
                 </NavItem>
                 <NavItem to="/admin/pokemon-editor" icon={PenSquare} isCollapsed={isSidebarCollapsed}>
                   Pokémon Editor
+                </NavItem>
+                <NavItem to="/settings" icon={Settings2} isCollapsed={isSidebarCollapsed}>
+                  Settings
                 </NavItem>
               </ul>
             </div>

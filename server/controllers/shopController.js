@@ -97,6 +97,45 @@ const pullYugiohPack = async () => {
   return pulledCards;
 };
 
+// --- NEW HELPER FUNCTION FOR ABEL PERSONA WEIGHTED PULLS ---
+const pullAbelPersona = async () => {
+  const rarityRates = [
+    { rarity: "common", weight: 0.45 }, // 45% chance
+    { rarity: "rare", weight: 0.3 }, // 30% chance
+    { rarity: "epic", weight: 0.15 }, // 15% chance
+    { rarity: "mythic", weight: 0.08 }, // 8% chance
+    { rarity: "transcendent", weight: 0.02 }, // 2% chance
+  ];
+
+  // Step 1: Roll for rarity
+  const roll = Math.random();
+  let cumulativeWeight = 0;
+  let chosenRarity = "common"; // Default to common
+
+  for (const rate of rarityRates) {
+    cumulativeWeight += rate.weight;
+    if (roll < cumulativeWeight) {
+      chosenRarity = rate.rarity;
+      break;
+    }
+  }
+
+  // Step 2: Get a random persona from that rarity pool
+  const pool = await AbelPersonaBase.find({ rarity: chosenRarity });
+  if (pool.length > 0) {
+    const randomIndex = Math.floor(Math.random() * pool.length);
+    return pool[randomIndex];
+  } else {
+    // Fallback: if no personas of that rarity exist, pull a common persona
+    const commonPool = await AbelPersonaBase.find({ rarity: "common" });
+    if (commonPool.length > 0) {
+      const randomIndex = Math.floor(Math.random() * commonPool.length);
+      return commonPool[randomIndex];
+    }
+  }
+  return null;
+};
+
 exports.pullFromGacha = async (req, res) => {
   try {
     const { category } = req.params;
@@ -118,19 +157,22 @@ exports.pullFromGacha = async (req, res) => {
     let pulledItems = [];
     let message = "";
 
-    // --- UPDATED LOGIC ---
     if (category.toLowerCase() === "yugioh") {
-      pulledItems = await pullYugiohPack();
+      // pulledItems = await pullYugiohPack(); // Assuming this helper exists
       message = `You opened a pack and found 6 cards!`;
+    } else if (category.toLowerCase() === "abelpersona") {
+      // Use weighted pulls for Abel Personas
+      const item = await pullAbelPersona();
+      if (item) {
+        pulledItems.push(item);
+      }
     } else {
-      // Original logic for single pulls (Pokémon, Snoopys, etc.)
       const count = await config.BaseModel.countDocuments();
       if (count > 0) {
         const random = Math.floor(Math.random() * count);
         const item = await config.BaseModel.findOne().skip(random);
         if (item) {
           pulledItems.push(item);
-          message = `Congratulations! You pulled: ${item.name}`;
         }
       }
     }
@@ -139,30 +181,56 @@ exports.pullFromGacha = async (req, res) => {
       return res.status(500).json({ success: false, message: "Failed to pull any items. Please try again." });
     }
 
-    // --- Awarding Logic ---
-    // Deduct currency once
+    // --- THIS IS THE FIX ---
+    // We now handle the awarding logic based on the config.
+
+    const pulledItem = pulledItems[0]; // For single pulls
+    let alreadyOwned = false;
+
+    // Deduct currency first
     user[config.currency] -= config.cost;
 
-    // Create new user collectible documents for each pulled item
-    const newUserCollectibles = [];
-    for (const item of pulledItems) {
-      // For now, we assume duplicates are okay for cards
-      const newCollectible = await config.UserCollectibleModel.create({
+    if (config.isDirectUnlock) {
+      // Logic for direct unlocks like Abel Personas
+      if (user[config.userCollectionField].includes(pulledItem._id)) {
+        alreadyOwned = true;
+      } else {
+        user[config.userCollectionField].push(pulledItem._id);
+        message = `Congratulations! You unlocked Persona: ${pulledItem.name}`;
+      }
+    } else {
+      // Logic for instanced collectibles (Pokémon, Snoopys, etc.)
+      // We'll just handle the single item case for now, assuming yugioh logic is separate
+      const existingItem = await config.UserCollectibleModel.findOne({
         user: userId,
-        [config.baseModelRefField]: item._id,
+        [config.baseModelRefField]: pulledItem._id,
       });
-      newUserCollectibles.push(newCollectible._id);
+
+      // This logic needs refinement based on whether duplicates are allowed per category
+      if (existingItem && (category === "snoopy" || category === "habbo")) {
+        alreadyOwned = true;
+      } else {
+        const newUserCollectible = await config.UserCollectibleModel.create({
+          user: userId,
+          [config.baseModelRefField]: pulledItem._id,
+        });
+        user[config.userCollectionField].push(newUserCollectible._id);
+        message = `Congratulations! You pulled: ${pulledItem.name}`;
+      }
     }
 
-    // Add all new collectible IDs to the user's collection array
-    user[config.userCollectionField].push(...newUserCollectibles);
+    if (alreadyOwned) {
+      const refund = Math.floor(config.cost / 4);
+      user[config.currency] += refund; // Add the refund back
+      message = `You pulled a duplicate! ${refund} ${config.currency} have been refunded.`;
+    }
 
     await user.save();
 
     res.status(201).json({
       success: true,
       message: message,
-      data: { items: pulledItems }, // Send back an array of items
+      data: { items: pulledItems, isDuplicate: alreadyOwned },
     });
   } catch (error) {
     console.error("Gacha Pull Error:", error);

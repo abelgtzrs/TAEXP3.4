@@ -7,7 +7,9 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "data:import": "node seeder -i",
-    "data:destroy": "node seeder -d"
+    "data:destroy": "node seeder -d",
+    "personas:seed": "node abelPersonaSeeder.js",
+    "personas:clear": "node abelPersonaSeeder.js --clear"
   },
   "keywords": [],
   "author": "",

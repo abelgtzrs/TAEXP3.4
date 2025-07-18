@@ -6,21 +6,25 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "#131139ff",
-        surface: "#0c1d34ff",
-        primary: "#426280ff",
-        secondary: "#144573ff",
-        tertiary: "#73aee6ff",
-        "text-main": "#ffffff",
-        "text-secondary": "#9CA3AF",
-        "text-tertiary": "#1f4365ff",
+        primary: "var(--color-primary)",
+        secondary: "var(--color-secondary)",
+        tertiary: "var(--color-tertiary)",
+        background: "var(--color-bg)",
+        surface: "var(--color-surface)",
+        "text-main": "var(--color-text-main)",
+        "text-secondary": "var(--color-text-secondary)",
+        "text-tertiary": "var(--color-text-tertiary)",
         "status-success": "#22c55e",
         "status-warning": "#facc15",
         "status-danger": "#ef4444",
         "status-info": "#38bdf8",
       },
+      fontFamily: {
+        sans: "var(--font-main)",
+        mono: "var(--font-main)", // You can have a separate mono font if you prefer
+      },
       boxShadow: {
-        "glow-primary": "0 0 12px 0 rgba(45, 212, 191, 0.5)",
+        "glow-primary": "0 0 12px 0 var(--color-primary)",
       },
     },
   },

@@ -22,6 +22,7 @@ import BookTrackerWidget from "../components/dashboard/BookTrackerWidget";
 import WorkoutTrackerWidget from "../components/dashboard/WorkoutTrackerWidget";
 import ClockWidget from "../components/dashboard/ClockWidget";
 import WeatherWidget from "../components/dashboard/WeatherWidget";
+import PersonaWidget from "../components/dashboard/PersonaWidget";
 
 const DashboardPage = () => {
   const { user } = useAuth();
@@ -147,7 +148,7 @@ const DashboardPage = () => {
           whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
           className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
         >
-          <ThreatDetectionWidget />
+          <PersonaWidget />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

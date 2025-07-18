@@ -1,8 +1,8 @@
 [
-    {
+  {
     "personaId": "Prime_Abel",
     "name": "Prime Abel",
-    "description": "The narrator. Mythologized, raw, the core of the experience",
+    "description": "The narrator. Mythologized, raw, the core of the experience.",
     "rarity": "mythic",
     "colors": {
       "bg": "#0F1A14",
@@ -17,11 +17,11 @@
       "tertiary": "#8D958E"
     },
     "font": "Merriweather"
-  }
+  },
   {
     "personaId": "sage_abel",
     "name": "Sage Abel",
-    "description": "Christ-guided, contemplative, spiritually mature.",
+    "description": "Christ-guidlike, contemplative, spiritually mature.",
     "rarity": "mythic",
     "colors": {
       "bg": "#0F1A14",
