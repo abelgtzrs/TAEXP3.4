@@ -20,22 +20,29 @@ const AbelPersonaBaseSchema = new mongoose.Schema(
       default: "",
     },
     rarity: {
-      // Rarity level, e.g., "common", "rare", "epic", "legendary"
+      // Rarity level, e.g., "common", "rare", "epic", "mythic", "transcendent"
       type: String,
       enum: ["common", "rare", "epic", "mythic", "transcendent"],
       default: "common",
     },
-    themeColors: {
-      // Object storing hex codes for the theme
+    colors: {
+      // Object storing hex codes for the theme colors
       bg: { type: String, required: true }, // e.g., #14B8A6 (Teal)
       surface: { type: String, required: true }, // e.g., #0D9488
       primary: { type: String, required: true }, // e.g., #2DD4BF
       secondary: { type: String, required: true }, // e.g., #111827
       tertiary: { type: String, required: true }, // e.g., #E5E7EB
-      text_main: { type: String, required: true }, // e.g., #9CA3AF
-      text_secondary: { type: String, required: true }, // e.g., #6B7280
-      text_tertiary: { type: String, required: true }, // e.g., #1F2937
-      font: { type: String, default: "Inter, sans-serif" }, // Default font
+    },
+    text: {
+      // Text color definitions
+      main: { type: String, default: "#FFFFFF" },
+      secondary: { type: String, default: "#9CA3AF" },
+      tertiary: { type: String, default: "#1F2937" },
+    },
+    font: {
+      // Font family
+      type: String,
+      default: "Inter, sans-serif",
     },
     iconUrlOrKey: {
       // Optional icon representing the persona

@@ -10,14 +10,30 @@ export const useTheme = () => {
     const root = window.document.documentElement;
 
     const defaultTheme = {
-      colors: { bg: "#0D1117", surface: "#161B22", primary: "#2DD4BF", secondary: "#67e8f9", tertiary: "#A5F3FC" },
-      text: { main: "#E5E7EB", secondary: "#9CA3AF", tertiary: "#4B5563" },
+      colors: {
+        bg: "#0D1117",
+        surface: "#161B22",
+        primary: "#2DD4BF",
+        secondary: "#67e8f9",
+        tertiary: "#A5F3FC",
+      },
+      text: {
+        main: "#E5E7EB",
+        secondary: "#9CA3AF",
+        tertiary: "#4B5563",
+      },
       font: "Inter, sans-serif",
     };
 
     // Use the active persona's theme, or fall back to the default.
-    // The 'activePersona' object itself contains the theme data, not a nested 'theme' property.
-    const theme = activePersona || defaultTheme;
+    // The persona object from the database has colors and text as direct properties
+    const theme = activePersona
+      ? {
+          colors: activePersona.colors,
+          text: activePersona.text,
+          font: activePersona.font,
+        }
+      : defaultTheme;
 
     if (theme.colors) {
       root.style.setProperty("--color-bg", theme.colors.bg);
@@ -36,5 +52,9 @@ export const useTheme = () => {
     if (theme.font) {
       root.style.setProperty("--font-main", theme.font);
     }
+
+    // Debug logging
+    console.log("Theme applied:", theme);
+    console.log("Active persona:", activePersona);
   }, [activePersona]); // This effect re-runs whenever the activePersona object changes.
 };

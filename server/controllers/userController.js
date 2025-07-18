@@ -7,7 +7,7 @@ const Volume = require("../models/Volume");
 
 // --- Define all functions as constants before exporting ---
 
-exports.setActivePersona = async (req, res) => {
+const setActivePersona = async (req, res) => {
   try {
     const { personaId } = req.body;
     const user = await User.findById(req.user.id);
@@ -25,10 +25,40 @@ exports.setActivePersona = async (req, res) => {
     // --- CRUCIAL FIX ---
     // After saving, we re-fetch the user and explicitly populate the 'activeAbelPersona' field.
     // This ensures the full theme data is sent back to the frontend.
-    const updatedUser = await User.findById(req.user.id).populate({
-      path: "activeAbelPersona",
-      model: "AbelPersonaBase", // Explicitly specify the model to populate from
-    });
+    const updatedUser = await User.findById(req.user.id)
+      .select("-password")
+      .populate({
+        path: "activeAbelPersona",
+        model: "AbelPersonaBase",
+      })
+      .populate({
+        path: "unlockedAbelPersonas", // Also populate the list of unlocked personas
+        model: "AbelPersonaBase",
+      })
+      .populate({
+        path: "displayedPokemon",
+        populate: { path: "basePokemon", model: "PokemonBase" },
+      })
+      .populate({
+        path: "displayedSnoopyArt",
+        populate: { path: "snoopyArtBase", model: "SnoopyArtBase" },
+      })
+      .populate({
+        path: "displayedHabboRares",
+        populate: { path: "habboRareBase", model: "HabboRareBase" },
+      })
+      .populate({
+        path: "displayedYugiohCards",
+        populate: { path: "yugiohCardBase", model: "YugiohCardBase" },
+      })
+      .populate({
+        path: "badges",
+        populate: { path: "badgeBase", model: "BadgeBase" },
+      })
+      .populate({
+        path: "equippedTitle",
+        populate: { path: "titleBase", model: "TitleBase" },
+      });
 
     // We also need to repopulate other fields for consistency if the user object is used elsewhere.
     // For now, focusing on the persona.
@@ -156,4 +186,5 @@ module.exports = {
   getUserCollection,
   updateDisplayedItems,
   getDashboardStats,
+  setActivePersona,
 };

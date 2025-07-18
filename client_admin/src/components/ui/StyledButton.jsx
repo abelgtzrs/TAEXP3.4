@@ -5,7 +5,7 @@ const StyledButton = ({ children, onClick, type = "button", loading = false, cla
 
   const variants = {
     primary:
-      "bg-gradient-to-r from-primary to-blue-600 hover:from-blue-600 hover:to-primary text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus:ring-primary/50 disabled:from-gray-600 disabled:to-gray-700",
+      "bg-gradient-to-r from-primary to-secondary hover:from-blue-600 hover:to-primary text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus:ring-primary/50 disabled:from-gray-600 disabled:to-gray-700",
     secondary:
       "bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus:ring-gray-500/50 disabled:from-gray-800 disabled:to-gray-900",
     danger:

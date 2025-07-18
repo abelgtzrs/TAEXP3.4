@@ -116,6 +116,14 @@ const getMe = async (req, res) => {
     const user = await User.findById(userId)
       .select("-password")
       .populate({
+        path: "activeAbelPersona",
+        model: "AbelPersonaBase",
+      })
+      .populate({
+        path: "unlockedAbelPersonas",
+        model: "AbelPersonaBase",
+      })
+      .populate({
         path: "displayedPokemon",
         populate: { path: "basePokemon", model: "PokemonBase" },
       })

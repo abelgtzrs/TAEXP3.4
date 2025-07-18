@@ -5,6 +5,7 @@ import Widget from "../components/ui/Widget";
 
 const SettingsPage = () => {
   const { user, setUser } = useAuth();
+  // The unlockedPersonas array should now be populated with full objects
   const unlockedPersonas = user?.unlockedAbelPersonas || [];
   const activePersonaId = user?.activeAbelPersona?._id || null;
 

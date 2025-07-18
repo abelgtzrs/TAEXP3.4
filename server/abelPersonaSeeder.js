@@ -32,17 +32,19 @@ const transformAbelPersonaData = (rawData) => {
       name: persona.name,
       description: persona.description || "",
       rarity: persona.rarity || "common",
-      themeColors: {
+      colors: {
         bg: persona.colors.bg,
         surface: persona.colors.surface,
         primary: persona.colors.primary,
         secondary: persona.colors.secondary,
         tertiary: persona.colors.tertiary,
-        text_main: persona.text.main,
-        text_secondary: persona.text.secondary,
-        text_tertiary: persona.text.tertiary,
-        font: persona.font || "Inter, sans-serif",
       },
+      text: {
+        main: persona.text.main,
+        secondary: persona.text.secondary,
+        tertiary: persona.text.tertiary,
+      },
+      font: persona.font || "Inter, sans-serif",
       iconUrlOrKey: persona.iconUrlOrKey || null,
     };
   });
