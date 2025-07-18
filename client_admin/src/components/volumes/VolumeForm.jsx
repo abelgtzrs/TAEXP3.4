@@ -2,13 +2,7 @@ import { useState, useEffect } from "react";
 import { parseRawGreentext } from "../../utils/greentextParser";
 
 // The component now receives formData and a handler to change it.
-const VolumeForm = ({
-  formData,
-  onFormChange,
-  onSubmit,
-  loading,
-  submitButtonText = "Submit",
-}) => {
+const VolumeForm = ({ formData, onFormChange, onSubmit, loading, submitButtonText = "Submit" }) => {
   // The JSON preview state can still live here, as it's purely for display.
   const [parsedPreview, setParsedPreview] = useState({});
 
@@ -28,16 +22,10 @@ const VolumeForm = ({
   };
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="mb-8 p-6 bg-gray-800 rounded-lg shadow-lg"
-    >
+    <form onSubmit={onSubmit} className="mb-8 p-6 bg-gray-800 rounded-lg shadow-lg">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label
-            htmlFor="rawPastedText"
-            className="block text-sm font-medium text-gray-300 mb-2"
-          >
+          <label htmlFor="rawPastedText" className="block text-sm font-medium text-gray-300 mb-2">
             Raw Greentext Content
           </label>
           <textarea
@@ -50,9 +38,7 @@ const VolumeForm = ({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Live JSON Preview
-          </label>
+          <label className="block text-sm font-medium text-gray-300 mb-2">Live JSON Preview</label>
           <pre className="w-full h-[450px] p-3 bg-gray-900 rounded border border-gray-600 text-sky-300 text-xs overflow-auto">
             {JSON.stringify(parsedPreview, null, 2)}
           </pre>
@@ -78,7 +64,7 @@ const VolumeForm = ({
         <button
           type="submit"
           disabled={loading}
-          className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 disabled:bg-gray-500"
+          className="bg-secondary hover:bg-teal-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 disabled:bg-gray-500"
         >
           {loading ? "Saving..." : submitButtonText}
         </button>

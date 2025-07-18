@@ -106,7 +106,7 @@ const VolumesPage = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="text-3xl font-bold text-teal-400 mb-6"
+        className="text-3xl font-bold text-main mb-6"
       >
         Greentext Volume Manager
       </motion.h1>
@@ -123,7 +123,7 @@ const VolumesPage = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="text-xl text-white font-semibold mb-4"
+            className="text-xl text-main font-semibold mb-4"
           >
             {editingId ? "Edit Volume" : "Create New Volume"}
           </motion.h2>
@@ -134,7 +134,7 @@ const VolumesPage = () => {
               transition={{ duration: 0.3, delay: 0.6 }}
               whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
               onClick={resetForm}
-              className="text-sm text-teal-400 hover:text-teal-300 mb-4"
+              className="text-sm text-main hover:text-primary mb-4"
             >
               Cancel Edit
             </motion.button>

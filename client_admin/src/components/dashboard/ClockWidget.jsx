@@ -70,13 +70,13 @@ const AnalogClock = ({ time }) => {
           y1="50"
           x2="50"
           y2="10"
-          stroke="#2DD4BF"
+          stroke="red"
           strokeWidth="1"
           strokeLinecap="round"
           transform={`rotate(${secondHandRotation} 50 50)`}
         />
         {/* Center pin */}
-        <circle cx="50" cy="50" r="3" fill="#2DD4BF" />
+        <circle cx="50" cy="50" r="3" fill="#fff" />
       </svg>
     </div>
   );
@@ -171,23 +171,23 @@ const ClockWidget = () => {
     const days = (date - known) / (1000 * 60 * 60 * 24);
     const phase = (days % cycles) / cycles;
 
-    if (phase < 0.125) return { icon: Moon, name: "New Moon", color: "text-gray-400" };
-    if (phase < 0.25) return { icon: Moon, name: "Waxing Crescent", color: "text-gray-300" };
-    if (phase < 0.375) return { icon: Moon, name: "First Quarter", color: "text-yellow-300" };
-    if (phase < 0.5) return { icon: Moon, name: "Waxing Gibbous", color: "text-yellow-400" };
-    if (phase < 0.625) return { icon: Moon, name: "Full Moon", color: "text-yellow-200" };
-    if (phase < 0.75) return { icon: Moon, name: "Waning Gibbous", color: "text-yellow-300" };
-    if (phase < 0.875) return { icon: Moon, name: "Last Quarter", color: "text-gray-300" };
-    return { icon: Moon, name: "Waning Crescent", color: "text-gray-400" };
+    if (phase < 0.125) return { icon: Moon, name: "New Moon", color: "text-text-tertiary" };
+    if (phase < 0.25) return { icon: Moon, name: "Waxing Crescent", color: "text-text-secondary" };
+    if (phase < 0.375) return { icon: Moon, name: "First Quarter", color: "text-accent" };
+    if (phase < 0.5) return { icon: Moon, name: "Waxing Gibbous", color: "text-primary" };
+    if (phase < 0.625) return { icon: Moon, name: "Full Moon", color: "text-accent" };
+    if (phase < 0.75) return { icon: Moon, name: "Waning Gibbous", color: "text-primary" };
+    if (phase < 0.875) return { icon: Moon, name: "Last Quarter", color: "text-text-secondary" };
+    return { icon: Moon, name: "Waning Crescent", color: "text-text-tertiary" };
   };
 
   // Get season based on date
   const getSeason = (date) => {
     const month = date.getMonth();
-    if (month >= 2 && month <= 4) return { icon: Flower, name: "Spring", color: "text-pink-400" };
-    if (month >= 5 && month <= 7) return { icon: Sun, name: "Summer", color: "text-yellow-400" };
-    if (month >= 8 && month <= 10) return { icon: Leaf, name: "Autumn", color: "text-orange-400" };
-    return { icon: Snowflake, name: "Winter", color: "text-blue-300" };
+    if (month >= 2 && month <= 4) return { icon: Flower, name: "Spring", color: "text-accent" };
+    if (month >= 5 && month <= 7) return { icon: Sun, name: "Summer", color: "text-primary" };
+    if (month >= 8 && month <= 10) return { icon: Leaf, name: "Autumn", color: "text-accent" };
+    return { icon: Snowflake, name: "Winter", color: "text-primary" };
   };
 
   // Calculate time until next hour
@@ -205,9 +205,9 @@ const ClockWidget = () => {
   // Get battery status (if available)
   const getBatteryInfo = () => {
     if ("getBattery" in navigator) {
-      return { icon: Battery, text: "Battery API", color: "text-green-400" };
+      return { icon: Battery, text: "Battery API", color: "text-accent" };
     }
-    return { icon: Zap, text: "AC Power", color: "text-blue-400" };
+    return { icon: Zap, text: "AC Power", color: "text-primary" };
   };
 
   // Get connection type
@@ -251,36 +251,36 @@ const ClockWidget = () => {
     const sunriseHour = Math.round(6 + 2 * Math.sin((dayOfYear / 365) * 2 * Math.PI));
     const sunsetHour = Math.round(18 + 2 * Math.sin((dayOfYear / 365) * 2 * Math.PI));
 
+    // Use day of year to generate consistent minutes for the entire day
+    const sunriseMinutes = Math.floor((dayOfYear * 7) % 60);
+    const sunsetMinutes = Math.floor((dayOfYear * 11) % 60);
+
     return {
-      sunrise: `${sunriseHour.toString().padStart(2, "0")}:${Math.floor(Math.random() * 60)
-        .toString()
-        .padStart(2, "0")}`,
-      sunset: `${sunsetHour.toString().padStart(2, "0")}:${Math.floor(Math.random() * 60)
-        .toString()
-        .padStart(2, "0")}`,
+      sunrise: `${sunriseHour.toString().padStart(2, "0")}:${sunriseMinutes.toString().padStart(2, "0")}`,
+      sunset: `${sunsetHour.toString().padStart(2, "0")}:${sunsetMinutes.toString().padStart(2, "0")}`,
     };
   };
 
   // Get browser info
   const getBrowserInfo = () => {
     const ua = navigator.userAgent;
-    if (ua.includes("Chrome")) return { icon: Chrome, text: "Chrome", color: "text-blue-400" };
-    if (ua.includes("Firefox")) return { icon: Globe, text: "Firefox", color: "text-orange-400" };
-    if (ua.includes("Safari")) return { icon: Globe, text: "Safari", color: "text-blue-300" };
-    if (ua.includes("Edge")) return { icon: Globe, text: "Edge", color: "text-blue-500" };
-    return { icon: Globe, text: "Browser", color: "text-gray-400" };
+    if (ua.includes("Chrome")) return { icon: Chrome, text: "Chrome", color: "text-primary" };
+    if (ua.includes("Firefox")) return { icon: Globe, text: "Firefox", color: "text-accent" };
+    if (ua.includes("Safari")) return { icon: Globe, text: "Safari", color: "text-primary" };
+    if (ua.includes("Edge")) return { icon: Globe, text: "Edge", color: "text-primary" };
+    return { icon: Globe, text: "Browser", color: "text-text-secondary" };
   };
 
   // Get device info
   const getDeviceInfo = () => {
     const platform = navigator.platform;
-    if (platform.includes("Win")) return { icon: Monitor, text: "Windows", color: "text-blue-400" };
-    if (platform.includes("Mac")) return { icon: Laptop, text: "macOS", color: "text-gray-300" };
-    if (platform.includes("Linux")) return { icon: Server, text: "Linux", color: "text-green-400" };
+    if (platform.includes("Win")) return { icon: Monitor, text: "Windows", color: "text-primary" };
+    if (platform.includes("Mac")) return { icon: Laptop, text: "macOS", color: "text-text-secondary" };
+    if (platform.includes("Linux")) return { icon: Server, text: "Linux", color: "text-accent" };
     if (platform.includes("iPhone") || platform.includes("iPad"))
-      return { icon: Smartphone, text: "iOS", color: "text-gray-400" };
-    if (platform.includes("Android")) return { icon: Smartphone, text: "Android", color: "text-green-400" };
-    return { icon: Monitor, text: "Device", color: "text-gray-400" };
+      return { icon: Smartphone, text: "iOS", color: "text-text-secondary" };
+    if (platform.includes("Android")) return { icon: Smartphone, text: "Android", color: "text-accent" };
+    return { icon: Monitor, text: "Device", color: "text-text-secondary" };
   };
 
   // Format file size
@@ -296,10 +296,10 @@ const ClockWidget = () => {
     <Widget title="System Time & Information" className="h-full">
       <div className="flex flex-col h-full space-y-2 overflow-y-auto scrollbar-hide">
         {/* Top section with analog and digital clocks */}
-        <div className="flex items-center justify-around gap-4">
+        <div className="flex items-center justify-around gap-2">
           <AnalogClock time={time} />
-          <div className="text-right flex-1 min-w-0">
-            <p className="text-xl sm:text-2xl lg:text-3xl font-mono font-bold text-primary text-glow break-all">
+          <div className="text-left flex-1 min-w-0">
+            <p className="text-xl sm:text-2xl lg:text-3xl font-mono font-bold text-secondary text-glow break-all">
               {time.toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -309,7 +309,23 @@ const ClockWidget = () => {
             </p>
             <p className="text-xs sm:text-sm text-text-secondary">
               UTC:{" "}
-              {time.toLocaleTimeString("en-US", { timeZone: "UTC", hour: "2-digit", minute: "2-digit", hour12: false })}
+              {time.toLocaleTimeString("en-US", {
+                timeZone: "UTC",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+              })}
+            </p>
+            <p className="text-xs sm:text-sm text-text-secondary">
+              HMO:{" "}
+              {time.toLocaleTimeString("en-US", {
+                timeZone: "PST",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+              })}
             </p>
             <p className="text-xs text-text-secondary mt-1">Unix: {getUnixTimestamp(time)}</p>
           </div>
@@ -327,11 +343,11 @@ const ClockWidget = () => {
               {React.createElement(getMoonPhase(time).icon, { size: 14 })}
               {getMoonPhase(time).name}
             </span>
-            <span className="flex items-center gap-1 text-orange-400">
+            <span className="flex items-center gap-1 text-accent">
               <Sunrise size={14} />
               {getSunInfo(time).sunrise}
             </span>
-            <span className="flex items-center gap-1 text-purple-400">
+            <span className="flex items-center gap-1 text-primary">
               <Sunset size={14} />
               {getSunInfo(time).sunset}
             </span>
@@ -345,9 +361,9 @@ const ClockWidget = () => {
               <span className="text-text-secondary">Week Progress</span>
               <span className="text-primary font-bold">{getWeekProgress(time)}%</span>
             </div>
-            <div className="w-full bg-gray-700 rounded-full h-1.5">
+            <div className="w-full bg-gray-900/70 rounded-full h-1.5">
               <div
-                className="bg-gradient-to-r from-blue-500 to-cyan-400 h-1.5 rounded-full transition-all duration-1000"
+                className="bg-secondary h-1.5 rounded-full transition-all duration-1000"
                 style={{ width: `${getWeekProgress(time)}%` }}
               ></div>
             </div>
@@ -356,11 +372,11 @@ const ClockWidget = () => {
           <div className="bg-gray-800/50 rounded-lg p-2">
             <div className="flex justify-between text-xs mb-1">
               <span className="text-text-secondary">Year Progress</span>
-              <span className="text-yellow-400 font-bold">{getYearProgress(time)}%</span>
+              <span className="text-accent font-bold">{getYearProgress(time)}%</span>
             </div>
-            <div className="w-full bg-gray-700 rounded-full h-1.5">
+            <div className="w-full bg-gray-900/70 rounded-full h-1.5">
               <div
-                className="bg-gradient-to-r from-yellow-500 to-orange-400 h-1.5 rounded-full transition-all duration-1000"
+                className="bg-secondary h-1.5 rounded-full transition-all duration-1000"
                 style={{ width: `${getYearProgress(time)}%` }}
               ></div>
             </div>
@@ -370,21 +386,21 @@ const ClockWidget = () => {
         {/* Enhanced Statistics Grid */}
         <div className="grid grid-cols-3 gap-2 text-xs">
           <div className="bg-gray-800/50 rounded-lg p-2 text-center">
-            <p className="font-bold text-primary flex items-center justify-center gap-1">
+            <p className="font-bold text-text-main flex items-center justify-center gap-1">
               <Calendar size={12} />
               {getDayOfYear(time)}
             </p>
             <p className="text-text-secondary">Day</p>
           </div>
           <div className="bg-gray-800/50 rounded-lg p-2 text-center">
-            <p className="font-bold text-primary flex items-center justify-center gap-1">
-              <Calendar size={12} />
+            <p className="font-bold text-text0main flex items-center justify-center gap-1">
+              <Calendar size={12} className="text-text-main" />
               {getWeekOfYear(time)}
             </p>
-            <p className="text-text-secondary">Week</p>
+            <p className="text-text-main">Week</p>
           </div>
           <div className="bg-gray-800/50 rounded-lg p-2 text-center">
-            <p className="font-bold text-red-400 flex items-center justify-center gap-1">
+            <p className="font-bold text-accent flex items-center justify-center gap-1">
               <Clock size={12} />
               {getDaysUntilNewYear(time)}
             </p>
@@ -394,14 +410,14 @@ const ClockWidget = () => {
 
         <div className="grid grid-cols-2 gap-2 text-xs">
           <div className="bg-gray-800/50 rounded-lg p-2 text-center">
-            <p className="font-bold text-yellow-400 flex items-center justify-center gap-1">
+            <p className="font-bold text-accent flex items-center justify-center gap-1">
               <Clock size={12} />
               {getTimeUntilNextHour(time)}
             </p>
             <p className="text-text-secondary">Next Hour</p>
           </div>
           <div className="bg-gray-800/50 rounded-lg p-2 text-center">
-            <p className="font-bold text-blue-400 flex items-center justify-center gap-1">
+            <p className="font-bold text-text-main flex items-center justify-center gap-1">
               <MapPin size={12} />
               {getTimezone(time)}
             </p>
@@ -412,16 +428,16 @@ const ClockWidget = () => {
         {/* System Performance */}
         <div className="bg-gray-800/50 rounded-lg p-2">
           <p className="text-xs font-semibold text-white mb-2 flex items-center gap-2">
-            <Activity size={14} className="text-green-400" />
+            <Activity size={14} className="text-accent" />
             Performance Monitor
           </p>
           <div className="grid grid-cols-2 gap-3 text-xs">
             <div className="text-center">
-              <p className="font-bold text-green-400">{performance.memory} MB</p>
+              <p className="font-bold text-accent">{performance.memory} MB</p>
               <p className="text-text-secondary">Memory</p>
             </div>
             <div className="text-center">
-              <p className="font-bold text-blue-400">{performance.fps} FPS</p>
+              <p className="font-bold text-text-main">{performance.fps} FPS</p>
               <p className="text-text-secondary">Framerate</p>
             </div>
           </div>
@@ -430,7 +446,7 @@ const ClockWidget = () => {
         {/* System Information */}
         <div className="bg-gray-800/50 rounded-lg p-2">
           <p className="text-xs font-semibold text-white mb-2 flex items-center gap-2">
-            <Monitor size={14} className="text-blue-400" />
+            <Monitor size={14} className="text-primary" />
             System Info
           </p>
           <div className="space-y-1 text-xs">
@@ -449,7 +465,7 @@ const ClockWidget = () => {
                 {React.createElement(getBatteryInfo().icon, { size: 12 })}
                 {getBatteryInfo().text}
               </span>
-              <span className="flex items-center gap-1 text-blue-400">
+              <span className="flex items-center gap-1 text-primary">
                 {networkStatus === "online" ? <Wifi size={12} /> : <WifiOff size={12} />}
                 {getConnectionType().toUpperCase()}
               </span>
@@ -461,25 +477,25 @@ const ClockWidget = () => {
         <div className="space-y-1">
           <div className="flex items-center justify-between text-xs">
             <span className="flex items-center gap-2 text-green-400">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+              <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
               API Status: Online
             </span>
             <span className="text-text-secondary">Uptime: {formatUptime(uptime)}</span>
           </div>
 
           <div className="flex items-center justify-between text-xs">
-            <span className="flex items-center gap-2 text-blue-400">
-              <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+            <span className="flex items-center gap-2 text-text-secondary">
+              <div className="w-2 h-2 rounded-full bg-primary"></div>
               WebSocket: Connected
             </span>
-            <span className={`text-text-secondary ${networkStatus === "online" ? "text-green-400" : "text-red-400"}`}>
+            <span className={`text-text-secondary ${networkStatus === "online" ? "text-accent" : "text-red-400"}`}>
               Network: {networkStatus.toUpperCase()}
             </span>
           </div>
 
           <div className="flex items-center justify-between text-xs">
-            <span className="flex items-center gap-2 text-purple-400">
-              <div className="w-2 h-2 rounded-full bg-purple-500"></div>
+            <span className="flex items-center gap-2 text-text-secondary">
+              <div className="w-2 h-2 rounded-full bg-primary"></div>
               Session: Active
             </span>
             <span className="text-text-secondary">
