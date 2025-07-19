@@ -1,7 +1,24 @@
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  RadialBarChart,
+  RadialBar,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
 import Widget from "./Widget";
 
-// Mock data to make the chart look interesting
+// Mock data to make the charts look interesting
 const chartData = [
   { name: "T-144h", coherence: 91.2, anomaly: 4, drift: 0.2 },
   { name: "T-138h", coherence: 92.1, anomaly: 3, drift: 0.19 },
@@ -27,8 +44,15 @@ const chartData = [
   { name: "Current", coherence: 100.7, anomaly: 2, drift: 0.1 },
 ];
 
-const LoreChartWidget = () => {
-  // Get CSS custom properties for dynamic color updates
+// Current system status data
+const systemStatus = [
+  { name: "Operational", value: 87, color: "#22c55e" },
+  { name: "Warning", value: 10, color: "#f59e0b" },
+  { name: "Critical", value: 3, color: "#ef4444" },
+];
+
+// 1. Narrative Coherence Index (Area Chart)
+export const CoherenceChartWidget = () => {
   const primaryColor = getComputedStyle(document.documentElement).getPropertyValue("--color-primary") || "#426280ff";
   const secondaryColor =
     getComputedStyle(document.documentElement).getPropertyValue("--color-secondary") || "#144573ff";
@@ -36,9 +60,9 @@ const LoreChartWidget = () => {
     getComputedStyle(document.documentElement).getPropertyValue("--color-text-secondary") || "#9ca3af";
 
   return (
-    <Widget title="System Integrity: Narrative Coherence Index">
-      <div className="py-8 h-[100%] w-full">
-        <ResponsiveContainer>
+    <Widget title="Narrative Coherence Index">
+      <div className="flex-1 w-full">
+        <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={chartData} margin={{ top: 5, right: 20, left: -15, bottom: 5 }}>
             <defs>
               <linearGradient id="colorCoherence" x1="0" y1="0" x2="0" y2="1">
@@ -46,18 +70,11 @@ const LoreChartWidget = () => {
                 <stop offset="95%" stopColor={secondaryColor} stopOpacity={0} />
               </linearGradient>
             </defs>
-
-            <XAxis
-              dataKey="name"
-              stroke={primaryColor}
-              tick={{ fill: textSecondaryColor, fontSize: 12 }}
-              tickCount={12}
-            />
+            <XAxis dataKey="name" stroke={primaryColor} tick={{ fill: textSecondaryColor, fontSize: 10 }} />
             <YAxis
               stroke={primaryColor}
-              domain={["dataMin - 5", "dataMax + 5"]}
-              tick={{ fill: textSecondaryColor, fontSize: 12 }}
-              tickCount={12}
+              domain={["dataMin - 2", "dataMax + 2"]}
+              tick={{ fill: textSecondaryColor, fontSize: 10 }}
             />
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
             <Tooltip
@@ -66,21 +83,142 @@ const LoreChartWidget = () => {
                 borderColor: primaryColor,
                 color: "#e5e7eb",
               }}
-              labelStyle={{ fontWeight: "bold" }}
             />
             <Area
               type="monotone"
               dataKey="coherence"
               stroke={primaryColor}
-              strokeWidth={1}
-              fillOpacity={1}
+              strokeWidth={2}
               fill="url(#colorCoherence)"
-              dot={{ r: 3, fill: primaryColor }}
             />
           </AreaChart>
         </ResponsiveContainer>
       </div>
     </Widget>
+  );
+};
+
+// 2. Anomaly Detection (Bar Chart)
+export const AnomalyChartWidget = () => {
+  const primaryColor = getComputedStyle(document.documentElement).getPropertyValue("--color-primary") || "#426280ff";
+  const textSecondaryColor =
+    getComputedStyle(document.documentElement).getPropertyValue("--color-text-secondary") || "#9ca3af";
+
+  return (
+    <Widget title="Anomaly Detection Events">
+      <div className="flex-1 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={chartData.slice(-8)} margin={{ top: 5, right: 20, left: -15, bottom: 5 }}>
+            <XAxis dataKey="name" stroke={primaryColor} tick={{ fill: textSecondaryColor, fontSize: 10 }} />
+            <YAxis stroke={primaryColor} tick={{ fill: textSecondaryColor, fontSize: 10 }} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "rgba(15, 23, 42, 0.9)",
+                borderColor: primaryColor,
+                color: "#e5e7eb",
+              }}
+            />
+            <Bar dataKey="anomaly" fill={primaryColor} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </Widget>
+  );
+};
+
+// 3. Temporal Drift Analysis (Line Chart)
+export const DriftChartWidget = () => {
+  const primaryColor = getComputedStyle(document.documentElement).getPropertyValue("--color-primary") || "#426280ff";
+  const textSecondaryColor =
+    getComputedStyle(document.documentElement).getPropertyValue("--color-text-secondary") || "#9ca3af";
+
+  return (
+    <Widget title="Temporal Drift Analysis">
+      <div className="flex-1 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={chartData} margin={{ top: 5, right: 20, left: -15, bottom: 5 }}>
+            <XAxis dataKey="name" stroke={primaryColor} tick={{ fill: textSecondaryColor, fontSize: 10 }} />
+            <YAxis stroke={primaryColor} domain={[0, 0.25]} tick={{ fill: textSecondaryColor, fontSize: 10 }} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "rgba(15, 23, 42, 0.9)",
+                borderColor: primaryColor,
+                color: "#e5e7eb",
+              }}
+            />
+            <Line
+              type="monotone"
+              dataKey="drift"
+              stroke={primaryColor}
+              strokeWidth={2}
+              dot={{ r: 3, fill: primaryColor }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </Widget>
+  );
+};
+
+// 4. System Status Overview (Pie Chart)
+export const SystemStatusWidget = () => {
+  const textSecondaryColor =
+    getComputedStyle(document.documentElement).getPropertyValue("--color-text-secondary") || "#9ca3af";
+
+  return (
+    <Widget title="System Status Overview">
+      <div className="flex-1 w-full flex items-center justify-center">
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={systemStatus}
+              cx="50%"
+              cy="50%"
+              innerRadius={40}
+              outerRadius={80}
+              dataKey="value"
+              startAngle={90}
+              endAngle={-270}
+            >
+              {systemStatus.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Pie>
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "rgba(15, 23, 42, 0.9)",
+                borderColor: "#426280ff",
+                color: "#e5e7eb",
+              }}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="flex justify-center space-x-4 text-xs">
+        {systemStatus.map((item, index) => (
+          <div key={index} className="flex items-center space-x-1">
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
+            <span style={{ color: textSecondaryColor }}>
+              {item.name}: {item.value}%
+            </span>
+          </div>
+        ))}
+      </div>
+    </Widget>
+  );
+};
+
+// Combined dashboard showing all 4 charts in a 2x2 grid
+const LoreChartWidget = () => {
+  return (
+    <div className="grid grid-cols-2 gap-4 h-full">
+      <CoherenceChartWidget />
+      <AnomalyChartWidget />
+      <DriftChartWidget />
+      <SystemStatusWidget />
+    </div>
   );
 };
 
