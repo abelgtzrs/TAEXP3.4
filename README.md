@@ -14,6 +14,11 @@ The primary client is a feature-rich web application (`client-admin`) providing 
 
 - **Enhanced Dashboard Widgets**: Complete redesign of dashboard widgets including:
 
+  - **LoreChartWidget**: A responsive 2x2 grid of four interconnected charts displaying complex narrative data:
+    - **Narrative Coherence Index** (Area Chart)
+    - **Anomaly Detection Events** (Bar Chart)
+    - **Temporal Drift Analysis** (Line Chart)
+    - **System Status Overview** (Pie Chart)
   - **HabitTrackerWidget**: Shows up to 10 habits with completed items crossed out but remaining visible
   - **WorkoutTrackerWidget**: 2x2 grid of preset workout template buttons plus custom log option
   - **BookTrackerWidget**: Displays last 4 active books with cover images, year, author, and update controls
@@ -35,9 +40,23 @@ The primary client is a feature-rich web application (`client-admin`) providing 
   - **Success Feedback**: Non-blocking toast notifications positioned in top-right corner
   - **Improved Navigation**: Enhanced Pokemon selector with better search functionality
 
+- **Persona Theming System Enhancements**:
+
+  - **Dynamic UI Theming**: Fully functional persona-based theme switching that updates CSS custom properties in real-time
+  - **Dropdown Interface**: Converted PersonaWidget from button grid to elegant dropdown with Portal-based positioning
+  - **Theme Color Integration**: Each persona applies unique color schemes across all UI components including charts
+  - **Backend Integration**: Proper database schema alignment for persona data with corrected color and text object structures
+
+- **Chart Widget Architecture**:
+
+  - **Modular Design**: Split monolithic LoreChartWidget into four independent, reusable chart components
+  - **Responsive Containers**: All charts automatically adjust to widget container sizes using flexible layouts
+  - **Data Visualization**: Advanced Recharts integration with custom styling and theming support
+  - **Performance Optimization**: Efficient rendering with proper component separation and state management
+
 - **UI/UX Improvements**:
   - **Grid Layout Fixes**: Proper gap spacing and alignment across all dashboard widgets
-  - **Responsive Design**: Better mobile and tablet compatibility
+  - **Responsive Design**: Better mobile and tablet compatibility with flexible chart containers
   - **Visual Consistency**: Unified styling and spacing throughout the application
   - **Performance**: Optimized component rendering and state management
 
@@ -175,11 +194,19 @@ After setting up the project, the first step is to populate the database with th
 - **Responsive Design:** Fully functional on both desktop and mobile devices with enhanced mobile layouts.
 - **HUD Dashboard:** A professional, data-rich dashboard with a futuristic aesthetic, featuring:
   - **Comprehensive Widget Grid**: All dashboard widgets displayed in an optimized 6-column grid layout
-  - **LoreChartWidget**: Four interconnected charts displaying complex narrative data
-  - **Enhanced Tracker Widgets**: Habit, Book, and Workout trackers with improved functionality
-  - **Weather & Clock Integration**: Real-time weather data and clock display
-  - **Additional Analytics**: Recent acquisitions, sales data, and currency tracking widgets
-- **Abel Persona Theming:** A system for Admin and Wendy to unlock and equip "Personas" that dynamically change the entire UI color scheme.
+  - **LoreChartWidget**: Four responsive, interconnected charts displaying complex narrative data with real-time theming:
+    - **Narrative Coherence Index** (Area Chart): Tracks story consistency metrics with gradient fills and smooth animations
+    - **Anomaly Detection Events** (Bar Chart): Visualizes data irregularities and system alerts with color-coded severity
+    - **Temporal Drift Analysis** (Line Chart): Monitors timeline stability with precision markers and trend indicators
+    - **System Status Overview** (Pie Chart): Displays operational health metrics with interactive segments and tooltips
+  - **Enhanced Tracker Widgets**: Habit, Book, and Workout trackers with improved functionality and responsive layouts
+  - **Weather & Clock Integration**: Real-time weather data and enhanced clock display with improved alignment
+  - **Additional Analytics**: Recent acquisitions, sales data, and currency tracking widgets with live updates
+- **Abel Persona Theming:** A comprehensive system for Admin and Wendy to unlock and equip "Personas" that dynamically change the entire UI color scheme:
+  - **Real-time Theme Switching**: Instant application of persona color schemes across all components
+  - **CSS Custom Properties**: Advanced theming system using CSS variables for seamless color transitions
+  - **Chart Integration**: Persona themes automatically apply to all chart components with coordinated color palettes
+  - **Dropdown Interface**: Elegant persona selection dropdown with Portal-based positioning to avoid z-index conflicts
 - **Full-Featured Trackers:**
   - **Habit Tracker:** CRUD for personal habits with completion status persistence and visual feedback.
   - **Book Tracker:** Track reading progress, ratings, and library with cover image support and detailed metadata.
@@ -222,9 +249,16 @@ After setting up the project, the first step is to populate the database with th
 3.  Go to the **Book Tracker** and update your `pagesRead` for a book you are currently reading. View cover images and detailed book information. See your `WendyHearts` balance increase.
 4.  Visit the **Workout Tracker** and log a session using one of the four preset template buttons in the 2x2 grid, or create a custom workout. Your `GatillaGold` balance will increase based on the number of sets completed.
 5.  Check the **Weather Widget** for current conditions and 5-day forecast, and view the time on the enhanced **Clock Widget**.
-6.  Review the **LoreChartWidget** to see complex data visualizations across four interconnected charts.
-7.  With your newly earned currency, navigate to the **Shop (Gacha)** page and perform a "pull" for a new Pokémon or Snoopy.
-8.  Visit your **Profile** page to see your updated level/XP, currency balances, and manage which collectibles are displayed in the optimized 6-item-per-row collections with improved spacing and visual hierarchy.
+6.  Review the **LoreChartWidget** to see complex data visualizations across four interconnected charts:
+    - Monitor **Narrative Coherence** trends with the smooth area chart visualization
+    - Analyze **Anomaly Detection Events** using the interactive bar chart with recent data highlights
+    - Track **Temporal Drift** patterns through the precise line chart with data point markers
+    - Check **System Status** at a glance with the comprehensive pie chart breakdown
+7.  Experiment with **Persona Theming** by selecting different personas from the dropdown to see real-time theme changes across all dashboard components and charts.
+8.  With your newly earned currency, navigate to the **Shop (Gacha)** page and perform a "pull" for a new Pokémon or Snoopy.
+9.  Visit your **Profile** page to see your updated level/XP, currency balances, and manage which collectibles are displayed in the optimized 6-item-per-row collections with improved spacing and visual hierarchy.
+
+The enhanced dashboard now provides a comprehensive view of your digital sanctuary with responsive charts that adapt to any screen size, persona-based theming that reflects your current aesthetic preferences, and detailed analytics that help you track your progress across all areas of the system.
 
 ---
 
