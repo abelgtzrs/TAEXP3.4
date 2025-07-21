@@ -1,4 +1,4 @@
-# The Abel Experience™ CFW (Cognitive Framework) v3.4
+# The Abel Experience™ CFW (Cognitive Framework) v3.5
 
 ## Description
 
@@ -8,17 +8,40 @@ The core philosophy of this project is to create a deeply integrated environment
 
 The primary client is a feature-rich web application (`client-admin`) providing a dark, professional, HUD-style interface for registered users. A secondary client (`client-public`) offers an immersive, retro-terminal experience for viewing published narrative content.
 
-**Version 3.4** introduces enhanced dashboard widgets, improved profile collection displays, and refined Pokemon editor functionality with better UI/UX alignment and responsive design.
+**Version 3.5** introduces revolutionary chart architecture, advanced persona theming system, and comprehensive responsive design with modular widget components.
 
-### What's New in v3.4
+### What's New in v3.5
 
-- **Enhanced Dashboard Widgets**: Complete redesign of dashboard widgets including:
+- **Revolutionary Chart Architecture**: Complete transformation of data visualization system featuring:
 
-  - **LoreChartWidget**: A responsive 2x2 grid of four interconnected charts displaying complex narrative data:
-    - **Narrative Coherence Index** (Area Chart)
-    - **Anomaly Detection Events** (Bar Chart)
-    - **Temporal Drift Analysis** (Line Chart)
-    - **System Status Overview** (Pie Chart)
+  - **Modular LoreChartWidget**: Split from monolithic design into four independent, reusable chart components
+  - **Responsive Chart Containers**: All charts automatically adapt to widget container sizes using flexible layouts
+  - **Advanced Data Visualization**: Recharts integration with custom styling, theming support, and smooth animations
+  - **Individual Chart Components**:
+    - **CoherenceChartWidget** (Area Chart): Narrative consistency tracking with gradient fills and smooth animations
+    - **AnomalyChartWidget** (Bar Chart): Data irregularity visualization with color-coded severity indicators
+    - **DriftChartWidget** (Line Chart): Timeline stability monitoring with precision markers and trend analysis
+    - **SystemStatusWidget** (Pie Chart): Operational health metrics with interactive segments and detailed tooltips
+
+- **Advanced Persona Theming System**: Comprehensive overhaul of the theming architecture including:
+
+  - **Dynamic Real-time Theme Switching**: Instant application of persona color schemes across all UI components
+  - **Dropdown Interface Revolution**: Converted PersonaWidget from button grid to elegant dropdown with Portal-based positioning
+  - **CSS Custom Properties Integration**: Advanced theming system using CSS variables for seamless color transitions
+  - **Chart Theme Synchronization**: Persona themes automatically propagate to all chart components with coordinated color palettes
+  - **Database Schema Optimization**: Corrected backend integration with proper color and text object structures
+  - **Z-index Conflict Resolution**: Portal-based dropdown positioning eliminates stacking context issues
+
+- **Responsive Design Excellence**: Next-generation responsive architecture featuring:
+
+  - **Flexible Container System**: Charts automatically adjust to any widget container size
+  - **Mobile-First Approach**: Enhanced mobile and tablet compatibility with touch-optimized interactions
+  - **Adaptive Grid Layouts**: Dynamic grid systems that respond to screen size changes
+  - **Performance Optimization**: Efficient rendering with component separation and optimized state management
+
+- **Enhanced Dashboard Widget Ecosystem**: Comprehensive widget redesign and optimization including:
+
+  - **LoreChartWidget 2x2 Grid**: Four interconnected charts in responsive grid layout displaying complex narrative data
   - **HabitTrackerWidget**: Shows up to 10 habits with completed items crossed out but remaining visible
   - **WorkoutTrackerWidget**: 2x2 grid of preset workout template buttons plus custom log option
   - **BookTrackerWidget**: Displays last 4 active books with cover images, year, author, and update controls
@@ -47,18 +70,19 @@ The primary client is a feature-rich web application (`client-admin`) providing 
   - **Theme Color Integration**: Each persona applies unique color schemes across all UI components including charts
   - **Backend Integration**: Proper database schema alignment for persona data with corrected color and text object structures
 
-- **Chart Widget Architecture**:
+- **Backend Architecture Improvements**: Enhanced server-side functionality and API optimization:
 
-  - **Modular Design**: Split monolithic LoreChartWidget into four independent, reusable chart components
-  - **Responsive Containers**: All charts automatically adjust to widget container sizes using flexible layouts
-  - **Data Visualization**: Advanced Recharts integration with custom styling and theming support
-  - **Performance Optimization**: Efficient rendering with proper component separation and state management
+  - **Function Export Structure**: Modernized userController.js with proper const function patterns
+  - **Database Schema Alignment**: Corrected AbelPersonaBase schema for proper color and text object structures
+  - **API Population Enhancement**: Improved persona data population in authentication endpoints
+  - **Error Resolution**: Fixed setActivePersona function exports and middleware integration
 
-- **UI/UX Improvements**:
-  - **Grid Layout Fixes**: Proper gap spacing and alignment across all dashboard widgets
-  - **Responsive Design**: Better mobile and tablet compatibility with flexible chart containers
-  - **Visual Consistency**: Unified styling and spacing throughout the application
-  - **Performance**: Optimized component rendering and state management
+- **Technical Infrastructure Upgrades**: Comprehensive codebase modernization including:
+
+  - **Component Modularization**: Split complex widgets into maintainable, reusable components
+  - **State Management Optimization**: Enhanced React state handling for better performance
+  - **Cross-component Communication**: Improved data flow between chart components and theming system
+  - **Code Quality Improvements**: Better error handling, type safety, and debugging capabilities
 
 Future iterations of this project will explore the development of native desktop (C# or C++) and mobile UI clients that will connect to the same robust backend API, offering enhanced performance and deeper OS integration.
 

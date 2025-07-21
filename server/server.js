@@ -54,6 +54,7 @@ app.use("/api/pokemon", require("./routes/pokemonRoutes"));
 app.use("/api/admin/pokemon", protect, authorize("admin"), require("./routes/pokemonAdminRoutes"));
 app.use("/api/badges", require("./routes/badgeRoutes"));
 app.use("/api/spotify", require("./routes/spotifyRoutes"));
+app.use("/api/finance", require("./routes/financeRoutes"));
 //app.use('/api/users', require('./routes/userRoutes'));
 //app.use('/api/volumes', require('./routes/volumeRoutes'));
 

@@ -13,8 +13,8 @@ export const useTheme = () => {
       colors: {
         bg: "#0D1117",
         surface: "#161B22",
-        primary: "#2DD4BF",
-        secondary: "#67e8f9",
+        primary: "#1a6359ff",
+        secondary: "#0099c399",
         tertiary: "#A5F3FC",
       },
       text: {
