@@ -70,7 +70,6 @@ const DashboardPage = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
           className="col-span-6"
         >
           <StatBoxRow stats={stats} loading={loading} />
@@ -83,7 +82,6 @@ const DashboardPage = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.8 }}
-          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
           className="col-span-6 md:col-span-4 row-span-2"
         >
           <LoreChartWidget />
@@ -94,7 +92,6 @@ const DashboardPage = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.0 }}
-          whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
           className="col-span-3 md:col-span-2 h-50"
         >
           <ClockWidget />
@@ -105,7 +102,6 @@ const DashboardPage = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.1 }}
-          whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
           className="col-span-3 md:col-span-2 h-50"
         >
           <WeatherWidget />
@@ -116,7 +112,6 @@ const DashboardPage = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 1.2 }}
-          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
           className="col-span-6 md:col-span-2 row-span-2"
         >
           <HabitTrackerWidget />
@@ -125,7 +120,6 @@ const DashboardPage = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 1.3 }}
-          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
           className="col-span-6 md:col-span-2 row-span-2"
         >
           <BookTrackerWidget />
@@ -134,7 +128,6 @@ const DashboardPage = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 1.4 }}
-          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
           className="col-span-6 md:col-span-2 row-span-2"
         >
           <WorkoutTrackerWidget />
@@ -145,7 +138,6 @@ const DashboardPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.5 }}
-          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
           className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
         >
           <PersonaWidget />
@@ -154,7 +146,6 @@ const DashboardPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.5 }}
-          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
           className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
         >
           <SpotifyWidget />
@@ -163,7 +154,6 @@ const DashboardPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.6 }}
-          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
           className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
         >
           <SecuritySettingsWidget />
@@ -172,7 +162,6 @@ const DashboardPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.7 }}
-          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
           className="col-span-6 lg:col-span-2 row-span-2"
         >
           <GoalsWidget />
@@ -182,7 +171,6 @@ const DashboardPage = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 1.8 }}
-          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
           className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
         >
           <RecentAcquisitionsWidget />
@@ -191,7 +179,6 @@ const DashboardPage = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 1.9 }}
-          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
           className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
         >
           <TopProductsWidget />
@@ -200,7 +187,6 @@ const DashboardPage = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 2.0 }}
-          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
           className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
         >
           <CurrencySourceWidget />

@@ -23,3 +23,14 @@
 .widget-container::after {
   content: none;
 }
+
+/* Disable hover effects on chart bars while keeping tooltips */
+.no-hover .recharts-bar-rectangle:hover {
+  fill-opacity: 1 !important;
+  filter: none !important;
+}
+
+.no-hover .recharts-active-bar {
+  fill-opacity: 1 !important;
+  filter: none !important;
+}

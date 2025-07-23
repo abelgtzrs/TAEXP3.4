@@ -1,11 +1,14 @@
-// Import necessary modules
+// Core server dependencies
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
-// Import authentication middleware
+
+// Auth middleware for protected routes
 const { protect, authorize } = require("./middleware/authMiddleware");
-// Register models to ensure they are available for routes
+
+// Pre-load all models to ensure they're available when routes need them
+// Base models (shared data)
 require("./models/User");
 require("./models/PokemonBase");
 require("./models/SnoopyArtBase");
@@ -15,50 +18,62 @@ require("./models/HabboRareBase");
 require("./models/YugiohCardBase");
 require("./models/AbelPersonaBase");
 require("./models/ExerciseDefinition");
+
+// User-specific models (personal collections)
 require("./models/userSpecific/userPokemon");
 require("./models/userSpecific/userSnoopyArt");
-require("./models/userSpecific/userBadge");
+require("./models/userSpecific/UserBadge");
 require("./models/userSpecific/userTitle");
 require("./models/userSpecific/userHabboRare");
 require("./models/userSpecific/userYugiohCard");
 
-// Load environment variables and connect to the database
+// Initialize app and database connection
 dotenv.config();
 const app = express();
 connectDB();
 
-// Middleware setup
-app.use(cors()); // Enable CORS for all routes
+// Essential middleware stack
+app.use(cors()); // Allow cross-origin requests from frontend
 app.use(express.json()); // Parse JSON request bodies
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false })); // Parse form data
 
-// Define GET route for the root URL
+// Health check endpoint
 app.get("/", (req, res) => {
   res.send("The Abel Experience™ API is running...");
 });
 
-//Define API Routes
+// API route configuration
+// Auth & user management
 app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
+
+// Activity tracking (habits, books, workouts)
 app.use("/api/habits", require("./routes/habitRoutes"));
 app.use("/api/books", require("./routes/bookRoutes"));
-app.use("/api/exercises", require("./routes/exerciseDefinitionRoutes"));
 app.use("/api/workouts", require("./routes/workoutLogRoutes"));
-app.use("/api/shop", require("./routes/shopRoutes"));
-app.use("/api/users", require("./routes/userRoutes"));
-app.use("/api/admin/volumes", require("./routes/volumeRoutes"));
-app.use("/api/public", require("./routes/publicRoutes"));
-app.use("/api/admin/workout-templates", require("./routes/workoutTemplateRoutes"));
+app.use("/api/exercises", require("./routes/exerciseDefinitionRoutes"));
 app.use("/api/workout-templates", require("./routes/workoutTemplateRoutes"));
-app.use("/api/admin/exercises", protect, authorize("admin"), require("./routes/exerciseAdminRoutes"));
+app.use("/api/tasks", require("./routes/taskRoutes"));
+
+// Shop & collections system
+app.use("/api/shop", require("./routes/shopRoutes"));
 app.use("/api/pokemon", require("./routes/pokemonRoutes"));
-app.use("/api/admin/pokemon", protect, authorize("admin"), require("./routes/pokemonAdminRoutes"));
 app.use("/api/badges", require("./routes/badgeRoutes"));
+
+// Public content & volumes
+app.use("/api/public", require("./routes/publicRoutes"));
+
+// Admin-only routes (protected with middleware)
+app.use("/api/admin/volumes", require("./routes/volumeRoutes"));
+app.use("/api/admin/workout-templates", require("./routes/workoutTemplateRoutes"));
+app.use("/api/admin/exercises", protect, authorize("admin"), require("./routes/exerciseAdminRoutes"));
+app.use("/api/admin/pokemon", protect, authorize("admin"), require("./routes/pokemonAdminRoutes"));
+
+// External integrations & additional features
 app.use("/api/spotify", require("./routes/spotifyRoutes"));
 app.use("/api/finance", require("./routes/financeRoutes"));
-//app.use('/api/users', require('./routes/userRoutes'));
-//app.use('/api/volumes', require('./routes/volumeRoutes'));
 
-// Define PORT and initiate the server
+// Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Welcome to the T43XP API!

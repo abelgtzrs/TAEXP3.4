@@ -22,6 +22,8 @@ import CollectionDetailPage from "./pages/CollectionDetailPage";
 import PokedexPage from "./pages/PokedexPage";
 import PokemonEditorPage from "./pages/PokemonEditorPage";
 import SettingsPage from "./pages/SettingsPage";
+import TasksPage from "./pages/TasksPage";
+import FinancePage from "./pages/FinancePage";
 
 function App() {
   useTheme();
@@ -42,6 +44,8 @@ function App() {
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/tasks" element={<TasksPage />} />
+          <Route path="/finance" element={<FinancePage />} />
         </Route>
       </Route>
 

@@ -1,5 +1,12 @@
-// server/models/userSpecific/Task.js
 const mongoose = require("mongoose");
+
+const SubTaskSchema = new mongoose.Schema(
+  {
+    text: { type: String, required: true },
+    isCompleted: { type: Boolean, default: false },
+  },
+  { _id: true }
+); // Use default _id for sub-tasks to make them easier to target
 
 const TaskSchema = new mongoose.Schema(
   {
@@ -21,7 +28,7 @@ const TaskSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["todo", "in-progress", "completed", "on-hold", "archived"],
+      enum: ["todo", "in-progress", "completed"],
       default: "todo",
     },
     priority: {
@@ -33,26 +40,19 @@ const TaskSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    // projectOrCategory: { type: String, default: 'General' } // Optional
-    // tags: [String] // Optional
+    subTasks: [SubTaskSchema], // Array of sub-tasks
     completedDate: {
       type: Date,
       default: null,
     },
   },
   { timestamps: true }
-); // Adds createdAt and updatedAt
+);
 
-// When status changes to 'completed', set completedDate
+// Middleware to set completedDate when status is changed to 'completed'
 TaskSchema.pre("save", function (next) {
-  if (
-    this.isModified("status") &&
-    this.status === "completed" &&
-    !this.completedDate
-  ) {
+  if (this.isModified("status") && this.status === "completed" && !this.completedDate) {
     this.completedDate = Date.now();
-  } else if (this.isModified("status") && this.status !== "completed") {
-    this.completedDate = null; // Clear if moved out of completed
   }
   next();
 });

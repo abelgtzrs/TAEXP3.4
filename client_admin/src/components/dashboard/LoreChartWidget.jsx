@@ -46,9 +46,9 @@ const chartData = [
 
 // Current system status data
 const systemStatus = [
-  { name: "Operational", value: 87, color: "#22c55e" },
-  { name: "Warning", value: 10, color: "#f59e0b" },
-  { name: "Critical", value: 3, color: "#ef4444" },
+  { name: "Operational", value: 87, color: "var(--color-primary)" },
+  { name: "Warning", value: 10, color: "var(--color-secondary)" },
+  { name: "Critical", value: 3, color: "var(--color-tertiary) " },
 ];
 
 // 1. Narrative Coherence Index (Area Chart)
@@ -119,7 +119,14 @@ export const AnomalyChartWidget = () => {
                 color: "#e5e7eb",
               }}
             />
-            <Bar dataKey="anomaly" fill={primaryColor} />
+            <Bar
+              dataKey="anomaly"
+              fill={primaryColor}
+              onMouseEnter={() => {}}
+              onMouseLeave={() => {}}
+              style={{ cursor: "default" }}
+              className="no-hover"
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -176,8 +183,7 @@ export const SystemStatusWidget = () => {
               data={systemStatus}
               cx="50%"
               cy="50%"
-              innerRadius={40}
-              outerRadius={80}
+              outerRadius={150}
               dataKey="value"
               startAngle={90}
               endAngle={-270}
@@ -188,9 +194,9 @@ export const SystemStatusWidget = () => {
             </Pie>
             <Tooltip
               contentStyle={{
-                backgroundColor: "rgba(15, 23, 42, 0.9)",
+                backgroundColor: "rgba(255, 255, 255, 0.9)",
                 borderColor: "#426280ff",
-                color: "#e5e7eb",
+                color: "#d8dadeff",
               }}
             />
           </PieChart>

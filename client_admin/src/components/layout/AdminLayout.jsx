@@ -21,6 +21,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Settings2,
+  DollarSign,
 } from "lucide-react";
 
 const NavItem = ({ to, icon: Icon, children, isCollapsed }) => {
@@ -141,6 +142,12 @@ const AdminLayout = () => {
               </NavItem>
               <NavItem to="/collections" icon={Boxes} isCollapsed={isSidebarCollapsed}>
                 Collections
+              </NavItem>
+              <NavItem to="/tasks" icon={Clapperboard} isCollapsed={isSidebarCollapsed}>
+                Tasks
+              </NavItem>
+              <NavItem to="/finance" icon={DollarSign} isCollapsed={isSidebarCollapsed}>
+                Finance
               </NavItem>
             </ul>
           </div>
