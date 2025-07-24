@@ -1,5 +1,6 @@
 const FinancialCategory = require("../models/finance/FinancialCategory");
 const FinancialTransaction = require("../models/finance/FinancialTransaction");
+const RecurringBill = require("../models/finance/RecurringBill");
 
 // Category Controllers
 exports.getCategories = async (req, res) => {
@@ -91,6 +92,70 @@ exports.deleteTransaction = async (req, res) => {
     }
     await transaction.deleteOne();
     res.status(200).json({ success: true, message: "Transaction deleted" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+exports.getBills = async (req, res) => {
+  try {
+    const bills = await RecurringBill.find({ user: req.user.id })
+      .populate("category", "name color")
+      .sort({ dueDay: 1 });
+    res.status(200).json({ success: true, data: bills });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+exports.createBill = async (req, res) => {
+  try {
+    const bill = await RecurringBill.create({ ...req.body, user: req.user.id });
+    res.status(201).json({ success: true, data: bill });
+  } catch (error) {
+    res.status(400).json({ success: false, message: "Error creating bill" });
+  }
+};
+
+exports.updateBill = async (req, res) => {
+  try {
+    let bill = await RecurringBill.findById(req.params.id);
+    if (!bill || bill.user.toString() !== req.user.id) {
+      return res.status(404).json({ success: false, message: "Bill not found" });
+    }
+    bill = await RecurringBill.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    res.status(200).json({ success: true, data: bill });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+exports.deleteBill = async (req, res) => {
+  try {
+    const bill = await RecurringBill.findById(req.params.id);
+    if (!bill || bill.user.toString() !== req.user.id) {
+      return res.status(404).json({ success: false, message: "Bill not found" });
+    }
+    await bill.deleteOne();
+    res.status(200).json({ success: true, message: "Bill deleted" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+exports.toggleBillPaid = async (req, res) => {
+  try {
+    const { monthKey, isPaid } = req.body;
+    const bill = await RecurringBill.findById(req.params.id);
+    if (!bill || bill.user.toString() !== req.user.id) {
+      return res.status(404).json({ success: false, message: "Bill not found" });
+    }
+    if (isPaid) {
+      bill.paidForMonths.addToSet(monthKey);
+    } else {
+      bill.paidForMonths.pull(monthKey);
+    }
+    await bill.save();
+    res.status(200).json({ success: true, data: bill });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server Error" });
   }

@@ -4,7 +4,7 @@ import PageHeader from "../components/ui/PageHeader";
 import Widget from "../components/ui/Widget";
 import StyledButton from "../components/ui/StyledButton";
 import StyledInput from "../components/ui/StyledInput";
-import { Plus, Settings, Trash2, ChevronLeft, ChevronRight, CheckSquare, Square } from "lucide-react";
+import { Plus, Settings, Trash2, ChevronLeft, ChevronRight, CheckSquare, Square, Edit } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
 
 // --- Sub-Component: Category Manager Modal ---
@@ -194,6 +194,137 @@ const TransactionList = ({ transactions }) => {
   );
 };
 
+const BillManagerModal = ({ isOpen, onClose, bills, categories, onUpdate }) => {
+  const [formData, setFormData] = useState({ name: "", amount: "", dueDay: "", category: "" });
+  const [editingBillId, setEditingBillId] = useState(null);
+
+  if (!isOpen) return null;
+
+  const handleFormChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleEditClick = (bill) => {
+    setEditingBillId(bill._id);
+    setFormData({
+      name: bill.name,
+      amount: bill.amount,
+      dueDay: bill.dueDay,
+      category: bill.category._id, // Use the ID for the select value
+    });
+  };
+
+  const resetForm = () => {
+    setFormData({ name: "", amount: "", dueDay: "", category: "" });
+    setEditingBillId(null);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const dataToSubmit = { ...formData, amount: Number(formData.amount), dueDay: Number(formData.dueDay) };
+    try {
+      if (editingBillId) {
+        await api.put(`/finance/bills/${editingBillId}`, dataToSubmit);
+      } else {
+        await api.post("/finance/bills", dataToSubmit);
+      }
+      resetForm();
+      onUpdate(); // Refresh the main page data
+    } catch (error) {
+      alert(`Failed to ${editingBillId ? "update" : "create"} bill.`);
+    }
+  };
+
+  const handleDelete = async (billId) => {
+    if (window.confirm("Are you sure you want to delete this recurring bill?")) {
+      try {
+        await api.delete(`/finance/bills/${billId}`);
+        onUpdate();
+      } catch (error) {
+        alert("Failed to delete bill.");
+      }
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50" onClick={onClose}>
+      <div
+        className="bg-surface w-full max-w-lg rounded-lg border border-gray-700 p-6 space-y-4"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="text-xl font-bold text-white">Manage Recurring Bills</h2>
+        <div className="space-y-2 max-h-60 overflow-y-auto pr-2">
+          {bills.map((bill) => (
+            <div key={bill._id} className="flex items-center justify-between p-2 bg-gray-900/50 rounded-md">
+              <span className="text-text-main">
+                {bill.name} - ${bill.amount} (Day {bill.dueDay})
+              </span>
+              <div className="flex gap-2">
+                <button onClick={() => handleEditClick(bill)} className="text-gray-500 hover:text-primary">
+                  <Edit size={16} />
+                </button>
+                <button onClick={() => handleDelete(bill._id)} className="text-gray-500 hover:text-status-danger">
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+        <form onSubmit={handleSubmit} className="pt-4 border-t border-gray-700/50">
+          <h3 className="text-lg font-semibold text-white mb-2">{editingBillId ? "Edit Bill" : "Add New Bill"}</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <StyledInput
+              name="name"
+              placeholder="Bill Name (e.g., Netflix)"
+              value={formData.name}
+              onChange={handleFormChange}
+              required
+            />
+            <StyledInput
+              name="amount"
+              type="number"
+              placeholder="Amount"
+              value={formData.amount}
+              onChange={handleFormChange}
+              required
+            />
+            <StyledInput
+              name="dueDay"
+              type="number"
+              placeholder="Due Day (1-31)"
+              value={formData.dueDay}
+              onChange={handleFormChange}
+              required
+              min="1"
+              max="31"
+            />
+          </div>
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleFormChange}
+            required
+            className="w-full p-3 mt-4 bg-gray-700 rounded border border-gray-600"
+          >
+            <option value="">-- Assign a Category --</option>
+            {categories.map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+          <div className="flex justify-end gap-2 mt-4">
+            {editingBillId && (
+              <StyledButton type="button" onClick={resetForm} className="bg-gray-600 hover:bg-gray-500">
+                Cancel Edit
+              </StyledButton>
+            )}
+            <StyledButton type="submit">{editingBillId ? "Update Bill" : "Add Bill"}</StyledButton>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 // --- Sub-Component: Bill Checklist ---
 const BillChecklist = ({ bills, onTogglePaid, selectedMonth, setSelectedMonth }) => {
   const changeMonth = (offset) => {
@@ -219,7 +350,7 @@ const BillChecklist = ({ bills, onTogglePaid, selectedMonth, setSelectedMonth })
             <ChevronRight size={20} />
           </button>
         </div>
-        <div className="space-y-3 overflow-y-auto flex-grow pr-2">
+        <div className="space-y-1 overflow-y-auto flex-grow pr-2">
           {bills.map((bill) => {
             const isPaid = bill.paidForMonths.includes(currentMonthKey);
             return (
@@ -254,7 +385,7 @@ const BillChecklist = ({ bills, onTogglePaid, selectedMonth, setSelectedMonth })
             );
           })}
         </div>
-        <div className="mt-4 pt-3 border-t border-gray-700/50 flex justify-between font-bold text-white flex-shrink-0">
+        <div className="mt-2 pt-3 border-t border-gray-700/50 flex justify-between font-bold text-white flex-shrink-0">
           <span>Total Monthly Bills:</span>
           <span>${totalAmount.toFixed(2)}</span>
         </div>
@@ -328,6 +459,7 @@ const FinancePage = () => {
   const [bills, setBills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [isBillModalOpen, setIsBillModalOpen] = useState(false); // New state for bill manager
   const [selectedMonth, setSelectedMonth] = useState(new Date());
 
   const refreshData = async () => {
@@ -367,23 +499,36 @@ const FinancePage = () => {
     <div>
       <div className="flex justify-between items-start">
         <PageHeader title="Financial Tracker" subtitle="Manage your income, expenses, and budgets." />
-        <StyledButton onClick={() => setIsCategoryModalOpen(true)} className="py-2 px-4 flex items-center gap-2">
-          <Settings size={20} /> Manage Categories
-        </StyledButton>
+        <div className="flex gap-2">
+          <StyledButton
+            onClick={() => setIsBillModalOpen(true)}
+            className="py-2 px-4 flex items-center gap-2 bg-blue-600 hover:bg-blue-500"
+          >
+            <Plus size={20} /> Manage Bills
+          </StyledButton>
+          <StyledButton onClick={() => setIsCategoryModalOpen(true)} className="py-2 px-4 flex items-center gap-2">
+            <Settings size={20} /> Manage Categories
+          </StyledButton>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4">
-        <div className="lg:col-span-4 space-y-6">
+      {/* Quick Actions Section - Top Priority */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+        <AddTransactionForm categories={categories} onTransactionAdded={refreshData} />
+        <BillAnalytics bills={bills} selectedMonth={selectedMonth} />
+      </div>
+
+      {/* Main Content Section - Bills and Transactions */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mt-6">
+        <div className="lg:col-span-2">
           <BillChecklist
             bills={bills}
             onTogglePaid={handleToggleBillPaid}
             selectedMonth={selectedMonth}
             setSelectedMonth={setSelectedMonth}
           />
-          <BillAnalytics bills={bills} selectedMonth={selectedMonth} />
         </div>
-        <div className="lg:col-span-8 space-y-6">
-          <AddTransactionForm categories={categories} onTransactionAdded={refreshData} />
+        <div className="lg:col-span-3">
           <TransactionList transactions={transactions} />
         </div>
       </div>
@@ -391,6 +536,13 @@ const FinancePage = () => {
       <CategoryManagerModal
         isOpen={isCategoryModalOpen}
         onClose={() => setIsCategoryModalOpen(false)}
+        categories={categories}
+        onUpdate={refreshData}
+      />
+      <BillManagerModal
+        isOpen={isBillModalOpen}
+        onClose={() => setIsBillModalOpen(false)}
+        bills={bills}
         categories={categories}
         onUpdate={refreshData}
       />

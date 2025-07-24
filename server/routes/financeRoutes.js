@@ -10,16 +10,26 @@ const {
   createTransaction,
   updateTransaction,
   deleteTransaction,
+  getBills,
+  createBill,
+  updateBill,
+  deleteBill,
+  toggleBillPaid,
 } = require("../controllers/financeController");
 
 router.use(protect);
 
+// Category Routes
 router.route("/categories").get(getCategories).post(createCategory);
-
 router.route("/categories/:id").put(updateCategory).delete(deleteCategory);
 
+// Transaction Routes
 router.route("/transactions").get(getTransactions).post(createTransaction);
-
 router.route("/transactions/:id").put(updateTransaction).delete(deleteTransaction);
+
+// Bill Routes
+router.route("/bills").get(getBills).post(createBill);
+router.route("/bills/:id").put(updateBill).delete(deleteBill);
+router.put("/bills/:id/toggle-paid", toggleBillPaid);
 
 module.exports = router;
