@@ -28,11 +28,17 @@ const AdminEditPokemonPage = () => {
 
   useEffect(() => {
     const fetchPokemon = async () => {
+      console.log("[AdminEditPokemonPage] Requested id:", id, typeof id);
       try {
         const response = await api.get(`/admin/pokemon/${id}`);
         setPokemon(response.data.data);
       } catch (err) {
         setError("Failed to fetch Pokémon data.");
+        if (err.response) {
+          console.error("API error response:", err.response.data);
+        } else {
+          console.error("API error:", err);
+        }
       } finally {
         setLoading(false);
       }

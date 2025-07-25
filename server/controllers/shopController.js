@@ -158,7 +158,7 @@ exports.pullFromGacha = async (req, res) => {
     let message = "";
 
     if (category.toLowerCase() === "yugioh") {
-      // pulledItems = await pullYugiohPack(); // Assuming this helper exists
+      pulledItems = await pullYugiohPack(); // Uncommented this line
       message = `You opened a pack and found 6 cards!`;
     } else if (category.toLowerCase() === "abelpersona") {
       // Use weighted pulls for Abel Personas
@@ -184,45 +184,65 @@ exports.pullFromGacha = async (req, res) => {
     // --- THIS IS THE FIX ---
     // We now handle the awarding logic based on the config.
 
-    const pulledItem = pulledItems[0]; // For single pulls
-    let alreadyOwned = false;
-
     // Deduct currency first
     user[config.currency] -= config.cost;
+    let alreadyOwned = false; // Declare at the top level
 
-    if (config.isDirectUnlock) {
-      // Logic for direct unlocks like Abel Personas
-      if (user[config.userCollectionField].includes(pulledItem._id)) {
-        alreadyOwned = true;
-      } else {
-        user[config.userCollectionField].push(pulledItem._id);
-        message = `Congratulations! You unlocked Persona: ${pulledItem.name}`;
+    if (category.toLowerCase() === "yugioh") {
+      // Special handling for yugioh packs (multiple cards)
+      let newCards = 0;
+      for (const card of pulledItems) {
+        const existingCard = await config.UserCollectibleModel.findOne({
+          user: userId,
+          [config.baseModelRefField]: card._id,
+        });
+
+        if (!existingCard) {
+          const newUserCollectible = await config.UserCollectibleModel.create({
+            user: userId,
+            [config.baseModelRefField]: card._id,
+          });
+          user[config.userCollectionField].push(newUserCollectible._id);
+          newCards++;
+        }
       }
+      message = `You opened a pack and found ${newCards} new cards out of 6!`;
     } else {
-      // Logic for instanced collectibles (Pokémon, Snoopys, etc.)
-      // We'll just handle the single item case for now, assuming yugioh logic is separate
-      const existingItem = await config.UserCollectibleModel.findOne({
-        user: userId,
-        [config.baseModelRefField]: pulledItem._id,
-      });
+      const pulledItem = pulledItems[0]; // For single pulls
 
-      // This logic needs refinement based on whether duplicates are allowed per category
-      if (existingItem && (category === "snoopy" || category === "habbo")) {
-        alreadyOwned = true;
+      if (config.isDirectUnlock) {
+        // Logic for direct unlocks like Abel Personas
+        if (user[config.userCollectionField].includes(pulledItem._id)) {
+          alreadyOwned = true;
+        } else {
+          user[config.userCollectionField].push(pulledItem._id);
+          message = `Congratulations! You unlocked Persona: ${pulledItem.name}`;
+        }
       } else {
-        const newUserCollectible = await config.UserCollectibleModel.create({
+        // Logic for instanced collectibles (Pokémon, Snoopys, etc.)
+        const existingItem = await config.UserCollectibleModel.findOne({
           user: userId,
           [config.baseModelRefField]: pulledItem._id,
         });
-        user[config.userCollectionField].push(newUserCollectible._id);
-        message = `Congratulations! You pulled: ${pulledItem.name}`;
-      }
-    }
 
-    if (alreadyOwned) {
-      const refund = Math.floor(config.cost / 4);
-      user[config.currency] += refund; // Add the refund back
-      message = `You pulled a duplicate! ${refund} ${config.currency} have been refunded.`;
+        // This logic needs refinement based on whether duplicates are allowed per category
+        if (existingItem && (category === "snoopy" || category === "habbo")) {
+          alreadyOwned = true;
+        } else {
+          const newUserCollectible = await config.UserCollectibleModel.create({
+            user: userId,
+            [config.baseModelRefField]: pulledItem._id,
+          });
+          user[config.userCollectionField].push(newUserCollectible._id);
+          message = `Congratulations! You pulled: ${pulledItem.name}`;
+        }
+      }
+
+      if (alreadyOwned) {
+        const refund = Math.floor(config.cost / 4);
+        user[config.currency] += refund; // Add the refund back
+        message = `You pulled a duplicate! ${refund} ${config.currency} have been refunded.`;
+      }
     }
 
     await user.save();

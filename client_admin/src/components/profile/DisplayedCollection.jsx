@@ -26,15 +26,23 @@ const DisplayedCollection = ({ title, items, baseField }) => {
       return pokemonSprite ? `${serverBaseUrl}${pokemonSprite}` : null;
     }
 
-    // Other collections use imageUrl directly - prefix with server URL
+    // Other collections - check if it's an external URL or local path
     let imageUrl = baseItem.imageUrl;
     if (!imageUrl) return null;
+
+    // If it's already a full URL (starts with http), return as-is
+    if (imageUrl.startsWith("http")) {
+      return imageUrl;
+    }
+
+    // Otherwise, it's a local path - prefix with server URL
     // Remove leading 'public/' or '/public/' if present
     imageUrl = imageUrl.replace(/^public\//, "").replace(/^\/public\//, "");
     // Remove leading slash if present
     imageUrl = imageUrl.replace(/^\//, "");
     const fullUrl = `${serverBaseUrl}/${imageUrl}`;
-    // Enhanced debug logging
+
+    // Enhanced debug logging for local files only
     if (baseField === "habboRareBase") {
       console.log("Habbo Rare Debug:", {
         baseItem: baseItem.name,
@@ -42,7 +50,7 @@ const DisplayedCollection = ({ title, items, baseField }) => {
         cleanedImageUrl: imageUrl,
         serverBaseUrl,
         fullUrl,
-        finalImageSrc: fullUrl
+        finalImageSrc: fullUrl,
       });
     }
     return fullUrl;

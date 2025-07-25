@@ -24,13 +24,17 @@ const GoalWidget = ({ title, percentage, color }) => {
   );
 };
 
-const GoalsWidget = () => {
+const GoalsWidget = ({ goals, loading }) => {
   return (
     <Widget title="Objective Progress">
-      <div className="grid grid-cols-2 gap-4">
-        <GoalWidget title="Quarterly Reading Goal" percentage={65} color="#34d399" />
-        <GoalWidget title="Workout Streak Goal" percentage={80} color="#facc15" />
-      </div>
+      {loading ? (
+        <p className="text-sm text-text-tertiary">Loading...</p>
+      ) : (
+        <div className="grid grid-cols-2 gap-4">
+          <GoalWidget title="Quarterly Reading Goal" percentage={goals?.reading || 0} color="#34d399" />
+          <GoalWidget title="Workout Streak Goal" percentage={goals?.workouts || 0} color="#facc15" />
+        </div>
+      )}
     </Widget>
   );
 };

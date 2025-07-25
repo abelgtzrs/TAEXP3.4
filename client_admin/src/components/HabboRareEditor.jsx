@@ -148,25 +148,25 @@ const HabboRareEditor = () => {
   const getImageUrl = (imageUrl) => {
     if (!imageUrl) return "";
     if (imageUrl.startsWith("http")) return imageUrl;
-    
+
     // Use the same URL construction as DisplayedCollection
     const serverBaseUrl = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").split("/api")[0];
-    
+
     // Remove leading 'public/' or '/public/' if present
     let cleanedUrl = imageUrl.replace(/^public\//, "").replace(/^\/public\//, "");
     // Remove leading slash if present
     cleanedUrl = cleanedUrl.replace(/^\//, "");
-    
+
     const finalUrl = `${serverBaseUrl}/${cleanedUrl}`;
-    
+
     // Debug logging to compare with DisplayedCollection
     console.log("HabboRareEditor URL Debug:", {
       originalImageUrl: imageUrl,
       cleanedUrl,
       serverBaseUrl,
-      finalUrl
+      finalUrl,
     });
-    
+
     return finalUrl;
   };
 

@@ -5,13 +5,11 @@ import api from "../services/api";
 
 // UI Components
 import PageHeader from "../components/ui/PageHeader";
-import Widget from "../components/ui/Widget";
 
 // Dashboard Widgets
 import StatBoxRow from "../components/dashboard/StatBoxRow";
 import LoreChartWidget from "../components/dashboard/LoreChartWidget";
 import SecuritySettingsWidget from "../components/dashboard/SecuritySettingsWidget";
-import ThreatDetectionWidget from "../components/dashboard/ThreatDetectionWidget";
 import CurrencySourceWidget from "../components/dashboard/CurrencySourceWidget";
 import GoalsWidget from "../components/dashboard/GoalsWidget";
 import RecentAcquisitionsWidget from "../components/dashboard/RecentAcquisitionsWidget";
@@ -164,7 +162,7 @@ const DashboardPage = () => {
           transition={{ duration: 0.5, delay: 1.7 }}
           className="col-span-6 lg:col-span-2 row-span-2"
         >
-          <GoalsWidget />
+          <GoalsWidget goals={stats.goals} loading={loading} />
         </motion.div>
         {/* Additional Widgets */}
         <motion.div
@@ -173,7 +171,7 @@ const DashboardPage = () => {
           transition={{ duration: 0.5, delay: 1.8 }}
           className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
         >
-          <RecentAcquisitionsWidget />
+          <RecentAcquisitionsWidget acquisitions={stats.recentAcquisitions} loading={loading} />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -181,7 +179,7 @@ const DashboardPage = () => {
           transition={{ duration: 0.5, delay: 1.9 }}
           className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
         >
-          <TopProductsWidget />
+          <TopProductsWidget products={stats.topProducts} loading={loading} />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}

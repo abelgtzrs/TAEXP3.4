@@ -1,4 +1,3 @@
-// server/controllers/userController.js
 const User = require("../models/User");
 const Habit = require("../models/userSpecific/Habit");
 const Book = require("../models/userSpecific/Book");
@@ -208,38 +207,100 @@ const updateDisplayedItems = async (req, res) => {
   }
 };
 
+// --- UPDATED AND EXPANDED FUNCTION ---
 const getDashboardStats = async (req, res) => {
   try {
     const userId = req.user.id;
     const userRole = req.user.role;
 
+    // --- Basic Stats ---
     const startOfToday = new Date();
     startOfToday.setHours(0, 0, 0, 0);
-    const endOfToday = new Date();
-    endOfToday.setHours(23, 59, 59, 999);
 
-    const [habitsCompletedToday, booksFinished, userWithCollections, totalWorkouts, volumesPublished] =
-      await Promise.all([
-        Habit.countDocuments({ user: userId, lastCompletedDate: { $gte: startOfToday, $lte: endOfToday } }),
-        Book.countDocuments({ user: userId, isFinished: true }),
-        User.findById(userId).select("currentLoginStreak pokemonCollection snoopyArtCollection habboRares yugiohCards"),
-        WorkoutLog.countDocuments({ user: userId }),
-        userRole === "admin" ? Volume.countDocuments({ createdBy: userId, status: "published" }) : Promise.resolve(0),
-      ]);
+    const [habitsCompletedToday, booksFinished, totalWorkouts, user] = await Promise.all([
+      Habit.countDocuments({ user: userId, lastCompletedDate: { $gte: startOfToday } }),
+      Book.countDocuments({ user: userId, isFinished: true }),
+      WorkoutLog.countDocuments({ user: userId }),
+      User.findById(userId)
+        .select("currentLoginStreak longestLoginStreak pokemonCollection snoopyArtCollection habboRares yugiohCards")
+        .populate({
+          path: "pokemonCollection",
+          options: { sort: { createdAt: -1 }, limit: 5 },
+          populate: { path: "basePokemon" },
+        })
+        .populate({
+          path: "snoopyArtCollection",
+          options: { sort: { createdAt: -1 }, limit: 5 },
+          populate: { path: "snoopyArtBase" },
+        })
+        .populate({
+          path: "habboRares",
+          options: { sort: { createdAt: -1 }, limit: 5 },
+          populate: { path: "habboRareBase" },
+        })
+        .populate({
+          path: "yugiohCards",
+          options: { sort: { createdAt: -1 }, limit: 5 },
+          populate: { path: "yugiohCardBase" },
+        }),
+    ]);
+
+    // --- Recent Acquisitions Logic ---
+    const allCollections = [
+      ...user.pokemonCollection.map((p) => ({ ...p.toObject(), type: "Pokémon" })),
+      ...user.snoopyArtCollection.map((s) => ({ ...s.toObject(), type: "Snoopy" })),
+      ...user.habboRares.map((h) => ({ ...h.toObject(), type: "Habbo Rare" })),
+      ...user.yugiohCards.map((y) => ({ ...y.toObject(), type: "Yu-Gi-Oh! Card" })),
+    ];
+
+    // Sort all collected items by date and get the 5 most recent
+    const recentAcquisitions = allCollections
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 5)
+      .map((item) => {
+        const base = item.basePokemon || item.snoopyArtBase || item.habboRareBase || item.yugiohCardBase;
+        return {
+          name: base.name,
+          rarity: base.rarity || base.systemRarity || "common",
+          type: item.type,
+        };
+      });
+
+    // --- Admin-specific Stats ---
+    let volumesPublished = 0;
+    if (userRole === "admin") {
+      volumesPublished = await Volume.countDocuments({ createdBy: userId, status: "published" });
+    }
 
     const totalCollectibles =
-      (userWithCollections.pokemonCollection?.length || 0) +
-      (userWithCollections.snoopyArtCollection?.length || 0) +
-      (userWithCollections.habboRares?.length || 0) +
-      (userWithCollections.yugiohCards?.length || 0);
+      user.pokemonCollection.length +
+      user.snoopyArtCollection.length +
+      user.habboRares.length +
+      user.yugiohCards.length;
 
     const stats = {
+      // For StatBoxRow
       habitsCompleted: habitsCompletedToday,
       booksFinished: booksFinished,
       gachaPulls: totalCollectibles,
-      activeStreaks: userWithCollections.currentLoginStreak || 0,
+      activeStreaks: user.currentLoginStreak || 0,
       totalWorkouts: totalWorkouts,
       volumesPublished: volumesPublished,
+
+      // For Widgets
+      recentAcquisitions: recentAcquisitions,
+
+      // Mock data for now, to be replaced later
+      topProducts: [
+        { name: "Abel Persona: Stoic", units: 210 },
+        { name: "Snoopy: Joe Cool", units: 198 },
+        { name: "Pokémon: Eevee", units: 188 },
+        { name: "Habbo Rare: Throne", units: 130 },
+      ],
+      goals: {
+        reading: 65,
+        workouts: 80,
+      },
     };
 
     res.status(200).json({ success: true, data: stats });

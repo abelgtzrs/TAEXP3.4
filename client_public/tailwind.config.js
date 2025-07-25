@@ -4,7 +4,6 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // As per your retro terminal requirement
         mono: [
           '"Courier New"',
           "Courier",
