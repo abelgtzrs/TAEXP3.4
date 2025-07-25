@@ -785,7 +785,7 @@ const FinancePage = () => {
       {/* Adjust 120px based on your header/padding height */}
       <div className="flex justify-between items-start flex-shrink-0">
         <PageHeader title="Financial Tracker" subtitle="Manage your income, expenses, and budgets." />
-        <div className="flex gap-2">
+        <div className="flex gap-1">
           <StyledButton
             onClick={() => setIsBillModalOpen(true)}
             className="py-2 px-4 flex items-center gap-2 bg-blue-600 hover:bg-blue-500"
@@ -798,10 +798,10 @@ const FinancePage = () => {
         </div>
       </div>
       {/* This grid now grows to fill the remaining vertical space */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4 flex-grow">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 mt-2 flex-grow">
         {/* Column 1: Budget Status & Add Transaction */}
 
-        <div className="lg:col-span-4 flex flex-col gap-6 h-full">
+        <div className="lg:col-span-4 flex flex-col gap-2 h-full">
           <div>
             <AddTransactionForm categories={categories} onTransactionAdded={refreshData} />
           </div>
@@ -826,7 +826,7 @@ const FinancePage = () => {
         </div>
 
         {/* Column 2: Transaction List */}
-        <div className="lg:col-span-4 flex flex-col gap-6">
+        <div className="lg:col-span-4 flex flex-col gap-2">
           <TransactionList transactions={transactions} onEdit={handleEditTransaction} />
         </div>
 
