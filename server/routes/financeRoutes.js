@@ -15,6 +15,8 @@ const {
   updateBill,
   deleteBill,
   toggleBillPaid,
+  getBudgets,
+  upsertBudgets,
 } = require("../controllers/financeController");
 
 router.use(protect);
@@ -31,5 +33,8 @@ router.route("/transactions/:id").put(updateTransaction).delete(deleteTransactio
 router.route("/bills").get(getBills).post(createBill);
 router.route("/bills/:id").put(updateBill).delete(deleteBill);
 router.put("/bills/:id/toggle-paid", toggleBillPaid);
+
+// Budget Routes
+router.route("/budgets").get(getBudgets).post(upsertBudgets);
 
 module.exports = router;

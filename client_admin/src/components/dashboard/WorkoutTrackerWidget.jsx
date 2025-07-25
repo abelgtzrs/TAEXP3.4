@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../../services/api";
-import Widget from "./Widget";
+import Widget from "../ui/Widget";
 import StyledButton from "../ui/StyledButton";
 
 const WORKOUT_TEMPLATES = [

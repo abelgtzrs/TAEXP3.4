@@ -219,7 +219,7 @@ export const SystemStatusWidget = () => {
 // Combined dashboard showing all 4 charts in a 2x2 grid
 const LoreChartWidget = () => {
   return (
-    <div className="grid grid-cols-2 gap-4 h-full">
+    <div className="grid grid-cols-2 gap-4" style={{ height: "80vh" }}>
       <CoherenceChartWidget />
       <AnomalyChartWidget />
       <DriftChartWidget />

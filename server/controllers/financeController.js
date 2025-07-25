@@ -1,6 +1,7 @@
 const FinancialCategory = require("../models/finance/FinancialCategory");
 const FinancialTransaction = require("../models/finance/FinancialTransaction");
 const RecurringBill = require("../models/finance/RecurringBill");
+const Budget = require("../models/Budget");
 
 // Category Controllers
 exports.getCategories = async (req, res) => {
@@ -157,6 +158,45 @@ exports.toggleBillPaid = async (req, res) => {
     await bill.save();
     res.status(200).json({ success: true, data: bill });
   } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// Budget Controllers
+exports.getBudgets = async (req, res) => {
+  try {
+    const budgets = await Budget.find({ user: req.user.id }).populate("category", "name color");
+    res.status(200).json({ success: true, data: budgets });
+  } catch (error) {
+    console.error("Error fetching budgets:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+exports.upsertBudgets = async (req, res) => {
+  const { budgets } = req.body; // Expect an array of budget objects
+  const userId = req.user.id;
+
+  if (!Array.isArray(budgets)) {
+    return res.status(400).json({ success: false, message: "Invalid data format. Expected an array of budgets." });
+  }
+
+  try {
+    const operations = budgets.map((b) => ({
+      updateOne: {
+        filter: { user: userId, category: b.category },
+        update: { $set: { amount: b.amount } },
+        upsert: true,
+      },
+    }));
+
+    if (operations.length > 0) {
+      await Budget.bulkWrite(operations);
+    }
+
+    res.status(200).json({ success: true, message: "Budgets updated successfully" });
+  } catch (error) {
+    console.error("Error upserting budgets:", error);
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };

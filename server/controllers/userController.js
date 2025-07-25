@@ -5,6 +5,74 @@ const Book = require("../models/userSpecific/Book");
 const WorkoutLog = require("../models/userSpecific/WorkoutLog");
 const Volume = require("../models/Volume");
 
+// --- ADD THIS NEW FUNCTION ---
+const updateProfilePicture = async (req, res) => {
+  try {
+    console.log("updateProfilePicture called");
+    console.log("req.file:", req.file);
+
+    if (!req.file) {
+      console.log("No file uploaded");
+      return res.status(400).json({ success: false, message: "No file uploaded." });
+    }
+
+    // The path should be the URL path, not the file system path
+    const profilePictureUrl = `/uploads/avatars/${req.file.filename}`;
+    console.log("Generated profile picture URL:", profilePictureUrl);
+
+    // Find user and update their profile picture URL
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { profilePicture: profilePictureUrl },
+      { new: true, runValidators: true } // Return the updated document
+    )
+      .select("-password")
+      .populate({
+        path: "activeAbelPersona",
+        model: "AbelPersonaBase",
+      })
+      .populate({
+        path: "unlockedAbelPersonas",
+        model: "AbelPersonaBase",
+      })
+      .populate({
+        path: "displayedPokemon",
+        populate: { path: "basePokemon", model: "PokemonBase" },
+      })
+      .populate({
+        path: "displayedSnoopyArt",
+        populate: { path: "snoopyArtBase", model: "SnoopyArtBase" },
+      })
+      .populate({
+        path: "displayedHabboRares",
+        populate: { path: "habboRareBase", model: "HabboRareBase" },
+      })
+      .populate({
+        path: "displayedYugiohCards",
+        populate: { path: "yugiohCardBase", model: "YugiohCardBase" },
+      })
+      .populate({
+        path: "badges",
+        populate: { path: "badgeBase", model: "BadgeBase" },
+      })
+      .populate({
+        path: "equippedTitle",
+        populate: { path: "titleBase", model: "TitleBase" },
+      });
+
+    if (!user) {
+      console.log("User not found");
+      return res.status(404).json({ success: false, message: "User not found." });
+    }
+
+    console.log("User updated successfully. New profilePicture:", user.profilePicture);
+    res.status(200).json({ success: true, data: user });
+  } catch (error) {
+    console.error("Update Profile Picture Error:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
 // --- Define all functions as constants before exporting ---
 
 const setActivePersona = async (req, res) => {
@@ -187,4 +255,5 @@ module.exports = {
   updateDisplayedItems,
   getDashboardStats,
   setActivePersona,
+  updateProfilePicture, // <-- EXPORT NEW FUNCTION
 };

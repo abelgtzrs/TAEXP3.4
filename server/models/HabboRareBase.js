@@ -1,18 +1,17 @@
-// server/models/HabboRareBase.js
 const mongoose = require("mongoose");
 
 const HabboRareBaseSchema = new mongoose.Schema(
   {
     habboRareId: {
-      // Unique identifier, e.g., "throne", "hc_sofa"
+      // A unique identifier, e.g., "throne", "hc_sofa"
       type: String,
-      required: [true, "Please provide a unique Habbo Rare ID"],
+      required: true,
       unique: true,
       trim: true,
     },
     name: {
       type: String,
-      required: [true, "Please provide the Habbo Rare name"],
+      required: true,
       trim: true,
     },
     description: {
@@ -22,14 +21,18 @@ const HabboRareBaseSchema = new mongoose.Schema(
     imageUrl: {
       // URL to the pixel art image of the Habbo Rare
       type: String,
-      required: [true, "Please provide an image URL for the Habbo Rare"],
+      required: true,
     },
-    // Rarity could be based on its original Habbo Hotel rarity/value or your own system
     rarityCategory: {
       type: String,
       enum: ["common_rare", "uncommon_rare", "rare_rare", "super_rare", "ultra_rare"],
       default: "common_rare",
       required: true,
+    },
+    originalYear: {
+      // Year it was prominent or released in Habbo
+      type: String,
+      default: "Classic",
     },
     series: {
       // e.g., "V11 Rares", "Club Shop", "Seasonal"
@@ -40,4 +43,4 @@ const HabboRareBaseSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.models.HabboRareBase || mongoose.model("HabboRareBase", HabboRareBaseSchema);
+module.exports = mongoose.model("HabboRareBase", HabboRareBaseSchema);

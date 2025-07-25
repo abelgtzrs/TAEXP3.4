@@ -21,6 +21,7 @@ import CollectionsPage from "./pages/CollectionsPage";
 import CollectionDetailPage from "./pages/CollectionDetailPage";
 import PokedexPage from "./pages/PokedexPage";
 import PokemonEditorPage from "./pages/PokemonEditorPage";
+import HabboRareManagement from "./pages/HabboRareManagement";
 import SettingsPage from "./pages/SettingsPage";
 import TasksPage from "./pages/TasksPage";
 import FinancePage from "./pages/FinancePage";
@@ -56,6 +57,7 @@ function App() {
           <Route path="/admin/volumes/edit/:volumeId" element={<EditVolumePage />} />
           <Route path="/admin/exercises" element={<AdminExercisesPage />} />
           <Route path="/admin/templates" element={<AdminTemplatesPage />} />
+          <Route path="/admin/habbo-rares" element={<HabboRareManagement />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/collections" element={<CollectionsPage />} />
           <Route path="/collections/:collectionType" element={<CollectionDetailPage />} />

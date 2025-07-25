@@ -1,4 +1,4 @@
-import Widget from "./Widget";
+import Widget from "../ui/Widget";
 import { Facebook, Twitter, Youtube } from "lucide-react"; // Example icons
 
 const SocialSalesWidget = () => {

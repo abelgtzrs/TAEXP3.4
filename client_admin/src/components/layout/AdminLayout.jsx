@@ -111,8 +111,8 @@ const AdminLayout = () => {
               <h1 className="text-white font-bold text-xs whitespace-nowrap">The Abel Experience™ CFW</h1>
             </div>
             {isSidebarCollapsed && (
-              <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-                <span className="text-primary font-bold text-sm">AE</span>
+              <div className="w-8 h-8 bg-primary/50 rounded-lg flex items-center justify-center">
+                <span className="text-primary font-bold text-sm">TAE</span>
               </div>
             )}
           </div>
@@ -194,6 +194,9 @@ const AdminLayout = () => {
                 </NavItem>
                 <NavItem to="/admin/pokemon-editor" icon={PenSquare} isCollapsed={isSidebarCollapsed}>
                   Pokémon Editor
+                </NavItem>
+                <NavItem to="/admin/habbo-rares" icon={Boxes} isCollapsed={isSidebarCollapsed}>
+                  Habbo Rare Editor
                 </NavItem>
                 <NavItem to="/settings" icon={Settings2} isCollapsed={isSidebarCollapsed}>
                   Settings

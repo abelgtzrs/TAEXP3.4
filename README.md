@@ -2,89 +2,89 @@
 
 ## Description
 
-The Abel Experience™ CFW (Cognitive Framework) is the third iteration of a full-stack MERN application designed as a personalized digital sanctuary and command center. It leverages a decoupled API architecture to serve a private user/admin panel and a public-facing content viewer.
+The Abel Experience™ CFW (Cognitive Framework) is a full-stack MERN application for personal productivity and content management. It uses a decoupled API architecture to serve a private admin panel and a public content viewer.
 
-The core philosophy of this project is to create a deeply integrated environment that blends personal productivity, content management, and sophisticated gamification. The system is built around a suite of trackers for daily life activities (habits, workouts, reading), which fuel an internal economy of multiple currencies. These currencies are then used in a gacha-style shop to acquire a wide range of digital collectibles.
+This project combines personal productivity tracking, content management, and gamification elements. The system includes trackers for daily activities (habits, workouts, reading) that earn virtual currencies. These currencies can be spent in a shop to collect digital items.
 
-The primary client is a feature-rich web application (`client-admin`) providing a dark, professional, HUD-style interface for registered users. A secondary client (`client-public`) offers an immersive, retro-terminal experience for viewing published narrative content.
+The main client (`client-admin`) is a web application with a dark interface for registered users. A secondary client (`client-public`) provides a terminal-style interface for viewing published content.
 
-**Version 3.5** introduces revolutionary chart architecture, advanced persona theming system, and comprehensive responsive design with modular widget components.
+**Version 3.5** includes updated chart architecture, persona theming system, and responsive design with modular widget components.
 
 ### What's New in v3.5
 
-- **Revolutionary Chart Architecture**: Complete transformation of data visualization system featuring:
+- **Updated Chart Architecture**: Data visualization system changes including:
 
-  - **Modular LoreChartWidget**: Split from monolithic design into four independent, reusable chart components
-  - **Responsive Chart Containers**: All charts automatically adapt to widget container sizes using flexible layouts
-  - **Advanced Data Visualization**: Recharts integration with custom styling, theming support, and smooth animations
+  - **Modular LoreChartWidget**: Split into four independent, reusable chart components
+  - **Responsive Chart Containers**: Charts adapt to widget container sizes using flexible layouts
+  - **Data Visualization**: Recharts integration with custom styling, theming support, and animations
   - **Individual Chart Components**:
-    - **CoherenceChartWidget** (Area Chart): Narrative consistency tracking with gradient fills and smooth animations
-    - **AnomalyChartWidget** (Bar Chart): Data irregularity visualization with color-coded severity indicators
-    - **DriftChartWidget** (Line Chart): Timeline stability monitoring with precision markers and trend analysis
-    - **SystemStatusWidget** (Pie Chart): Operational health metrics with interactive segments and detailed tooltips
+    - **CoherenceChartWidget** (Area Chart): Narrative consistency tracking with gradient fills
+    - **AnomalyChartWidget** (Bar Chart): Data irregularity visualization with color-coded indicators
+    - **DriftChartWidget** (Line Chart): Timeline stability monitoring with trend analysis
+    - **SystemStatusWidget** (Pie Chart): Operational health metrics with interactive segments and tooltips
 
-- **Advanced Persona Theming System**: Comprehensive overhaul of the theming architecture including:
+- **Persona Theming System**: Updated theming architecture including:
 
-  - **Dynamic Real-time Theme Switching**: Instant application of persona color schemes across all UI components
-  - **Dropdown Interface Revolution**: Converted PersonaWidget from button grid to elegant dropdown with Portal-based positioning
-  - **CSS Custom Properties Integration**: Advanced theming system using CSS variables for seamless color transitions
-  - **Chart Theme Synchronization**: Persona themes automatically propagate to all chart components with coordinated color palettes
-  - **Database Schema Optimization**: Corrected backend integration with proper color and text object structures
-  - **Z-index Conflict Resolution**: Portal-based dropdown positioning eliminates stacking context issues
+  - **Real-time Theme Switching**: Apply persona color schemes across UI components
+  - **Dropdown Interface**: Converted PersonaWidget from button grid to dropdown with Portal-based positioning
+  - **CSS Custom Properties**: Theming system using CSS variables for color transitions
+  - **Chart Theme Integration**: Persona themes apply to all chart components with coordinated color palettes
+  - **Database Schema Updates**: Backend integration with proper color and text object structures
+  - **Z-index Management**: Portal-based dropdown positioning eliminates stacking issues
 
-- **Responsive Design Excellence**: Next-generation responsive architecture featuring:
+- **Responsive Design**: Updated responsive architecture including:
 
-  - **Flexible Container System**: Charts automatically adjust to any widget container size
-  - **Mobile-First Approach**: Enhanced mobile and tablet compatibility with touch-optimized interactions
-  - **Adaptive Grid Layouts**: Dynamic grid systems that respond to screen size changes
-  - **Performance Optimization**: Efficient rendering with component separation and optimized state management
+  - **Flexible Container System**: Charts adjust to any widget container size
+  - **Mobile Support**: Improved mobile and tablet compatibility with touch interactions
+  - **Grid Layouts**: Dynamic grid systems that respond to screen size changes
+  - **Performance**: Efficient rendering with component separation and optimized state management
 
-- **Enhanced Dashboard Widget Ecosystem**: Comprehensive widget redesign and optimization including:
+- **Dashboard Widget Updates**: Widget redesign and optimization including:
 
-  - **LoreChartWidget 2x2 Grid**: Four interconnected charts in responsive grid layout displaying complex narrative data
+  - **LoreChartWidget 2x2 Grid**: Four interconnected charts in responsive grid layout displaying narrative data
   - **HabitTrackerWidget**: Shows up to 10 habits with completed items crossed out but remaining visible
   - **WorkoutTrackerWidget**: 2x2 grid of preset workout template buttons plus custom log option
   - **BookTrackerWidget**: Displays last 4 active books with cover images, year, author, and update controls
   - **WeatherWidget**: 2-column layout with current weather and 5-day forecast
-  - **ClockWidget**: Enhanced time display with improved alignment
+  - **ClockWidget**: Time display with improved alignment
   - **Additional Widgets**: RecentAcquisitionsWidget, SocialSalesWidget, TopProductsWidget, CurrencySourceWidget
 
-- **Improved Profile Collections**:
+- **Profile Collections Updates**:
 
   - **DisplayedCollection**: Redesigned to show 6 items per row with 20% width-to-height ratio
-  - **Responsive Grid**: 3 columns on mobile, 6 on desktop for optimal viewing
-  - **Height Independence**: Middle column no longer forced to align with sidebar heights
-  - **Error Handling**: Robust fallbacks for undefined collection data
+  - **Responsive Grid**: 3 columns on mobile, 6 on desktop
+  - **Height Management**: Middle column no longer forced to align with sidebar heights
+  - **Error Handling**: Fallbacks for undefined collection data
 
-- **Pokemon Editor Enhancements**:
+- **Pokemon Editor Updates**:
 
   - **Wider Editor**: Increased editor width by reducing sidebar from 240px to 192px
   - **Better Layout**: More space for forms and content editing
-  - **Success Feedback**: Non-blocking toast notifications positioned in top-right corner
-  - **Improved Navigation**: Enhanced Pokemon selector with better search functionality
+  - **Success Feedback**: Toast notifications positioned in top-right corner
+  - **Navigation**: Updated Pokemon selector with better search functionality
 
-- **Persona Theming System Enhancements**:
+- **Persona Theming System Updates**:
 
-  - **Dynamic UI Theming**: Fully functional persona-based theme switching that updates CSS custom properties in real-time
-  - **Dropdown Interface**: Converted PersonaWidget from button grid to elegant dropdown with Portal-based positioning
-  - **Theme Color Integration**: Each persona applies unique color schemes across all UI components including charts
-  - **Backend Integration**: Proper database schema alignment for persona data with corrected color and text object structures
+  - **UI Theming**: Persona-based theme switching that updates CSS custom properties in real-time
+  - **Dropdown Interface**: Converted PersonaWidget from button grid to dropdown with Portal-based positioning
+  - **Theme Color Integration**: Each persona applies unique color schemes across UI components including charts
+  - **Backend Integration**: Database schema alignment for persona data with corrected color and text object structures
 
-- **Backend Architecture Improvements**: Enhanced server-side functionality and API optimization:
+- **Backend Architecture Updates**: Server-side functionality and API improvements:
 
-  - **Function Export Structure**: Modernized userController.js with proper const function patterns
-  - **Database Schema Alignment**: Corrected AbelPersonaBase schema for proper color and text object structures
-  - **API Population Enhancement**: Improved persona data population in authentication endpoints
+  - **Function Export Structure**: Updated userController.js with const function patterns
+  - **Database Schema Updates**: Corrected AbelPersonaBase schema for proper color and text object structures
+  - **API Population**: Improved persona data population in authentication endpoints
   - **Error Resolution**: Fixed setActivePersona function exports and middleware integration
 
-- **Technical Infrastructure Upgrades**: Comprehensive codebase modernization including:
+- **Technical Infrastructure Updates**: Codebase modernization including:
 
   - **Component Modularization**: Split complex widgets into maintainable, reusable components
-  - **State Management Optimization**: Enhanced React state handling for better performance
+  - **State Management**: Updated React state handling for better performance
   - **Cross-component Communication**: Improved data flow between chart components and theming system
-  - **Code Quality Improvements**: Better error handling, type safety, and debugging capabilities
+  - **Code Quality**: Better error handling, type safety, and debugging capabilities
 
-Future iterations of this project will explore the development of native desktop (C# or C++) and mobile UI clients that will connect to the same robust backend API, offering enhanced performance and deeper OS integration.
+Future iterations may explore native desktop (C# or C++) and mobile UI clients that connect to the same backend API.
 
 ## Table of Contents
 
@@ -215,42 +215,42 @@ After setting up the project, the first step is to populate the database with th
 
 ### Admin & User Panel (`client-admin`)
 
-- **Responsive Design:** Fully functional on both desktop and mobile devices with enhanced mobile layouts.
-- **HUD Dashboard:** A professional, data-rich dashboard with a futuristic aesthetic, featuring:
-  - **Comprehensive Widget Grid**: All dashboard widgets displayed in an optimized 6-column grid layout
-  - **LoreChartWidget**: Four responsive, interconnected charts displaying complex narrative data with real-time theming:
-    - **Narrative Coherence Index** (Area Chart): Tracks story consistency metrics with gradient fills and smooth animations
-    - **Anomaly Detection Events** (Bar Chart): Visualizes data irregularities and system alerts with color-coded severity
-    - **Temporal Drift Analysis** (Line Chart): Monitors timeline stability with precision markers and trend indicators
+- **Responsive Design:** Works on both desktop and mobile devices with mobile layouts.
+- **HUD Dashboard:** A professional, data-focused dashboard with a dark aesthetic, featuring:
+  - **Widget Grid**: Dashboard widgets displayed in a 6-column grid layout
+  - **LoreChartWidget**: Four responsive, connected charts displaying narrative data with real-time theming:
+    - **Narrative Coherence Index** (Area Chart): Tracks story consistency metrics with gradient fills
+    - **Anomaly Detection Events** (Bar Chart): Visualizes data irregularities and system alerts with color coding
+    - **Temporal Drift Analysis** (Line Chart): Monitors timeline stability with trend indicators
     - **System Status Overview** (Pie Chart): Displays operational health metrics with interactive segments and tooltips
-  - **Enhanced Tracker Widgets**: Habit, Book, and Workout trackers with improved functionality and responsive layouts
-  - **Weather & Clock Integration**: Real-time weather data and enhanced clock display with improved alignment
-  - **Additional Analytics**: Recent acquisitions, sales data, and currency tracking widgets with live updates
-- **Abel Persona Theming:** A comprehensive system for Admin and Wendy to unlock and equip "Personas" that dynamically change the entire UI color scheme:
-  - **Real-time Theme Switching**: Instant application of persona color schemes across all components
-  - **CSS Custom Properties**: Advanced theming system using CSS variables for seamless color transitions
-  - **Chart Integration**: Persona themes automatically apply to all chart components with coordinated color palettes
-  - **Dropdown Interface**: Elegant persona selection dropdown with Portal-based positioning to avoid z-index conflicts
+  - **Tracker Widgets**: Habit, Book, and Workout trackers with responsive layouts
+  - **Weather & Clock**: Real-time weather data and clock display
+  - **Analytics**: Recent acquisitions, sales data, and currency tracking widgets with live updates
+- **Abel Persona Theming:** A system for Admin and Wendy to unlock and equip "Personas" that change the UI color scheme:
+  - **Real-time Theme Switching**: Apply persona color schemes across all components
+  - **CSS Custom Properties**: Theming system using CSS variables for color transitions
+  - **Chart Integration**: Persona themes apply to all chart components with coordinated color palettes
+  - **Dropdown Interface**: Persona selection dropdown with Portal-based positioning to avoid z-index conflicts
 - **Full-Featured Trackers:**
   - **Habit Tracker:** CRUD for personal habits with completion status persistence and visual feedback.
   - **Book Tracker:** Track reading progress, ratings, and library with cover image support and detailed metadata.
   - **Workout Tracker:** Log detailed workouts with exercises, sets, reps, and weight. Includes support for "clean" sessions and "prebuilt templates" with 2x2 preset button layout.
   - **Task Manager:** With support for sub-task checklists.
   - **Note Manager:** For personal notes and ideas.
-- **Collection Management:** UI to view all collected items (Pokémon, Snoopys, Habbo Rares, Yu-Gi-Oh! Cards, Badges, Titles) with enhanced grid layouts.
+- **Collection Management:** UI to view all collected items (Pokémon, Snoopys, Habbo Rares, Yu-Gi-Oh! Cards, Badges, Titles) with grid layouts.
 - **Profile Customization:**
-  - **Optimized Display Collections**: Show 6 items per collection in a compact, responsive grid
-  - **Independent Height Management**: Collections maintain their optimal aspect ratio (20% width-to-height)
-  - **Visual Selection Interface**: Easy-to-use interface for selecting displayed items from collections
+  - **Display Collections**: Show 6 items per collection in a compact, responsive grid
+  - **Height Management**: Collections maintain their optimal aspect ratio (20% width-to-height)
+  - **Selection Interface**: Interface for selecting displayed items from collections
 - **Admin-Specific Panels:**
   - **Volume Manager:** Create, edit, publish, and delete Greentext Volumes using a form with a live JSON preview.
-  - **Pokemon Database Editor:** Enhanced editor with wider layout, improved navigation, and non-blocking success feedback.
+  - **Pokemon Database Editor:** Editor with wider layout, improved navigation, and success feedback.
   - **Base Data Manager:** CRUD interfaces for managing the foundational data of all collectibles (e.g., adding a new exercise to the system, defining a new Snoopy collectible).
 
 ### Public Terminal Viewer (`client-public`)
 
-- **Immersive Interface:** A retro, full-screen terminal aesthetic.
-- **Typewriter Animation:** Greentext Volumes are displayed character-by-character with randomized, subtle glitch effects for an authentic feel.
+- **Terminal Interface:** A retro, full-screen terminal aesthetic.
+- **Typewriter Animation:** Greentext Volumes are displayed character-by-character with randomized, subtle glitch effects.
 - **Command-Line Navigation:** Users interact with the system by typing commands like `catalogue`, `random`, `view [id]`, `next`, etc.
 
 ---
@@ -268,21 +268,21 @@ After setting up the project, the first step is to populate the database with th
 
 ### Daily User Flow
 
-1.  Log in to the `client-admin` application. You are greeted by your personalized HUD Dashboard featuring all enhanced widgets in an optimized grid layout.
+1.  Log in to the `client-admin` application. You are greeted by your personalized HUD Dashboard featuring all widgets in a grid layout.
 2.  Navigate to the **Habit Tracker** and mark several habits as complete. Completed habits remain visible but crossed out. Observe your `TemuTokens` balance increase.
 3.  Go to the **Book Tracker** and update your `pagesRead` for a book you are currently reading. View cover images and detailed book information. See your `WendyHearts` balance increase.
 4.  Visit the **Workout Tracker** and log a session using one of the four preset template buttons in the 2x2 grid, or create a custom workout. Your `GatillaGold` balance will increase based on the number of sets completed.
-5.  Check the **Weather Widget** for current conditions and 5-day forecast, and view the time on the enhanced **Clock Widget**.
-6.  Review the **LoreChartWidget** to see complex data visualizations across four interconnected charts:
-    - Monitor **Narrative Coherence** trends with the smooth area chart visualization
+5.  Check the **Weather Widget** for current conditions and 5-day forecast, and view the time on the **Clock Widget**.
+6.  Review the **LoreChartWidget** to see data visualizations across four charts:
+    - Monitor **Narrative Coherence** trends with the area chart visualization
     - Analyze **Anomaly Detection Events** using the interactive bar chart with recent data highlights
-    - Track **Temporal Drift** patterns through the precise line chart with data point markers
-    - Check **System Status** at a glance with the comprehensive pie chart breakdown
+    - Track **Temporal Drift** patterns through the line chart with data point markers
+    - Check **System Status** at a glance with the pie chart breakdown
 7.  Experiment with **Persona Theming** by selecting different personas from the dropdown to see real-time theme changes across all dashboard components and charts.
 8.  With your newly earned currency, navigate to the **Shop (Gacha)** page and perform a "pull" for a new Pokémon or Snoopy.
-9.  Visit your **Profile** page to see your updated level/XP, currency balances, and manage which collectibles are displayed in the optimized 6-item-per-row collections with improved spacing and visual hierarchy.
+9.  Visit your **Profile** page to see your updated level/XP, currency balances, and manage which collectibles are displayed in the 6-item-per-row collections with improved spacing and visual hierarchy.
 
-The enhanced dashboard now provides a comprehensive view of your digital sanctuary with responsive charts that adapt to any screen size, persona-based theming that reflects your current aesthetic preferences, and detailed analytics that help you track your progress across all areas of the system.
+The dashboard now provides a view of your digital sanctuary with responsive charts that adapt to any screen size, persona-based theming that reflects your current aesthetic preferences, and analytics that help you track your progress across all areas of the system.
 
 ---
 

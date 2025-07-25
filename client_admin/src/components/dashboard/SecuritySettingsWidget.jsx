@@ -1,6 +1,6 @@
 // src/components/dashboard/SecuritySettingsWidget.jsx
 import { useState } from "react";
-import Widget from "./Widget";
+import Widget from "../ui/Widget";
 import StyledToggle from "../ui/StyledToggle";
 
 const SecuritySettingsWidget = () => {

@@ -4,25 +4,43 @@ import PageHeader from "../components/ui/PageHeader";
 import Widget from "../components/ui/Widget";
 import StyledButton from "../components/ui/StyledButton";
 import StyledInput from "../components/ui/StyledInput";
-import { Plus, Settings, Trash2, ChevronLeft, ChevronRight, CheckSquare, Square, Edit } from "lucide-react";
+import { Plus, Settings, Trash2, ChevronLeft, ChevronRight, CheckSquare, Square, Edit, X } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
 
 // --- Sub-Component: Category Manager Modal ---
 const CategoryManagerModal = ({ isOpen, onClose, categories, onUpdate }) => {
   const [newCategoryName, setNewCategoryName] = useState("");
   const [newCategoryColor, setNewCategoryColor] = useState("#6B7280");
+  const [editingCategory, setEditingCategory] = useState(null);
+
+  useEffect(() => {
+    if (editingCategory) {
+      setNewCategoryName(editingCategory.name);
+      setNewCategoryColor(editingCategory.color);
+    } else {
+      setNewCategoryName("");
+      setNewCategoryColor("#6B7280");
+    }
+  }, [editingCategory]);
 
   if (!isOpen) return null;
 
-  const handleCreate = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!newCategoryName.trim()) return;
+
+    const categoryData = { name: newCategoryName, color: newCategoryColor };
+
     try {
-      await api.post("/finance/categories", { name: newCategoryName, color: newCategoryColor });
-      setNewCategoryName("");
+      if (editingCategory) {
+        await api.put(`/finance/categories/${editingCategory._id}`, categoryData);
+      } else {
+        await api.post("/finance/categories", categoryData);
+      }
+      setEditingCategory(null);
       onUpdate();
     } catch (error) {
-      alert("Failed to create category.");
+      alert(`Failed to ${editingCategory ? "update" : "create"} category.`);
     }
   };
 
@@ -35,6 +53,14 @@ const CategoryManagerModal = ({ isOpen, onClose, categories, onUpdate }) => {
         alert("Failed to delete category.");
       }
     }
+  };
+
+  const handleEditClick = (category) => {
+    setEditingCategory(category);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingCategory(null);
   };
 
   return (
@@ -51,14 +77,21 @@ const CategoryManagerModal = ({ isOpen, onClose, categories, onUpdate }) => {
                 <div className="w-4 h-4 rounded-full" style={{ backgroundColor: cat.color }}></div>
                 <span className="text-text-main">{cat.name}</span>
               </div>
-              <button onClick={() => handleDelete(cat._id)} className="text-gray-500 hover:text-status-danger">
-                <Trash2 size={16} />
-              </button>
+              <div className="flex items-center gap-2">
+                <button onClick={() => handleEditClick(cat)} className="text-gray-500 hover:text-primary">
+                  <Edit size={16} />
+                </button>
+                <button onClick={() => handleDelete(cat._id)} className="text-gray-500 hover:text-status-danger">
+                  <Trash2 size={16} />
+                </button>
+              </div>
             </div>
           ))}
         </div>
-        <form onSubmit={handleCreate} className="pt-4 border-t border-gray-700/50">
-          <h3 className="text-lg font-semibold text-white mb-2">Add New Category</h3>
+        <form onSubmit={handleSubmit} className="pt-4 border-t border-gray-700/50">
+          <h3 className="text-lg font-semibold text-white mb-2">
+            {editingCategory ? "Edit Category" : "Add New Category"}
+          </h3>
           <div className="flex items-center gap-2">
             <input
               type="color"
@@ -74,8 +107,17 @@ const CategoryManagerModal = ({ isOpen, onClose, categories, onUpdate }) => {
               required
             />
             <StyledButton type="submit" className="py-2 px-4">
-              <Plus size={20} />
+              {editingCategory ? "Update" : <Plus size={20} />}
             </StyledButton>
+            {editingCategory && (
+              <button
+                type="button"
+                onClick={handleCancelEdit}
+                className="p-2 rounded-md bg-gray-600 hover:bg-gray-500 text-white"
+              >
+                <X size={20} />
+              </button>
+            )}
           </div>
         </form>
       </div>
@@ -99,6 +141,8 @@ const AddTransactionForm = ({ categories, onTransactionAdded }) => {
       setDescription("");
       setAmount("");
       setCategory("");
+      setDate(new Date().toISOString().split("T")[0]);
+      setType("expense");
     } catch (error) {
       alert("Failed to add transaction.");
     }
@@ -107,34 +151,18 @@ const AddTransactionForm = ({ categories, onTransactionAdded }) => {
   return (
     <Widget title="Log New Transaction">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={() => setType("income")}
-            className={`w-full p-2 rounded transition-colors ${
-              type === "income" ? "bg-green-500 text-white" : "bg-gray-600"
-            }`}
-          >
-            Income
-          </button>
-          <button
-            type="button"
-            onClick={() => setType("expense")}
-            className={`w-full p-2 rounded transition-colors ${
-              type === "expense" ? "bg-red-500 text-white" : "bg-gray-600"
-            }`}
-          >
-            Expense
-          </button>
-        </div>
-        <StyledInput
-          type="text"
-          placeholder="Description (e.g., Groceries)"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="md:col-span-2">
+            <StyledInput
+              type="text"
+              placeholder="Description (e.g., Groceries, Paycheck)"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+              className="text-sm"
+            />
+          </div>
+
           <StyledInput
             type="number"
             placeholder="Amount"
@@ -143,13 +171,123 @@ const AddTransactionForm = ({ categories, onTransactionAdded }) => {
             required
             min="0.01"
             step="0.01"
-            className="md:col-span-1"
+            className="text-sm"
           />
+
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             required
-            className="w-full p-3 bg-gray-700 rounded border border-gray-600 md:col-span-2"
+            className="w-full p-2 bg-gray-700 rounded border border-gray-600 text-sm"
+          >
+            <option value="">-- Select Category --</option>
+            {categories.map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+
+          <StyledInput
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+            className="text-sm"
+          />
+
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => setType("income")}
+              className={`w-full p-2 rounded transition-colors text-sm font-medium ${
+                type === "income" ? "bg-green-500 text-white" : "bg-gray-600 hover:bg-gray-500"
+              }`}
+            >
+              Income
+            </button>
+            <button
+              type="button"
+              onClick={() => setType("expense")}
+              className={`w-full p-2 rounded transition-colors text-sm font-medium ${
+                type === "expense" ? "bg-red-500 text-white" : "bg-gray-600 hover:bg-gray-500"
+              }`}
+            >
+              Expense
+            </button>
+          </div>
+        </div>
+
+        <StyledButton type="submit" className="w-full text-sm py-2.5">
+          Log Transaction
+        </StyledButton>
+      </form>
+    </Widget>
+  );
+};
+
+// --- Sub-Component: Transaction Edit Modal ---
+const TransactionEditModal = ({ transaction, isOpen, onClose, onUpdate, onDelete, categories }) => {
+  const [formData, setFormData] = useState(null);
+
+  useEffect(() => {
+    if (transaction) {
+      // Set up form data, ensuring category is an ID and date is formatted
+      setFormData({
+        ...transaction,
+        date: new Date(transaction.date).toISOString().split("T")[0],
+        category: transaction.category?._id || "",
+      });
+    }
+  }, [transaction]);
+
+  if (!isOpen || !formData) return null;
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSave = async () => {
+    const dataToSubmit = { ...formData, amount: Number(formData.amount) };
+    try {
+      await api.put(`/finance/transactions/${transaction._id}`, dataToSubmit);
+      onUpdate(); // Refresh data on the main page
+      onClose();
+    } catch (error) {
+      alert("Failed to update transaction.");
+    }
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm("Are you sure you want to permanently delete this transaction?")) {
+      try {
+        await api.delete(`/finance/transactions/${transaction._id}`);
+        onUpdate();
+        onClose();
+      } catch (error) {
+        alert("Failed to delete transaction.");
+      }
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50" onClick={onClose}>
+      <div
+        className="bg-surface w-full max-w-lg rounded-lg border border-gray-700 p-6 space-y-4"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="text-xl font-bold text-white">Edit Transaction</h2>
+        <div className="space-y-4">
+          <StyledInput name="description" label="Description" value={formData.description} onChange={handleChange} />
+          <div className="grid grid-cols-2 gap-4">
+            <StyledInput name="amount" label="Amount" type="number" value={formData.amount} onChange={handleChange} />
+            <StyledInput name="date" label="Date" type="date" value={formData.date} onChange={handleChange} />
+          </div>
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            className="w-full p-3 bg-gray-700 rounded border border-gray-600"
           >
             <option value="">-- Select Category --</option>
             {categories.map((cat) => (
@@ -159,33 +297,158 @@ const AddTransactionForm = ({ categories, onTransactionAdded }) => {
             ))}
           </select>
         </div>
-        <StyledInput type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-        <StyledButton type="submit" className="w-full">
-          Log Transaction
-        </StyledButton>
-      </form>
+        <div className="flex justify-between items-center pt-4 mt-4 border-t border-gray-700/50">
+          <StyledButton onClick={handleDelete} className="bg-status-danger/80 hover:bg-status-danger">
+            Delete
+          </StyledButton>
+          <div className="flex gap-2">
+            <StyledButton onClick={onClose} className="bg-gray-600 hover:bg-gray-500">
+              Cancel
+            </StyledButton>
+            <StyledButton onClick={handleSave}>Save Changes</StyledButton>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- Sub-Component: Budget Status ---
+const BudgetStatus = ({ categories, transactions, selectedMonth, budgets, onUpdateBudgets }) => {
+  const [localBudgets, setLocalBudgets] = useState({});
+
+  useEffect(() => {
+    // Initialize local state when budgets prop changes
+    const initialBudgets = categories.reduce((acc, cat) => {
+      acc[cat._id] = budgets.find((b) => b.category === cat._id)?.amount || "";
+      return acc;
+    }, {});
+    setLocalBudgets(initialBudgets);
+  }, [budgets, categories]);
+
+  const handleBudgetChange = (categoryId, amount) => {
+    // Allow empty string to clear budget, otherwise store as number
+    const newAmount = amount === "" ? "" : Number(amount);
+    setLocalBudgets({ ...localBudgets, [categoryId]: newAmount });
+  };
+
+  const handleSave = () => {
+    // Filter out empty/invalid budget entries before saving
+    const budgetsToSave = Object.entries(localBudgets)
+      .map(([categoryId, amount]) => ({
+        category: categoryId,
+        amount: Number(amount),
+      }))
+      .filter((b) => b.amount > 0);
+    onUpdateBudgets(budgetsToSave);
+  };
+
+  // Calculate spending for the selected month
+  const monthStart = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth(), 1);
+  const monthEnd = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() + 1, 0);
+
+  const spendingByCat = transactions
+    .filter((t) => {
+      const tDate = new Date(t.date);
+      return t.type === "expense" && tDate >= monthStart && tDate <= monthEnd;
+    })
+    .reduce((acc, t) => {
+      if (t.category?._id) {
+        acc[t.category._id] = (acc[t.category._id] || 0) + t.amount;
+      }
+      return acc;
+    }, {});
+
+  return (
+    <Widget title="Monthly Budget Status" className="flex flex-col h-full">
+      <div className="flex-grow min-h-0 flex flex-col">
+        <div className="space-y-4 overflow-y-auto pr-2 flex-grow min-h-0">
+          {categories
+            .filter((c) => c.name !== "Income") // Assuming 'Income' is not a budgetable category
+            .map((cat) => {
+              const budget = localBudgets[cat._id] || 0;
+              const spent = spendingByCat[cat._id] || 0;
+              const percentage = budget > 0 ? (spent / budget) * 100 : 0;
+              const remaining = budget - spent;
+
+              let progressBarColor = "bg-green-500";
+              if (percentage > 100) progressBarColor = "bg-red-500";
+              else if (percentage > 80) progressBarColor = "bg-yellow-500";
+              progressBarColor = "bg-yellow-500";
+
+              return (
+                <div key={cat._id}>
+                  <div className="flex justify-between items-center mb-1 text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: cat.color }}></div>
+                      <span className="font-medium text-text-main">{cat.name}</span>
+                    </div>
+                    <div className="w-1/3">
+                      <StyledInput
+                        type="number"
+                        placeholder="Budget"
+                        value={localBudgets[cat._id] || ""}
+                        onChange={(e) => handleBudgetChange(cat._id, e.target.value)}
+                        className="text-xs py-1 px-2 text-right"
+                      />
+                    </div>
+                  </div>
+                  <div className="w-full bg-gray-700 rounded-full h-2.5">
+                    <div
+                      className={`${progressBarColor} h-2.5 rounded-full`}
+                      style={{ width: `${Math.min(percentage, 100)}%` }}
+                    ></div>
+                  </div>
+                  <div className="flex justify-between text-xs text-text-secondary mt-1">
+                    <span>${spent.toFixed(2)} spent</span>
+                    <span>
+                      {budget > 0
+                        ? percentage > 100
+                          ? `-$${Math.abs(remaining).toFixed(2)} over`
+                          : `$${remaining.toFixed(2)} left`
+                        : "No budget set"}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
+        <div className="mt-4 pt-4 border-t border-gray-700/50">
+          <StyledButton onClick={handleSave} className="w-full">
+            Save Budgets
+          </StyledButton>
+        </div>
+      </div>
     </Widget>
   );
 };
 
 // --- Sub-Component: Transaction List ---
-const TransactionList = ({ transactions }) => {
+const TransactionList = ({ transactions, onEdit }) => {
   return (
-    <Widget title="Recent Transactions" className="h-full">
-      <ul className="space-y-3 overflow-y-auto h-full pr-2">
+    <Widget title="Recent Transactions" className="h-full flex flex-col">
+      <ul className="space-y-3 overflow-y-auto flex-grow pr-2">
         {transactions.map((t) => (
-          <li key={t._id} className="flex justify-between items-center p-2 bg-gray-900/50 rounded-md">
+          <li key={t._id} className="flex justify-between items-center p-2 bg-gray-900/50 rounded-md group">
             <div>
               <p className="font-semibold text-text-main">{t.description}</p>
               <p className="text-xs" style={{ color: t.category?.color || "#9CA3AF" }}>
                 {t.category?.name || "Uncategorized"}
               </p>
             </div>
-            <div className="text-right">
-              <p className={`font-mono font-semibold ${t.type === "income" ? "text-green-400" : "text-red-400"}`}>
-                {t.type === "income" ? "+" : "-"}${t.amount.toFixed(2)}
-              </p>
-              <p className="text-xs text-text-secondary">{new Date(t.date).toLocaleDateString()}</p>
+            <div className="flex items-center gap-4">
+              <div className="text-right">
+                <p className={`font-mono font-semibold ${t.type === "income" ? "text-green-400" : "text-red-400"}`}>
+                  {t.type === "income" ? "+" : "-"}${t.amount.toFixed(2)}
+                </p>
+                <p className="text-xs text-text-secondary">{new Date(t.date).toLocaleDateString()}</p>
+              </div>
+              <button
+                onClick={() => onEdit(t)}
+                className="text-gray-600 hover:text-primary opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <Edit size={16} />
+              </button>
             </div>
           </li>
         ))}
@@ -416,17 +679,17 @@ const BillAnalytics = ({ bills, selectedMonth }) => {
 
   return (
     <Widget title="Bill Analytics">
-      <div className="flex justify-around text-center mb-6">
+      <div className="flex justify-around text-center mb-4">
         <div>
-          <p className="text-2xl font-bold text-green-400">${paidTotal.toFixed(2)}</p>
+          <p className="text-xl font-bold text-green-400">${paidTotal.toFixed(2)}</p>
           <p className="text-xs text-text-secondary">Paid This Month</p>
         </div>
         <div>
-          <p className="text-2xl font-bold text-red-400">${unpaidTotal.toFixed(2)}</p>
+          <p className="text-xl font-bold text-red-400">${unpaidTotal.toFixed(2)}</p>
           <p className="text-xs text-text-secondary">Remaining</p>
         </div>
       </div>
-      <div className="h-48 w-full">
+      <div className="h-32 w-full">
         <ResponsiveContainer>
           <PieChart>
             <Pie
@@ -435,8 +698,8 @@ const BillAnalytics = ({ bills, selectedMonth }) => {
               nameKey="name"
               cx="50%"
               cy="50%"
-              innerRadius={40}
-              outerRadius={60}
+              innerRadius={20}
+              outerRadius={40}
               paddingAngle={5}
               fill="#8884d8"
             >
@@ -444,7 +707,7 @@ const BillAnalytics = ({ bills, selectedMonth }) => {
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
-            <Tooltip contentStyle={{ backgroundColor: "#161B22", border: "1px solid #374151" }} />
+            <Tooltip contentStyle={{ backgroundColor: "#161B22", border: "1px solid #374151", fontSize: "12px" }} />
           </PieChart>
         </ResponsiveContainer>
       </div>
@@ -459,7 +722,9 @@ const FinancePage = () => {
   const [bills, setBills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
-  const [isBillModalOpen, setIsBillModalOpen] = useState(false); // New state for bill manager
+  const [isBillModalOpen, setIsBillModalOpen] = useState(false);
+  const [isEditTransactionModalOpen, setIsEditTransactionModalOpen] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(new Date());
 
   const refreshData = async () => {
@@ -483,6 +748,24 @@ const FinancePage = () => {
     refreshData();
   }, []);
 
+  const handleUpdateTransaction = async () => {
+    refreshData();
+  };
+
+  const handleEditTransaction = (transaction) => {
+    setSelectedTransaction(transaction);
+    setIsEditTransactionModalOpen(true);
+  };
+
+  const handleDeleteTransaction = async (transactionId) => {
+    try {
+      await api.delete(`/finance/transactions/${transactionId}`);
+      refreshData();
+    } catch (error) {
+      alert("Failed to delete transaction.");
+    }
+  };
+
   const handleToggleBillPaid = async (billId, isPaid) => {
     try {
       const monthKey = `${selectedMonth.getFullYear()}-${String(selectedMonth.getMonth() + 1).padStart(2, "0")}`;
@@ -496,8 +779,11 @@ const FinancePage = () => {
   if (loading) return <p className="text-center text-text-secondary">Loading Financial Data...</p>;
 
   return (
-    <div>
-      <div className="flex justify-between items-start">
+    // This outer div now controls the height of the entire page content area
+    <div className="flex flex-col h-[calc(100vh-120px)]">
+      {" "}
+      {/* Adjust 120px based on your header/padding height */}
+      <div className="flex justify-between items-start flex-shrink-0">
         <PageHeader title="Financial Tracker" subtitle="Manage your income, expenses, and budgets." />
         <div className="flex gap-2">
           <StyledButton
@@ -511,28 +797,51 @@ const FinancePage = () => {
           </StyledButton>
         </div>
       </div>
+      {/* This grid now grows to fill the remaining vertical space */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4 flex-grow">
+        {/* Column 1: Budget Status & Add Transaction */}
 
-      {/* Quick Actions Section - Top Priority */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
-        <AddTransactionForm categories={categories} onTransactionAdded={refreshData} />
-        <BillAnalytics bills={bills} selectedMonth={selectedMonth} />
-      </div>
+        <div className="lg:col-span-4 flex flex-col gap-6 h-full">
+          <div>
+            <AddTransactionForm categories={categories} onTransactionAdded={refreshData} />
+          </div>
+          <div className="flex-grow min-h-0">
+            <BudgetStatus
+              categories={categories}
+              transactions={transactions}
+              selectedMonth={selectedMonth}
+              budgets={bills} // Assuming budgets are part of the bills data
+              onUpdateBudgets={async (budgets) => {
+                try {
+                  await Promise.all(
+                    budgets.map((b) => api.put(`/finance/bills/${b.category}/budget`, { amount: b.amount }))
+                  );
+                  refreshData();
+                } catch (error) {
+                  alert("Failed to update budgets.");
+                }
+              }}
+            />
+          </div>
+        </div>
 
-      {/* Main Content Section - Bills and Transactions */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mt-6">
-        <div className="lg:col-span-2">
+        {/* Column 2: Transaction List */}
+        <div className="lg:col-span-4 flex flex-col gap-6">
+          <TransactionList transactions={transactions} onEdit={handleEditTransaction} />
+        </div>
+
+        {/* Column 3: Bills & Analytics */}
+        <div className="lg:col-span-4 flex flex-col gap-2">
           <BillChecklist
             bills={bills}
             onTogglePaid={handleToggleBillPaid}
             selectedMonth={selectedMonth}
             setSelectedMonth={setSelectedMonth}
           />
-        </div>
-        <div className="lg:col-span-3">
-          <TransactionList transactions={transactions} />
+          <BillAnalytics bills={bills} selectedMonth={selectedMonth} />
         </div>
       </div>
-
+      {/* Modals */}
       <CategoryManagerModal
         isOpen={isCategoryModalOpen}
         onClose={() => setIsCategoryModalOpen(false)}
@@ -546,6 +855,17 @@ const FinancePage = () => {
         categories={categories}
         onUpdate={refreshData}
       />
+      {isEditTransactionModalOpen && (
+        <TransactionEditModal
+          transaction={selectedTransaction}
+          isOpen={isEditTransactionModalOpen}
+          onClose={() => setIsEditTransactionModalOpen(false)}
+          onUpdate={refreshData}
+          onDelete={refreshData}
+          categories={categories}
+        />
+      )}
+      {/* BudgetStatus moved to first column above */}
     </div>
   );
 };

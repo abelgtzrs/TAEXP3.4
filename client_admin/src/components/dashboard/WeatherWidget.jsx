@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Sun, Cloud, CloudRain, CloudSnow, Wind } from "lucide-react";
-import Widget from "./Widget";
+import Widget from "../ui/Widget";
 
 // This is a mock function. In a real app, this would fetch from a weather API.
 const getMockWeatherData = async () => {

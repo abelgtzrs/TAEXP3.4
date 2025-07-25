@@ -23,7 +23,7 @@ import {
   Calendar,
   MapPin,
 } from "lucide-react";
-import Widget from "./Widget";
+import Widget from "../ui/Widget";
 
 // A new sub-component to render the analog clock face using SVG.
 const AnalogClock = ({ time }) => {
@@ -171,23 +171,23 @@ const ClockWidget = () => {
     const days = (date - known) / (1000 * 60 * 60 * 24);
     const phase = (days % cycles) / cycles;
 
-    if (phase < 0.125) return { icon: Moon, name: "New Moon", color: "text-text-tertiary" };
-    if (phase < 0.25) return { icon: Moon, name: "Waxing Crescent", color: "text-text-secondary" };
-    if (phase < 0.375) return { icon: Moon, name: "First Quarter", color: "text-accent" };
-    if (phase < 0.5) return { icon: Moon, name: "Waxing Gibbous", color: "text-primary" };
-    if (phase < 0.625) return { icon: Moon, name: "Full Moon", color: "text-accent" };
-    if (phase < 0.75) return { icon: Moon, name: "Waning Gibbous", color: "text-primary" };
-    if (phase < 0.875) return { icon: Moon, name: "Last Quarter", color: "text-text-secondary" };
+    if (phase < 0.125) return { icon: Moon, name: "New Moon", color: "text-text-main" };
+    if (phase < 0.25) return { icon: Moon, name: "Waxing Crescent", color: "text-text-main" };
+    if (phase < 0.375) return { icon: Moon, name: "First Quarter", color: "text-text-main" };
+    if (phase < 0.5) return { icon: Moon, name: "Waxing Gibbous", color: "text-text-main" };
+    if (phase < 0.625) return { icon: Moon, name: "Full Moon", color: "text-text-main" };
+    if (phase < 0.75) return { icon: Moon, name: "Waning Gibbous", color: "text-text-main" };
+    if (phase < 0.875) return { icon: Moon, name: "Last Quarter", color: "text-text-main" };
     return { icon: Moon, name: "Waning Crescent", color: "text-text-tertiary" };
   };
 
   // Get season based on date
   const getSeason = (date) => {
     const month = date.getMonth();
-    if (month >= 2 && month <= 4) return { icon: Flower, name: "Spring", color: "text-accent" };
-    if (month >= 5 && month <= 7) return { icon: Sun, name: "Summer", color: "text-primary" };
-    if (month >= 8 && month <= 10) return { icon: Leaf, name: "Autumn", color: "text-accent" };
-    return { icon: Snowflake, name: "Winter", color: "text-primary" };
+    if (month >= 2 && month <= 4) return { icon: Flower, name: "Spring", color: "text-text-main" };
+    if (month >= 5 && month <= 7) return { icon: Sun, name: "Summer", color: "text-text-main" };
+    if (month >= 8 && month <= 10) return { icon: Leaf, name: "Autumn", color: "text-text-main" };
+    return { icon: Snowflake, name: "Winter", color: "text-text-main" };
   };
 
   // Calculate time until next hour
@@ -205,9 +205,9 @@ const ClockWidget = () => {
   // Get battery status (if available)
   const getBatteryInfo = () => {
     if ("getBattery" in navigator) {
-      return { icon: Battery, text: "Battery API", color: "text-accent" };
+      return { icon: Battery, text: "Battery API", color: "text-text-main" };
     }
-    return { icon: Zap, text: "AC Power", color: "text-primary" };
+    return { icon: Zap, text: "AC Power", color: "text-text-main" };
   };
 
   // Get connection type
@@ -264,8 +264,8 @@ const ClockWidget = () => {
   // Get browser info
   const getBrowserInfo = () => {
     const ua = navigator.userAgent;
-    if (ua.includes("Chrome")) return { icon: Chrome, text: "Chrome", color: "text-primary" };
-    if (ua.includes("Firefox")) return { icon: Globe, text: "Firefox", color: "text-accent" };
+    if (ua.includes("Chrome")) return { icon: Chrome, text: "Brave", color: "text-text-main" };
+    if (ua.includes("Firefox")) return { icon: Globe, text: "Firefox", color: "text-text-main" };
     if (ua.includes("Safari")) return { icon: Globe, text: "Safari", color: "text-primary" };
     if (ua.includes("Edge")) return { icon: Globe, text: "Edge", color: "text-primary" };
     return { icon: Globe, text: "Browser", color: "text-text-secondary" };
@@ -274,13 +274,13 @@ const ClockWidget = () => {
   // Get device info
   const getDeviceInfo = () => {
     const platform = navigator.platform;
-    if (platform.includes("Win")) return { icon: Monitor, text: "Windows", color: "text-primary" };
+    if (platform.includes("Win")) return { icon: Monitor, text: "Windows", color: "text-text-main" };
     if (platform.includes("Mac")) return { icon: Laptop, text: "macOS", color: "text-text-secondary" };
     if (platform.includes("Linux")) return { icon: Server, text: "Linux", color: "text-accent" };
     if (platform.includes("iPhone") || platform.includes("iPad"))
       return { icon: Smartphone, text: "iOS", color: "text-text-secondary" };
     if (platform.includes("Android")) return { icon: Smartphone, text: "Android", color: "text-accent" };
-    return { icon: Monitor, text: "Device", color: "text-text-secondary" };
+    return { icon: Monitor, text: "Device", color: "text-text-main" };
   };
 
   // Format file size

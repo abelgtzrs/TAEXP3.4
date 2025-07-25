@@ -1,20 +1,55 @@
 // server/routes/userRoutes.js
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+const path = require("path");
+
+// --- Multer Configuration for file uploads ---
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    // Define the destination directory for uploads
+    cb(null, "public/uploads/avatars/");
+  },
+  filename: function (req, file, cb) {
+    // Create a unique filename to avoid conflicts
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, req.user.id + "-" + uniqueSuffix + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    // Check both MIME type and file extension
+    const allowedMimeTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
+    const allowedExtensions = /\.(jpg|jpeg|png|gif)$/i;
+
+    if (allowedMimeTypes.includes(file.mimetype) && allowedExtensions.test(file.originalname)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files (jpg, jpeg, png, gif) are allowed!"), false);
+    }
+  },
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB file size limit
+});
+// --- End Multer Configuration ---
 
 const {
   getUserCollection,
   updateDisplayedItems,
   getDashboardStats,
-  setActivePersona, // <-- IMPORT NEW FUNCTION
-} = require("../controllers/userController"); // We'll add this function next
+  setActivePersona,
+  updateProfilePicture, // <-- IMPORT NEW FUNCTION
+} = require("../controllers/userController");
 
 const { protect } = require("../middleware/authMiddleware");
 
 // Apply 'protect' middleware to all routes in this file
 router.use(protect);
 
-// --- ADD THIS NEW ROUTE ---
+// --- ADD THIS NEW ROUTE for profile picture upload ---
+router.put("/me/profile-picture", upload.single("profilePicture"), updateProfilePicture);
+
 router.put("/me/profile/active-persona", setActivePersona);
 
 // Temporary route to unlock all personas for testing

@@ -1,9 +1,9 @@
-import { ArrowUpRight, ArrowDownRight } from 'lucide-react';
-import Widget from './Widget';
+import { ArrowUpRight, ArrowDownRight } from "lucide-react";
+import Widget from "../ui/Widget";
 
 const MetricCard = ({ title, value, change, changeType }) => {
-  const isIncrease = changeType === 'increase';
-  const changeColor = isIncrease ? 'text-green-400' : 'text-red-400';
+  const isIncrease = changeType === "increase";
+  const changeColor = isIncrease ? "text-green-400" : "text-red-400";
   const Icon = isIncrease ? ArrowUpRight : ArrowDownRight;
 
   return (

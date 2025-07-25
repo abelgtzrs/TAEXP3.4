@@ -24,6 +24,10 @@ const UserSchema = new mongoose.Schema({
     minlength: [6, "Password must be at least 6 characters long"],
     select: false, // Exclude password from queries by default
   },
+  profilePicture: {
+    type: String,
+    default: null,
+  },
   role: {
     type: String,
     enum: ["admin", "wife_of_the_year", "user"],

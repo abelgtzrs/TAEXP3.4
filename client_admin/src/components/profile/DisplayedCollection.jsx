@@ -1,4 +1,4 @@
-import Widget from "../ui/Widget";
+import Widget from "../dashboard/Widget";
 
 const DisplayedCollection = ({ title, items, baseField }) => {
   // --- THIS IS THE FIX ---
@@ -11,6 +11,9 @@ const DisplayedCollection = ({ title, items, baseField }) => {
     displayItems.push(null);
   }
 
+  // Construct the base URL for the server to correctly resolve image paths
+  const serverBaseUrl = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").split("/api")[0];
+
   // Helper function to get the image URL based on collection type
   const getImageUrl = (baseItem, baseField) => {
     if (!baseItem) return null;
@@ -19,11 +22,30 @@ const DisplayedCollection = ({ title, items, baseField }) => {
     if (baseField === "basePokemon") {
       // Try to get sprite from the first form (default form)
       const firstForm = baseItem.forms?.[0];
-      return firstForm?.spriteGen6Animated || firstForm?.spriteGen5Animated || null;
+      const pokemonSprite = firstForm?.spriteGen6Animated || firstForm?.spriteGen5Animated || null;
+      return pokemonSprite ? `${serverBaseUrl}${pokemonSprite}` : null;
     }
 
-    // Other collections use imageUrl directly
-    return baseItem.imageUrl || null;
+    // Other collections use imageUrl directly - prefix with server URL
+    let imageUrl = baseItem.imageUrl;
+    if (!imageUrl) return null;
+    // Remove leading 'public/' or '/public/' if present
+    imageUrl = imageUrl.replace(/^public\//, "").replace(/^\/public\//, "");
+    // Remove leading slash if present
+    imageUrl = imageUrl.replace(/^\//, "");
+    const fullUrl = `${serverBaseUrl}/${imageUrl}`;
+    // Enhanced debug logging
+    if (baseField === "habboRareBase") {
+      console.log("Habbo Rare Debug:", {
+        baseItem: baseItem.name,
+        originalImageUrl: baseItem.imageUrl,
+        cleanedImageUrl: imageUrl,
+        serverBaseUrl,
+        fullUrl,
+        finalImageSrc: fullUrl
+      });
+    }
+    return fullUrl;
   };
 
   return (

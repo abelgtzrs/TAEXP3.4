@@ -2,6 +2,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const path = require("path");
 const connectDB = require("./config/db");
 
 // Auth middleware for protected routes
@@ -37,6 +38,10 @@ app.use(cors()); // Allow cross-origin requests from frontend
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: false })); // Parse form data
 
+// --- Serve static files from multiple directories ---
+app.use(express.static("public")); // Serve uploaded files (avatars, etc.)
+app.use(express.static(path.join(__dirname, "../public"))); // Serve public assets (habbo rares, pokemon, etc.)
+
 // Health check endpoint
 app.get("/", (req, res) => {
   res.send("The Abel Experience™ API is running...");
@@ -68,6 +73,7 @@ app.use("/api/admin/volumes", require("./routes/volumeRoutes"));
 app.use("/api/admin/workout-templates", require("./routes/workoutTemplateRoutes"));
 app.use("/api/admin/exercises", protect, authorize("admin"), require("./routes/exerciseAdminRoutes"));
 app.use("/api/admin/pokemon", protect, authorize("admin"), require("./routes/pokemonAdminRoutes"));
+app.use("/api/admin/habbo-rares", require("./routes/habboRareAdminRoutes"));
 
 // External integrations & additional features
 app.use("/api/spotify", require("./routes/spotifyRoutes"));

@@ -1,4 +1,4 @@
-import Widget from "./Widget";
+import Widget from "../ui/Widget";
 
 const TopProductsWidget = () => {
   const products = [
