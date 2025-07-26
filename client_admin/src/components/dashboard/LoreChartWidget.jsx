@@ -60,8 +60,8 @@ export const CoherenceChartWidget = () => {
     getComputedStyle(document.documentElement).getPropertyValue("--color-text-secondary") || "#9ca3af";
 
   return (
-    <Widget title="Narrative Coherence Index">
-      <div className="flex-1 w-full">
+    <Widget title="Narrative Coherence Index" className="h-full min-h-0">
+      <div className="flex-1 w-full h-full min-h-0">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={chartData} margin={{ top: 5, right: 20, left: -15, bottom: 5 }}>
             <defs>
@@ -105,8 +105,8 @@ export const AnomalyChartWidget = () => {
     getComputedStyle(document.documentElement).getPropertyValue("--color-text-secondary") || "#9ca3af";
 
   return (
-    <Widget title="Anomaly Detection Events">
-      <div className="flex-1 w-full">
+    <Widget title="Anomaly Detection Events" className="h-full min-h-0">
+      <div className="flex-1 w-full h-full min-h-0">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData.slice(-8)} margin={{ top: 5, right: 20, left: -15, bottom: 5 }}>
             <XAxis dataKey="name" stroke={primaryColor} tick={{ fill: textSecondaryColor, fontSize: 10 }} />
@@ -141,8 +141,8 @@ export const DriftChartWidget = () => {
     getComputedStyle(document.documentElement).getPropertyValue("--color-text-secondary") || "#9ca3af";
 
   return (
-    <Widget title="Temporal Drift Analysis">
-      <div className="flex-1 w-full">
+    <Widget title="Temporal Drift Analysis" className="h-full min-h-0">
+      <div className="flex-1 w-full h-full min-h-0">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData} margin={{ top: 5, right: 20, left: -15, bottom: 5 }}>
             <XAxis dataKey="name" stroke={primaryColor} tick={{ fill: textSecondaryColor, fontSize: 10 }} />
@@ -175,15 +175,15 @@ export const SystemStatusWidget = () => {
     getComputedStyle(document.documentElement).getPropertyValue("--color-text-secondary") || "#9ca3af";
 
   return (
-    <Widget title="System Status Overview">
-      <div className="flex-1 w-full flex items-center justify-center">
+    <Widget title="System Status Overview" className="h-full min-h-0">
+      <div className="flex-1 w-full h-full min-h-0 flex items-center justify-center">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
               data={systemStatus}
               cx="50%"
               cy="50%"
-              outerRadius={150}
+              outerRadius={100}
               dataKey="value"
               startAngle={90}
               endAngle={-270}
@@ -202,7 +202,7 @@ export const SystemStatusWidget = () => {
           </PieChart>
         </ResponsiveContainer>
       </div>
-      <div className="flex justify-center space-x-4 text-xs">
+      <div className="flex justify-center space-x-4 text-[8px]">
         {systemStatus.map((item, index) => (
           <div key={index} className="flex items-center space-x-1">
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
@@ -216,10 +216,11 @@ export const SystemStatusWidget = () => {
   );
 };
 
-// Combined dashboard showing all 4 charts in a 2x2 grid
+// Combined dashboard showing all 4 charts in a 2x2 grid, filling the parent container
+
 const LoreChartWidget = () => {
   return (
-    <div className="grid grid-cols-2 gap-4" style={{ height: "80vh" }}>
+    <div className="grid grid-cols-2 grid-rows-2 gap-4 h-full min-h-0">
       <CoherenceChartWidget />
       <AnomalyChartWidget />
       <DriftChartWidget />

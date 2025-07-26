@@ -58,15 +58,15 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="flex h-screen bg-background text-text-main relative">
+    <div className="flex h-screen bg-background text-text-main relative text-xs">
       {/* --- Header (Full Width) --- */}
       <div className="fixed top-0 left-0 right-0 z-30">
         <Header />
       </div>
 
       {/* --- Main Content Area (with left margin for sidebar and top padding for header) --- */}
-      <div className="flex-1 flex flex-col overflow-hidden ml-20 pt-16">
-        <main className="flex-1 p-6 lg:p-8 overflow-y-auto scrollbar-hide">
+      <div className="flex-1 flex flex-col overflow-hidden ml-14 pt-12">
+        <main className="flex-1 p-2 lg:p-3 overflow-y-auto scrollbar-hide min-h-0">
           <Outlet />
         </main>
       </div>
@@ -82,9 +82,9 @@ const AdminLayout = () => {
       {/* --- Floating Sidebar --- */}
       <aside
         className={`fixed left-0 top-1/2 transform -translate-y-1/2 bg-surface/40 backdrop-blur-md border border-gray-700/80 rounded-r-2xl shadow-2xl z-50 flex flex-col transition-all duration-500 ease-in-out ${
-          isSidebarCollapsed ? "w-16 translate-x-0 shadow-lg" : "w-80 translate-x-0 shadow-2xl shadow-primary/10"
+          isSidebarCollapsed ? "w-10 translate-x-0 shadow-lg" : "w-56 translate-x-0 shadow-2xl shadow-primary/10"
         }`}
-        style={{ maxHeight: "80vh" }}
+        style={{ maxHeight: "90vh", minWidth: isSidebarCollapsed ? "2.5rem" : "14rem" }}
       >
         {/* Toggle Button */}
         <button
@@ -100,34 +100,34 @@ const AdminLayout = () => {
           </div>
         </button>
 
-        <div className="p-4 flex-shrink-0">
+        <div className="p-2 flex-shrink-0">
           {/* Header */}
-          <div className={`flex items-center gap-2 py-2 mb-4 ${isSidebarCollapsed ? "justify-center" : ""}`}>
+          <div className={`flex items-center gap-1 py-1 mb-2 ${isSidebarCollapsed ? "justify-center" : ""}`}>
             <div
               className={`overflow-hidden transition-all duration-500 ease-in-out ${
                 isSidebarCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"
               }`}
             >
-              <h1 className="text-white font-bold text-xs whitespace-nowrap">The Abel Experience™ CFW</h1>
+              <h1 className="text-white font-bold text-[10px] whitespace-nowrap">The Abel Experience™ CFW</h1>
             </div>
             {isSidebarCollapsed && (
-              <div className="w-8 h-8 bg-primary/50 rounded-lg flex items-center justify-center">
-                <span className="text-primary font-bold text-sm">TAE</span>
+              <div className="w-6 h-6 bg-primary/50 rounded-lg flex items-center justify-center">
+                <span className="text-primary font-bold text-xs">TAE</span>
               </div>
             )}
           </div>
         </div>
 
-        <nav className="flex-grow space-y-4 overflow-y-auto scrollbar-hide px-2">
+        <nav className="flex-grow space-y-2 overflow-y-auto scrollbar-hide px-1">
           <div>
             <p
-              className={`px-2 text-xs font-semibold text-text-tertiary uppercase mb-3 transition-all duration-500 ease-in-out ${
-                isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-3"
+              className={`px-1 text-[10px] font-semibold text-text-tertiary uppercase mb-1 transition-all duration-500 ease-in-out ${
+                isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-1"
               }`}
             >
               Main
             </p>
-            <ul className="space-y-2">
+            <ul className="space-y-1">
               <NavItem to="/dashboard" icon={LayoutDashboard} isCollapsed={isSidebarCollapsed}>
                 Dashboard
               </NavItem>
@@ -154,13 +154,13 @@ const AdminLayout = () => {
 
           <div>
             <p
-              className={`px-2 text-xs font-semibold text-text-tertiary uppercase mb-3 transition-all duration-500 ease-in-out ${
-                isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-3"
+              className={`px-1 text-[10px] font-semibold text-text-tertiary uppercase mb-1 transition-all duration-500 ease-in-out ${
+                isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-1"
               }`}
             >
               Trackers
             </p>
-            <ul className="space-y-2">
+            <ul className="space-y-1">
               <NavItem to="/habits" icon={CheckSquare} isCollapsed={isSidebarCollapsed}>
                 Habits
               </NavItem>
@@ -176,13 +176,13 @@ const AdminLayout = () => {
           {user?.role === "admin" && (
             <div>
               <p
-                className={`px-2 text-xs font-semibold text-text-tertiary uppercase mb-3 transition-all duration-500 ease-in-out ${
-                  isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-3"
+                className={`px-1 text-[10px] font-semibold text-text-tertiary uppercase mb-1 transition-all duration-500 ease-in-out ${
+                  isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-1"
                 }`}
               >
                 Admin
               </p>
-              <ul className="space-y-2">
+              <ul className="space-y-1">
                 <NavItem to="/admin/volumes" icon={Library} isCollapsed={isSidebarCollapsed}>
                   Volume Administration
                 </NavItem>
@@ -206,14 +206,14 @@ const AdminLayout = () => {
           )}
         </nav>
 
-        <div className="mt-auto flex-shrink-0 border-t border-gray-700/50 pt-4 px-2">
+        <div className="mt-auto flex-shrink-0 border-t border-gray-700/50 pt-2 px-1">
           <button
             onClick={logout}
-            className={`w-full flex items-center p-3 rounded-lg text-sm text-text-secondary hover:bg-red-800/50 hover:text-white transition-all duration-300 ${
+            className={`w-full flex items-center p-2 rounded-lg text-xs text-text-secondary hover:bg-red-800/50 hover:text-white transition-all duration-300 ${
               isSidebarCollapsed ? "justify-center" : ""
             }`}
           >
-            <LogOut size={20} className={isSidebarCollapsed ? "" : "mr-3"} />
+            <LogOut size={16} className={isSidebarCollapsed ? "" : "mr-2"} />
             <span
               className={`transition-all duration-300 overflow-hidden whitespace-nowrap ${
                 isSidebarCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"

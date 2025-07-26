@@ -2,7 +2,7 @@ import StatBox from "./StatBox";
 
 const StatBoxRow = ({ stats, loading }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
       <div className="bg-surface border border-gray-700/50 rounded-lg">
         <StatBox
           title="Habits Completed Today"
@@ -55,6 +55,24 @@ const StatBoxRow = ({ stats, loading }) => {
           change="+0"
           changeType="increase"
           period="this quarter"
+        />
+      </div>
+      <div className="bg-surface border border-gray-700/50 rounded-lg">
+        <StatBox
+          title="Tasks Completed"
+          value={loading ? "..." : stats.tasksCompleted}
+          change="+8"
+          changeType="increase"
+          period="today"
+        />
+      </div>
+      <div className="bg-surface border border-gray-700/50 rounded-lg">
+        <StatBox
+          title="Active Goals"
+          value={loading ? "..." : stats.activeGoals}
+          change="+1"
+          changeType="increase"
+          period="this month"
         />
       </div>
     </div>

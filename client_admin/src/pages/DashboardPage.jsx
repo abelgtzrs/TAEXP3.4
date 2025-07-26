@@ -47,6 +47,7 @@ const DashboardPage = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="space-y-2"
+      style={{ zoom: "0.8", transformOrigin: "top left" }}
     >
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -61,72 +62,76 @@ const DashboardPage = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.4 }}
-        className="grid grid-cols-6 gap-4"
+        className="grid grid-cols-8 gap-4"
       >
         {/* Row 1: Full-width Stat Box */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="col-span-6"
+          className="col-span-8"
         >
           <StatBoxRow stats={stats} loading={loading} />
         </motion.div>
 
         {/* --- Precise Widget Placement --- */}
 
-        {/* A 4x4 Chart */}
+        {/* Charts - 4 columns wide, match clock height */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.8 }}
-          className="col-span-6 md:col-span-4 row-span-2"
+          className="col-span-8 md:col-span-4 h-full min-h-0"
         >
           <LoreChartWidget />
         </motion.div>
 
-        {/* A 2x2 Clock */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1.0 }}
-          className="col-span-3 md:col-span-2 h-50"
-        >
-          <ClockWidget />
-        </motion.div>
-
-        {/* A 2x2 Weather Widget */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1.1 }}
-          className="col-span-3 md:col-span-2 h-50"
-        >
-          <WeatherWidget />
-        </motion.div>
-
-        {/* The Tracker Widgets, each taking up 2 columns */}
+        {/* Habit Tracker - 2 columns, on same row as charts */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 1.2 }}
-          className="col-span-6 md:col-span-2 row-span-2"
+          className="col-span-8 md:col-span-2 row-span-1"
         >
           <HabitTrackerWidget />
         </motion.div>
+
+        {/* Clock - 2 columns, stacked on top */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.0 }}
+          className="col-span-4 md:col-span-2"
+        >
+          <ClockWidget />
+        </motion.div>
+
+        {/* Weather on next row - 2 columns */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.1 }}
+          className="col-span-4 md:col-span-2"
+        >
+          <WeatherWidget />
+        </motion.div>
+
+        {/* Book Tracker - 2 columns, stacked below habit tracker */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 1.3 }}
-          className="col-span-6 md:col-span-2 row-span-2"
+          className="col-span-8 md:col-span-2 row-span-1"
         >
           <BookTrackerWidget />
         </motion.div>
+
+        {/* Remaining Tracker Widget */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 1.4 }}
-          className="col-span-6 md:col-span-2 row-span-2"
+          className="col-span-8 md:col-span-2 row-span-2"
         >
           <WorkoutTrackerWidget />
         </motion.div>
@@ -136,7 +141,7 @@ const DashboardPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.5 }}
-          className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
+          className="col-span-8 md:col-span-4 lg:col-span-2 row-span-2"
         >
           <PersonaWidget />
         </motion.div>
@@ -144,7 +149,7 @@ const DashboardPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.5 }}
-          className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
+          className="col-span-8 md:col-span-4 lg:col-span-2 row-span-2"
         >
           <SpotifyWidget />
         </motion.div>
@@ -152,7 +157,7 @@ const DashboardPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.6 }}
-          className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
+          className="col-span-8 md:col-span-4 lg:col-span-2 row-span-2"
         >
           <SecuritySettingsWidget />
         </motion.div>
@@ -160,7 +165,7 @@ const DashboardPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.7 }}
-          className="col-span-6 lg:col-span-2 row-span-2"
+          className="col-span-8 lg:col-span-2 row-span-2"
         >
           <GoalsWidget goals={stats.goals} loading={loading} />
         </motion.div>
@@ -169,7 +174,7 @@ const DashboardPage = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 1.8 }}
-          className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
+          className="col-span-8 md:col-span-4 lg:col-span-2 row-span-2"
         >
           <RecentAcquisitionsWidget acquisitions={stats.recentAcquisitions} loading={loading} />
         </motion.div>
@@ -177,7 +182,7 @@ const DashboardPage = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 1.9 }}
-          className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
+          className="col-span-8 md:col-span-4 lg:col-span-2 row-span-2"
         >
           <TopProductsWidget products={stats.topProducts} loading={loading} />
         </motion.div>
@@ -185,7 +190,7 @@ const DashboardPage = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 2.0 }}
-          className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
+          className="col-span-8 md:col-span-4 lg:col-span-2 row-span-2"
         >
           <CurrencySourceWidget />
         </motion.div>
