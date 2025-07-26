@@ -46,11 +46,11 @@ const DashboardPage = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="space-y-2"
-      style={{ zoom: "0.8", transformOrigin: "top left" }}
+      className="space-y-5"
+      style={{ zoom: "0.75", transformOrigin: "top left" }}
     >
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
