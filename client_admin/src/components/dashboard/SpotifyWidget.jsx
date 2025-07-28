@@ -9,6 +9,7 @@ const SpotifyWidget = () => {
   const { user } = useAuth();
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isSyncing, setIsSyncing] = useState(false);
+  const [lastAutoSync, setLastAutoSync] = useState(null);
 
   const connectSpotify = async () => {
     try {
@@ -21,15 +22,23 @@ const SpotifyWidget = () => {
     }
   };
 
-  const handleSync = async () => {
-    setIsSyncing(true);
+  const handleSync = async (isAutoSync = false) => {
+    if (!isAutoSync) setIsSyncing(true);
     try {
       const response = await api.post("/spotify/sync");
-      alert(response.data.message);
+      if (isAutoSync) {
+        setLastAutoSync(new Date());
+        console.log("Auto-sync completed:", response.data);
+      } else {
+        alert(response.data.message);
+      }
     } catch (error) {
-      alert("Failed to sync recent tracks.");
+      if (!isAutoSync) {
+        alert("Failed to sync recent tracks.");
+      }
+      console.error("Sync error:", error);
     } finally {
-      setIsSyncing(false);
+      if (!isAutoSync) setIsSyncing(false);
     }
   };
 
@@ -42,10 +51,23 @@ const SpotifyWidget = () => {
           if (response.data.data && response.data.data.is_playing) {
             setCurrentTrack(response.data.data);
           } else {
-            // If nothing is playing, fetch the last played track
-            const recentRes = await api.post("/spotify/sync"); // Sync first
-            const recent = await api.get("/spotify/recently-played"); // This endpoint needs to be created
-            setCurrentTrack(recent.data.items[0]); // Simplified
+            // If nothing is playing, fetch the last played track from our database
+            const recent = await api.get("/spotify/recently-played?limit=1");
+            if (recent.data.items && recent.data.items.length > 0) {
+              // Convert our database format to match Spotify API format
+              const lastTrack = recent.data.items[0];
+              setCurrentTrack({
+                track: {
+                  id: lastTrack.trackId,
+                  name: lastTrack.trackName,
+                  artists: [{ name: lastTrack.artistName }],
+                  album: { name: lastTrack.albumName, images: [] },
+                  duration_ms: lastTrack.durationMs,
+                },
+                played_at: lastTrack.playedAt,
+                is_playing: false,
+              });
+            }
           }
         } catch (error) {
           console.error("Error fetching Spotify status:", error);
@@ -56,6 +78,26 @@ const SpotifyWidget = () => {
       const intervalId = setInterval(fetchCurrentTrack, 15000); // Then every 15 seconds
       return () => clearInterval(intervalId); // Cleanup on unmount
     }
+  }, [user?.spotifyConnected]);
+
+  // Auto-sync effect - runs every 5 minutes in the widget
+  useEffect(() => {
+    if (!user?.spotifyConnected) return;
+
+    // Auto-sync every 5 minutes
+    const autoSyncInterval = setInterval(() => {
+      handleSync(true);
+    }, 5 * 60 * 1000); // 5 minutes
+
+    // Initial auto-sync after 1 minute
+    const initialSyncTimeout = setTimeout(() => {
+      handleSync(true);
+    }, 60 * 1000); // 1 minute after widget loads
+
+    return () => {
+      clearInterval(autoSyncInterval);
+      clearTimeout(initialSyncTimeout);
+    };
   }, [user?.spotifyConnected]);
 
   // If user hasn't connected their Spotify account yet
@@ -85,8 +127,8 @@ const SpotifyWidget = () => {
   }
 
   const track = currentTrack.track || currentTrack; // Handle both currently-playing and recent track structures
-  const albumArtUrl = track.album.images[0]?.url;
-  const artists = track.artists.map((a) => a.name).join(", ");
+  const albumArtUrl = track?.album?.images?.[0]?.url;
+  const artists = Array.isArray(track?.artists) ? track.artists.map((a) => a.name).join(", ") : "Unknown Artist";
 
   return (
     <Widget title="Spotify Activity" className="flex flex-col">
@@ -116,13 +158,18 @@ const SpotifyWidget = () => {
       </div>
       <div className="mt-4 border-t border-gray-700/50 pt-3">
         <button
-          onClick={handleSync}
+          onClick={() => handleSync(false)}
           disabled={isSyncing}
           className="w-full text-xs text-text-secondary hover:text-white flex items-center justify-center gap-2"
         >
           <RefreshCw size={14} className={isSyncing ? "animate-spin" : ""} />
           {isSyncing ? "Syncing..." : "Sync Recent Activity"}
         </button>
+        {lastAutoSync && (
+          <div className="text-center mt-1">
+            <span className="text-xs text-text-tertiary">Auto-synced: {lastAutoSync.toLocaleTimeString()}</span>
+          </div>
+        )}
       </div>
     </Widget>
   );

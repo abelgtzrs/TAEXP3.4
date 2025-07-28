@@ -46,7 +46,7 @@ This is a high-level overview of the most important directories and files.
 │   │   │   ├── TasksPage.jsx           # To-do list and task management
 │   │   │   ├── FinancePage.jsx         # Personal finance tracking
 │   │   │   ├── SettingsPage.jsx        # User account and theme settings
-│   │   │   ├── PokedexPage.jsx         # Displays all Pokémon data
+│   │   │   ├── PokedexPage.jsx         # Displays all Pokémon datawhere
 │   │   │   ├── HabboRareManagement.jsx # Admin page for managing Habbo Rares
 │   │   │   ├── PokemonEditorPage.jsx   # Admin page for managing Pokémon
 │   │   │   ├── AdminExercisesPage.jsx  # Admin page for managing exercises

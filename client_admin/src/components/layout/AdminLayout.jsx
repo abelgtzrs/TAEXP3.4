@@ -22,6 +22,7 @@ import {
   ChevronRight,
   Settings2,
   DollarSign,
+  Music,
 } from "lucide-react";
 
 const NavItem = ({ to, icon: Icon, children, isCollapsed }) => {
@@ -65,7 +66,7 @@ const AdminLayout = () => {
       </div>
 
       {/* --- Main Content Area (with left margin for sidebar and top padding for header) --- */}
-      <div className="flex-1 flex flex-col overflow-hidden ml-14 pt-12">
+      <div className="flex-1 flex flex-col overflow-hidden ml-14 pt-20">
         <main className="flex-1 p-2 lg:p-3 overflow-y-auto scrollbar-hide min-h-0">
           <Outlet />
         </main>
@@ -148,6 +149,9 @@ const AdminLayout = () => {
               </NavItem>
               <NavItem to="/finance" icon={DollarSign} isCollapsed={isSidebarCollapsed}>
                 Finance
+              </NavItem>
+              <NavItem to="/spotify-stats" icon={Music} isCollapsed={isSidebarCollapsed}>
+                Spotify Stats
               </NavItem>
             </ul>
           </div>

@@ -61,9 +61,9 @@ export const CoherenceChartWidget = () => {
 
   return (
     <Widget title="Narrative Coherence Index" className="h-full min-h-0">
-      <div className="flex-1 w-full h-full min-h-0">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={chartData} margin={{ top: 5, right: 20, left: -15, bottom: 5 }}>
+      <div className="flex-1 w-full h-full min-h-0 py-2">
+        <ResponsiveContainer width="100%" height="100%" minHeight={120}>
+          <AreaChart data={chartData} margin={{ top: 10, right: 20, left: -15, bottom: 10 }}>
             <defs>
               <linearGradient id="colorCoherence" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="50%" stopColor={primaryColor} stopOpacity={0.4} />
@@ -106,9 +106,9 @@ export const AnomalyChartWidget = () => {
 
   return (
     <Widget title="Anomaly Detection Events" className="h-full min-h-0">
-      <div className="flex-1 w-full h-full min-h-0">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={chartData.slice(-8)} margin={{ top: 5, right: 20, left: -15, bottom: 5 }}>
+      <div className="flex-1 w-full h-full min-h-0 py-2">
+        <ResponsiveContainer width="100%" height="100%" minHeight={120}>
+          <BarChart data={chartData.slice(-8)} margin={{ top: 10, right: 20, left: -15, bottom: 10 }}>
             <XAxis dataKey="name" stroke={primaryColor} tick={{ fill: textSecondaryColor, fontSize: 10 }} />
             <YAxis stroke={primaryColor} tick={{ fill: textSecondaryColor, fontSize: 10 }} />
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -142,9 +142,9 @@ export const DriftChartWidget = () => {
 
   return (
     <Widget title="Temporal Drift Analysis" className="h-full min-h-0">
-      <div className="flex-1 w-full h-full min-h-0">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={chartData} margin={{ top: 5, right: 20, left: -15, bottom: 5 }}>
+      <div className="flex-1 w-full h-full min-h-0 py-2">
+        <ResponsiveContainer width="100%" height="100%" minHeight={120}>
+          <LineChart data={chartData} margin={{ top: 10, right: 20, left: -15, bottom: 10 }}>
             <XAxis dataKey="name" stroke={primaryColor} tick={{ fill: textSecondaryColor, fontSize: 10 }} />
             <YAxis stroke={primaryColor} domain={[0, 0.25]} tick={{ fill: textSecondaryColor, fontSize: 10 }} />
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -176,41 +176,43 @@ export const SystemStatusWidget = () => {
 
   return (
     <Widget title="System Status Overview" className="h-full min-h-0">
-      <div className="flex-1 w-full h-full min-h-0 flex items-center justify-center">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={systemStatus}
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              dataKey="value"
-              startAngle={90}
-              endAngle={-270}
-            >
-              {systemStatus.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
-            <Tooltip
-              contentStyle={{
-                backgroundColor: "rgba(255, 255, 255, 0.9)",
-                borderColor: "#426280ff",
-                color: "#d8dadeff",
-              }}
-            />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
-      <div className="flex justify-center space-x-4 text-[8px]">
-        {systemStatus.map((item, index) => (
-          <div key={index} className="flex items-center space-x-1">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
-            <span style={{ color: textSecondaryColor }}>
-              {item.name}: {item.value}%
-            </span>
-          </div>
-        ))}
+      <div className="flex-1 w-full h-full min-h-0 flex flex-col justify-center py-2">
+        <div className="flex-1 flex items-center justify-center" style={{ minHeight: "120px" }}>
+          <ResponsiveContainer width="100%" height="100%" minHeight={100}>
+            <PieChart>
+              <Pie
+                data={systemStatus}
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                dataKey="value"
+                startAngle={90}
+                endAngle={-270}
+              >
+                {systemStatus.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "rgba(255, 255, 255, 0.9)",
+                  borderColor: "#426280ff",
+                  color: "#d8dadeff",
+                }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="flex justify-center space-x-4 text-[8px] mt-2">
+          {systemStatus.map((item, index) => (
+            <div key={index} className="flex items-center space-x-1">
+              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
+              <span style={{ color: textSecondaryColor }}>
+                {item.name}: {item.value}%
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </Widget>
   );
@@ -220,7 +222,7 @@ export const SystemStatusWidget = () => {
 
 const LoreChartWidget = () => {
   return (
-    <div className="grid grid-cols-2 grid-rows-2 gap-4 h-full min-h-0">
+    <div className="grid grid-cols-2 grid-rows-2 gap-3 h-full min-h-0">
       <CoherenceChartWidget />
       <AnomalyChartWidget />
       <DriftChartWidget />

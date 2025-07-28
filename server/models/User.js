@@ -174,6 +174,18 @@ const UserSchema = new mongoose.Schema({
     type: [Number],
     default: [1],
   },
+  debts: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Debt",
+    },
+  ],
+  financialGoals: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "FinancialGoal",
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,

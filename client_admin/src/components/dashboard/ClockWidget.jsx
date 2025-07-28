@@ -178,7 +178,7 @@ const ClockWidget = () => {
     if (phase < 0.625) return { icon: Moon, name: "Full Moon", color: "text-text-main" };
     if (phase < 0.75) return { icon: Moon, name: "Waning Gibbous", color: "text-text-main" };
     if (phase < 0.875) return { icon: Moon, name: "Last Quarter", color: "text-text-main" };
-    return { icon: Moon, name: "Waning Crescent", color: "text-text-tertiary" };
+    return { icon: Moon, name: "Waning Crescent", color: "text-text-main" };
   };
 
   // Get season based on date
@@ -343,11 +343,11 @@ const ClockWidget = () => {
               {React.createElement(getMoonPhase(time).icon, { size: 14 })}
               {getMoonPhase(time).name}
             </span>
-            <span className="flex items-center gap-1 text-accent">
+            <span className="flex items-center gap-1 text-text-main">
               <Sunrise size={14} />
               {getSunInfo(time).sunrise}
             </span>
-            <span className="flex items-center gap-1 text-primary">
+            <span className="flex items-center gap-1 text-text-main">
               <Sunset size={14} />
               {getSunInfo(time).sunset}
             </span>
@@ -359,7 +359,7 @@ const ClockWidget = () => {
           <div className="bg-gray-800/50 rounded-lg p-2">
             <div className="flex justify-between text-xs mb-1">
               <span className="text-text-secondary">Week Progress</span>
-              <span className="text-primary font-bold">{getWeekProgress(time)}%</span>
+              <span className="text-text-main font-bold">{getWeekProgress(time)}%</span>
             </div>
             <div className="w-full bg-gray-900/70 rounded-full h-1.5">
               <div
@@ -465,7 +465,7 @@ const ClockWidget = () => {
                 {React.createElement(getBatteryInfo().icon, { size: 12 })}
                 {getBatteryInfo().text}
               </span>
-              <span className="flex items-center gap-1 text-primary">
+              <span className="flex items-center gap-1 text-secondary">
                 {networkStatus === "online" ? <Wifi size={12} /> : <WifiOff size={12} />}
                 {getConnectionType().toUpperCase()}
               </span>

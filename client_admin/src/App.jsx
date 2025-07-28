@@ -25,6 +25,7 @@ import HabboRareManagement from "./pages/HabboRareManagement";
 import SettingsPage from "./pages/SettingsPage";
 import TasksPage from "./pages/TasksPage";
 import FinancePage from "./pages/FinancePage";
+import SpotifyStatsPage from "./pages/SpotifyStatsPage";
 
 function App() {
   useTheme();
@@ -47,6 +48,7 @@ function App() {
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/tasks" element={<TasksPage />} />
           <Route path="/finance" element={<FinancePage />} />
+          <Route path="/spotify-stats" element={<SpotifyStatsPage />} />
         </Route>
       </Route>
 

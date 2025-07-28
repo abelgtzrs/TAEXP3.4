@@ -5,7 +5,71 @@ const SpotifyLog = require("../models/SpotifyLogs");
 
 const SPOTIFY_AUTH_URL = "https://accounts.spotify.com/authorize";
 const SPOTIFY_TOKEN_URL = "https://accounts.spotify.com/api/token";
-const REDIRECT_URI = "https://localhost:5000/api/spotify/callback";
+const REDIRECT_URI = "http://127.0.0.1:5000/api/spotify/callback";
+
+// Helper function to refresh Spotify access token
+const refreshSpotifyToken = async (user) => {
+  try {
+    const response = await axios({
+      method: "post",
+      url: SPOTIFY_TOKEN_URL,
+      data: querystring.stringify({
+        grant_type: "refresh_token",
+        refresh_token: user.spotifyRefreshToken,
+      }),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization:
+          "Basic " +
+          Buffer.from(process.env.SPOTIFY_CLIENT_ID + ":" + process.env.SPOTIFY_CLIENT_SECRET).toString("base64"),
+      },
+    });
+
+    const { access_token, expires_in, refresh_token } = response.data;
+
+    // Update user with new tokens
+    const updatedUser = await User.findByIdAndUpdate(
+      user._id,
+      {
+        spotifyAccessToken: access_token,
+        spotifyTokenExpiresAt: new Date(Date.now() + expires_in * 1000),
+        // Some refresh responses include a new refresh token
+        ...(refresh_token && { spotifyRefreshToken: refresh_token }),
+      },
+      { new: true }
+    );
+
+    return updatedUser;
+  } catch (error) {
+    console.error("Token refresh failed:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// Helper function to make authenticated Spotify API requests with auto-refresh
+const makeSpotifyRequest = async (user, url, options = {}) => {
+  try {
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${user.spotifyAccessToken}` },
+      ...options,
+    });
+    return response;
+  } catch (error) {
+    // If we get a 401, try refreshing the token and retry once
+    if (error.response?.status === 401) {
+      console.log("Access token expired, refreshing...");
+      const refreshedUser = await refreshSpotifyToken(user);
+
+      // Retry with new token
+      const retryResponse = await axios.get(url, {
+        headers: { Authorization: `Bearer ${refreshedUser.spotifyAccessToken}` },
+        ...options,
+      });
+      return retryResponse;
+    }
+    throw error;
+  }
+};
 
 // @desc    Generate the URL for Spotify authorization
 // @route   GET /api/spotify/login
@@ -75,21 +139,55 @@ exports.handleSpotifyCallback = async (req, res) => {
 // @desc    Get the user's currently playing track
 // @route   GET /api/spotify/currently-playing
 exports.getCurrentlyPlaying = async (req, res) => {
-  // This is a simplified version. A full implementation would handle token refreshing.
   const user = await User.findById(req.user.id);
   if (!user || !user.spotifyConnected) {
     return res.status(400).json({ success: false, message: "Spotify not connected." });
   }
+
   try {
-    const response = await axios.get("https://api.spotify.com/v1/me/player/currently-playing", {
-      headers: { Authorization: `Bearer ${user.spotifyAccessToken}` },
-    });
+    const response = await makeSpotifyRequest(user, "https://api.spotify.com/v1/me/player/currently-playing");
+
     if (response.status === 204 || !response.data) {
       return res.json({ success: true, data: { is_playing: false } });
     }
     res.json({ success: true, data: response.data });
   } catch (error) {
+    console.error("Error fetching currently playing:", error);
     res.status(500).json({ success: false, message: "Could not fetch from Spotify." });
+  }
+};
+
+// @desc    Get recently played tracks from database with pagination
+// @route   GET /api/spotify/recently-played
+exports.getRecentlyPlayed = async (req, res) => {
+  const user = await User.findById(req.user.id);
+  if (!user || !user.spotifyConnected) {
+    return res.status(400).json({ success: false, message: "Spotify not connected." });
+  }
+
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 100;
+    const skip = (page - 1) * limit;
+
+    const tracks = await SpotifyLog.find({ user: user._id }).sort({ playedAt: -1 }).skip(skip).limit(limit).lean();
+
+    const totalTracks = await SpotifyLog.countDocuments({ user: user._id });
+    const totalPages = Math.ceil(totalTracks / limit);
+
+    res.json({
+      success: true,
+      items: tracks,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalTracks,
+        limit,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching recent tracks:", error);
+    res.status(500).json({ success: false, message: "Could not fetch recent tracks." });
   }
 };
 
@@ -100,14 +198,21 @@ exports.syncRecentTracks = async (req, res) => {
   if (!user || !user.spotifyConnected) {
     return res.status(400).json({ success: false, message: "Spotify not connected." });
   }
+
   try {
-    const response = await axios.get("https://api.spotify.com/v1/me/player/recently-played?limit=50", {
-      headers: { Authorization: `Bearer ${user.spotifyAccessToken}` },
-    });
+    // Get the most recent track timestamp to avoid duplicates
+    const lastLog = await SpotifyLog.findOne({ user: user._id }).sort({ playedAt: -1 });
+    const after = lastLog ? Math.floor(new Date(lastLog.playedAt).getTime()) : null;
+
+    const url = after
+      ? `https://api.spotify.com/v1/me/player/recently-played?limit=50&after=${after}`
+      : `https://api.spotify.com/v1/me/player/recently-played?limit=50`;
+
+    const response = await makeSpotifyRequest(user, url);
 
     const tracks = response.data.items;
     if (!tracks || tracks.length === 0) {
-      return res.status(200).json({ success: true, message: "No new tracks to sync." });
+      return res.status(200).json({ success: true, message: "No new tracks to sync.", newTracks: 0, totalFetched: 0 });
     }
 
     const newLogs = tracks.map((item) => ({
@@ -121,13 +226,179 @@ exports.syncRecentTracks = async (req, res) => {
     }));
 
     // Use ordered:false to insert all valid logs even if some are duplicates (which will be ignored)
-    const result = await SpotifyLog.insertMany(newLogs, { ordered: false }).catch((err) => {
-      // Ignore duplicate key errors, but log others
-      if (err.code !== 11000) console.error("Sync error:", err);
-    });
+    let insertedCount = 0;
+    try {
+      const result = await SpotifyLog.insertMany(newLogs, { ordered: false });
+      insertedCount = result.length;
+    } catch (err) {
+      // Handle duplicate key errors gracefully
+      if (err.code === 11000) {
+        // Count successful inserts from the error
+        insertedCount = err.result?.result?.insertedIds ? Object.keys(err.result.result.insertedIds).length : 0;
+        console.log(
+          `Sync complete with ${insertedCount} new tracks and ${newLogs.length - insertedCount} duplicates skipped.`
+        );
+      } else {
+        console.error("Sync error:", err);
+        throw err;
+      }
+    }
 
-    res.status(200).json({ success: true, message: `Sync complete. ${result ? result.length : 0} new tracks logged.` });
+    res.status(200).json({
+      success: true,
+      message: `Sync complete. ${insertedCount} new tracks logged.`,
+      newTracks: insertedCount,
+      totalFetched: newLogs.length,
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Could not sync from Spotify." });
+    console.error("Sync error:", error);
+
+    // Provide more specific error messages
+    if (error.response?.status === 401) {
+      res
+        .status(400)
+        .json({ success: false, message: "Spotify authentication failed. Please reconnect your account." });
+    } else if (error.response?.status === 429) {
+      res.status(429).json({ success: false, message: "Spotify API rate limit reached. Please try again later." });
+    } else {
+      res.status(500).json({ success: false, message: "Could not sync from Spotify." });
+    }
+  }
+};
+
+// @desc    Get Spotify statistics
+// @route   GET /api/spotify/stats
+exports.getSpotifyStats = async (req, res) => {
+  const user = await User.findById(req.user.id);
+  if (!user || !user.spotifyConnected) {
+    return res.status(400).json({ success: false, message: "Spotify not connected." });
+  }
+
+  try {
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const weekStart = new Date(todayStart.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const yearStart = new Date(now.getFullYear(), 0, 1);
+
+    // Aggregate statistics
+    const stats = await SpotifyLog.aggregate([
+      { $match: { user: user._id } },
+      {
+        $group: {
+          _id: null,
+          totalTracks: { $sum: 1 },
+          totalMinutes: { $sum: { $divide: ["$durationMs", 60000] } },
+          earliestPlay: { $min: "$playedAt" },
+          latestPlay: { $max: "$playedAt" },
+        },
+      },
+    ]);
+
+    // Time-based statistics
+    const timeStats = await Promise.all([
+      // Today
+      SpotifyLog.aggregate([
+        { $match: { user: user._id, playedAt: { $gte: todayStart } } },
+        { $group: { _id: null, count: { $sum: 1 }, minutes: { $sum: { $divide: ["$durationMs", 60000] } } } },
+      ]),
+      // This week
+      SpotifyLog.aggregate([
+        { $match: { user: user._id, playedAt: { $gte: weekStart } } },
+        { $group: { _id: null, count: { $sum: 1 }, minutes: { $sum: { $divide: ["$durationMs", 60000] } } } },
+      ]),
+      // This month
+      SpotifyLog.aggregate([
+        { $match: { user: user._id, playedAt: { $gte: monthStart } } },
+        { $group: { _id: null, count: { $sum: 1 }, minutes: { $sum: { $divide: ["$durationMs", 60000] } } } },
+      ]),
+      // This year
+      SpotifyLog.aggregate([
+        { $match: { user: user._id, playedAt: { $gte: yearStart } } },
+        { $group: { _id: null, count: { $sum: 1 }, minutes: { $sum: { $divide: ["$durationMs", 60000] } } } },
+      ]),
+    ]);
+
+    // Top artists
+    const topArtists = await SpotifyLog.aggregate([
+      { $match: { user: user._id } },
+      {
+        $group: { _id: "$artistName", count: { $sum: 1 }, totalMinutes: { $sum: { $divide: ["$durationMs", 60000] } } },
+      },
+      { $sort: { count: -1 } },
+      { $limit: 10 },
+    ]);
+
+    // Top albums
+    const topAlbums = await SpotifyLog.aggregate([
+      { $match: { user: user._id } },
+      {
+        $group: { _id: "$albumName", count: { $sum: 1 }, totalMinutes: { $sum: { $divide: ["$durationMs", 60000] } } },
+      },
+      { $sort: { count: -1 } },
+      { $limit: 10 },
+    ]);
+
+    // Top tracks
+    const topTracks = await SpotifyLog.aggregate([
+      { $match: { user: user._id } },
+      {
+        $group: {
+          _id: { track: "$trackName", artist: "$artistName" },
+          count: { $sum: 1 },
+          totalMinutes: { $sum: { $divide: ["$durationMs", 60000] } },
+        },
+      },
+      { $sort: { count: -1 } },
+      { $limit: 10 },
+    ]);
+
+    res.json({
+      success: true,
+      stats: {
+        total: {
+          tracks: stats[0]?.totalTracks || 0,
+          minutes: Math.round(stats[0]?.totalMinutes || 0),
+          hours: Math.round(((stats[0]?.totalMinutes || 0) / 60) * 100) / 100,
+          earliestPlay: stats[0]?.earliestPlay,
+          latestPlay: stats[0]?.latestPlay,
+        },
+        today: {
+          tracks: timeStats[0][0]?.count || 0,
+          minutes: Math.round(timeStats[0][0]?.minutes || 0),
+        },
+        thisWeek: {
+          tracks: timeStats[1][0]?.count || 0,
+          minutes: Math.round(timeStats[1][0]?.minutes || 0),
+        },
+        thisMonth: {
+          tracks: timeStats[2][0]?.count || 0,
+          minutes: Math.round(timeStats[2][0]?.minutes || 0),
+        },
+        thisYear: {
+          tracks: timeStats[3][0]?.count || 0,
+          minutes: Math.round(timeStats[3][0]?.minutes || 0),
+        },
+        topArtists: topArtists.map((artist) => ({
+          name: artist._id,
+          plays: artist.count,
+          minutes: Math.round(artist.totalMinutes),
+        })),
+        topAlbums: topAlbums.map((album) => ({
+          name: album._id,
+          plays: album.count,
+          minutes: Math.round(album.totalMinutes),
+        })),
+        topTracks: topTracks.map((track) => ({
+          name: track._id.track,
+          artist: track._id.artist,
+          plays: track.count,
+          minutes: Math.round(track.totalMinutes),
+        })),
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching Spotify stats:", error);
+    res.status(500).json({ success: false, message: "Could not fetch Spotify statistics." });
   }
 };

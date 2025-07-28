@@ -2,6 +2,8 @@ const FinancialCategory = require("../models/finance/FinancialCategory");
 const FinancialTransaction = require("../models/finance/FinancialTransaction");
 const RecurringBill = require("../models/finance/RecurringBill");
 const Budget = require("../models/Budget");
+const Debt = require("../models/finance/Debt"); // Import the new Debt model
+const FinancialGoal = require("../models/finance/FinancialGoal"); // Import the new FinancialGoal model
 
 // Category Controllers
 exports.getCategories = async (req, res) => {
@@ -197,6 +199,96 @@ exports.upsertBudgets = async (req, res) => {
     res.status(200).json({ success: true, message: "Budgets updated successfully" });
   } catch (error) {
     console.error("Error upserting budgets:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// --- NEW Debt Controllers ---
+exports.getDebts = async (req, res) => {
+  try {
+    const debts = await Debt.find({ user: req.user.id }).sort({ isPaidOff: 1, currentAmount: -1 });
+    res.status(200).json({ success: true, data: debts });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+exports.createDebt = async (req, res) => {
+  try {
+    const debt = await Debt.create({ ...req.body, user: req.user.id });
+    res.status(201).json({ success: true, data: debt });
+  } catch (error) {
+    res.status(400).json({ success: false, message: "Error creating debt entry", error: error.message });
+  }
+};
+
+exports.updateDebt = async (req, res) => {
+  try {
+    let debt = await Debt.findById(req.params.id);
+    if (!debt || debt.user.toString() !== req.user.id) {
+      return res.status(404).json({ success: false, message: "Debt not found" });
+    }
+    debt = await Debt.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    res.status(200).json({ success: true, data: debt });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+exports.deleteDebt = async (req, res) => {
+  try {
+    const debt = await Debt.findById(req.params.id);
+    if (!debt || debt.user.toString() !== req.user.id) {
+      return res.status(404).json({ success: false, message: "Debt not found" });
+    }
+    await debt.deleteOne();
+    res.status(200).json({ success: true, message: "Debt deleted" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// --- NEW Financial Goal Controllers ---
+exports.getFinancialGoals = async (req, res) => {
+  try {
+    const goals = await FinancialGoal.find({ user: req.user.id }).sort({ isCompleted: 1, deadline: 1 });
+    res.status(200).json({ success: true, data: goals });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+exports.createFinancialGoal = async (req, res) => {
+  try {
+    const goal = await FinancialGoal.create({ ...req.body, user: req.user.id });
+    res.status(201).json({ success: true, data: goal });
+  } catch (error) {
+    res.status(400).json({ success: false, message: "Error creating financial goal", error: error.message });
+  }
+};
+
+exports.updateFinancialGoal = async (req, res) => {
+  try {
+    let goal = await FinancialGoal.findById(req.params.id);
+    if (!goal || goal.user.toString() !== req.user.id) {
+      return res.status(404).json({ success: false, message: "Financial goal not found" });
+    }
+    goal = await FinancialGoal.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    res.status(200).json({ success: true, data: goal });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+exports.deleteFinancialGoal = async (req, res) => {
+  try {
+    const goal = await FinancialGoal.findById(req.params.id);
+    if (!goal || goal.user.toString() !== req.user.id) {
+      return res.status(404).json({ success: false, message: "Financial goal not found" });
+    }
+    await goal.deleteOne();
+    res.status(200).json({ success: true, message: "Financial goal deleted" });
+  } catch (error) {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };

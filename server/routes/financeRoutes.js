@@ -17,6 +17,14 @@ const {
   toggleBillPaid,
   getBudgets,
   upsertBudgets,
+  getDebts,
+  createDebt,
+  updateDebt,
+  deleteDebt,
+  getFinancialGoals,
+  createFinancialGoal,
+  updateFinancialGoal,
+  deleteFinancialGoal,
 } = require("../controllers/financeController");
 
 router.use(protect);
@@ -36,5 +44,13 @@ router.put("/bills/:id/toggle-paid", toggleBillPaid);
 
 // Budget Routes
 router.route("/budgets").get(getBudgets).post(upsertBudgets);
+
+// --- Debt Routes ---
+router.route("/debts").get(getDebts).post(createDebt);
+router.route("/debts/:id").put(updateDebt).delete(deleteDebt);
+
+// --- Financial Goal Routes ---
+router.route("/goals").get(getFinancialGoals).post(createFinancialGoal);
+router.route("/goals/:id").put(updateFinancialGoal).delete(deleteFinancialGoal);
 
 module.exports = router;

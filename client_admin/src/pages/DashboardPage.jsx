@@ -76,44 +76,44 @@ const DashboardPage = () => {
 
         {/* --- Precise Widget Placement --- */}
 
-        {/* Charts - 4 columns wide, match clock height */}
+        {/* Charts - 4 columns wide, 4 rows tall */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.8 }}
-          className="col-span-8 md:col-span-4 h-full min-h-0"
+          className="col-span-8 md:col-span-4 row-span-4 h-8 min-h-[850px]"
         >
           <LoreChartWidget />
         </motion.div>
 
-        {/* Habit Tracker - 2 columns, on same row as charts */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 1.2 }}
-          className="col-span-8 md:col-span-2 row-span-1"
-        >
-          <HabitTrackerWidget />
-        </motion.div>
-
-        {/* Clock - 2 columns, stacked on top */}
+        {/* Weather - 2 columns, 2 rows tall */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.0 }}
-          className="col-span-4 md:col-span-2"
+          className="col-span-4 md:col-span-2 row-span-2"
         >
-          <ClockWidget />
+          <WeatherWidget />
         </motion.div>
 
-        {/* Weather on next row - 2 columns */}
+        {/* Clock - 2 columns, 4 rows tall */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.1 }}
-          className="col-span-4 md:col-span-2"
+          className="col-span-4 md:col-span-2 row-span-4"
         >
-          <WeatherWidget />
+          <ClockWidget />
+        </motion.div>
+
+        {/* Habit Tracker - 2 columns, 2 rows tall, underneath weather */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 1.2 }}
+          className="col-span-8 md:col-span-2 row-span-2"
+        >
+          <HabitTrackerWidget />
         </motion.div>
 
         {/* Book Tracker - 2 columns, stacked below habit tracker */}

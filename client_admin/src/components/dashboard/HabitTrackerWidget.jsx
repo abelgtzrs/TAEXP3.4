@@ -53,31 +53,29 @@ const HabitTrackerWidget = () => {
 
   return (
     <Widget title="Today's Directives">
-      <div className="space-y-3">
+      <div className="space-y-2">
         {shownHabits.length > 0 ? (
           shownHabits.map((habit) => {
             const completed = isCompletedToday(habit);
             return (
-              <div key={habit._id} className="flex items-center justify-between text-sm">
-                <span className={completed ? "text-text-tertiary line-through" : "text-text-secondary"}>
-                  {habit.name}
-                </span>
+              <div key={habit._id} className="flex items-center justify-between text-xs py-1">
+                <span className={completed ? "text-text-main line-through" : "text-text-secondary"}>{habit.name}</span>
                 <button
                   onClick={() => handleCompleteHabit(habit._id)}
-                  className={`p-1 ${completed ? "text-status-success" : "text-gray-500 hover:text-status-success"}`}
+                  className={`p-1 ${completed ? "text-status-success" : "text-gray-200 hover:text-status-success"}`}
                   disabled={completed}
                   aria-label={completed ? "Completed" : "Mark as complete"}
                 >
-                  <CheckSquare size={18} />
+                  <CheckSquare size={16} />
                 </button>
               </div>
             );
           })
         ) : (
-          <p className="text-sm text-text-tertiary">All habits completed for today!</p>
+          <p className="text-xs text-text-tertiary py-1">All habits completed for today!</p>
         )}
       </div>
-      <Link to="/habits" className="text-sm text-primary hover:underline mt-4 block text-right">
+      <Link to="/habits" className="text-xs text-primary hover:underline mt-3 block text-right">
         View All Habits &rarr;
       </Link>
     </Widget>
