@@ -19,6 +19,18 @@ require("./models/HabboRareBase");
 require("./models/YugiohCardBase");
 require("./models/AbelPersonaBase");
 require("./models/ExerciseDefinition");
+require("./models/SpotifyLogs");
+require("./models/Volume");
+require("./models/WorkoutTemplate");
+
+// Finance models
+require("./models/finance/FinancialCategory");
+require("./models/finance/FinancialTransaction");
+require("./models/finance/RecurringBill");
+require("./models/finance/Budget");
+require("./models/finance/Debt");
+require("./models/finance/DebtAccount");
+require("./models/finance/FinancialGoal");
 
 // User-specific models (personal collections)
 require("./models/userSpecific/userPokemon");
@@ -39,8 +51,17 @@ app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: false })); // Parse form data
 
 // --- Serve static files from multiple directories ---
+// Profile pictures and user uploads
+app.use("/uploads", express.static("public/uploads"));
+app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
+
+// General static assets
 app.use(express.static("public")); // Serve uploaded files (avatars, etc.)
 app.use(express.static(path.join(__dirname, "../public"))); // Serve public assets (habbo rares, pokemon, etc.)
+
+// Serve built client applications
+app.use(express.static(path.join(__dirname, "../client_admin/dist")));
+app.use(express.static(path.join(__dirname, "../client_public/dist")));
 
 // Health check endpoint
 app.get("/", (req, res) => {

@@ -5,7 +5,7 @@ const SpotifyLog = require("../models/SpotifyLogs");
 
 const SPOTIFY_AUTH_URL = "https://accounts.spotify.com/authorize";
 const SPOTIFY_TOKEN_URL = "https://accounts.spotify.com/api/token";
-const REDIRECT_URI = "http://127.0.0.1:5000/api/spotify/callback";
+const REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI || "http://127.0.0.1:5000/api/spotify/callback";
 
 // Helper function to refresh Spotify access token
 const refreshSpotifyToken = async (user) => {
@@ -129,7 +129,10 @@ exports.handleSpotifyCallback = async (req, res) => {
     });
 
     // Redirect the user back to their dashboard or a success page
-    res.redirect("http://localhost:5173/dashboard"); // Redirect to your admin panel URL
+    const dashboardUrl = process.env.NODE_ENV === 'production' 
+      ? `${process.env.FRONTEND_URL || 'https://your-app.vercel.app'}/dashboard`
+      : "http://localhost:5173/dashboard";
+    res.redirect(dashboardUrl);
   } catch (err) {
     console.error("Spotify callback error:", err.response ? err.response.data : err.message);
     res.status(500).send("An error occurred during Spotify authentication.");
