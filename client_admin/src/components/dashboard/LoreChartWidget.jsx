@@ -184,7 +184,7 @@ export const SystemStatusWidget = () => {
                 data={systemStatus}
                 cx="50%"
                 cy="50%"
-                outerRadius={100}
+                outerRadius="95%"
                 dataKey="value"
                 startAngle={90}
                 endAngle={-270}

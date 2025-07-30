@@ -95,7 +95,7 @@ const DashboardPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.9 }}
-          className="col-span-2 md:col-span-2 order-3 md:order-3"
+          className="col-span-8 md:col-span-2 order-3 md:order-3"
         >
           <CalendarWidget />
         </motion.div>
@@ -145,9 +145,9 @@ const DashboardPage = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 1.3 }}
-          className="col-span-8 md:col-span-4 order-7 md:order-2 row-span-3"
+          className="col-span-8 md:col-span-4 order-7 md:order-2 row-span-3 overflow-hidden"
         >
-          <div className="w-full h-full aspect-square">
+          <div className="w-full h-full aspect-square overflow-hidden">
             <LoreChartWidget />
           </div>
         </motion.div>
@@ -200,7 +200,7 @@ const DashboardPage = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 1.8 }}
-          className="col-span-8 md:col-span-4 lg:col-span-2 order-13 md:order-12 row-span-2"
+          className="col-span-8 md:col-span-4 lg:col-span-2 order-12 md:order-12 row-span-2"
         >
           <RecentAcquisitionsWidget acquisitions={stats.recentAcquisitions} loading={loading} />
         </motion.div>
@@ -208,7 +208,7 @@ const DashboardPage = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 1.9 }}
-          className="col-span-8 md:col-span-4 lg:col-span-2 order-14 md:order-12 row-span-2"
+          className="col-span-8 md:col-span-4 lg:col-span-2 order-12 md:order-12 row-span-2"
         >
           <TopProductsWidget products={stats.topProducts} loading={loading} />
         </motion.div>
@@ -216,7 +216,7 @@ const DashboardPage = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 2.0 }}
-          className="col-span-8 md:col-span-4 lg:col-span-2 order-15 md:order-12 row-span-2"
+          className="col-span-8 md:col-span-4 lg:col-span-2 order-12 md:order-12 row-span-2"
         >
           <CurrencySourceWidget />
         </motion.div>
