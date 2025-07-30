@@ -66,6 +66,24 @@ const Header = () => {
 
       {/* Right Side: Action Icons and User Profile */}
       <div className="flex items-center space-x-3">
+        {/* Currency Display */}
+        <div className="hidden lg:flex items-center space-x-4 px-4 py-2 bg-black/30 backdrop-blur-sm border border-white/20 rounded-xl">
+          <div className="flex items-center space-x-1">
+            <span className="text-yellow-400 text-sm font-bold">{user?.temuTokens || 0}</span>
+            <span className="text-yellow-400/60 text-xs">TT</span>
+          </div>
+          <div className="w-px h-4 bg-white/20"></div>
+          <div className="flex items-center space-x-1">
+            <span className="text-amber-400 text-sm font-bold">{user?.gatillaGold || 0}</span>
+            <span className="text-amber-400/60 text-xs">GG</span>
+          </div>
+          <div className="w-px h-4 bg-white/20"></div>
+          <div className="flex items-center space-x-1">
+            <span className="text-pink-400 text-sm font-bold">{user?.wendyHearts || 0}</span>
+            <span className="text-pink-400/60 text-xs">❤️</span>
+          </div>
+        </div>
+
         <button className="p-3 rounded-xl text-white/60 hover:bg-white/10 hover:text-primary transition-all duration-300 hover:scale-105 active:scale-95">
           <Mail size={20} />
         </button>

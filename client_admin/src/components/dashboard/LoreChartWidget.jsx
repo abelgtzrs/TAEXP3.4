@@ -223,10 +223,18 @@ export const SystemStatusWidget = () => {
 const LoreChartWidget = () => {
   return (
     <div className="grid grid-cols-2 grid-rows-2 gap-3 h-full min-h-0">
-      <CoherenceChartWidget />
-      <AnomalyChartWidget />
-      <DriftChartWidget />
-      <SystemStatusWidget />
+      <div className="w-full h-full">
+        <CoherenceChartWidget />
+      </div>
+      <div className="w-full h-full">
+        <AnomalyChartWidget />
+      </div>
+      <div className="w-full h-full">
+        <DriftChartWidget />
+      </div>
+      <div className="w-full h-full">
+        <SystemStatusWidget />
+      </div>
     </div>
   );
 };

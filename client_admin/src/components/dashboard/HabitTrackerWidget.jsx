@@ -7,7 +7,7 @@ import { CheckSquare } from "lucide-react";
 
 const HabitTrackerWidget = () => {
   const [habits, setHabits] = useState([]);
-  const { setUser } = useAuth();
+  const { setUser, user } = useAuth();
 
   const fetchHabits = async () => {
     try {
@@ -52,30 +52,49 @@ const HabitTrackerWidget = () => {
   const shownHabits = habits.filter(Boolean).slice(0, 10);
 
   return (
-    <Widget title="Today's Directives">
+    <Widget title="Today's Directives" className="h-auto">
       <div className="space-y-2">
         {shownHabits.length > 0 ? (
-          shownHabits.map((habit) => {
+          shownHabits.map((habit, index) => {
             const completed = isCompletedToday(habit);
+            const bgColors = [
+              "bg-slate-800/30",
+              "bg-blue-900/20",
+              "bg-purple-900/20",
+              "bg-green-900/20",
+              "bg-amber-900/20",
+              "bg-red-900/20",
+              "bg-cyan-900/20",
+              "bg-pink-900/20",
+              "bg-indigo-900/20",
+              "bg-teal-900/20",
+            ];
+            const bgColor = bgColors[index % bgColors.length];
+
             return (
-              <div key={habit._id} className="flex items-center justify-between text-xs py-1">
+              <div
+                key={habit._id}
+                className={`flex items-center justify-between text-sm py-2 px-3 rounded-lg ${bgColor} border border-gray-700/50`}
+              >
                 <span className={completed ? "text-text-main line-through" : "text-text-secondary"}>{habit.name}</span>
                 <button
                   onClick={() => handleCompleteHabit(habit._id)}
-                  className={`p-1 ${completed ? "text-status-success" : "text-gray-200 hover:text-status-success"}`}
+                  className={`p-2 rounded ${
+                    completed ? "text-status-success" : "text-gray-200 hover:text-status-success"
+                  }`}
                   disabled={completed}
                   aria-label={completed ? "Completed" : "Mark as complete"}
                 >
-                  <CheckSquare size={16} />
+                  <CheckSquare size={20} />
                 </button>
               </div>
             );
           })
         ) : (
-          <p className="text-xs text-text-tertiary py-1">All habits completed for today!</p>
+          <p className="text-sm text-text-tertiary py-2">All habits completed for today!</p>
         )}
       </div>
-      <Link to="/habits" className="text-xs text-primary hover:underline mt-3 block text-right">
+      <Link to="/habits" className="text-sm text-primary hover:underline mt-4 block text-right">
         View All Habits &rarr;
       </Link>
     </Widget>

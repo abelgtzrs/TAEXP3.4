@@ -64,8 +64,8 @@ const WeatherWidget = () => {
   }
 
   return (
-    <Widget title="Weather Status">
-      <div className="h-full flex flex-col items-stretch justify-center gap-2">
+    <Widget title="Weather Status" className="h-auto">
+      <div className="flex flex-col items-stretch justify-center gap-2">
         {/* Top: Location and Current */}
         <div className="flex items-center justify-between gap-3 w-full">
           <div className="flex flex-col items-center min-w-[80px]">

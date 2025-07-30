@@ -180,7 +180,7 @@ const AddTransactionForm = ({ categories, onTransactionAdded }) => {
             required
             className="w-full p-2 bg-gray-700 rounded border border-gray-600 text-sm"
           >
-            <option value="">-- Select Category --</option>
+            <option value="">-- Category --</option>
             {categories.map((cat) => (
               <option key={cat._id} value={cat._id}>
                 {cat.name}
@@ -783,17 +783,20 @@ const FinancePage = () => {
     <div className="flex flex-col h-[calc(100vh-120px)]">
       {" "}
       {/* Adjust 120px based on your header/padding height */}
-      <div className="flex justify-between items-start flex-shrink-0">
+      <div className="flex justify-between items-center flex-shrink-0">
         <PageHeader title="Financial Tracker" subtitle="Manage your income, expenses, and budgets." />
-        <div className="flex gap-1">
+        <div className="flex gap-2">
           <StyledButton
             onClick={() => setIsBillModalOpen(true)}
-            className="py-2 px-4 flex items-center gap-2 bg-blue-600 hover:bg-blue-500"
+            className="py-2 px-3 flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-sm"
           >
-            <Plus size={20} /> Manage Bills
+            <Plus size={16} /> Manage Bills
           </StyledButton>
-          <StyledButton onClick={() => setIsCategoryModalOpen(true)} className="py-2 px-4 flex items-center gap-2">
-            <Settings size={20} /> Manage Categories
+          <StyledButton
+            onClick={() => setIsCategoryModalOpen(true)}
+            className="py-2 px-3 flex items-center gap-2 text-sm"
+          >
+            <Settings size={16} /> Manage Categories
           </StyledButton>
         </div>
       </div>
