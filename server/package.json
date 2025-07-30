@@ -9,7 +9,9 @@
     "data:import": "node seeder -i",
     "data:destroy": "node seeder -d",
     "personas:seed": "node abelPersonaSeeder.js",
-    "personas:clear": "node abelPersonaSeeder.js --clear"
+    "personas:clear": "node abelPersonaSeeder.js --clear",
+    "diagnose": "node deployment-diagnostics.js",
+    "quick-fix": "node quick-fix.js"
   },
   "keywords": [],
   "author": "",
