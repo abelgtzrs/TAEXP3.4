@@ -36,7 +36,7 @@ require("./models/finance/FinancialActionLog");
 // User-specific models (personal collections)
 require("./models/userSpecific/userPokemon");
 require("./models/userSpecific/userSnoopyArt");
-require("./models/userSpecific/UserBadge");
+require("./models/userSpecific/userBadge");
 require("./models/userSpecific/userTitle");
 require("./models/userSpecific/userHabboRare");
 require("./models/userSpecific/userYugiohCard");
