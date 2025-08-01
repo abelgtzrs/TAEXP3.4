@@ -3,13 +3,13 @@
 // Make sure all these models are imported at the top of your file
 const User = require("../models/User");
 const PokemonBase = require("../models/PokemonBase");
-const UserPokemon = require("../models/userSpecific/UserPokemon");
+const UserPokemon = require("../models/userSpecific/userPokemon");
 const SnoopyArtBase = require("../models/SnoopyArtBase");
-const UserSnoopyArt = require("../models/userSpecific/UserSnoopyArt");
+const UserSnoopyArt = require("../models/userSpecific/userSnoopyArt");
 const YugiohCardBase = require("../models/YugiohCardBase");
-const UserYugiohCard = require("../models/userSpecific/UserYugiohCard");
+const UserYugiohCard = require("../models/userSpecific/userYugiohCard");
 const HabboRareBase = require("../models/HabboRareBase");
-const UserHabboRare = require("../models/userSpecific/UserHabboRare");
+const UserHabboRare = require("../models/userSpecific/userHabboRare");
 const AbelPersonaBase = require("../models/AbelPersonaBase");
 
 const GACHA_CONFIG = {

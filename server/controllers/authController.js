@@ -2,7 +2,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User"); // Make sure the User model is imported
 const BadgeBase = require("../models/BadgeBase");
-const UserBadge = require("../models/userSpecific/UserBadge");
+const UserBadge = require("../models/userSpecific/userBadge");
 
 // --- Helper function to generate JWT ---
 const generateToken = (id, role) => {
