@@ -31,6 +31,7 @@ require("./models/finance/Budget");
 require("./models/finance/Debt");
 require("./models/finance/DebtAccount");
 require("./models/finance/FinancialGoal");
+require("./models/finance/FinancialActionLog");
 
 // User-specific models (personal collections)
 require("./models/userSpecific/userPokemon");
@@ -46,7 +47,12 @@ const app = express();
 connectDB();
 
 // Essential middleware stack
-app.use(cors()); // Allow cross-origin requests from frontend
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN || ["http://localhost:3000", "http://localhost:5173"],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions)); // Allow cross-origin requests from frontend
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: false })); // Parse form data
 

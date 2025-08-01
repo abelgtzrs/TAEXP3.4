@@ -129,9 +129,10 @@ exports.handleSpotifyCallback = async (req, res) => {
     });
 
     // Redirect the user back to their dashboard or a success page
-    const dashboardUrl = process.env.NODE_ENV === 'production' 
-      ? `${process.env.FRONTEND_URL || 'https://your-app.vercel.app'}/dashboard`
-      : "http://localhost:5173/dashboard";
+    const dashboardUrl =
+      process.env.NODE_ENV === "production"
+        ? `${process.env.FRONTEND_URL || "https://your-app.vercel.app"}/dashboard`
+        : "http://localhost:5173/dashboard";
     res.redirect(dashboardUrl);
   } catch (err) {
     console.error("Spotify callback error:", err.response ? err.response.data : err.message);

@@ -1,4 +1,57 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import DebtTracker from "../components/finances/DebtTracker";
+// --- Sub-Component: Financial Action Log Modal ---
+const FinancialActionLogModal = ({ isOpen, onClose, logs }) => {
+  if (!isOpen) return null;
+  return (
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50" onClick={onClose}>
+      <div
+        className="bg-surface w-full max-w-lg rounded-lg border border-gray-700 p-6 space-y-4"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="text-xl font-bold text-white mb-2">Financial Action Log</h2>
+        <div className="max-h-80 overflow-y-auto space-y-2">
+          {logs.length === 0 ? (
+            <p className="text-text-secondary">No actions logged yet.</p>
+          ) : (
+            logs.map((log, idx) => (
+              <div key={log._id || idx} className="p-2 bg-gray-900/50 rounded-md flex flex-col gap-1">
+                <span className="text-xs text-gray-400">{new Date(log.timestamp).toLocaleString()}</span>
+                <span className="text-sm text-white font-mono">{log.action.toUpperCase()}</span>
+                {log.details && Object.keys(log.details).length > 0 && (
+                  <pre className="text-xs text-gray-300 bg-gray-800 rounded p-2 mt-1">
+                    {JSON.stringify(log.details, null, 2)}
+                  </pre>
+                )}
+              </div>
+            ))
+          )}
+        </div>
+        <div className="flex justify-end pt-4">
+          <button onClick={onClose} className="bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 import api from "../services/api";
 import PageHeader from "../components/ui/PageHeader";
 import Widget from "../components/ui/Widget";
@@ -314,6 +367,49 @@ const TransactionEditModal = ({ transaction, isOpen, onClose, onUpdate, onDelete
 };
 
 // --- Sub-Component: Budget Status ---
+const SortableTransactionItem = ({ id, transaction, onEdit, balance }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <li
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="flex justify-between items-center p-2 bg-gray-800/50 rounded-md group cursor-grab border border-gray-700/30 shadow-s shadow-blue-500/90 hover:shadow-blue-500/20 transition-shadow"
+    >
+      <div>
+        <p className="font-semibold text-text-main">{transaction.description}</p>
+        <p className="text-xs" style={{ color: transaction.category?.color || "#9CA3AF" }}>
+          {transaction.category?.name || "Uncategorized"}
+        </p>
+      </div>
+      <div className="flex items-center gap-4">
+        <div className="text-right">
+          <p className={`font-mono font-semibold ${transaction.type === "income" ? "text-green-400" : "text-red-400"}`}>
+            {transaction.type === "income" ? "+" : "-"}${transaction.amount.toFixed(2)}
+          </p>
+          <p className="text-xs text-text-secondary">{new Date(transaction.date).toLocaleDateString()}</p>
+        </div>
+        <div className="text-right w-24">
+          <p className="font-mono text-sm text-text-main">${balance.toFixed(2)}</p>
+          <p className="text-xs text-text-secondary">Balance</p>
+        </div>
+        <button
+          onClick={() => onEdit(transaction)}
+          className="text-gray-600 hover:text-primary opacity-0 group-hover:opacity-100 transition-opacity"
+        >
+          <Edit size={16} />
+        </button>
+      </div>
+    </li>
+  );
+};
 const BudgetStatus = ({ categories, transactions, selectedMonth, budgets, onUpdateBudgets }) => {
   const [localBudgets, setLocalBudgets] = useState({});
 
@@ -424,35 +520,56 @@ const BudgetStatus = ({ categories, transactions, selectedMonth, budgets, onUpda
 };
 
 // --- Sub-Component: Transaction List ---
-const TransactionList = ({ transactions, onEdit }) => {
+const TransactionList = ({
+  transactions,
+  onEdit,
+  currentPage,
+  setCurrentPage,
+  totalPages,
+  onSortEnd,
+  balances,
+}) => {
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (active.id !== over.id) {
+      onSortEnd(active.id, over.id);
+    }
+  };
+
   return (
     <Widget title="Recent Transactions" className="h-full flex flex-col">
-      <ul className="space-y-3 overflow-y-auto flex-grow pr-2">
-        {transactions.map((t) => (
-          <li key={t._id} className="flex justify-between items-center p-2 bg-gray-900/50 rounded-md group">
-            <div>
-              <p className="font-semibold text-text-main">{t.description}</p>
-              <p className="text-xs" style={{ color: t.category?.color || "#9CA3AF" }}>
-                {t.category?.name || "Uncategorized"}
-              </p>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-right">
-                <p className={`font-mono font-semibold ${t.type === "income" ? "text-green-400" : "text-red-400"}`}>
-                  {t.type === "income" ? "+" : "-"}${t.amount.toFixed(2)}
-                </p>
-                <p className="text-xs text-text-secondary">{new Date(t.date).toLocaleDateString()}</p>
-              </div>
-              <button
-                onClick={() => onEdit(t)}
-                className="text-gray-600 hover:text-primary opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <Edit size={16} />
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <SortableContext items={transactions.map((t) => t._id)} strategy={verticalListSortingStrategy}>
+          <ul className="space-y-3 overflow-y-auto flex-grow pr-2">
+            {transactions.map((t, index) => (
+              <SortableTransactionItem key={t._id} id={t._id} transaction={t} onEdit={onEdit} balance={balances[index]} />
+            ))}
+          </ul>
+        </SortableContext>
+      </DndContext>
+      {totalPages > 1 && (
+        <div className="flex-shrink-0 flex justify-between items-center mt-4 pt-4 border-t border-gray-700/50">
+          <StyledButton onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))} disabled={currentPage === 1}>
+            <ChevronLeft size={16} />
+          </StyledButton>
+          <span className="text-sm text-text-secondary">
+            Page {currentPage} of {totalPages}
+          </span>
+          <StyledButton
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            disabled={currentPage === totalPages}
+          >
+            <ChevronRight size={16} />
+          </StyledButton>
+        </div>
+      )}
     </Widget>
   );
 };
@@ -721,11 +838,55 @@ const FinancePage = () => {
   const [categories, setCategories] = useState([]);
   const [bills, setBills] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isLogModalOpen, setIsLogModalOpen] = useState(false);
+  const [actionLogs, setActionLogs] = useState([]);
+  const fetchActionLog = async () => {
+    try {
+      const res = await api.get("/finance/log");
+      setActionLogs(res.data.data);
+    } catch (error) {
+      setActionLogs([]);
+    }
+  };
+  const handleClearFinances = async () => {
+    if (!window.confirm("Are you sure you want to clear ALL your financial data? This cannot be undone!")) return;
+    try {
+      await api.post("/finance/clear");
+      refreshData();
+      fetchActionLog();
+      alert("All finances cleared.");
+    } catch (error) {
+      alert("Failed to clear finances.");
+    }
+  };
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [isBillModalOpen, setIsBillModalOpen] = useState(false);
   const [isEditTransactionModalOpen, setIsEditTransactionModalOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(new Date());
+  const [currentPage, setCurrentPage] = useState(1);
+  const [activeAccount, setActiveAccount] = useState('checkings'); // 'checkings' or 'savings'
+  const [displayTransactions, setDisplayTransactions] = useState([]);
+  const ITEMS_PER_PAGE = 20;
+
+  useEffect(() => {
+    if (transactions.length > 0) {
+      const savingsCategory = categories.find((cat) => cat.name && cat.name.trim().toLowerCase().includes("savings"));
+      const savingsCategoryId = savingsCategory ? savingsCategory._id : null;
+
+      const filtered = transactions.filter(t => {
+        const isSavings = t.category && t.category._id === savingsCategoryId;
+        if (activeAccount === 'savings') {
+          return isSavings;
+        }
+        return !isSavings;
+      });
+
+      const sorted = [...filtered].sort((a, b) => new Date(b.date) - new Date(a.date));
+      setDisplayTransactions(sorted);
+      setCurrentPage(1); // Reset to first page on filter change
+    }
+  }, [transactions, activeAccount, categories]);
 
   const refreshData = async () => {
     try {
@@ -746,6 +907,7 @@ const FinancePage = () => {
 
   useEffect(() => {
     refreshData();
+    fetchActionLog();
   }, []);
 
   const handleUpdateTransaction = async () => {
@@ -776,15 +938,76 @@ const FinancePage = () => {
     }
   };
 
+  const handleSortEnd = (activeId, overId) => {
+    setDisplayTransactions((items) => {
+      const oldIndex = items.findIndex((item) => item._id === activeId);
+      const newIndex = items.findIndex((item) => item._id === overId);
+      return arrayMove(items, oldIndex, newIndex);
+    });
+  };
+
+  // --- Calculations ---
+  const savingsCategory = categories.find((cat) => cat.name && cat.name.trim().toLowerCase().includes("savings"));
+  const savingsCategoryId = savingsCategory ? savingsCategory._id : null;
+
+  const { checkingsBalance, savingsBalance, transactionBalances } = useMemo(() => {
+    const checkings = transactions.reduce((acc, t) => {
+      if (t.category && t.category._id === savingsCategoryId) {
+        return acc;
+      }
+      return acc + (t.type === "income" ? t.amount : -t.amount);
+    }, 0);
+
+    const savings = savingsCategory
+      ? transactions.reduce((acc, t) => {
+          if (t.category && t.category._id === savingsCategoryId) {
+            return acc + (t.type === "income" ? t.amount : -t.amount);
+          }
+          return acc;
+        }, 0)
+      : 0;
+
+    // Calculate balances starting from bottom (oldest) and working up
+    let runningBalance = 0;
+    const balanceMap = new Map();
+    
+    // Process transactions from bottom to top (oldest to newest)
+    const reversedTransactions = [...displayTransactions].reverse();
+    
+    for (const t of reversedTransactions) {
+      const amount = t.type === "income" ? t.amount : -t.amount;
+      runningBalance += amount; // This now correctly sums up based on the filtered transaction log
+      balanceMap.set(t._id, runningBalance);
+    }
+
+    const finalBalances = displayTransactions.map((t) => balanceMap.get(t._id) || 0);
+
+    return {
+      checkingsBalance: checkings,
+      savingsBalance: savings,
+      transactionBalances: finalBalances,
+    };
+  }, [displayTransactions, categories, savingsCategoryId, transactions, activeAccount]);
+
   if (loading) return <p className="text-center text-text-secondary">Loading Financial Data...</p>;
 
+  // --- Pagination Logic ---
+  const totalPages = Math.ceil(displayTransactions.length / ITEMS_PER_PAGE);
+  const paginatedTransactions = displayTransactions.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  const paginatedBalances = transactionBalances.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
   return (
-    // This outer div now controls the height of the entire page content area
     <div className="flex flex-col h-[calc(100vh-120px)]">
-      {" "}
-      {/* Adjust 120px based on your header/padding height */}
+
       <div className="flex justify-between items-center flex-shrink-0">
-        <PageHeader title="Financial Tracker" subtitle="Manage your income, expenses, and budgets." />
+        <PageHeader title="Financial Tracker" subtitle={`Managing your ${activeAccount} account.`} />
         <div className="flex gap-2">
           <StyledButton
             onClick={() => setIsBillModalOpen(true)}
@@ -798,43 +1021,79 @@ const FinancePage = () => {
           >
             <Settings size={16} /> Manage Categories
           </StyledButton>
+          <StyledButton
+            onClick={handleClearFinances}
+            className="py-2 px-3 flex items-center gap-2 bg-red-700 hover:bg-red-600 text-sm"
+          >
+            <Trash2 size={16} /> Clear Finances
+          </StyledButton>
+          <StyledButton onClick={() => setIsLogModalOpen(true)} className="py-2 px-3 flex items-center gap-2 text-sm">
+            Log
+          </StyledButton>
         </div>
       </div>
-      {/* This grid now grows to fill the remaining vertical space */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 mt-2 flex-grow">
-        {/* Column 1: Budget Status & Add Transaction */}
-
-        <div className="lg:col-span-4 flex flex-col gap-2 h-full">
-          <div>
-            <AddTransactionForm categories={categories} onTransactionAdded={refreshData} />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4 flex-grow">
+        {/* Left Column */}
+        <div className="lg:col-span-4 flex flex-col gap-6">
+          <div className="flex items-center justify-center bg-gray-800 p-1 rounded-lg border border-gray-700">
+            <button 
+              onClick={() => setActiveAccount('checkings')}
+              className={`flex-1 py-2 px-4 text-sm font-bold rounded-md transition-colors ${
+                activeAccount === 'checkings' ? 'bg-emerald-500 text-white' : 'bg-transparent text-gray-400 hover:bg-gray-700'
+              }`}>
+              Checkings
+            </button>
+            <button 
+              onClick={() => setActiveAccount('savings')}
+              className={`flex-1 py-2 px-4 text-sm font-bold rounded-md transition-colors ${
+                activeAccount === 'savings' ? 'bg-sky-500 text-white' : 'bg-transparent text-gray-400 hover:bg-gray-700'
+              }`}>
+              Savings
+            </button>
           </div>
-          <div className="flex-grow min-h-0">
-            <BudgetStatus
-              categories={categories}
-              transactions={transactions}
-              selectedMonth={selectedMonth}
-              budgets={bills} // Assuming budgets are part of the bills data
-              onUpdateBudgets={async (budgets) => {
-                try {
-                  await Promise.all(
-                    budgets.map((b) => api.put(`/finance/bills/${b.category}/budget`, { amount: b.amount }))
-                  );
-                  refreshData();
-                } catch (error) {
-                  alert("Failed to update budgets.");
-                }
-              }}
-            />
-          </div>
+          <AddTransactionForm categories={categories} onTransactionAdded={refreshData} />
+          <BudgetStatus
+            categories={categories}
+            transactions={transactions}
+            selectedMonth={selectedMonth}
+            budgets={bills}
+            onUpdateBudgets={async (budgets) => {
+              try {
+                await Promise.all(
+                  budgets.map((b) => api.put(`/finance/bills/${b.category}/budget`, { amount: b.amount }))
+                );
+                refreshData();
+              } catch (error) {
+                alert("Failed to update budgets.");
+              }
+            }}
+          />
         </div>
 
-        {/* Column 2: Transaction List */}
-        <div className="lg:col-span-4 flex flex-col gap-2">
-          <TransactionList transactions={transactions} onEdit={handleEditTransaction} />
+        {/* Middle Column */}
+        <div className="lg:col-span-5 flex flex-col gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Widget title="Current Checkings">
+              <p className="text-3xl font-bold text-emerald-400">${checkingsBalance.toFixed(2)}</p>
+            </Widget>
+            <Widget title="Current Savings">
+              <p className="text-3xl font-bold text-sky-400">${savingsBalance.toFixed(2)}</p>
+            </Widget>
+          </div>
+          <TransactionList
+            transactions={paginatedTransactions}
+            onEdit={handleEditTransaction}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPages={totalPages}
+            onSortEnd={handleSortEnd}
+            balances={paginatedBalances}
+          />
         </div>
 
-        {/* Column 3: Bills & Analytics */}
-        <div className="lg:col-span-4 flex flex-col gap-2">
+        {/* Right Column */}
+        <div className="lg:col-span-3 flex flex-col gap-6">
+          <DebtTracker />
           <BillChecklist
             bills={bills}
             onTogglePaid={handleToggleBillPaid}
@@ -868,7 +1127,7 @@ const FinancePage = () => {
           categories={categories}
         />
       )}
-      {/* BudgetStatus moved to first column above */}
+      <FinancialActionLogModal isOpen={isLogModalOpen} onClose={() => setIsLogModalOpen(false)} logs={actionLogs} />
     </div>
   );
 };

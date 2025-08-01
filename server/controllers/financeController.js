@@ -1,7 +1,41 @@
 const FinancialCategory = require("../models/finance/FinancialCategory");
+const FinancialActionLog = require("../models/finance/FinancialActionLog");
+// --- Clear All Finances for User ---
+exports.clearFinances = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    // Delete all user's transactions, bills, and budgets
+    await FinancialTransaction.deleteMany({ user: userId });
+    await RecurringBill.deleteMany({ user: userId });
+    await Budget.deleteMany({ user: userId });
+    // Log the clear action
+    await FinancialActionLog.create({
+      user: userId,
+      action: "clear",
+      details: {},
+      timestamp: new Date(),
+    });
+    res.json({ success: true, message: "All finances cleared." });
+  } catch (error) {
+    console.error("Clear finances error:", error);
+    res.status(500).json({ success: false, message: "Failed to clear finances.", error: error.message });
+  }
+};
+
+// --- Get Financial Action Log ---
+exports.getFinancialActionLog = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const logs = await FinancialActionLog.find({ user: userId }).sort({ timestamp: -1 }).limit(100);
+    res.json({ success: true, data: logs });
+  } catch (error) {
+    console.error("Get financial action log error:", error);
+    res.status(500).json({ success: false, message: "Failed to fetch log.", error: error.message });
+  }
+};
 const FinancialTransaction = require("../models/finance/FinancialTransaction");
 const RecurringBill = require("../models/finance/RecurringBill");
-const Budget = require("../models/Budget");
+const Budget = require("../models/finance/Budget");
 const Debt = require("../models/finance/Debt"); // Import the new Debt model
 const FinancialGoal = require("../models/finance/FinancialGoal"); // Import the new FinancialGoal model
 

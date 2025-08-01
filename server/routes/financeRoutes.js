@@ -25,7 +25,15 @@ const {
   createFinancialGoal,
   updateFinancialGoal,
   deleteFinancialGoal,
+  clearFinances,
+  getFinancialActionLog,
 } = require("../controllers/financeController");
+
+// Clear all finances for the current user (protected)
+router.post("/clear", protect, clearFinances);
+
+// Get financial action log for the current user (protected)
+router.get("/log", protect, getFinancialActionLog);
 
 router.use(protect);
 

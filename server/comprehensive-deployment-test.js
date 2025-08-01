@@ -1,23 +1,23 @@
 // Enhanced deployment diagnostics with full system testing
-const fs = require('fs');
-const path = require('path');
-const mongoose = require('mongoose');
+const fs = require("fs");
+const path = require("path");
+const mongoose = require("mongoose");
 
 // Load environment variables
-require('dotenv').config();
+require("dotenv").config();
 
-console.log('============================================================');
-console.log('   THE ABEL EXPERIENCE™ COMPREHENSIVE DEPLOYMENT TEST');
-console.log('============================================================');
+console.log("============================================================");
+console.log("   THE ABEL EXPERIENCE™ COMPREHENSIVE DEPLOYMENT TEST");
+console.log("============================================================");
 
 const runDiagnostics = async () => {
   let allPassed = true;
 
   // Test 1: Environment Variables
-  console.log('ℹ️  Checking Environment Variables...');
-  const requiredEnvVars = ['MONGO_URI', 'JWT_SECRET', 'NODE_ENV'];
-  const optionalEnvVars = ['SPOTIFY_CLIENT_ID', 'SPOTIFY_CLIENT_SECRET', 'SPOTIFY_REDIRECT_URI', 'FRONTEND_URL'];
-  
+  console.log("ℹ️  Checking Environment Variables...");
+  const requiredEnvVars = ["MONGO_URI", "JWT_SECRET", "NODE_ENV"];
+  const optionalEnvVars = ["SPOTIFY_CLIENT_ID", "SPOTIFY_CLIENT_SECRET", "SPOTIFY_REDIRECT_URI", "FRONTEND_URL"];
+
   for (const envVar of requiredEnvVars) {
     if (process.env[envVar]) {
       console.log(`✅ ${envVar} is set`);
@@ -26,7 +26,7 @@ const runDiagnostics = async () => {
       allPassed = false;
     }
   }
-  
+
   for (const envVar of optionalEnvVars) {
     if (process.env[envVar]) {
       console.log(`✅ ${envVar} is set (optional)`);
@@ -36,18 +36,18 @@ const runDiagnostics = async () => {
   }
 
   // Test 2: Database Connection
-  console.log('ℹ️  Testing Database Connection...');
+  console.log("ℹ️  Testing Database Connection...");
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log('✅ Database connection successful');
-    
+    console.log("✅ Database connection successful");
+
     const collections = await mongoose.connection.db.listCollections().toArray();
     console.log(`✅ Found ${collections.length} collections in database`);
-    
+
     // Test specific collections
-    const criticalCollections = ['users', 'pokemonbases', 'financialcategories', 'financialtransactions'];
+    const criticalCollections = ["users", "pokemonbases", "financialcategories", "financialtransactions"];
     for (const collectionName of criticalCollections) {
-      const exists = collections.some(c => c.name === collectionName);
+      const exists = collections.some((c) => c.name === collectionName);
       if (exists) {
         console.log(`✅ Collection '${collectionName}' exists`);
       } else {
@@ -55,20 +55,20 @@ const runDiagnostics = async () => {
       }
     }
   } catch (error) {
-    console.log('❌ Database connection failed:', error.message);
+    console.log("❌ Database connection failed:", error.message);
     allPassed = false;
   }
 
   // Test 3: Model Registration
-  console.log('ℹ️  Testing Model Registration...');
+  console.log("ℹ️  Testing Model Registration...");
   const modelPaths = [
-    './models/User',
-    './models/PokemonBase',
-    './models/finance/FinancialCategory',
-    './models/finance/FinancialTransaction',
-    './models/finance/RecurringBill',
-    './models/SpotifyLogs',
-    './models/userSpecific/userPokemon'
+    "./models/User",
+    "./models/PokemonBase",
+    "./models/finance/FinancialCategory",
+    "./models/finance/FinancialTransaction",
+    "./models/finance/RecurringBill",
+    "./models/SpotifyLogs",
+    "./models/userSpecific/userPokemon",
   ];
 
   for (const modelPath of modelPaths) {
@@ -82,30 +82,30 @@ const runDiagnostics = async () => {
   }
 
   // Test 4: Static File Serving and Upload Directories
-  console.log('ℹ️  Testing Static File Serving...');
+  console.log("ℹ️  Testing Static File Serving...");
   const staticDirectories = [
     {
-      path: path.join(__dirname, 'public'),
-      subdirs: ['uploads', 'uploads/avatars', 'pokemon', 'habborares']
+      path: path.join(__dirname, "public"),
+      subdirs: ["uploads", "uploads/avatars", "pokemon", "habborares"],
     },
     {
-      path: path.join(__dirname, '../public'),
-      subdirs: ['uploads', 'uploads/avatars', 'pokemon', 'habborares']
+      path: path.join(__dirname, "../public"),
+      subdirs: ["uploads", "uploads/avatars", "pokemon", "habborares"],
     },
     {
-      path: path.join(__dirname, '../client_admin/dist'),
-      subdirs: ['uploads', 'uploads/avatars', 'pokemon', 'habborares']
+      path: path.join(__dirname, "../client_admin/dist"),
+      subdirs: ["uploads", "uploads/avatars", "pokemon", "habborares"],
     },
     {
-      path: path.join(__dirname, '../client_public/dist'),
-      subdirs: ['uploads', 'uploads/avatars', 'pokemon', 'habborares']
-    }
+      path: path.join(__dirname, "../client_public/dist"),
+      subdirs: ["uploads", "uploads/avatars", "pokemon", "habborares"],
+    },
   ];
 
   for (const dir of staticDirectories) {
     if (fs.existsSync(dir.path)) {
       console.log(`✅ Static directory exists: ${dir.path}`);
-      
+
       for (const subdir of dir.subdirs) {
         const subdirPath = path.join(dir.path, subdir);
         if (fs.existsSync(subdirPath)) {
@@ -129,14 +129,14 @@ const runDiagnostics = async () => {
   }
 
   // Test 5: Critical API Routes
-  console.log('ℹ️  Testing Critical API Endpoints...');
+  console.log("ℹ️  Testing Critical API Endpoints...");
   const routeFiles = [
-    './routes/authRoutes',
-    './routes/userRoutes',
-    './routes/financeRoutes',
-    './routes/pokemonRoutes',
-    './routes/shopRoutes',
-    './routes/spotifyRoutes'
+    "./routes/authRoutes",
+    "./routes/userRoutes",
+    "./routes/financeRoutes",
+    "./routes/pokemonRoutes",
+    "./routes/shopRoutes",
+    "./routes/spotifyRoutes",
   ];
 
   for (const routeFile of routeFiles) {
@@ -150,29 +150,32 @@ const runDiagnostics = async () => {
   }
 
   // Test 6: Spotify Configuration
-  console.log('ℹ️  Testing Spotify Configuration...');
+  console.log("ℹ️  Testing Spotify Configuration...");
   if (process.env.SPOTIFY_CLIENT_ID && process.env.SPOTIFY_CLIENT_SECRET) {
     if (process.env.SPOTIFY_REDIRECT_URI) {
-      if (process.env.SPOTIFY_REDIRECT_URI.includes('localhost') || process.env.SPOTIFY_REDIRECT_URI.includes('127.0.0.1')) {
-        console.log('⚠️  Spotify redirect URI appears to be localhost - update for production');
+      if (
+        process.env.SPOTIFY_REDIRECT_URI.includes("localhost") ||
+        process.env.SPOTIFY_REDIRECT_URI.includes("127.0.0.1")
+      ) {
+        console.log("⚠️  Spotify redirect URI appears to be localhost - update for production");
       } else {
-        console.log('✅ Spotify redirect URI configured for production');
+        console.log("✅ Spotify redirect URI configured for production");
       }
     } else {
-      console.log('⚠️  Spotify redirect URI not set');
+      console.log("⚠️  Spotify redirect URI not set");
     }
-    console.log('✅ Spotify credentials configured');
+    console.log("✅ Spotify credentials configured");
   } else {
-    console.log('⚠️  Spotify credentials not configured (optional)');
+    console.log("⚠️  Spotify credentials not configured (optional)");
   }
 
   // Test 7: File Permissions
-  console.log('ℹ️  Checking File Permissions...');
+  console.log("ℹ️  Checking File Permissions...");
   const criticalPaths = [
-    { path: './public', type: 'directory' },
-    { path: './public/uploads', type: 'directory' },
-    { path: './config', type: 'directory' },
-    { path: '.env', type: 'file' }
+    { path: "./public", type: "directory" },
+    { path: "./public/uploads", type: "directory" },
+    { path: "./config", type: "directory" },
+    { path: ".env", type: "file" },
   ];
 
   for (const item of criticalPaths) {
@@ -186,41 +189,33 @@ const runDiagnostics = async () => {
   }
 
   // Summary
-  console.log('============================================================');
-  console.log('                    SUMMARY REPORT');
-  console.log('============================================================');
-  
-  const sections = [
-    'ENVIRONMENT',
-    'DATABASE', 
-    'MODELS',
-    'STATICFILES',
-    'ROUTES',
-    'SPOTIFY',
-    'PERMISSIONS'
-  ];
+  console.log("============================================================");
+  console.log("                    SUMMARY REPORT");
+  console.log("============================================================");
 
-  sections.forEach(section => {
+  const sections = ["ENVIRONMENT", "DATABASE", "MODELS", "STATICFILES", "ROUTES", "SPOTIFY", "PERMISSIONS"];
+
+  sections.forEach((section) => {
     console.log(`✅ ${section}: PASSED`);
   });
 
   if (allPassed) {
-    console.log('🎉 All systems operational! Deployment should work correctly.');
-    console.log('');
-    console.log('Troubleshooting notes:');
-    console.log('• Finance data: All finance models now properly registered');
-    console.log('• Profile pictures: Avatar upload directories created and configured');
-    console.log('• Spotify: Environment variables configured, URLs updated for production');
-    console.log('• Static files: All necessary directories created with proper serving');
+    console.log("🎉 All systems operational! Deployment should work correctly.");
+    console.log("");
+    console.log("Troubleshooting notes:");
+    console.log("• Finance data: All finance models now properly registered");
+    console.log("• Profile pictures: Avatar upload directories created and configured");
+    console.log("• Spotify: Environment variables configured, URLs updated for production");
+    console.log("• Static files: All necessary directories created with proper serving");
   } else {
-    console.log('🚨 Some checks failed. Please review the issues above.');
-    console.log('Common fixes:');
-    console.log('• Ensure all environment variables are set in production');
-    console.log('• Check that static file directories exist and have proper permissions');
-    console.log('• Verify MongoDB connection string is correct for production');
-    console.log('• Make sure all npm packages are installed');
-    console.log('• Check that the build process completed successfully');
-    console.log('• Update Spotify redirect URIs for production domains');
+    console.log("🚨 Some checks failed. Please review the issues above.");
+    console.log("Common fixes:");
+    console.log("• Ensure all environment variables are set in production");
+    console.log("• Check that static file directories exist and have proper permissions");
+    console.log("• Verify MongoDB connection string is correct for production");
+    console.log("• Make sure all npm packages are installed");
+    console.log("• Check that the build process completed successfully");
+    console.log("• Update Spotify redirect URIs for production domains");
   }
 
   await mongoose.disconnect();
