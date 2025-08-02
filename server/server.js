@@ -113,7 +113,8 @@ app.use("/api/spotify", require("./routes/spotifyRoutes"));
 app.use("/api/finance", require("./routes/financeRoutes"));
 
 // Catch-all handler: send back React's index.html file for client-side routing
-app.get("*", (req, res) => {
+// Using middleware instead of route pattern to avoid path-to-regexp issues
+app.use((req, res, next) => {
   // If the request is for an API route that doesn't exist, return 404
   if (req.path.startsWith("/api/")) {
     return res.status(404).json({ message: "API route not found" });
