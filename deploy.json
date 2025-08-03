@@ -1,0 +1,8 @@
+{
+  "name": "deploy-script",
+  "scripts": {
+    "build": "cd client_admin && npm install && npm run build",
+    "deploy:prepare": "npm run build && echo Build completed successfully",
+    "deploy:full": "npm install && cd client_admin && npm install && npm run build && echo Deployment preparation completed"
+  }
+}

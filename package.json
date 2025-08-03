@@ -24,10 +24,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "cd server && npm start",
+    "build": "cd client_admin && npm install && npm run build",
+    "build:full": "npm install && cd server && npm install && cd ../client_admin && npm install && npm run build",
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client_admin && npm run dev\"",
     "admin": "cd ./client_admin && npm run dev",
     "public": "cd ./client_public && npm run dev",
     "server": "cd ./server && npm run dev",
