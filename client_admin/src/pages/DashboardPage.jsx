@@ -105,7 +105,7 @@ const DashboardPage = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.8 }}
-          className="col-span-8 md:col-span-2 order-2 md:order-4 row-span-2"
+          className="col-span-8 md:col-span-2 order-2 md:order-4 row-span-1"
         >
           <ClockWidget />
         </motion.div>
@@ -145,9 +145,9 @@ const DashboardPage = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 1.3 }}
-          className="col-span-8 md:col-span-4 order-7 md:order-2 row-span-3 overflow-hidden"
+          className="col-span-8 md:col-span-4 order-7 md:order-2 overflow-hidden"
         >
-          <div className="w-full h-full aspect-square overflow-hidden">
+          <div className="w-full aspect-square overflow-hidden">
             <LoreChartWidget />
           </div>
         </motion.div>
