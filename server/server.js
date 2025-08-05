@@ -41,6 +41,7 @@ require("./models/userSpecific/userTitle");
 require("./models/userSpecific/userHabboRare");
 require("./models/userSpecific/userYugiohCard");
 
+const strokesRoutes = require("./routes/strokesRoutes");
 // Initialize app and database connection
 dotenv.config();
 const app = express();
@@ -49,11 +50,11 @@ connectDB();
 // Essential middleware stack
 const corsOptions = {
   origin: process.env.CORS_ORIGIN || [
-    "http://localhost:3000", 
-    "http://localhost:5173", 
-    "http://localhost:5174", 
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost:5174",
     "http://localhost:5175",
-    "https://taexp3-0.onrender.com"
+    "https://taexp3-0.onrender.com",
   ],
   credentials: true,
   optionsSuccessStatus: 200,
@@ -111,6 +112,7 @@ app.use("/api/admin/habbo-rares", require("./routes/habboRareAdminRoutes"));
 // External integrations & additional features
 app.use("/api/spotify", require("./routes/spotifyRoutes"));
 app.use("/api/finance", require("./routes/financeRoutes"));
+app.use("/api/strokes", strokesRoutes);
 
 // Catch-all middleware: send back React's index.html file for client-side routing
 app.use((req, res, next) => {
@@ -118,7 +120,7 @@ app.use((req, res, next) => {
   if (req.path.startsWith("/api/")) {
     return res.status(404).json({ message: "API route not found" });
   }
-  
+
   // For all other routes, serve the React app
   res.sendFile(path.join(__dirname, "../client_admin/dist/index.html"));
 });

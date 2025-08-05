@@ -23,6 +23,7 @@ import ClockWidget from "../components/dashboard/ClockWidget";
 import WeatherWidget from "../components/dashboard/WeatherWidget";
 import PersonaWidget from "../components/dashboard/PersonaWidget";
 import CalendarWidget from "../components/dashboard/CalendarWidget";
+import StrokesLyricsWidget from "../components/dashboard/StrokesLyricsWidget";
 
 const DashboardPage = () => {
   const { user } = useAuth();
@@ -169,8 +170,14 @@ const DashboardPage = () => {
           transition={{ duration: 0.5, delay: 1.5 }}
           className="col-span-8 md:col-span-4 lg:col-span-2 order-9 md:order-9 row-span-2"
         >
-          <PersonaWidget />
+          <StrokesLyricsWidget />
         </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.6 }}
+          className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
+        ></motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
