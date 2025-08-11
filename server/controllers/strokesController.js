@@ -1,5 +1,6 @@
 // server/controllers/strokesController.js
 const StrokesSong = require("../models/StrokesSong");
+const StrokesAlbum = require("../models/StrokesAlbum");
 
 // @desc    Get a random Strokes song with its album info
 // @route   GET /api/strokes/random
@@ -14,7 +15,7 @@ exports.getRandomSong = async (req, res) => {
     }
 
     // The result from aggregate is plain JSON, so we need to manually populate the album info
-    await StrokesSong.populate(randomSong, { path: "album", model: "StrokesAlbum" });
+    await StrokesSong.populate(randomSong, { path: "album", model: StrokesAlbum });
 
     res.status(200).json({ success: true, data: randomSong[0] });
   } catch (error) {

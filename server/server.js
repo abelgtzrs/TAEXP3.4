@@ -41,6 +41,10 @@ require("./models/userSpecific/userTitle");
 require("./models/userSpecific/userHabboRare");
 require("./models/userSpecific/userYugiohCard");
 
+// Strokes models (music)
+require("./models/StrokesAlbum");
+require("./models/StrokesSong");
+
 const strokesRoutes = require("./routes/strokesRoutes");
 // Initialize app and database connection
 dotenv.config();

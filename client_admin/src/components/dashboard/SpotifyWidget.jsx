@@ -48,13 +48,15 @@ const SpotifyWidget = () => {
       const fetchCurrentTrack = async () => {
         try {
           const response = await api.get("/spotify/currently-playing");
-          if (response.data.data && response.data.data.is_playing) {
-            setCurrentTrack(response.data.data);
+          const d = response?.data?.data;
+          if (d && d.is_playing && (d.item || d.track)) {
+            // Normalize to a consistent shape: keep the original for progress, but ensure we have a track object
+            setCurrentTrack(d);
           } else {
             // If nothing is playing, fetch the last played track from our database
             const recent = await api.get("/spotify/recently-played?limit=1");
             if (recent.data.items && recent.data.items.length > 0) {
-              // Convert our database format to match Spotify API format
+              // Convert our database format to resemble Spotify API track shape
               const lastTrack = recent.data.items[0];
               setCurrentTrack({
                 track: {
@@ -67,6 +69,8 @@ const SpotifyWidget = () => {
                 played_at: lastTrack.playedAt,
                 is_playing: false,
               });
+            } else {
+              setCurrentTrack(null);
             }
           }
         } catch (error) {
@@ -126,7 +130,8 @@ const SpotifyWidget = () => {
     );
   }
 
-  const track = currentTrack.track || currentTrack; // Handle both currently-playing and recent track structures
+  // Prefer Spotify's currently-playing 'item' if present; otherwise use our fallback 'track'
+  const track = currentTrack.item || currentTrack.track || currentTrack;
   const albumArtUrl = track?.album?.images?.[0]?.url;
   const artists = Array.isArray(track?.artists) ? track.artists.map((a) => a.name).join(", ") : "Unknown Artist";
 
@@ -134,20 +139,23 @@ const SpotifyWidget = () => {
     <Widget title="Spotify Activity" className="flex flex-col">
       <div className="flex items-center gap-4">
         {albumArtUrl ? (
-          <img src={albumArtUrl} alt={track.album.name} className="w-24 h-24 rounded-md" />
+          <img src={albumArtUrl} alt={track.album.name} className="w-24 h-24 rounded-md object-cover" />
         ) : (
           <div className="w-24 h-24 bg-gray-700 rounded-md flex items-center justify-center">
             <Music />
           </div>
         )}
         <div className="flex-1 overflow-hidden">
-          <p className="font-bold text-white truncate">{track.name}</p>
+          <p className="font-bold text-white truncate">{track.name || "Unknown Track"}</p>
           <p className="text-sm text-text-secondary truncate">{artists}</p>
+          {track?.album?.name && (
+            <p className="text-xs text-text-tertiary truncate">Album: {track.album.name}</p>
+          )}
           {currentTrack.is_playing && (
             <div className="w-full bg-gray-600 rounded-full h-1 mt-2">
               <div
                 className="bg-green-500 h-1 rounded-full"
-                style={{ width: `${(currentTrack.progress_ms / track.duration_ms) * 100}%` }}
+                style={{ width: `${((currentTrack.progress_ms || 0) / (track.duration_ms || 1)) * 100}%` }}
               ></div>
             </div>
           )}

@@ -45,6 +45,15 @@ const StrokesLyricsWidget = () => {
     return () => clearInterval(intervalId);
   }, []);
 
+  // Normalize any newline indicators to actual line breaks
+  const formatLyric = (s) => {
+    if (!s) return "";
+    return s
+      .replace(/\r\n/g, "\n") // windows newlines -> unix
+      .replace(/\\n/g, "\n") // escaped backslash-n -> newline
+      .replace(/\/n/g, "\n"); // literal /n -> newline
+  };
+
   return (
     <Widget title="The Strokes - Lyrical Transmission" className="flex flex-col">
       {loading &&
@@ -95,9 +104,9 @@ const StrokesLyricsWidget = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.5 }}
-                className="text-lg italic text-text-secondary"
+                className="text-lg italic text-text-secondary whitespace-pre-line break-words"
               >
-                "{currentLyric}"
+                "{formatLyric(currentLyric)}"
               </motion.p>
             </AnimatePresence>
           </div>

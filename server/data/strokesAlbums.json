@@ -2,36 +2,36 @@
   {
     "name": "Is This It",
     "year": 2001,
-    "coverImageUrl": "REPLACE_WITH_IMAGE_URL"
+    "coverImageUrl": "https://upload.wikimedia.org/wikipedia/en/0/09/The_Strokes_-_Is_This_It_cover.png"
   },
   {
     "name": "Room on Fire",
     "year": 2003,
-    "coverImageUrl": "REPLACE_WITH_IMAGE_URL"
+    "coverImageUrl": "https://upload.wikimedia.org/wikipedia/en/9/9f/Room_on_Fire_cover.jpg"
   },
   {
     "name": "First Impressions of Earth",
     "year": 2006,
-    "coverImageUrl": "REPLACE_WITH_IMAGE_URL"
+    "coverImageUrl": "https://upload.wikimedia.org/wikipedia/en/0/0f/FIOEstrokes.jpg"
   },
   {
     "name": "Angles",
     "year": 2011,
-    "coverImageUrl": "REPLACE_WITH_IMAGE_URL"
+    "coverImageUrl": "https://upload.wikimedia.org/wikipedia/en/d/d9/Strokes_1.jpg"
   },
   {
     "name": "Comedown Machine",
     "year": 2013,
-    "coverImageUrl": "REPLACE_WITH_IMAGE_URL"
+    "coverImageUrl": "https://upload.wikimedia.org/wikipedia/en/9/91/The_Strokes_-_Comedown_Machine.jpg"
   },
   {
     "name": "Future Present Past EP",
     "year": 2016,
-    "coverImageUrl": "REPLACE_WITH_IMAGE_URL"
+    "coverImageUrl": "https://upload.wikimedia.org/wikipedia/en/d/d3/The-Strokes-Future-Present-Past-EP.jpg"
   },
   {
     "name": "The New Abnormal",
     "year": 2020,
-    "coverImageUrl": "REPLACE_WITH_IMAGE_URL"
+    "coverImageUrl": "https://upload.wikimedia.org/wikipedia/en/f/f8/The_Strokes_-_The_New_Abnormal.png"
   }
 ]

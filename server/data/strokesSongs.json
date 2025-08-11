@@ -1,7 +1,7 @@
 [
   {
     "title": "Is This It",
-    "album": "REPLACE_WITH_ALBUM_OBJECT_ID",
+    "album": "Is This It",
     "lyrics": [
       "Can't you see I'm tryin'? I don't even like it\nI just lied to get to your apartment\nNow I'm stayin' there just for a while\nI can't think 'cause I'm just way too tired",
 
@@ -16,7 +16,7 @@
   },
   {
     "title": "The Modern Age",
-    "album": "REPLACE_WITH_OBJECT_ID_FOR_IS_THIS_IT",
+    "album": "Is This It",
     "lyrics": [
       "Up on a hill, here's where we begin\nThis little story, a long time ago",
       "Start to pretend, stop pretending\nIt seems this game is simply never-ending",
@@ -53,7 +53,7 @@
   },
   {
     "title": "Barely Legal",
-    "album": "REPLACE_WITH_OBJECT_ID_FOR_IS_THIS_IT",
+    "album": "Is This It",
     "lyrics": [
       "I didn't take no shortcuts\nI spent the money that I saved up\nOh, mama running out of luck\nBut like my sister, don't give a fuck\nI wanna steal your innocence\nTo me, my life, it don't make any sense\nThese strange manners, I love 'em so\nWhy won't you wear your new trenchcoat?",
 
