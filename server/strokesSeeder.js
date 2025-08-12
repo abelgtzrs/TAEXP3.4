@@ -80,5 +80,7 @@ if (process.argv.includes("-i") || process.argv.includes("--import")) {
 } else if (process.argv.includes("-d") || process.argv.includes("--destroy") || process.argv.includes("--clear")) {
   clearStrokes();
 } else {
-  console.log("Strokes Seeder Usage:\n  node strokesSeeder.js -i        # import\n  node strokesSeeder.js -d        # destroy");
+  console.log(
+    "Strokes Seeder Usage:\n  node strokesSeeder.js -i        # import\n  node strokesSeeder.js -d        # destroy"
+  );
 }

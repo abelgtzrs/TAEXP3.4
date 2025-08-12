@@ -148,9 +148,7 @@ const SpotifyWidget = () => {
         <div className="flex-1 overflow-hidden">
           <p className="font-bold text-white truncate">{track.name || "Unknown Track"}</p>
           <p className="text-sm text-text-secondary truncate">{artists}</p>
-          {track?.album?.name && (
-            <p className="text-xs text-text-tertiary truncate">Album: {track.album.name}</p>
-          )}
+          {track?.album?.name && <p className="text-xs text-text-tertiary truncate">Album: {track.album.name}</p>}
           {currentTrack.is_playing && (
             <div className="w-full bg-gray-600 rounded-full h-1 mt-2">
               <div

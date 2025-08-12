@@ -200,11 +200,15 @@ const DisplayedCollection = ({ title, items, baseField }) => {
                           className="max-w-full max-h-full object-contain rounded-md"
                         />
                       ) : (
-                        <div className="w-full h-full rounded-md flex items-center justify-center text-xs text-gray-500">[IMG]</div>
+                        <div className="w-full h-full rounded-md flex items-center justify-center text-xs text-gray-500">
+                          [IMG]
+                        </div>
                       )}
                     </div>
                   ) : (
-                    <div className="w-full aspect-square flex items-center justify-center text-gray-600 text-3xl">+</div>
+                    <div className="w-full aspect-square flex items-center justify-center text-gray-600 text-3xl">
+                      +
+                    </div>
                   )}
 
                   {/* Tooltip above card; only visible when card hovered or tooltip hovered */}
@@ -213,7 +217,9 @@ const DisplayedCollection = ({ title, items, baseField }) => {
                       className={`absolute z-20 left-1/2 -translate-x-1/2 bottom-full mb-2 ${
                         baseField === "yugiohCardBase" ? "w-80" : "w-56"
                       } rounded-md bg-slate-900/95 p-2 text-xs transition duration-200 shadow-xl ${glowClasses} ${
-                        isOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-1 pointer-events-none"
+                        isOpen
+                          ? "opacity-100 translate-y-0 pointer-events-auto"
+                          : "opacity-0 translate-y-1 pointer-events-none"
                       }`}
                       onMouseEnter={() => handleEnter(cellKey)}
                       onMouseLeave={handleLeave}
@@ -233,7 +239,10 @@ const DisplayedCollection = ({ title, items, baseField }) => {
               return (
                 <div key={item?._id || `name-${rowIdx}-${index}`} className="min-h-8 flex items-center justify-center">
                   {baseItem ? (
-                    <span className="block w-full text-center whitespace-normal break-words leading-snug" title={baseItem.name}>
+                    <span
+                      className="block w-full text-center whitespace-normal break-words leading-snug"
+                      title={baseItem.name}
+                    >
                       {baseItem.name}
                     </span>
                   ) : (

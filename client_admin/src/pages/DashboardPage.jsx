@@ -49,7 +49,7 @@ const DashboardPage = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="space-y-5"
+      className="space-y-5 min-h-screen w-full px-2 md:px-4 lg:px-6"
       style={{ zoom: "0.75", transformOrigin: "top left" }}
     >
       <motion.div

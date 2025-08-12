@@ -3,6 +3,15 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  background: url("/bg.jpg") center center / cover no-repeat fixed;
+}
+
 /* Base style for all widgets */
 .widget-container {
   background-color: rgba(23, 31, 42, 0.6); /* Semi-transparent dark surface */
