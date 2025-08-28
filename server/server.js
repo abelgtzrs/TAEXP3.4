@@ -52,18 +52,37 @@ const app = express();
 connectDB();
 
 // Essential middleware stack
-const corsOptions = {
-  origin: process.env.CORS_ORIGIN || [
+const rawOrigins = process.env.CORS_ORIGIN || process.env.CORS_ORIGINS;
+let allowedOrigins;
+if (rawOrigins) {
+  allowedOrigins = rawOrigins.split(",").map((o) => o.trim()).filter(Boolean);
+} else {
+  allowedOrigins = [
     "http://localhost:3000",
     "http://localhost:5173",
     "http://localhost:5174",
     "http://localhost:5175",
-    "https://taexp3-0.onrender.com",
-  ],
+    "https://taexp3-0.onrender.com", // API self
+    "https://taexp-3-0.vercel.app", // Deployed frontend
+  ];
+}
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow non-browser or same-origin requests (like server-to-server without origin header)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
   credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "Accept"],
   optionsSuccessStatus: 200,
 };
-app.use(cors(corsOptions)); // Allow cross-origin requests from frontend
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // Explicitly handle preflight
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: false })); // Parse form data
 
