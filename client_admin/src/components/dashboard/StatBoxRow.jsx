@@ -3,7 +3,7 @@ import StatBox from "./StatBox";
 const StatBoxRow = ({ stats, loading }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-      <div className="border border-gray-700/50 rounded-lg bg-transparent backdrop-blur-sm">
+      <div className="bg-surface border border-gray-700/50 rounded-lg">
         <StatBox
           title="Habits Completed Today"
           value={loading ? "..." : stats.habitsCompleted}
@@ -12,7 +12,7 @@ const StatBoxRow = ({ stats, loading }) => {
           period="yesterday"
         />
       </div>
-      <div className="border border-gray-700/50 rounded-lg bg-transparent backdrop-blur-sm">
+      <div className="bg-surface border border-gray-700/50 rounded-lg">
         <StatBox
           title="Total Workouts"
           value={loading ? "..." : stats.totalWorkouts}
@@ -21,7 +21,7 @@ const StatBoxRow = ({ stats, loading }) => {
           period="last week"
         />
       </div>
-      <div className="border border-gray-700/50 rounded-lg bg-transparent backdrop-blur-sm">
+      <div className="bg-surface border border-gray-700/50 rounded-lg">
         <StatBox
           title="Books Finished"
           value={loading ? "..." : stats.booksFinished}
@@ -30,7 +30,7 @@ const StatBoxRow = ({ stats, loading }) => {
           period="last month"
         />
       </div>
-      <div className="border border-gray-700/50 rounded-lg bg-transparent backdrop-blur-sm">
+      <div className="bg-surface border border-gray-700/50 rounded-lg">
         <StatBox
           title="Login Streak"
           value={loading ? "..." : stats.activeStreaks}
@@ -39,7 +39,7 @@ const StatBoxRow = ({ stats, loading }) => {
           period="today"
         />
       </div>
-      <div className="border border-gray-700/50 rounded-lg bg-transparent backdrop-blur-sm">
+      <div className="bg-surface border border-gray-700/50 rounded-lg">
         <StatBox
           title="Total Collectibles"
           value={loading ? "..." : stats.gachaPulls}
@@ -48,7 +48,7 @@ const StatBoxRow = ({ stats, loading }) => {
           period="this week"
         />
       </div>
-      <div className="border border-gray-700/50 rounded-lg bg-transparent backdrop-blur-sm">
+      <div className="bg-surface border border-gray-700/50 rounded-lg">
         <StatBox
           title="Volumes Published"
           value={loading ? "..." : stats.volumesPublished}
@@ -57,7 +57,7 @@ const StatBoxRow = ({ stats, loading }) => {
           period="this quarter"
         />
       </div>
-      <div className="border border-gray-700/50 rounded-lg bg-transparent backdrop-blur-sm">
+      <div className="bg-surface border border-gray-700/50 rounded-lg">
         <StatBox
           title="Tasks Completed"
           value={loading ? "..." : stats.tasksCompleted}
@@ -66,7 +66,7 @@ const StatBoxRow = ({ stats, loading }) => {
           period="today"
         />
       </div>
-      <div className="border border-gray-700/50 rounded-lg bg-transparent backdrop-blur-sm">
+      <div className="bg-surface border border-gray-700/50 rounded-lg">
         <StatBox
           title="Active Goals"
           value={loading ? "..." : stats.activeGoals}

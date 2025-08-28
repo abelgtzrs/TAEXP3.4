@@ -49,7 +49,7 @@ const DashboardPage = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="space-y-5 min-h-screen w-full px-2 md:px-4 lg:px-6"
+      className="space-y-3"
       style={{ zoom: "0.75", transformOrigin: "top left" }}
     >
       <motion.div
@@ -57,7 +57,11 @@ const DashboardPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <PageHeader title="Dashboard" subtitle={`Cognitive Framework Status for ${user.username || "Admin"}.`} />
+        <PageHeader
+          title="Dashboard"
+          subtitle={`Cognitive Framework Status for ${user.username || "Admin"}.`}
+          className="mt-1 mb-1 pl-4"
+        />
       </motion.div>
 
       {/* --- Main Dashboard Grid --- */}
@@ -65,7 +69,7 @@ const DashboardPage = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.4 }}
-        className="grid grid-cols-8 gap-4"
+        className="grid grid-cols-8 gap-4 -mt-1"
       >
         {/* Row 1: Full-width Stat Box */}
         <motion.div

@@ -55,7 +55,10 @@ connectDB();
 const rawOrigins = process.env.CORS_ORIGIN || process.env.CORS_ORIGINS;
 let allowedOrigins;
 if (rawOrigins) {
-  allowedOrigins = rawOrigins.split(",").map((o) => o.trim()).filter(Boolean);
+  allowedOrigins = rawOrigins
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean);
 } else {
   allowedOrigins = [
     "http://localhost:3000",

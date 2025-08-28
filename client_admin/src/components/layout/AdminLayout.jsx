@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Outlet, Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Header from "./Header";
@@ -31,15 +31,17 @@ const NavItem = ({ to, icon: Icon, children, isCollapsed }) => {
       <NavLink
         to={to}
         className={({ isActive }) =>
-          `flex items-center p-3 rounded-lg transition-all duration-300 text-text-secondary hover:bg-gray-700/50 hover:text-white group ${
+          `group flex items-center rounded-lg transition-all duration-300 text-text-secondary hover:bg-gray-700/50 hover:text-white px-2 py-2 ${
             isActive ? "bg-primary/20 text-white shadow-lg" : ""
-          } ${isCollapsed ? "justify-center" : ""}`
+          }`
         }
       >
-        <Icon size={20} className={`flex-shrink-0 ${isCollapsed ? "" : "mr-3"}`} />
+        <span className="flex-none w-6 flex items-center justify-center">
+          <Icon size={16} />
+        </span>
         <span
-          className={`transition-all duration-300 overflow-hidden whitespace-nowrap ${
-            isCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"
+          className={`ml-2 overflow-hidden whitespace-nowrap transition-all duration-300 ${
+            isCollapsed ? "max-w-0 opacity-0" : "max-w-[200px] opacity-100"
           }`}
         >
           {children}
@@ -51,78 +53,63 @@ const NavItem = ({ to, icon: Icon, children, isCollapsed }) => {
 
 const AdminLayout = () => {
   const { user, logout } = useAuth();
-  // State to control the sidebar's collapsed status
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true); // Start collapsed
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
+  const toggleSidebar = () => setIsSidebarCollapsed((p) => !p);
 
-  const toggleSidebar = () => {
-    setIsSidebarCollapsed(!isSidebarCollapsed);
-  };
+  const collapsedWidthPx = 56 - 24; // adjust? keep 32
+  const sidebarCollapsedWidth = 32; // w-8
+  const sidebarExpandedWidth = 176; // w-44
+  const headerHeight = 48; // compact header height (was 56)
+  const sidebarWidth = isSidebarCollapsed ? sidebarCollapsedWidth : sidebarExpandedWidth;
+
+  const logoImg = import.meta.env.VITE_TAE_LOGO;
 
   return (
-    <div className="flex h-screen bg-background text-text-main relative text-xs">
-      {/* --- Header (Full Width) --- */}
-      <div className="fixed top-0 left-0 right-0 z-30">
-        <Header />
-      </div>
-
-      {/* --- Main Content Area (with left margin for sidebar and top padding for header) --- */}
-      <div className="flex-1 flex flex-col overflow-hidden ml-14 pt-20">
-        <main className="flex-1 p-2 lg:p-3 overflow-y-auto scrollbar-hide min-h-0">
-          <Outlet />
-        </main>
-      </div>
-
-      {/* --- Backdrop (when sidebar is expanded) --- */}
-      {!isSidebarCollapsed && (
-        <div
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 transition-opacity duration-500"
-          onClick={toggleSidebar}
-        />
-      )}
-
-      {/* --- Floating Sidebar --- */}
+    <div className="h-screen w-screen overflow-hidden bg-background text-text-main text-xs">
+      {/* Sidebar full height */}
       <aside
-        className={`fixed left-0 top-1/2 transform -translate-y-1/2 bg-surface/40 backdrop-blur-md border border-gray-700/80 rounded-r-2xl shadow-2xl z-50 flex flex-col transition-all duration-500 ease-in-out ${
-          isSidebarCollapsed ? "w-10 translate-x-0 shadow-lg" : "w-56 translate-x-0 shadow-2xl shadow-primary/10"
+        className={`fixed top-0 left-0 bottom-0 z-50 flex flex-col bg-surface/40 backdrop-blur-md border-r border-gray-700/80 shadow-2xl transition-all duration-500 ease-in-out ${
+          isSidebarCollapsed ? "w-10" : "w-44"
         }`}
-        style={{ maxHeight: "90vh", minWidth: isSidebarCollapsed ? "2.5rem" : "14rem" }}
       >
-        {/* Toggle Button */}
+        {/* Toggle */}
         <button
           onClick={toggleSidebar}
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-full bg-surface/80 backdrop-blur-md border border-gray-700/30 rounded-r-lg p-2 hover:bg-gray-700/50 transition-all duration-300 shadow-lg group"
+          className="absolute top-2 right-0 translate-x-full bg-surface/80 backdrop-blur-md border border-gray-700/40 rounded-r-md p-1 hover:bg-gray-700/60 transition-all duration-300 shadow-md"
         >
-          <div className="transition-transform duration-300 group-hover:scale-110">
-            {isSidebarCollapsed ? (
-              <ChevronRight size={20} className="text-white" />
-            ) : (
-              <ChevronLeft size={20} className="text-white" />
-            )}
-          </div>
+          {isSidebarCollapsed ? (
+            <ChevronRight size={16} className="text-white" />
+          ) : (
+            <ChevronLeft size={16} className="text-white" />
+          )}
         </button>
 
-        <div className="p-2 flex-shrink-0">
-          {/* Header */}
-          <div className={`flex items-center gap-1 py-1 mb-2 ${isSidebarCollapsed ? "justify-center" : ""}`}>
-            <div
-              className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                isSidebarCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"
+        {/* Brand */}
+        <div className="px-2 pt-4 pb-2 flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <div className="flex-none w-6 h-6 rounded-md overflow-hidden bg-primary/40 flex items-center justify-center">
+              {logoImg ? (
+                <img src={logoImg} alt="TAE" className="w-full h-full object-cover" />
+              ) : (
+                <span className="text-primary font-bold text-[9px] leading-none">TAE</span>
+              )}
+            </div>
+            <span
+              className={`text-white font-bold text-[10px] tracking-wide transition-all duration-300 overflow-hidden whitespace-nowrap ${
+                isSidebarCollapsed ? "max-w-0 opacity-0" : "max-w-[140px] opacity-100"
               }`}
             >
-              <h1 className="text-white font-bold text-[10px] whitespace-nowrap">The Abel Experience™ CFW</h1>
-            </div>
-            {isSidebarCollapsed && (
-              <div className="w-6 h-6 bg-primary/50 rounded-lg flex items-center justify-center">
-                <span className="text-primary font-bold text-xs">TAE</span>
-              </div>
-            )}
+              The Abel Experience™ CFW
+            </span>
           </div>
         </div>
 
-        <nav className="flex-grow space-y-2 overflow-y-auto scrollbar-hide px-1">
+        {/* Navigation */}
+        <nav className="flex-grow space-y-3 overflow-y-auto scrollbar-hide px-1 pb-2">
+          {/* Main */}
           <div>
             <p
-              className={`px-1 text-[10px] font-semibold text-text-tertiary uppercase mb-1 transition-all duration-500 ease-in-out ${
+              className={`px-1 text-[10px] font-semibold text-text-tertiary uppercase mb-1 transition-all ${
                 isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-1"
               }`}
             >
@@ -155,10 +142,10 @@ const AdminLayout = () => {
               </NavItem>
             </ul>
           </div>
-
+          {/* Trackers */}
           <div>
             <p
-              className={`px-1 text-[10px] font-semibold text-text-tertiary uppercase mb-1 transition-all duration-500 ease-in-out ${
+              className={`px-1 text-[10px] font-semibold text-text-tertiary uppercase mb-1 transition-all ${
                 isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-1"
               }`}
             >
@@ -176,11 +163,11 @@ const AdminLayout = () => {
               </NavItem>
             </ul>
           </div>
-
+          {/* Admin */}
           {user?.role === "admin" && (
             <div>
               <p
-                className={`px-1 text-[10px] font-semibold text-text-tertiary uppercase mb-1 transition-all duration-500 ease-in-out ${
+                className={`px-1 text-[10px] font-semibold text-text-tertiary uppercase mb-1 transition-all ${
                   isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-1"
                 }`}
               >
@@ -210,14 +197,15 @@ const AdminLayout = () => {
           )}
         </nav>
 
-        <div className="mt-auto flex-shrink-0 border-t border-gray-700/50 pt-2 px-1">
+        {/* Logout */}
+        <div className="mt-auto flex-shrink-0 border-t border-gray-700/50 pt-2 px-1 pb-3">
           <button
             onClick={logout}
             className={`w-full flex items-center p-2 rounded-lg text-xs text-text-secondary hover:bg-red-800/50 hover:text-white transition-all duration-300 ${
               isSidebarCollapsed ? "justify-center" : ""
             }`}
           >
-            <LogOut size={16} className={isSidebarCollapsed ? "" : "mr-2"} />
+            <LogOut size={14} className={isSidebarCollapsed ? "" : "mr-2"} />
             <span
               className={`transition-all duration-300 overflow-hidden whitespace-nowrap ${
                 isSidebarCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"
@@ -228,6 +216,24 @@ const AdminLayout = () => {
           </button>
         </div>
       </aside>
+
+      {/* Header offset by sidebar width */}
+      <div
+        className="fixed top-0 right-0 z-40 transition-[left,width] duration-500"
+        style={{ left: sidebarWidth, height: headerHeight }}
+      >
+        <Header />
+      </div>
+
+      {/* Main content */}
+      <main
+        className="absolute overflow-hidden flex flex-col"
+        style={{ left: sidebarWidth, top: headerHeight, right: 0, bottom: 0 }}
+      >
+        <div className="flex-1 overflow-y-auto scrollbar-hide p-2 lg:p-3 min-h-0">
+          <Outlet />
+        </div>
+      </main>
     </div>
   );
 };

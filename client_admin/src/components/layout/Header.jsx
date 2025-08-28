@@ -1,11 +1,10 @@
 import { Search, Bell, Mail, User, LogOut } from "lucide-react";
 import { useState, useRef } from "react";
-// ...existing code...
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
 import { Link } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ forcedHeight }) => {
   const { user, logout, setUser } = useAuth();
   const [personaDropdownOpen, setPersonaDropdownOpen] = useState(false);
   const personaButtonRef = useRef(null);
@@ -31,65 +30,40 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 py-3 flex items-center justify-between sticky top-0 z-40 shadow-2xl shadow-black/50">
+    <header
+      className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-3 py-1.5 flex items-center justify-between sticky top-0 z-40 shadow-2xl shadow-black/50 h-12"
+      style={forcedHeight ? { height: forcedHeight } : {}}
+    >
       {/* Left Side: Logo/Brand */}
       <div className="flex items-center">
-        <div className="flex items-center space-x-4">
-          <div className="w-10 h-10 bg-gradient-to-br from-primary/30 to-primary/10 rounded-xl flex items-center justify-center border border-primary/20 shadow-lg shadow-primary/20">
-            <span className="text-primary font-bold text-lg tracking-wider">AE</span>
-          </div>
+        <div className="flex items-center space-x-2">
           <div className="hidden sm:block">
-            <h1 className="text-white/90 font-bold text-xl tracking-tight">taexp.cfw</h1>
-            <p className="text-white/40 text-xs font-medium">Genesis Dashboard</p>
+            <h1 className="text-white/90 font-bold text-base tracking-tight leading-tight"></h1>
+            <p className="text-white/40 text-[10px] font-medium -mt-0.5"></p>
           </div>
         </div>
       </div>
 
-      {/* Center: Global Search Bar */}
-      <div className="flex justify-center flex-1 mx-8">
-        <div className="relative w-full max-w-lg">
+      {/* Center: Global Search Bar (hidden on very small screens) */}
+      <div className="hidden xs:flex justify-center flex-1 mx-3 sm:mx-6">
+        <div className="relative w-full max-w-md">
           <input
             type="search"
-            placeholder="Search collections, items, stats..."
-            className="w-full bg-black/30 backdrop-blur-sm border border-white/20 text-white/90 placeholder-white/40 rounded-2xl py-3 pl-12 pr-6 focus:ring-2 focus:ring-primary/50 focus:border-primary/50 focus:outline-none transition-all duration-300 hover:bg-black/40 focus:bg-black/40 shadow-inner"
+            placeholder="Search..."
+            className="w-full bg-black/30 backdrop-blur-sm border border-white/20 text-white/90 placeholder-white/40 rounded-2xl py-2 pl-9 pr-4 focus:ring-2 focus:ring-primary/40 focus:border-primary/40 focus:outline-none transition-all duration-300 hover:bg-black/40 focus:bg-black/40 shadow-inner text-sm"
           />
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search size={20} className="text-white/50" />
-          </div>
-          <div className="absolute inset-y-0 right-0 pr-4 flex items-center">
-            <kbd className="hidden md:inline-flex px-2 py-1 text-xs font-semibold text-white/40 bg-white/10 rounded border border-white/10">
-              ⌘K
-            </kbd>
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Search size={16} className="text-white/50" />
           </div>
         </div>
       </div>
 
       {/* Right Side: Action Icons and User Profile */}
-      <div className="flex items-center space-x-3">
-        {/* Currency Display */}
-        <div className="hidden lg:flex items-center space-x-4 px-4 py-2 bg-black/30 backdrop-blur-sm border border-white/20 rounded-xl">
-          <div className="flex items-center space-x-1">
-            <span className="text-yellow-400 text-sm font-bold">{user?.temuTokens || 0}</span>
-            <span className="text-yellow-400/60 text-xs">TT</span>
-          </div>
-          <div className="w-px h-4 bg-white/20"></div>
-          <div className="flex items-center space-x-1">
-            <span className="text-amber-400 text-sm font-bold">{user?.gatillaGold || 0}</span>
-            <span className="text-amber-400/60 text-xs">GG</span>
-          </div>
-          <div className="w-px h-4 bg-white/20"></div>
-          <div className="flex items-center space-x-1">
-            <span className="text-pink-400 text-sm font-bold">{user?.wendyHearts || 0}</span>
-            <span className="text-pink-400/60 text-xs">❤️</span>
-          </div>
-        </div>
-
-        <button className="p-3 rounded-xl text-white/60 hover:bg-white/10 hover:text-primary transition-all duration-300 hover:scale-105 active:scale-95">
-          <Mail size={20} />
+      <div className="flex items-center space-x-2">
+        <button className="p-2 rounded-xl text-white/60 hover:bg-white/10 hover:text-primary transition-all duration-300 hover:scale-105 active:scale-95">
+          <Mail size={16} />
         </button>
-
-        <div className="h-8 w-px bg-white/20"></div>
-
+        <div className="h-6 w-px bg-white/15"></div>
         <div
           className="relative group"
           onMouseEnter={() => setPersonaDropdownOpen(true)}
@@ -97,9 +71,9 @@ const Header = () => {
         >
           <button
             ref={personaButtonRef}
-            className="flex items-center space-x-3 px-3 py-2 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-all duration-300"
+            className="flex items-center space-x-2 px-2 py-1 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-all duration-300"
           >
-            <div className="relative w-12 h-12">
+            <div className="relative w-8 h-8 sm:w-9 sm:h-9">
               <img
                 src={
                   user?.profilePicture
@@ -107,19 +81,17 @@ const Header = () => {
                     : `https://api.dicebear.com/8.x/pixel-art/svg?seed=${user?.username || "user"}`
                 }
                 alt="User Avatar"
-                className="w-full h-full rounded-full object-cover border-2 border-primary/50 shadow-lg shadow-primary/30 ring-2 ring-primary/20"
-                style={{
-                  filter: "drop-shadow(0 0 8px rgba(45, 212, 191, 0.3))",
-                }}
+                className="w-full h-full rounded-full object-cover border border-primary/40 shadow-md shadow-primary/20 ring-1 ring-primary/10"
+                style={{ filter: "drop-shadow(0 0 4px rgba(45, 212, 191, 0.25))" }}
               />
             </div>
-            <div className="hidden md:block text-left">
-              <span className="text-sm font-medium block">{user?.username || "User"}</span>
-              <span className="text-xs text-white/40">Admin</span>
+            <div className="hidden md:block text-left leading-tight">
+              <span className="text-xs font-medium block -mb-0.5">{user?.username || "User"}</span>
+              <span className="text-[10px] text-white/40">Admin</span>
             </div>
           </button>
           <div
-            className={`absolute right-0 mt-3 w-56 bg-black/80 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl shadow-black/50 z-50 overflow-hidden transition-all duration-300 ${
+            className={`absolute right-0 mt-2 w-56 bg-black/80 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl shadow-black/50 z-50 overflow-hidden transition-all duration-300 ${
               personaDropdownOpen ? "opacity-100 visible" : "opacity-0 invisible"
             }`}
           >
