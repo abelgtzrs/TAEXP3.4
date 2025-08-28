@@ -81,8 +81,7 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization", "Accept"],
   optionsSuccessStatus: 200,
 };
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // Explicitly handle preflight
+app.use(cors(corsOptions)); // Removed explicit app.options("*", ...) to avoid path-to-regexp v6 wildcard error under Express 5
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: false })); // Parse form data
 
