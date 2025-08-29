@@ -538,9 +538,9 @@ const TransactionList = ({
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
-    if (active.id !== over.id) {
-      onSortEnd(active.id, over.id);
-    }
+  // over can be null if dropped outside the context
+  if (!over) return;
+  if (active.id !== over.id) onSortEnd(active.id, over.id);
   };
 
   return (
