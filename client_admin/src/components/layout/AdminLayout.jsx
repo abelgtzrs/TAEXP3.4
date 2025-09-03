@@ -23,6 +23,7 @@ import {
   Settings2,
   DollarSign,
   Music,
+  FileSignature,
 } from "lucide-react";
 
 const NavItem = ({ to, icon: Icon, children, isCollapsed }) => {
@@ -191,6 +192,12 @@ const AdminLayout = () => {
                 </NavItem>
                 <NavItem to="/settings" icon={Settings2} isCollapsed={isSidebarCollapsed}>
                   Settings
+                </NavItem>
+                <NavItem to="/admin/volume-workbench" icon={FileSignature} isCollapsed={isSidebarCollapsed}>
+                  Volume Workbench
+                </NavItem>
+                <NavItem to="/admin/volumes" icon={Library} isCollapsed={isSidebarCollapsed}>
+                  Volume Administration
                 </NavItem>
               </ul>
             </div>

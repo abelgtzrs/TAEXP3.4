@@ -1,12 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
@@ -520,15 +513,7 @@ const BudgetStatus = ({ categories, transactions, selectedMonth, budgets, onUpda
 };
 
 // --- Sub-Component: Transaction List ---
-const TransactionList = ({
-  transactions,
-  onEdit,
-  currentPage,
-  setCurrentPage,
-  totalPages,
-  onSortEnd,
-  balances,
-}) => {
+const TransactionList = ({ transactions, onEdit, currentPage, setCurrentPage, totalPages, onSortEnd, balances }) => {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -538,9 +523,9 @@ const TransactionList = ({
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
-  // over can be null if dropped outside the context
-  if (!over) return;
-  if (active.id !== over.id) onSortEnd(active.id, over.id);
+    // over can be null if dropped outside the context
+    if (!over) return;
+    if (active.id !== over.id) onSortEnd(active.id, over.id);
   };
 
   return (
@@ -549,7 +534,13 @@ const TransactionList = ({
         <SortableContext items={transactions.map((t) => t._id)} strategy={verticalListSortingStrategy}>
           <ul className="space-y-3 overflow-y-auto flex-grow pr-2">
             {transactions.map((t, index) => (
-              <SortableTransactionItem key={t._id} id={t._id} transaction={t} onEdit={onEdit} balance={balances[index]} />
+              <SortableTransactionItem
+                key={t._id}
+                id={t._id}
+                transaction={t}
+                onEdit={onEdit}
+                balance={balances[index]}
+              />
             ))}
           </ul>
         </SortableContext>
@@ -865,7 +856,7 @@ const FinancePage = () => {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(new Date());
   const [currentPage, setCurrentPage] = useState(1);
-  const [activeAccount, setActiveAccount] = useState('checkings'); // 'checkings' or 'savings'
+  const [activeAccount, setActiveAccount] = useState("checkings"); // 'checkings' or 'savings'
   const [displayTransactions, setDisplayTransactions] = useState([]);
   const ITEMS_PER_PAGE = 20;
 
@@ -874,9 +865,9 @@ const FinancePage = () => {
       const savingsCategory = categories.find((cat) => cat.name && cat.name.trim().toLowerCase().includes("savings"));
       const savingsCategoryId = savingsCategory ? savingsCategory._id : null;
 
-      const filtered = transactions.filter(t => {
+      const filtered = transactions.filter((t) => {
         const isSavings = t.category && t.category._id === savingsCategoryId;
-        if (activeAccount === 'savings') {
+        if (activeAccount === "savings") {
           return isSavings;
         }
         return !isSavings;
@@ -970,10 +961,10 @@ const FinancePage = () => {
     // Calculate balances starting from bottom (oldest) and working up
     let runningBalance = 0;
     const balanceMap = new Map();
-    
+
     // Process transactions from bottom to top (oldest to newest)
     const reversedTransactions = [...displayTransactions].reverse();
-    
+
     for (const t of reversedTransactions) {
       const amount = t.type === "income" ? t.amount : -t.amount;
       runningBalance += amount; // This now correctly sums up based on the filtered transaction log
@@ -998,14 +989,10 @@ const FinancePage = () => {
     currentPage * ITEMS_PER_PAGE
   );
 
-  const paginatedBalances = transactionBalances.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
+  const paginatedBalances = transactionBalances.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   return (
     <div className="flex flex-col h-[calc(100vh-120px)]">
-
       <div className="flex justify-between items-center flex-shrink-0">
         <PageHeader title="Financial Tracker" subtitle={`Managing your ${activeAccount} account.`} />
         <div className="flex gap-2">
@@ -1036,18 +1023,22 @@ const FinancePage = () => {
         {/* Left Column */}
         <div className="lg:col-span-4 flex flex-col gap-6">
           <div className="flex items-center justify-center bg-gray-800 p-1 rounded-lg border border-gray-700">
-            <button 
-              onClick={() => setActiveAccount('checkings')}
+            <button
+              onClick={() => setActiveAccount("checkings")}
               className={`flex-1 py-2 px-4 text-sm font-bold rounded-md transition-colors ${
-                activeAccount === 'checkings' ? 'bg-emerald-500 text-white' : 'bg-transparent text-gray-400 hover:bg-gray-700'
-              }`}>
+                activeAccount === "checkings"
+                  ? "bg-emerald-500 text-white"
+                  : "bg-transparent text-gray-400 hover:bg-gray-700"
+              }`}
+            >
               Checkings
             </button>
-            <button 
-              onClick={() => setActiveAccount('savings')}
+            <button
+              onClick={() => setActiveAccount("savings")}
               className={`flex-1 py-2 px-4 text-sm font-bold rounded-md transition-colors ${
-                activeAccount === 'savings' ? 'bg-sky-500 text-white' : 'bg-transparent text-gray-400 hover:bg-gray-700'
-              }`}>
+                activeAccount === "savings" ? "bg-sky-500 text-white" : "bg-transparent text-gray-400 hover:bg-gray-700"
+              }`}
+            >
               Savings
             </button>
           </div>

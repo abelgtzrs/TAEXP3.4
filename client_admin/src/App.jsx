@@ -26,6 +26,7 @@ import SettingsPage from "./pages/SettingsPage";
 import TasksPage from "./pages/TasksPage";
 import FinancePage from "./pages/FinancePage";
 import SpotifyStatsPage from "./pages/SpotifyStatsPage";
+import VolumeWorkbenchPage from "./pages/VolumeWorkbenchPage";
 
 function App() {
   useTheme();
@@ -55,6 +56,7 @@ function App() {
       {/* Admin-Only Routes */}
       <Route element={<AdminRoute />}>
         <Route element={<AdminLayout />}>
+          <Route path="/admin/volume-workbench" element={<VolumeWorkbenchPage />} />
           <Route path="/admin/volumes" element={<VolumesPage />} />
           <Route path="/admin/volumes/edit/:volumeId" element={<EditVolumePage />} />
           <Route path="/admin/exercises" element={<AdminExercisesPage />} />

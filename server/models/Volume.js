@@ -4,7 +4,9 @@ const { create } = require("./User");
 const BlessingSchema = new mongoose.Schema(
   {
     item: { type: String, required: true, trim: true },
-    description: { type: String, required: true, trim: true },
+    // Description was required, but parser may produce blank entries (e.g., item without parentheses).
+    // Make it optional with default empty string to avoid validation failures on bulk uploads.
+    description: { type: String, trim: true, default: "" },
   },
   { _id: false }
 );

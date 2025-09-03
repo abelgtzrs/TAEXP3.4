@@ -104,11 +104,13 @@ exports.createVolumeFromRaw = async (req, res) => {
     res.status(201).json({ success: true, data: volume });
   } catch (error) {
     console.error("Create Volume Error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server Error creating volume",
-      error: error.message,
-    });
+    if (error.code === 11000 && error.keyPattern && error.keyPattern.volumeNumber) {
+      return res.status(409).json({
+        success: false,
+        message: `Volume number ${error.keyValue.volumeNumber} already exists. Choose a different number or edit that volume.`,
+      });
+    }
+    res.status(500).json({ success: false, message: "Server Error creating volume", error: error.message });
   }
 };
 
@@ -143,23 +145,65 @@ exports.getVolumeByIdForAdmin = async (req, res) => {
 // @route   PUT /api/admin/volumes/:id
 exports.updateVolumeFromRaw = async (req, res) => {
   try {
-    let updateData = req.body;
-    // If the admin sends updated raw text, we re-parse it.
-    if (req.body.rawPastedText) {
-      const parsedData = parseRawGreentext(req.body.rawPastedText);
-      updateData = { ...req.body, ...parsedData };
+    const existing = await Volume.findById(req.params.id);
+    if (!existing) {
+      return res.status(404).json({ success: false, message: "Volume not found" });
     }
 
-    const volume = await Volume.findByIdAndUpdate(req.params.id, updateData, {
+    let updateData = { ...req.body };
+    const wantsReparse = Boolean(req.body.reparse) || (req.body.rawPastedText && req.body.rawPastedText !== existing.rawPastedText);
+
+    if (wantsReparse && req.body.rawPastedText) {
+      const parsedData = parseRawGreentext(req.body.rawPastedText);
+      // Preserve explicitly edited fields overriding parsed output
+      updateData = { ...parsedData, ...updateData };
+    } else {
+      // If not reparsing, don't accidentally overwrite rawPastedText to empty
+      if (!req.body.rawPastedText) delete updateData.rawPastedText;
+    }
+
+    // Never allow client to modify immutable properties directly
+    delete updateData._id;
+    delete updateData.createdBy;
+
+    // If user changed volumeNumber to a brand new one, create a new record instead of overwriting
+    const requestedNumber = updateData.volumeNumber ?? existing.volumeNumber;
+    const volumeNumberChanged = requestedNumber !== existing.volumeNumber;
+    if (volumeNumberChanged) {
+      const conflict = await Volume.findOne({ volumeNumber: requestedNumber });
+      if (!conflict) {
+        // Duplicate path: build new volume using merged data
+        const newDocData = {
+          ...existing.toObject(), // start from existing data
+          ...updateData,          // apply updates
+          volumeNumber: requestedNumber,
+          rawPastedText: updateData.rawPastedText || existing.rawPastedText,
+          createdBy: existing.createdBy,
+          _id: undefined, // ensure new
+        };
+        // Remove Mongo/system fields
+        delete newDocData._id;
+        delete newDocData.createdAt;
+        delete newDocData.updatedAt;
+        const created = await Volume.create(newDocData);
+        return res.status(201).json({ success: true, duplicatedFrom: existing._id, data: created });
+      }
+      // If conflict exists, fall through to normal update (will hit duplicate key error if invalid)
+    }
+
+    const updated = await Volume.findByIdAndUpdate(existing._id, updateData, {
       new: true,
       runValidators: true,
     });
 
-    if (!volume) {
-      return res.status(404).json({ success: false, message: "Volume not found" });
-    }
-    res.status(200).json({ success: true, data: volume });
+    return res.status(200).json({ success: true, data: updated });
   } catch (error) {
+    if (error.code === 11000 && error.keyPattern && error.keyPattern.volumeNumber) {
+      return res.status(409).json({
+        success: false,
+        message: `Volume number ${error.keyValue.volumeNumber} already exists.`,
+      });
+    }
     res.status(500).json({ success: false, message: "Server Error", error: error.message });
   }
 };
