@@ -6,7 +6,7 @@ import { parseRawGreentext } from "../utils/greentextParser";
 import PageHeader from "../components/ui/PageHeader";
 import StyledButton from "../components/ui/StyledButton";
 import Widget from "../components/ui/Widget";
-import { Eye, GripVertical, Save, Trash2, Edit, AlertCircle, X, ChevronsRight } from "lucide-react";
+import { Eye, GripVertical, Save, Trash2, Edit, AlertCircle, X, ChevronsRight, Download } from "lucide-react";
 
 // --- Preview Modal Component ---
 const PreviewModal = ({ volume, isOpen, onClose }) => {
@@ -245,6 +245,65 @@ const VolumeWorkbenchPage = () => {
     }
   };
 
+  // --- EXPORT ALL PUBLISHED VOLUMES ---
+  const exportPublishedVolumes = async () => {
+    try {
+      setError("");
+      setSuccess("");
+      // Ensure we have the freshest list (in case user just changed statuses)
+      if (volumes.length === 0) {
+        await fetchVolumes();
+      }
+      const published = (volumes || []).filter((v) => v.status === "published").sort((a, b) => a.volumeNumber - b.volumeNumber);
+      if (published.length === 0) {
+        setError("No published volumes to export.");
+        return;
+      }
+      let content = `The Abel Experience™ CFW - Exported Volumes (All Published)\n`;
+      content += `Generated on: ${new Date().toISOString()}\n`;
+      content += "========================================\n\n";
+      for (const vol of published) {
+        content += `--- Volume ${vol.volumeNumber}: ${vol.title} ---\n\n`;
+        // Body lines
+        (vol.bodyLines || []).forEach((line) => {
+          content += line && line.trim() !== "" ? `> ${line}\n` : "\n";
+        });
+        // Blessings
+        if (vol.blessings && vol.blessings.length > 0) {
+          content += `\n${vol.blessingIntro || "life is"}\n`;
+            vol.blessings.forEach((b) => {
+            const desc = b.description !== undefined ? b.description : "";
+            content += `- ${b.item} (${desc})\n`;
+          });
+        }
+        // Dream
+        if (vol.dream) {
+          content += `\n${vol.dream}\n`;
+        }
+        // Edition
+        if (vol.edition) {
+          content += `\nThe Abel Experience™: ${vol.edition}\n`;
+        }
+        content += "\n========================================\n\n";
+      }
+      // Trigger download
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Abel_Experience_All_Published_${published[0].volumeNumber}-${published[published.length - 1].volumeNumber}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      setSuccess(`Exported ${published.length} published volumes.`);
+      clearSuccessMessage();
+    } catch (err) {
+      console.error("Export failed", err);
+      setError("Export failed. See console.");
+    }
+  };
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       <PageHeader
@@ -292,22 +351,22 @@ const VolumeWorkbenchPage = () => {
                 className="w-full flex-grow h-full min-h-[60vh] p-3 bg-gray-900 rounded-md text-sm font-mono resize-none"
               />
               <div className="pt-3 flex justify-end">
-                  <StyledButton
-                    onClick={() => {
-                      handleParse();
-                      if (!editableVolume) setActiveTab("edit");
-                    }}
-                    disabled={!rawText}
-                  >
-                    Parse Text <ChevronsRight size={20} />
-                  </StyledButton>
-                </div>
+                <StyledButton
+                  onClick={() => {
+                    handleParse();
+                    if (!editableVolume) setActiveTab("edit");
+                  }}
+                  disabled={!rawText}
+                >
+                  Parse Text <ChevronsRight size={20} />
+                </StyledButton>
               </div>
-            )}
+            </div>
+          )}
 
-            {activeTab === "edit" && editableVolume && (
-              <div className="flex flex-col gap-6 h-full overflow-y-auto pr-2">
-                <div>
+          {activeTab === "edit" && editableVolume && (
+            <div className="flex flex-col gap-6 h-full overflow-y-auto pr-2">
+              <div>
                 <h3 className="text-sm font-semibold text-text-secondary mb-2">Volume Meta</h3>
                 <div className="grid grid-cols-6 gap-2">
                   <input
@@ -447,6 +506,13 @@ const VolumeWorkbenchPage = () => {
             className="bg-gray-600 hover:bg-gray-500"
           >
             <Eye size={16} /> Show Preview
+          </StyledButton>
+          <StyledButton
+            onClick={exportPublishedVolumes}
+            disabled={volumesLoading || volumes.filter((v) => v.status === "published").length === 0}
+            className="bg-indigo-700/70 hover:bg-indigo-600"
+          >
+            <Download size={16} /> Export Published
           </StyledButton>
           {error && (
             <div className="flex items-center gap-2 text-red-400">

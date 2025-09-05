@@ -151,7 +151,8 @@ exports.updateVolumeFromRaw = async (req, res) => {
     }
 
     let updateData = { ...req.body };
-    const wantsReparse = Boolean(req.body.reparse) || (req.body.rawPastedText && req.body.rawPastedText !== existing.rawPastedText);
+    const wantsReparse =
+      Boolean(req.body.reparse) || (req.body.rawPastedText && req.body.rawPastedText !== existing.rawPastedText);
 
     if (wantsReparse && req.body.rawPastedText) {
       const parsedData = parseRawGreentext(req.body.rawPastedText);
@@ -175,7 +176,7 @@ exports.updateVolumeFromRaw = async (req, res) => {
         // Duplicate path: build new volume using merged data
         const newDocData = {
           ...existing.toObject(), // start from existing data
-          ...updateData,          // apply updates
+          ...updateData, // apply updates
           volumeNumber: requestedNumber,
           rawPastedText: updateData.rawPastedText || existing.rawPastedText,
           createdBy: existing.createdBy,
