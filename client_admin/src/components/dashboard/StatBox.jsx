@@ -8,7 +8,7 @@ const StatBox = ({ title, value, change, changeType, period, lastUpdate = "1 min
   return (
     // Each stat box is a flex container, growing to fill space.
     // It has a right border to create the vertical dividers, except for the last one.
-    <div className="flex-1 p-4 border-r border-gray-700/50 last:border-r-0 bg-transparent">
+    <div className="flex-1 p-4 border-r border-gray-700/50 last:border-r-0">
       <h4 className="text-xs font-bold uppercase text-text-secondary tracking-wider mb-2">{title}</h4>
       <p className="text-3xl font-semibold text-text-main text-glow mb-1">{value}</p>
       <div className="flex items-center text-xs text-text-secondary">

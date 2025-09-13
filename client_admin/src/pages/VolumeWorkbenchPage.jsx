@@ -254,7 +254,9 @@ const VolumeWorkbenchPage = () => {
       if (volumes.length === 0) {
         await fetchVolumes();
       }
-      const published = (volumes || []).filter((v) => v.status === "published").sort((a, b) => a.volumeNumber - b.volumeNumber);
+      const published = (volumes || [])
+        .filter((v) => v.status === "published")
+        .sort((a, b) => a.volumeNumber - b.volumeNumber);
       if (published.length === 0) {
         setError("No published volumes to export.");
         return;
@@ -271,7 +273,7 @@ const VolumeWorkbenchPage = () => {
         // Blessings
         if (vol.blessings && vol.blessings.length > 0) {
           content += `\n${vol.blessingIntro || "life is"}\n`;
-            vol.blessings.forEach((b) => {
+          vol.blessings.forEach((b) => {
             const desc = b.description !== undefined ? b.description : "";
             content += `- ${b.item} (${desc})\n`;
           });
@@ -291,7 +293,9 @@ const VolumeWorkbenchPage = () => {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `Abel_Experience_All_Published_${published[0].volumeNumber}-${published[published.length - 1].volumeNumber}.txt`;
+      a.download = `Abel_Experience_All_Published_${published[0].volumeNumber}-${
+        published[published.length - 1].volumeNumber
+      }.txt`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

@@ -9,6 +9,118 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import DebtTracker from "../components/finances/DebtTracker";
+
+// Overview bar summarizing key balances and month snapshot
+const OverviewBar = ({ selectedMonth, checkings, savings, transactions }) => {
+  const monthIncome = transactions
+    .filter(
+      (t) =>
+        t.type === "income" &&
+        new Date(t.date).getMonth() === selectedMonth.getMonth() &&
+        new Date(t.date).getFullYear() === selectedMonth.getFullYear()
+    )
+    .reduce((a, b) => a + b.amount, 0)
+    .toFixed(2);
+  const monthExpenses = transactions
+    .filter(
+      (t) =>
+        t.type === "expense" &&
+        new Date(t.date).getMonth() === selectedMonth.getMonth() &&
+        new Date(t.date).getFullYear() === selectedMonth.getFullYear()
+    )
+    .reduce((a, b) => a + b.amount, 0)
+    .toFixed(2);
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <Widget title="Checkings">
+        <p className="text-xl md:text-2xl font-bold text-emerald-400">${checkings.toFixed(2)}</p>
+      </Widget>
+      <Widget title="Savings">
+        <p className="text-xl md:text-2xl font-bold text-sky-400">${savings.toFixed(2)}</p>
+      </Widget>
+      <Widget title="Month Income">
+        <p className="text-xs text-text-secondary">{selectedMonth.toLocaleString("en-US", { month: "short" })}</p>
+        <p className="text-lg font-semibold text-green-400">${monthIncome}</p>
+      </Widget>
+      <Widget title="Month Expenses">
+        <p className="text-xs text-text-secondary">{selectedMonth.toLocaleString("en-US", { month: "short" })}</p>
+        <p className="text-lg font-semibold text-red-400">${monthExpenses}</p>
+      </Widget>
+    </div>
+  );
+};
+
+// Toolbar for transaction list controls
+const TransactionToolbar = ({
+  txSearch,
+  setTxSearch,
+  txCategoryFilter,
+  setTxCategoryFilter,
+  txTypeFilter,
+  setTxTypeFilter,
+  categories,
+  shownCount,
+  onReset,
+  onToggleGroup,
+  groupByDay,
+  onAddQuick,
+}) => (
+  <div className="sticky top-0 z-10 flex flex-col lg:flex-row gap-2 bg-gray-900/80 backdrop-blur-md border border-gray-700 rounded-lg p-3 items-start lg:items-center shadow-lg shadow-black/30">
+    <div className="flex gap-2 w-full lg:w-auto">
+      <input
+        value={txSearch}
+        onChange={(e) => setTxSearch(e.target.value)}
+        placeholder="Search..."
+        className="flex-1 bg-gray-800 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-500"
+      />
+      <select
+        value={txCategoryFilter}
+        onChange={(e) => setTxCategoryFilter(e.target.value)}
+        className="bg-gray-800 rounded px-2 py-2 text-xs focus:ring-1 focus:ring-teal-500"
+      >
+        <option value="All">All Cats</option>
+        {categories.map((c) => (
+          <option key={c._id} value={c._id}>
+            {c.name}
+          </option>
+        ))}
+      </select>
+      <select
+        value={txTypeFilter}
+        onChange={(e) => setTxTypeFilter(e.target.value)}
+        className="bg-gray-800 rounded px-2 py-2 text-xs focus:ring-1 focus:ring-teal-500"
+      >
+        <option value="All">All Types</option>
+        <option value="Income">Income</option>
+        <option value="Expense">Expense</option>
+      </select>
+    </div>
+    <div className="flex gap-2 flex-wrap">
+      <button
+        onClick={onToggleGroup}
+        className={`px-3 py-1 text-xs rounded border ${
+          groupByDay ? "bg-teal-600 border-teal-500" : "bg-gray-700 border-gray-600 hover:bg-gray-600"
+        } transition`}
+      >
+        Group Day
+      </button>
+      <button
+        onClick={onReset}
+        className="px-3 py-1 text-xs rounded border bg-gray-700 border-gray-600 hover:bg-gray-600"
+      >
+        Reset
+      </button>
+      <button
+        onClick={onAddQuick}
+        className="px-3 py-1 text-xs rounded border bg-emerald-600 border-emerald-500 hover:bg-emerald-500"
+      >
+        Quick Add
+      </button>
+      <span className="text-xs text-gray-500 self-center">{shownCount} shown</span>
+    </div>
+  </div>
+);
+
 // --- Sub-Component: Financial Action Log Modal ---
 const FinancialActionLogModal = ({ isOpen, onClose, logs }) => {
   if (!isOpen) return null;
@@ -272,93 +384,6 @@ const AddTransactionForm = ({ categories, onTransactionAdded }) => {
   );
 };
 
-// --- Sub-Component: Transaction Edit Modal ---
-const TransactionEditModal = ({ transaction, isOpen, onClose, onUpdate, onDelete, categories }) => {
-  const [formData, setFormData] = useState(null);
-
-  useEffect(() => {
-    if (transaction) {
-      // Set up form data, ensuring category is an ID and date is formatted
-      setFormData({
-        ...transaction,
-        date: new Date(transaction.date).toISOString().split("T")[0],
-        category: transaction.category?._id || "",
-      });
-    }
-  }, [transaction]);
-
-  if (!isOpen || !formData) return null;
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSave = async () => {
-    const dataToSubmit = { ...formData, amount: Number(formData.amount) };
-    try {
-      await api.put(`/finance/transactions/${transaction._id}`, dataToSubmit);
-      onUpdate(); // Refresh data on the main page
-      onClose();
-    } catch (error) {
-      alert("Failed to update transaction.");
-    }
-  };
-
-  const handleDelete = async () => {
-    if (window.confirm("Are you sure you want to permanently delete this transaction?")) {
-      try {
-        await api.delete(`/finance/transactions/${transaction._id}`);
-        onUpdate();
-        onClose();
-      } catch (error) {
-        alert("Failed to delete transaction.");
-      }
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50" onClick={onClose}>
-      <div
-        className="bg-surface w-full max-w-lg rounded-lg border border-gray-700 p-6 space-y-4"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="text-xl font-bold text-white">Edit Transaction</h2>
-        <div className="space-y-4">
-          <StyledInput name="description" label="Description" value={formData.description} onChange={handleChange} />
-          <div className="grid grid-cols-2 gap-4">
-            <StyledInput name="amount" label="Amount" type="number" value={formData.amount} onChange={handleChange} />
-            <StyledInput name="date" label="Date" type="date" value={formData.date} onChange={handleChange} />
-          </div>
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            className="w-full p-3 bg-gray-700 rounded border border-gray-600"
-          >
-            <option value="">-- Select Category --</option>
-            {categories.map((cat) => (
-              <option key={cat._id} value={cat._id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex justify-between items-center pt-4 mt-4 border-t border-gray-700/50">
-          <StyledButton onClick={handleDelete} className="bg-status-danger/80 hover:bg-status-danger">
-            Delete
-          </StyledButton>
-          <div className="flex gap-2">
-            <StyledButton onClick={onClose} className="bg-gray-600 hover:bg-gray-500">
-              Cancel
-            </StyledButton>
-            <StyledButton onClick={handleSave}>Save Changes</StyledButton>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 // --- Sub-Component: Budget Status ---
 const SortableTransactionItem = ({ id, transaction, onEdit, balance }) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
@@ -532,7 +557,7 @@ const TransactionList = ({ transactions, onEdit, currentPage, setCurrentPage, to
     <Widget title="Recent Transactions" className="h-full flex flex-col">
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={transactions.map((t) => t._id)} strategy={verticalListSortingStrategy}>
-          <ul className="space-y-3 overflow-y-auto flex-grow pr-2">
+          <ul className="space-y-3 pr-2">
             {transactions.map((t, index) => (
               <SortableTransactionItem
                 key={t._id}
@@ -858,7 +883,13 @@ const FinancePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [activeAccount, setActiveAccount] = useState("checkings"); // 'checkings' or 'savings'
   const [displayTransactions, setDisplayTransactions] = useState([]);
-  const ITEMS_PER_PAGE = 20;
+  const [showQuickAdd, setShowQuickAdd] = useState(false);
+  const [groupByDay, setGroupByDay] = useState(false);
+  // Filter controls
+  const [txSearch, setTxSearch] = useState("");
+  const [txCategoryFilter, setTxCategoryFilter] = useState("All");
+  const [txTypeFilter, setTxTypeFilter] = useState("All");
+  const ITEMS_PER_PAGE = 10; // Reduced to fit on single screen height without widget scrolling
 
   useEffect(() => {
     if (transactions.length > 0) {
@@ -980,19 +1011,37 @@ const FinancePage = () => {
     };
   }, [displayTransactions, categories, savingsCategoryId, transactions, activeAccount]);
 
+  // --- Filtering Logic (search/category/type) ---
+  const filteredTransactions = useMemo(() => {
+    return displayTransactions.filter((t, idx) => {
+      const matchesSearch = txSearch
+        ? (t.description || "").toLowerCase().includes(txSearch.toLowerCase()) ||
+          (t.category?.name || "").toLowerCase().includes(txSearch.toLowerCase())
+        : true;
+      const matchesCategory = txCategoryFilter === "All" || t.category?._id === txCategoryFilter;
+      const matchesType = txTypeFilter === "All" || t.type === txTypeFilter.toLowerCase();
+      return matchesSearch && matchesCategory && matchesType;
+    });
+  }, [displayTransactions, txSearch, txCategoryFilter, txTypeFilter]);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [txSearch, txCategoryFilter, txTypeFilter]);
+
+  // Place loading gate AFTER all hooks to preserve consistent hook order
   if (loading) return <p className="text-center text-text-secondary">Loading Financial Data...</p>;
 
-  // --- Pagination Logic ---
-  const totalPages = Math.ceil(displayTransactions.length / ITEMS_PER_PAGE);
-  const paginatedTransactions = displayTransactions.slice(
+  // --- Pagination Logic (after filtering) ---
+  const totalPages = Math.ceil(filteredTransactions.length / ITEMS_PER_PAGE) || 1;
+  const paginatedTransactions = filteredTransactions.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
-
   const paginatedBalances = transactionBalances.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-120px)]">
+    <div className="flex flex-col h-[calc(100vh-120px)] max-w-[1600px] mx-auto w-full px-4">
       <div className="flex justify-between items-center flex-shrink-0">
         <PageHeader title="Financial Tracker" subtitle={`Managing your ${activeAccount} account.`} />
         <div className="flex gap-2">
@@ -1019,9 +1068,19 @@ const FinancePage = () => {
           </StyledButton>
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4 flex-grow">
-        {/* Left Column */}
-        <div className="lg:col-span-4 flex flex-col gap-6">
+      <div className="mt-4">
+        <OverviewBar
+          selectedMonth={selectedMonth}
+          checkings={checkingsBalance}
+          savings={savingsBalance}
+          transactions={transactions}
+        />
+      </div>
+      {/* Main Grid Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4">
+        {/* Left Column (Bills / Budgets / Add) */}
+        <div className="lg:col-span-3 flex flex-col gap-5">
+          {/* Account Toggle */}
           <div className="flex items-center justify-center bg-gray-800 p-1 rounded-lg border border-gray-700">
             <button
               onClick={() => setActiveAccount("checkings")}
@@ -1042,7 +1101,12 @@ const FinancePage = () => {
               Savings
             </button>
           </div>
-          <AddTransactionForm categories={categories} onTransactionAdded={refreshData} />
+          <BillChecklist
+            bills={bills}
+            onTogglePaid={handleToggleBillPaid}
+            selectedMonth={selectedMonth}
+            setSelectedMonth={setSelectedMonth}
+          />
           <BudgetStatus
             categories={categories}
             transactions={transactions}
@@ -1054,23 +1118,35 @@ const FinancePage = () => {
                   budgets.map((b) => api.put(`/finance/bills/${b.category}/budget`, { amount: b.amount }))
                 );
                 refreshData();
-              } catch (error) {
+              } catch {
                 alert("Failed to update budgets.");
               }
             }}
           />
+          <AddTransactionForm categories={categories} onTransactionAdded={refreshData} />
         </div>
-
-        {/* Middle Column */}
-        <div className="lg:col-span-5 flex flex-col gap-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Widget title="Current Checkings">
-              <p className="text-3xl font-bold text-emerald-400">${checkingsBalance.toFixed(2)}</p>
-            </Widget>
-            <Widget title="Current Savings">
-              <p className="text-3xl font-bold text-sky-400">${savingsBalance.toFixed(2)}</p>
-            </Widget>
-          </div>
+        {/* Middle Column (Ledger) */}
+        <div className="lg:col-span-5 flex flex-col gap-4">
+          <TransactionToolbar
+            txSearch={txSearch}
+            setTxSearch={setTxSearch}
+            txCategoryFilter={txCategoryFilter}
+            setTxCategoryFilter={setTxCategoryFilter}
+            txTypeFilter={txTypeFilter}
+            setTxTypeFilter={setTxTypeFilter}
+            categories={categories}
+            shownCount={filteredTransactions.length}
+            onReset={() => {
+              setTxSearch("");
+              setTxCategoryFilter("All");
+              setTxTypeFilter("All");
+              setGroupByDay(false);
+            }}
+            onToggleGroup={() => setGroupByDay((g) => !g)}
+            groupByDay={groupByDay}
+            onAddQuick={() => setShowQuickAdd((s) => !s)}
+          />
+          {/* Transactions List */}
           <TransactionList
             transactions={paginatedTransactions}
             onEdit={handleEditTransaction}
@@ -1081,17 +1157,15 @@ const FinancePage = () => {
             balances={paginatedBalances}
           />
         </div>
-
-        {/* Right Column */}
-        <div className="lg:col-span-3 flex flex-col gap-6">
+        {/* Right Column (Analytics / Debt / Insights) */}
+        <div className="lg:col-span-4 flex flex-col gap-5">
           <DebtTracker />
-          <BillChecklist
-            bills={bills}
-            onTogglePaid={handleToggleBillPaid}
-            selectedMonth={selectedMonth}
-            setSelectedMonth={setSelectedMonth}
-          />
           <BillAnalytics bills={bills} selectedMonth={selectedMonth} />
+          <Widget title="Insights Coming Soon">
+            <p className="text-xs text-text-secondary leading-relaxed">
+              Space reserved for trends, category breakdowns, burn rate, saving trajectory, etc.
+            </p>
+          </Widget>
         </div>
       </div>
       {/* Modals */}

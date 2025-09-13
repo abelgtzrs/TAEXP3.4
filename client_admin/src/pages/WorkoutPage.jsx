@@ -1,9 +1,10 @@
 // src/pages/WorkoutPage.jsx
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 import api from "../services/api";
 import WorkoutLogItem from "../components/workouts/WorkoutLogItem";
+import ActionCard from "../components/workouts/ActionCard";
+import { Dumbbell, ListChecks } from "lucide-react";
 
 const WorkoutPage = () => {
   // New state for storing workout history
@@ -28,124 +29,84 @@ const WorkoutPage = () => {
   }, []);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
+    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
       <motion.h1
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
+        transition={{ duration: 0.45, delay: 0.1 }}
         className="text-3xl font-bold text-teal-400 mb-8"
       >
         Workout Tracker
       </motion.h1>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center"
-      >
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-        >
-          <Link
-            to="/workouts/log"
-            className="block p-10 bg-gray-800 rounded-lg hover:bg-gray-700 hover:border-teal-500 border-2 border-transparent transition-all duration-300"
-          >
-            <p className="text-5xl mb-4">🏋️</p>
-            <h2 className="text-2xl font-bold text-white">Start a Clean Workout</h2>
-            <p className="text-gray-400">Build your session from scratch.</p>
-          </Link>
-        </motion.div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <ActionCard
+          to="/workouts/log"
+          icon={<Dumbbell size={40} strokeWidth={1.4} />}
+          title="Start a Clean Workout"
+          description="Build your session from scratch."
+          delay={0.2}
+        />
+        <ActionCard
+          to="/workouts/new/template"
+          icon={<ListChecks size={40} strokeWidth={1.4} />}
+          title="Use a Prebuilt Workout"
+          description="Select from your list of templates."
+          delay={0.3}
+        />
+      </div>
 
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.7 }}
-          whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-        >
-          <Link
-            to="/workouts/new/template"
-            className="block p-10 bg-gray-800 rounded-lg hover:bg-gray-700 hover:border-teal-500 border-2 border-transparent transition-all duration-300"
-          >
-            <p className="text-5xl mb-4">📋</p>
-            <h2 className="text-2xl font-bold text-white">Use a Prebuilt Workout</h2>
-            <p className="text-gray-400">Select from your list of templates.</p>
-          </Link>
-        </motion.div>
-      </motion.div>
-
-      {/* Section for past workout logs */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.8 }}
-        className="mt-12"
-      >
+      <div className="mt-12">
         <motion.h2
-          initial={{ opacity: 0, x: -20 }}
+          initial={{ opacity: 0, x: -14 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 1.0 }}
+          transition={{ duration: 0.45, delay: 0.4 }}
           className="text-2xl font-semibold text-white mb-4"
         >
           Recent Workouts
         </motion.h2>
-
         {loading && (
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-gray-500">
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-gray-500 text-sm">
             Loading history...
           </motion.p>
         )}
-
         {error && (
-          <motion.p
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
-            className="text-red-500"
-          >
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-500 text-sm">
             {error}
           </motion.p>
         )}
-
         {!loading && !error && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 1.2 }}
+            transition={{ duration: 0.45, delay: 0.55 }}
             className="space-y-4"
           >
             {logs.length > 0 ? (
-              logs.map((log, index) => (
+              logs.map((log, i) => (
                 <motion.div
                   key={log._id}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 1.3 + index * 0.1 }}
-                  whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+                  transition={{ duration: 0.35, delay: 0.6 + i * 0.06 }}
+                  whileHover={{ scale: 1.01, transition: { duration: 0.18 } }}
                 >
                   <WorkoutLogItem log={log} />
                 </motion.div>
               ))
             ) : (
               <motion.p
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 1.3 }}
-                className="text-gray-500"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.6 }}
+                className="text-gray-500 text-sm"
               >
                 Your past workout logs will appear here.
               </motion.p>
             )}
           </motion.div>
         )}
-      </motion.div>
+      </div>
     </motion.div>
   );
 };

@@ -7,8 +7,11 @@ import HELP_TEXT from "./terminal/helpText";
 import { getAboutText, getCatText } from "./terminal/getAboutText";
 import { TextScramble } from "../utils/textScramble";
 
-// Using my deployed backend for the public API calls
-const api = axios.create({ baseURL: "https://taexp3-0.onrender.com/api/public" });
+// Forced local API base URL (development override)
+const api = axios.create({
+  baseURL: "http://localhost:5000/api/public",
+  headers: { "Content-Type": "application/json" },
+});
 
 // --- TYPEWRITER EFFECT CONFIGURATION ---
 // I fine-tuned these values to get that perfect retro terminal typing feel

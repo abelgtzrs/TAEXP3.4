@@ -88,6 +88,28 @@ app.use(cors(corsOptions)); // Removed explicit app.options("*", ...) to avoid p
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: false })); // Parse form data
 
+// Additional permissive CORS just for public read-only endpoints (no credentials)
+app.use(
+  "/api/public",
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      // Reuse the allowedOrigins list plus allow any localhost for dev convenience
+      if (
+        allowedOrigins.includes(origin) ||
+        /^http:\/\/localhost:\d+$/.test(origin) ||
+        /^http:\/\/127\.0\.0\.1:\d+$/.test(origin)
+      ) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS public blocked for origin: ${origin}`));
+    },
+    credentials: false,
+    methods: ["GET"],
+    allowedHeaders: ["Content-Type", "Accept"],
+  })
+);
+
 // --- Serve static files from multiple directories ---
 // Profile pictures and user uploads
 app.use("/uploads", express.static("public/uploads"));
