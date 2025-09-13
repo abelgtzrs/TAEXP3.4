@@ -310,6 +310,61 @@ const getDashboardStats = async (req, res) => {
   }
 };
 
+// --- Admin: Get all users (lean list) ---
+const getAllUsersAdmin = async (req, res) => {
+  try {
+    const users = await User.find({})
+      .select("email username role level experience currentLoginStreak longestLoginStreak createdAt profilePicture")
+      .sort({ createdAt: -1 });
+    res.status(200).json({ success: true, data: users });
+  } catch (error) {
+    console.error("Admin getAllUsers Error:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// --- Admin: Update user fields (role, username, level etc) ---
+const updateUserAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const allowed = ["username", "role", "level", "experience"]; // safe updatable fields
+    const updates = {};
+    for (const k of allowed) {
+      if (k in req.body) updates[k] = req.body[k];
+    }
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ success: false, message: "No valid fields supplied" });
+    }
+    const user = await User.findByIdAndUpdate(id, updates, { new: true, runValidators: true }).select(
+      "email username role level experience currentLoginStreak longestLoginStreak createdAt profilePicture"
+    );
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+    res.status(200).json({ success: true, data: user });
+  } catch (error) {
+    console.error("Admin updateUser Error:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// --- Admin: Reset user password ---
+const resetUserPasswordAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { newPassword } = req.body;
+    if (!newPassword || newPassword.length < 6) {
+      return res.status(400).json({ success: false, message: "Password must be at least 6 chars" });
+    }
+    const user = await User.findById(id).select("password");
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+    user.password = newPassword; // will hash via pre-save hook
+    await user.save();
+    res.status(200).json({ success: true, message: "Password reset" });
+  } catch (error) {
+    console.error("Admin resetUserPassword Error:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
 // --- Export all functions together in one object ---
 module.exports = {
   getUserCollection,
@@ -317,4 +372,7 @@ module.exports = {
   getDashboardStats,
   setActivePersona,
   updateProfilePicture, // <-- EXPORT NEW FUNCTION
+  getAllUsersAdmin,
+  updateUserAdmin,
+  resetUserPasswordAdmin,
 };

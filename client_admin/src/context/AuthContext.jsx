@@ -48,12 +48,24 @@ export const AuthProvider = ({ children }) => {
       // Redirect to the dashboard
       navigate("/dashboard");
     } catch (error) {
-      console.error(
-        "Login failed:",
-        error.response?.data?.message || error.message
-      );
+      console.error("Login failed:", error.response?.data?.message || error.message);
       // You can add state to display this error on the login page
       throw error; // Re-throw error to be caught by the login form
+    }
+  };
+
+  // Register function (supports optional role)
+  const register = async ({ email, password, username, role }) => {
+    try {
+      const response = await api.post("/auth/register", { email, password, username, role });
+      const { token, data } = response.data;
+      localStorage.setItem("token", token);
+      setToken(token);
+      setUser(data);
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Registration failed:", error.response?.data?.message || error.message);
+      throw error;
     }
   };
 
@@ -75,6 +87,7 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: !!user, // True if user object exists, false otherwise
     loading,
     login,
+    register,
     logout,
   };
 

@@ -14,7 +14,7 @@ const generateToken = (id, role) => {
 // @desc    Register a new user
 // @route   POST /api/auth/register
 const registerUser = async (req, res) => {
-  const { email, username, password, role } = req.body; // Added username in case you're using it
+  const { email, username, password, role } = req.body; // role optional
 
   if (!email || !password) {
     return res.status(400).json({ success: false, message: "Please provide email and password" });
@@ -26,11 +26,27 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ success: false, message: "User already exists" });
     }
 
+    // Determine role safely
+    const allowedRoles = ["user", "admin", "wife_of_the_year"]; // Mirror schema enum
+    let assignedRole = "user"; // Default
+
+    if (role && allowedRoles.includes(role)) {
+      assignedRole = role;
+    }
+
+    // Prevent arbitrary creation of additional admins: allow 'admin' only if no admin exists yet
+    if (assignedRole === "admin") {
+      const existingAdmin = await User.findOne({ role: "admin" });
+      if (existingAdmin) {
+        assignedRole = "user"; // downgrade silently or you could return 403
+      }
+    }
+
     user = await User.create({
       email,
-      username, // Will be ignored if not in schema, but safe to include
+      username,
       password,
-      role: role || "member",
+      role: assignedRole,
     });
 
     const token = generateToken(user._id, user.role);

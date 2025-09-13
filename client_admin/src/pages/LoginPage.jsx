@@ -2,140 +2,51 @@
 // I wanted this to have a cyberpunk/sci-fi aesthetic that matches the overall theme
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FiMail, FiLock } from "react-icons/fi";
+import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
-  const { login } = useAuth(); // Using my auth context for login functionality
-
-  // Pre-filling with my credentials for development - TODO: remove for production
-  const [email, setEmail] = useState("abelgutierrezrivas@gmail.com");
-  const [password, setPassword] = useState("ODE2theMETS");
+  const { login } = useAuth();
+  const isDev = import.meta?.env?.MODE === "development";
+  const [email, setEmail] = useState(isDev ? "" : "");
+  const [password, setPassword] = useState(isDev ? "" : "");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  // Registration moved to dedicated RegisterPage
+  const [showPassword, setShowPassword] = useState(false);
 
   // Handle form submission with error handling
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear any previous errors
+    setError("");
+    setIsSubmitting(true);
     try {
-      await login(email, password); // Auth context handles the actual login logic
-      // navigation happens inside login()
+      await login(email, password);
     } catch (err) {
-      // Display user-friendly error message
       setError(err.response?.data?.message || "An error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   // More dramatic floating animation variants for background elements
-  const blob = {
-    animate: (i) => ({
-      x: ["-15%", "15%", "-10%", "8%", "-5%"], // More dramatic movement with multiple waypoints
-      y: ["-12%", "12%", "-8%", "10%", "-6%"], // Complex vertical movement
-      scale: [1, 1.3, 0.8, 1.2, 1], // Dramatic scaling with variance
-      rotate: [0, 180, -90, 270, 0], // Full rotation cycles
-      transition: {
-        duration: 25 + i * 8, // Longer duration for more complex animation
-        ease: [0.25, 0.1, 0.25, 1], // Custom cubic-bezier for dramatic easing
-        repeat: Infinity,
-      },
-    }),
-  };
-
-  // Particle-like floating elements animation
-  const particle = {
-    animate: (i) => ({
-      y: ["-100vh", "100vh"], // Fall from top to bottom
-      x: ["-20px", "20px", "-15px", "10px"], // Slight horizontal drift
-      opacity: [0, 1, 1, 0], // Fade in and out
-      scale: [0.5, 1, 0.8, 0.3], // Size variation during fall
-      transition: {
-        duration: 15 + Math.random() * 10, // Random duration for organic feel
-        delay: i * 2, // Staggered start times
-        ease: "linear",
-        repeat: Infinity,
-      },
-    }),
-  };
+  // legacy inline variants removed (moved to factory above)
 
   return (
-    // Full screen container with dark gradient background - going for that cyberpunk aesthetic
-    <div className="relative flex items-center justify-center min-h-screen overflow-hidden bg-background text-text-main">
-      {/* Dramatic animated gradient backdrop with multiple layers */}
-      <motion.div
-        initial={{ backgroundPosition: "0% 0%" }}
-        animate={{
-          backgroundPosition: ["0% 0%", "100% 100%", "0% 100%", "100% 0%", "0% 0%"],
-        }}
-        transition={{
-          duration: 20,
-          ease: "easeInOut",
-          repeat: Infinity,
-        }}
+    // Full screen container with static background (animations removed)
+    <main
+      className="relative flex items-center justify-center min-h-screen overflow-hidden bg-background text-text-main"
+      aria-labelledby="login-title"
+    >
+      <div
         className="absolute inset-0 z-0"
         style={{
-          backgroundImage:
-            "linear-gradient(45deg, var(--color-primary) 0%, var(--color-secondary) 30%, var(--color-surface) 60%, var(--color-primary) 100%)",
-          backgroundSize: "400% 400%",
+          background:
+            "radial-gradient(circle at 30% 70%, var(--color-secondary) 0%, transparent 55%), radial-gradient(circle at 70% 30%, var(--color-primary) 0%, transparent 55%), linear-gradient(135deg, var(--color-surface) 0%, var(--color-background) 80%)",
         }}
       />
-
-      {/* Secondary animated layer for depth */}
-      <motion.div
-        initial={{ opacity: 0.3 }}
-        animate={{ opacity: [0.3, 0.7, 0.3] }}
-        transition={{ duration: 8, ease: "easeInOut", repeat: Infinity }}
-        className="absolute inset-0 z-1"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 30% 70%, var(--color-secondary) 0%, transparent 50%), radial-gradient(circle at 70% 30%, var(--color-primary) 0%, transparent 50%)",
-        }}
-      />
-
-      {/* Enhanced glass overlay with pulsing effect */}
-      <motion.div
-        initial={{ opacity: 0.4 }}
-        animate={{ opacity: [0.4, 0.6, 0.4] }}
-        transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
-        className="absolute inset-0 backdrop-blur-[3px] bg-background/50 z-10"
-      />
-
-      {/* Floating particles for ambience */}
-      {[...Array(8)].map((_, i) => (
-        <motion.div
-          key={`particle-${i}`}
-          custom={i}
-          variants={particle}
-          animate="animate"
-          className="absolute w-1 h-1 bg-primary/30 rounded-full z-5"
-          style={{
-            left: `${10 + i * 10}%`,
-          }}
-        />
-      ))}
-
-      {/* Dramatic floating color blobs with complex animations */}
-      {[...Array(4)].map((_, i) => (
-        <motion.span
-          key={i}
-          custom={i}
-          variants={blob}
-          animate="animate"
-          className="absolute z-0 w-96 h-96 rounded-full opacity-25 mix-blend-screen" // Increased opacity for drama
-          style={{
-            background:
-              i % 3 === 0
-                ? `radial-gradient(circle at 30% 30%, var(--color-primary), var(--color-secondary) 70%)`
-                : i % 3 === 1
-                ? `radial-gradient(circle at 70% 70%, var(--color-secondary), var(--color-primary) 70%)`
-                : `conic-gradient(from ${
-                    i * 90
-                  }deg, var(--color-primary), var(--color-secondary), var(--color-surface), var(--color-primary))`,
-            filter: "blur(100px)", // Less blur for more visible effect
-            left: `${i * 25}%`,
-            top: `${i * 20}%`,
-          }}
-        />
-      ))}
+      <div className="absolute inset-0 z-10 backdrop-blur-[3px] bg-background/60" />
 
       {/* Login card with dramatic entrance animation and glassmorphism */}
       <motion.div
@@ -164,6 +75,7 @@ const LoginPage = () => {
         <div className="space-y-6">
           {/* Title with dramatic glow and typing effect */}
           <motion.h1
+            id="login-title"
             initial={{ opacity: 0, scale: 0.5, y: -50 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{
@@ -183,58 +95,51 @@ const LoginPage = () => {
             Admin Panel Login
           </motion.h1>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Email input with dramatic focus animations */}
-            <motion.div
-              initial={{ opacity: 0, x: -50, rotateY: -15 }}
-              animate={{ opacity: 1, x: 0, rotateY: 0 }}
-              transition={{
-                delay: 0.7,
-                duration: 0.6,
-                type: "spring",
-                stiffness: 150,
-              }}
-              whileHover={{ scale: 1.02, x: 5 }}
-              whileFocus={{ scale: 1.05, boxShadow: "0 0 25px var(--color-primary)" }}
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+            noValidate
+            aria-describedby={error ? "login-error" : undefined}
+          >
+            {/* Email input */}
+            <motion.label
+              htmlFor="email"
+              className="block mb-1 text-sm font-semibold uppercase tracking-wide text-tertiary"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
             >
-              <motion.label
-                htmlFor="email"
-                className="block mb-1 text-sm font-semibold uppercase tracking-wide text-tertiary"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 }}
+              Email
+            </motion.label>
+            <div className="relative">
+              <motion.div
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.9, type: "spring", stiffness: 300 }}
+                className="absolute left-3 top-1/2 -translate-y-1/2"
               >
-                Email
-              </motion.label>
-              <div className="relative">
-                <motion.div
-                  initial={{ scale: 0, rotate: -180 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ delay: 0.9, type: "spring", stiffness: 300 }}
-                  className="absolute left-3 top-1/2 -translate-y-1/2"
-                >
-                  <FiMail className="text-primary" />
-                </motion.div>
-                <motion.input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-white/5 backdrop-blur-md text-text-main rounded-lg border border-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300 focus:bg-white/10 focus:border-primary/40 shadow-lg"
-                  style={{
-                    background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
-                    boxShadow: "0 4px 16px 0 rgba(31, 38, 135, 0.2), inset 0 1px 0 rgba(255,255,255,0.1)",
-                  }}
-                  required
-                  whileFocus={{
-                    scale: 1.02,
-                    boxShadow: "0 0 20px rgba(66, 98, 128, 0.5)",
-                  }}
-                />
-              </div>
-            </motion.div>
+                <FiMail className="text-primary" />
+              </motion.div>
+              <motion.input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-white/5 backdrop-blur-md text-text-main rounded-lg border border-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300 focus:bg-white/10 focus:border-primary/40 shadow-lg"
+                style={{
+                  background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
+                  boxShadow: "0 4px 16px 0 rgba(31, 38, 135, 0.2), inset 0 1px 0 rgba(255,255,255,0.1)",
+                }}
+                required
+                autoComplete="email"
+                whileFocus={{
+                  scale: 1.02,
+                  boxShadow: "0 0 20px rgba(66, 98, 128, 0.5)",
+                }}
+              />
+            </div>
 
-            {/* Password input with dramatic focus animations */}
+            {/* Password input */}
             <motion.div
               initial={{ opacity: 0, x: -50, rotateY: -15 }}
               animate={{ opacity: 1, x: 0, rotateY: 0 }}
@@ -267,24 +172,33 @@ const LoginPage = () => {
                 </motion.div>
                 <motion.input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-white/5 backdrop-blur-md text-text-main rounded-lg border border-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300 focus:bg-white/10 focus:border-primary/40 shadow-lg"
+                  className="w-full pl-10 pr-12 py-3 bg-white/5 backdrop-blur-md text-text-main rounded-lg border border-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300 focus:bg-white/10 focus:border-primary/40 shadow-lg"
                   style={{
                     background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
                     boxShadow: "0 4px 16px 0 rgba(31, 38, 135, 0.2), inset 0 1px 0 rgba(255,255,255,0.1)",
                   }}
                   required
+                  autoComplete="current-password"
                   whileFocus={{
                     scale: 1.02,
                     boxShadow: "0 0 20px rgba(66, 98, 128, 0.5)",
                   }}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((s) => !s)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/80 hover:text-primary transition"
+                >
+                  {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                </button>
               </div>
             </motion.div>
 
-            {/* Error message with dramatic shake animation */}
+            {/* Error message */}
             {error && (
               <motion.p
                 initial={{ opacity: 0, y: -20, scale: 0.8 }}
@@ -299,6 +213,8 @@ const LoginPage = () => {
                   x: { duration: 0.4, ease: "easeInOut" },
                 }}
                 className="text-center text-status-danger font-medium bg-status-danger/10 backdrop-blur-md p-3 rounded-lg border border-status-danger/30 shadow-lg"
+                id="login-error"
+                role="alert"
                 style={{
                   background: "linear-gradient(135deg, rgba(220, 38, 127, 0.1), rgba(220, 38, 127, 0.05))",
                   boxShadow: "0 4px 16px 0 rgba(220, 38, 127, 0.2), inset 0 1px 0 rgba(255,255,255,0.1)",
@@ -332,7 +248,8 @@ const LoginPage = () => {
                 transition: { duration: 0.1 },
               }}
               type="submit"
-              className="w-full py-3 rounded-lg font-bold bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary transition-all duration-500 focus:outline-none focus:ring-4 focus:ring-primary/50 drop-shadow-lg relative overflow-hidden"
+              disabled={isSubmitting}
+              className="w-full py-3 rounded-lg font-bold bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary transition-all duration-500 focus:outline-none focus:ring-4 focus:ring-primary/50 drop-shadow-lg relative overflow-hidden disabled:opacity-60 disabled:cursor-not-allowed"
               style={{ backgroundSize: "200% 100%" }}
             >
               {/* Shimmer effect overlay */}
@@ -342,12 +259,25 @@ const LoginPage = () => {
                 transition={{ duration: 0.6, ease: "easeInOut" }}
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
               />
-              <span className="relative z-10">Log&nbsp;In</span>
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                {isSubmitting && (
+                  <span
+                    className="inline-block w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"
+                    aria-hidden="true"
+                  />
+                )}
+                {isSubmitting ? "Logging In..." : "Log In"}
+              </span>
             </motion.button>
+            <div className="text-center text-xs text-text-secondary pt-2">
+              <Link to="/register" className="text-primary hover:underline">
+                Need an account? Register
+              </Link>
+            </div>
           </form>
         </div>
       </motion.div>
-    </div>
+    </main>
   );
 };
 

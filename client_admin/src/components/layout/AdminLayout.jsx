@@ -178,6 +178,12 @@ const AdminLayout = () => {
                 <NavItem to="/admin/volumes" icon={Library} isCollapsed={isSidebarCollapsed}>
                   Volume Administration
                 </NavItem>
+                <NavItem to="/admin/volume-workbench" icon={FileSignature} isCollapsed={isSidebarCollapsed}>
+                  Volume Workbench
+                </NavItem>
+                <NavItem to="/admin/users" icon={Users} isCollapsed={isSidebarCollapsed}>
+                  User Management
+                </NavItem>
                 <NavItem to="/admin/exercises" icon={Settings} isCollapsed={isSidebarCollapsed}>
                   Exercise Definition
                 </NavItem>
@@ -192,12 +198,6 @@ const AdminLayout = () => {
                 </NavItem>
                 <NavItem to="/settings" icon={Settings2} isCollapsed={isSidebarCollapsed}>
                   Settings
-                </NavItem>
-                <NavItem to="/admin/volume-workbench" icon={FileSignature} isCollapsed={isSidebarCollapsed}>
-                  Volume Workbench
-                </NavItem>
-                <NavItem to="/admin/volumes" icon={Library} isCollapsed={isSidebarCollapsed}>
-                  Volume Administration
                 </NavItem>
               </ul>
             </div>

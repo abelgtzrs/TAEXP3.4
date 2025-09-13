@@ -2,6 +2,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useTheme } from "./hooks/useTheme";
 import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import HabitsPage from "./pages/HabitsPage";
 import BooksPage from "./pages/BooksPage";
@@ -27,13 +28,15 @@ import TasksPage from "./pages/TasksPage";
 import FinancePage from "./pages/FinancePage";
 import SpotifyStatsPage from "./pages/SpotifyStatsPage";
 import VolumeWorkbenchPage from "./pages/VolumeWorkbenchPage";
+import AdminUserManagementPage from "./pages/AdminUserManagementPage";
 
 function App() {
   useTheme();
 
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
+  <Route path="/login" element={<LoginPage />} />
+  <Route path="/register" element={<RegisterPage />} />
 
       {/* General Protected Routes for all logged-in users */}
       <Route element={<ProtectedRoute />}>
@@ -67,6 +70,7 @@ function App() {
           <Route path="/collections/:collectionType" element={<CollectionDetailPage />} />
           <Route path="/pokedex" element={<PokedexPage />} />
           <Route path="/admin/pokemon-editor" element={<PokemonEditorPage />} />
+          <Route path="/admin/users" element={<AdminUserManagementPage />} />
         </Route>
       </Route>
 
