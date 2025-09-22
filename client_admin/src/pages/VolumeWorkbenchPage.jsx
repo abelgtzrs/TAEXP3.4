@@ -6,7 +6,8 @@ import { parseRawGreentext } from "../utils/greentextParser";
 import PageHeader from "../components/ui/PageHeader";
 import StyledButton from "../components/ui/StyledButton";
 import Widget from "../components/ui/Widget";
-import { Eye, GripVertical, Save, Trash2, Edit, AlertCircle, X, ChevronsRight, Download } from "lucide-react";
+import { Eye, GripVertical, Save, Trash2, Edit, AlertCircle, X, ChevronsRight, Download, Search } from "lucide-react";
+import { searchVolumes, highlightQuery } from "../utils/volumeSearch";
 
 // --- Preview Modal Component ---
 const PreviewModal = ({ volume, isOpen, onClose }) => {
@@ -69,6 +70,9 @@ const VolumeWorkbenchPage = () => {
   const [volumes, setVolumes] = useState([]);
   const [volumesLoading, setVolumesLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("raw"); // 'raw' | 'edit'
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   // Fetch all existing volumes (admin) sorted ascending client-side
   const fetchVolumes = async () => {
@@ -88,6 +92,13 @@ const VolumeWorkbenchPage = () => {
   useEffect(() => {
     fetchVolumes();
   }, []);
+
+  // Run search when query changes while modal open
+  useEffect(() => {
+    if (!isSearchOpen) return;
+    const res = searchVolumes(volumes, searchQuery);
+    setSearchResults(res);
+  }, [isSearchOpen, searchQuery, volumes]);
 
   const handleParse = () => {
     if (!rawText) return;
@@ -308,6 +319,17 @@ const VolumeWorkbenchPage = () => {
     }
   };
 
+  // Small helper to render highlighted snippets from search
+  const Snippet = ({ parts }) => (
+    <span>
+      {parts.map((p, i) => (
+        <span key={i} className={p.hit ? "text-amber-300 font-semibold" : ""}>
+          {p.text}
+        </span>
+      ))}
+    </span>
+  );
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       <PageHeader
@@ -518,6 +540,9 @@ const VolumeWorkbenchPage = () => {
           >
             <Download size={16} /> Export Published
           </StyledButton>
+          <StyledButton onClick={() => setIsSearchOpen(true)} className="bg-gray-700/70 hover:bg-gray-600">
+            <Search size={16} /> Search Volumes
+          </StyledButton>
           {error && (
             <div className="flex items-center gap-2 text-red-400">
               <AlertCircle size={16} />
@@ -540,6 +565,94 @@ const VolumeWorkbenchPage = () => {
           setPreviewVolume(null);
         }}
       />
+
+      {/* SEARCH MODAL */}
+      {isSearchOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center"
+          onClick={() => setIsSearchOpen(false)}
+        >
+          <div
+            className="bg-surface w-full max-w-4xl h-[70vh] rounded-lg border border-gray-700/50 p-4 flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-lg font-bold text-primary">Search Volumes</h2>
+              <button onClick={() => setIsSearchOpen(false)} className="p-1 text-gray-400 hover:text-white">
+                <X size={18} />
+              </button>
+            </div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="flex items-center gap-2 flex-1 bg-gray-900 border border-gray-700 rounded px-2">
+                <Search size={16} className="text-gray-400" />
+                <input
+                  autoFocus
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search in title, body, blessings, dream, edition…"
+                  className="flex-1 bg-transparent py-2 text-sm outline-none"
+                />
+              </div>
+              <span className="text-xs text-text-tertiary">
+                {searchResults.length} match{searchResults.length === 1 ? "" : "es"}
+              </span>
+            </div>
+            <div className="flex-1 overflow-auto space-y-2 pr-1">
+              {searchResults.length === 0 && (
+                <div className="text-sm text-text-secondary">
+                  {searchQuery ? "No matches found." : "Type to search."}
+                </div>
+              )}
+              {searchResults.map(({ volume, matches }) => (
+                <div key={volume._id} className="p-2 rounded border border-gray-700/50 bg-gray-900/40">
+                  <div className="flex items-center justify-between">
+                    <div className="text-sm font-semibold">
+                      Volume {volume.volumeNumber}: {volume.title}
+                    </div>
+                    <div className="text-[10px] text-text-tertiary">
+                      {matches.length} hit{matches.length === 1 ? "" : "s"}
+                    </div>
+                  </div>
+                  <div className="mt-2 grid gap-1">
+                    {matches.slice(0, 6).map((m, idx) => (
+                      <div key={idx} className="text-xs text-text-secondary">
+                        <span className="px-1 py-0.5 mr-2 rounded bg-gray-700/50 text-[10px] uppercase">
+                          {m.field}
+                          {typeof m.index === "number" ? `#${m.index}` : ""}
+                        </span>
+                        <Snippet parts={highlightQuery(m.excerpt, searchQuery)} />
+                      </div>
+                    ))}
+                    {matches.length > 6 && (
+                      <div className="text-[10px] text-text-tertiary">…{matches.length - 6} more</div>
+                    )}
+                  </div>
+                  <div className="mt-2 flex gap-2">
+                    <StyledButton
+                      className="bg-gray-700/60 hover:bg-gray-600"
+                      onClick={() => {
+                        setPreviewVolume(volume);
+                        setIsPreviewOpen(true);
+                      }}
+                    >
+                      Preview
+                    </StyledButton>
+                    <StyledButton
+                      className="bg-indigo-700/60 hover:bg-indigo-600"
+                      onClick={() => {
+                        handleEditVolume(volume);
+                        setIsSearchOpen(false);
+                      }}
+                    >
+                      Edit
+                    </StyledButton>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* EXISTING VOLUMES SECTION */}
       <Widget title="Existing Volumes" className="mt-8">

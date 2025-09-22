@@ -140,7 +140,7 @@ const DashboardPage = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 1.2 }}
-          className="col-span-8 md:col-span-2 order-6 md:order-7 row-span-2"
+          className="col-span-4 md:col-span-2 order-6 md:order-7 row-span-2"
         >
           <WorkoutTrackerWidget />
         </motion.div>

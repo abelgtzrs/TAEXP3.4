@@ -199,11 +199,16 @@ exports.updateVolumeFromRaw = async (req, res) => {
 
     return res.status(200).json({ success: true, data: updated });
   } catch (error) {
+    // Handle duplicate volumeNumber gracefully
     if (error.code === 11000 && error.keyPattern && error.keyPattern.volumeNumber) {
       return res.status(409).json({
         success: false,
         message: `Volume number ${error.keyValue.volumeNumber} already exists.`,
       });
+    }
+    // Validation errors (e.g., missing required fields on blessings)
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ success: false, message: "Validation Error", error: error.message });
     }
     res.status(500).json({ success: false, message: "Server Error", error: error.message });
   }
@@ -217,9 +222,10 @@ exports.deleteVolume = async (req, res) => {
     if (!volume) {
       return res.status(404).json({ success: false, message: "Volume not found" });
     }
-    await volume.remove();
+    // Mongoose 8 removed remove(); use deleteOne() on the document or findByIdAndDelete
+    await volume.deleteOne();
     res.status(200).json({ success: true, message: "Volume deleted successfully" });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server Error" });
+    res.status(500).json({ success: false, message: "Server Error", error: error.message });
   }
 };

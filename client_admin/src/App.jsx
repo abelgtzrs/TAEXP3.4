@@ -26,6 +26,7 @@ import HabboRareManagement from "./pages/HabboRareManagement";
 import SettingsPage from "./pages/SettingsPage";
 import TasksPage from "./pages/TasksPage";
 import FinancePage from "./pages/FinancePage";
+import RichFinancePage from "./pages/RichFinancePage";
 import SpotifyStatsPage from "./pages/SpotifyStatsPage";
 import VolumeWorkbenchPage from "./pages/VolumeWorkbenchPage";
 import AdminUserManagementPage from "./pages/AdminUserManagementPage";
@@ -35,8 +36,8 @@ function App() {
 
   return (
     <Routes>
-  <Route path="/login" element={<LoginPage />} />
-  <Route path="/register" element={<RegisterPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
 
       {/* General Protected Routes for all logged-in users */}
       <Route element={<ProtectedRoute />}>
@@ -52,6 +53,7 @@ function App() {
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/tasks" element={<TasksPage />} />
           <Route path="/finance" element={<FinancePage />} />
+          <Route path="/finance/rich" element={<RichFinancePage />} />
           <Route path="/spotify-stats" element={<SpotifyStatsPage />} />
         </Route>
       </Route>

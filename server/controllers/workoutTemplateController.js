@@ -19,10 +19,7 @@ exports.createWorkoutTemplate = async (req, res) => {
 exports.getWorkoutTemplates = async (req, res) => {
   try {
     // Populate the exercises to show their names and details along with the template
-    const templates = await WorkoutTemplate.find().populate(
-      "exercises",
-      "name muscleGroups exerciseType"
-    );
+    const templates = await WorkoutTemplate.find().populate("exercises", "name muscleGroups exerciseType");
     res.status(200).json({ success: true, data: templates });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server Error" });

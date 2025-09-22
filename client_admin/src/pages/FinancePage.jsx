@@ -1,4 +1,10 @@
-import { useState, useEffect, useMemo } from "react";
+// NOTE: This file was reconstructed after a merge/patch corruption introduced
+// large blocks of misplaced JSX and missing imports. The implementation
+// below restores a stable FinancePage with the previously added "terminal mode"
+// (Bloomberg-style) features: TickerBar, CommandBar, MetricsPanel (KPI + Sparkline),
+// TransactionBlotter, dense widgets, and classic drag/drop list in non-terminal mode.
+
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -8,9 +14,22 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import DebtTracker from "../components/finances/DebtTracker";
+import { Plus, Settings, Trash2, X, Edit, ChevronLeft, ChevronRight, CheckSquare, Square } from "lucide-react";
+// Charts
+import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 
-// Overview bar summarizing key balances and month snapshot
+import PageHeader from "../components/ui/PageHeader";
+import Widget from "../components/ui/Widget";
+import StyledButton from "../components/ui/StyledButton";
+import StyledInput from "../components/ui/StyledInput";
+import DebtTracker from "../components/finances/DebtTracker";
+import api from "../services/api";
+
+// ---------------------------------------------------------------------------
+// Utility Components
+// ---------------------------------------------------------------------------
+
+// Overview bar (standard mode) summarizing key balances & month snapshot
 const OverviewBar = ({ selectedMonth, checkings, savings, transactions }) => {
   const monthIncome = transactions
     .filter(
@@ -50,241 +69,149 @@ const OverviewBar = ({ selectedMonth, checkings, savings, transactions }) => {
   );
 };
 
-// Toolbar for transaction list controls
-const TransactionToolbar = ({
-  txSearch,
-  setTxSearch,
-  txCategoryFilter,
-  setTxCategoryFilter,
-  txTypeFilter,
-  setTxTypeFilter,
-  categories,
-  shownCount,
-  onReset,
-  onToggleGroup,
-  groupByDay,
-  onAddQuick,
-}) => (
-  <div className="sticky top-0 z-10 flex flex-col lg:flex-row gap-2 bg-gray-900/80 backdrop-blur-md border border-gray-700 rounded-lg p-3 items-start lg:items-center shadow-lg shadow-black/30">
-    <div className="flex gap-2 w-full lg:w-auto">
-      <input
-        value={txSearch}
-        onChange={(e) => setTxSearch(e.target.value)}
-        placeholder="Search..."
-        className="flex-1 bg-gray-800 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-500"
-      />
-      <select
-        value={txCategoryFilter}
-        onChange={(e) => setTxCategoryFilter(e.target.value)}
-        className="bg-gray-800 rounded px-2 py-2 text-xs focus:ring-1 focus:ring-teal-500"
-      >
-        <option value="All">All Cats</option>
-        {categories.map((c) => (
-          <option key={c._id} value={c._id}>
-            {c.name}
-          </option>
-        ))}
-      </select>
-      <select
-        value={txTypeFilter}
-        onChange={(e) => setTxTypeFilter(e.target.value)}
-        className="bg-gray-800 rounded px-2 py-2 text-xs focus:ring-1 focus:ring-teal-500"
-      >
-        <option value="All">All Types</option>
-        <option value="Income">Income</option>
-        <option value="Expense">Expense</option>
-      </select>
-    </div>
-    <div className="flex gap-2 flex-wrap">
-      <button
-        onClick={onToggleGroup}
-        className={`px-3 py-1 text-xs rounded border ${
-          groupByDay ? "bg-teal-600 border-teal-500" : "bg-gray-700 border-gray-600 hover:bg-gray-600"
-        } transition`}
-      >
-        Group Day
-      </button>
-      <button
-        onClick={onReset}
-        className="px-3 py-1 text-xs rounded border bg-gray-700 border-gray-600 hover:bg-gray-600"
-      >
-        Reset
-      </button>
-      <button
-        onClick={onAddQuick}
-        className="px-3 py-1 text-xs rounded border bg-emerald-600 border-emerald-500 hover:bg-emerald-500"
-      >
-        Quick Add
-      </button>
-      <span className="text-xs text-gray-500 self-center">{shownCount} shown</span>
-    </div>
-  </div>
-);
-
-// --- Sub-Component: Financial Action Log Modal ---
-const FinancialActionLogModal = ({ isOpen, onClose, logs }) => {
-  if (!isOpen) return null;
+// Scrolling ticker (terminal mode)
+const TickerBar = ({ selectedMonth, checkings, savings, transactions }) => {
+  const monthIncome = transactions
+    .filter(
+      (t) =>
+        t.type === "income" &&
+        new Date(t.date).getMonth() === selectedMonth.getMonth() &&
+        new Date(t.date).getFullYear() === selectedMonth.getFullYear()
+    )
+    .reduce((a, b) => a + b.amount, 0)
+    .toFixed(2);
+  const monthExpenses = transactions
+    .filter(
+      (t) =>
+        t.type === "expense" &&
+        new Date(t.date).getMonth() === selectedMonth.getMonth() &&
+        new Date(t.date).getFullYear() === selectedMonth.getFullYear()
+    )
+    .reduce((a, b) => a + b.amount, 0)
+    .toFixed(2);
+  const net = (parseFloat(monthIncome) - parseFloat(monthExpenses)).toFixed(2);
+  const monthLabel = selectedMonth.toLocaleString("en-US", { month: "short" }).toUpperCase();
+  const items = [
+    { label: "CHK", value: `$${checkings.toFixed(2)}`, color: "text-emerald-400" },
+    { label: "SAV", value: `$${savings.toFixed(2)}`, color: "text-sky-400" },
+    { label: `${monthLabel} INC`, value: `$${monthIncome}`, color: "text-green-400" },
+    { label: `${monthLabel} EXP`, value: `$${monthExpenses}`, color: "text-red-400" },
+    { label: "NET", value: `$${net}`, color: net >= 0 ? "text-emerald-400" : "text-red-500" },
+  ];
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50" onClick={onClose}>
-      <div
-        className="bg-surface w-full max-w-lg rounded-lg border border-gray-700 p-6 space-y-4"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="text-xl font-bold text-white mb-2">Financial Action Log</h2>
-        <div className="max-h-80 overflow-y-auto space-y-2">
-          {logs.length === 0 ? (
-            <p className="text-text-secondary">No actions logged yet.</p>
-          ) : (
-            logs.map((log, idx) => (
-              <div key={log._id || idx} className="p-2 bg-gray-900/50 rounded-md flex flex-col gap-1">
-                <span className="text-xs text-gray-400">{new Date(log.timestamp).toLocaleString()}</span>
-                <span className="text-sm text-white font-mono">{log.action.toUpperCase()}</span>
-                {log.details && Object.keys(log.details).length > 0 && (
-                  <pre className="text-xs text-gray-300 bg-gray-800 rounded p-2 mt-1">
-                    {JSON.stringify(log.details, null, 2)}
-                  </pre>
-                )}
+    <div className="relative border border-amber-600/40 bg-[#10130F] overflow-hidden rounded shadow-inner shadow-amber-900/40">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_110%,#1a1f11_0%,#0b0e0a_70%)] opacity-70 pointer-events-none" />
+      <div className="flex gap-8 px-4 py-2 text-xs font-mono animate-[ticker_35s_linear_infinite] whitespace-nowrap">
+        {Array.from({ length: 4 }).map((_, loop) => (
+          <div className="flex gap-8" key={loop}>
+            {items.map((it, i) => (
+              <div key={i} className="flex items-center gap-1">
+                <span className="text-amber-300 tracking-wide">{it.label}:</span>
+                <span className={`${it.color} font-semibold tabular-nums`}>{it.value}</span>
               </div>
-            ))
-          )}
-        </div>
-        <div className="flex justify-end pt-4">
-          <button onClick={onClose} className="bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded">
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-import api from "../services/api";
-import PageHeader from "../components/ui/PageHeader";
-import Widget from "../components/ui/Widget";
-import StyledButton from "../components/ui/StyledButton";
-import StyledInput from "../components/ui/StyledInput";
-import { Plus, Settings, Trash2, ChevronLeft, ChevronRight, CheckSquare, Square, Edit, X } from "lucide-react";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
-
-// --- Sub-Component: Category Manager Modal ---
-const CategoryManagerModal = ({ isOpen, onClose, categories, onUpdate }) => {
-  const [newCategoryName, setNewCategoryName] = useState("");
-  const [newCategoryColor, setNewCategoryColor] = useState("#6B7280");
-  const [editingCategory, setEditingCategory] = useState(null);
-
-  useEffect(() => {
-    if (editingCategory) {
-      setNewCategoryName(editingCategory.name);
-      setNewCategoryColor(editingCategory.color);
-    } else {
-      setNewCategoryName("");
-      setNewCategoryColor("#6B7280");
-    }
-  }, [editingCategory]);
-
-  if (!isOpen) return null;
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!newCategoryName.trim()) return;
-
-    const categoryData = { name: newCategoryName, color: newCategoryColor };
-
-    try {
-      if (editingCategory) {
-        await api.put(`/finance/categories/${editingCategory._id}`, categoryData);
-      } else {
-        await api.post("/finance/categories", categoryData);
-      }
-      setEditingCategory(null);
-      onUpdate();
-    } catch (error) {
-      alert(`Failed to ${editingCategory ? "update" : "create"} category.`);
-    }
-  };
-
-  const handleDelete = async (categoryId) => {
-    if (window.confirm("Are you sure? Deleting a category may affect existing transactions.")) {
-      try {
-        await api.delete(`/finance/categories/${categoryId}`);
-        onUpdate();
-      } catch (error) {
-        alert("Failed to delete category.");
-      }
-    }
-  };
-
-  const handleEditClick = (category) => {
-    setEditingCategory(category);
-  };
-
-  const handleCancelEdit = () => {
-    setEditingCategory(null);
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50" onClick={onClose}>
-      <div
-        className="bg-surface w-full max-w-md rounded-lg border border-gray-700 p-6 space-y-4"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="text-xl font-bold text-white">Manage Categories</h2>
-        <div className="space-y-2 max-h-60 overflow-y-auto pr-2">
-          {categories.map((cat) => (
-            <div key={cat._id} className="flex items-center justify-between p-2 bg-gray-900/50 rounded-md">
-              <div className="flex items-center gap-3">
-                <div className="w-4 h-4 rounded-full" style={{ backgroundColor: cat.color }}></div>
-                <span className="text-text-main">{cat.name}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <button onClick={() => handleEditClick(cat)} className="text-gray-500 hover:text-primary">
-                  <Edit size={16} />
-                </button>
-                <button onClick={() => handleDelete(cat._id)} className="text-gray-500 hover:text-status-danger">
-                  <Trash2 size={16} />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-        <form onSubmit={handleSubmit} className="pt-4 border-t border-gray-700/50">
-          <h3 className="text-lg font-semibold text-white mb-2">
-            {editingCategory ? "Edit Category" : "Add New Category"}
-          </h3>
-          <div className="flex items-center gap-2">
-            <input
-              type="color"
-              value={newCategoryColor}
-              onChange={(e) => setNewCategoryColor(e.target.value)}
-              className="bg-transparent h-10 w-10 p-1 rounded"
-            />
-            <StyledInput
-              type="text"
-              placeholder="Category Name"
-              value={newCategoryName}
-              onChange={(e) => setNewCategoryName(e.target.value)}
-              required
-            />
-            <StyledButton type="submit" className="py-2 px-4">
-              {editingCategory ? "Update" : <Plus size={20} />}
-            </StyledButton>
-            {editingCategory && (
-              <button
-                type="button"
-                onClick={handleCancelEdit}
-                className="p-2 rounded-md bg-gray-600 hover:bg-gray-500 text-white"
-              >
-                <X size={20} />
-              </button>
-            )}
+            ))}
           </div>
-        </form>
+        ))}
       </div>
     </div>
   );
 };
 
-// --- Sub-Component: Add Transaction Form ---
-const AddTransactionForm = ({ categories, onTransactionAdded }) => {
+// Command bar for terminal mode commands
+const CommandBar = ({ onCommand, placeholder = "Type HELP for commands..." }) => {
+  const [value, setValue] = useState("");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!value.trim()) return;
+    onCommand(value.trim());
+    setValue("");
+  };
+  return (
+    <form onSubmit={handleSubmit} className="terminal-command-bar mt-3">
+      <span className="text-amber-400 font-semibold text-xs select-none">CMD</span>
+      <input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder={placeholder}
+        aria-label="Command Input"
+      />
+    </form>
+  );
+};
+
+const Sparkline = ({ data, maxAbs }) => {
+  if (!data || data.length === 0) return <div className="sparkline" />;
+  const peak = maxAbs || Math.max(...data.map((d) => Math.abs(d)), 1);
+  return (
+    <div className="sparkline">
+      {data.map((v, i) => {
+        const h = Math.max(2, Math.round((Math.abs(v) / peak) * 24));
+        return <div key={i} className={`sparkline-bar ${v >= 0 ? "pos" : "neg"}`} style={{ height: h }} />;
+      })}
+    </div>
+  );
+};
+
+const MetricsPanel = ({ transactions, checkings, savings, selectedMonth }) => {
+  const { kpis, spark } = useMemo(() => {
+    const month = selectedMonth.getMonth();
+    const year = selectedMonth.getFullYear();
+    const monthTx = transactions.filter((t) => {
+      const d = new Date(t.date);
+      return d.getMonth() === month && d.getFullYear() === year;
+    });
+    const income = monthTx.filter((t) => t.type === "income").reduce((a, b) => a + b.amount, 0);
+    const expense = monthTx.filter((t) => t.type === "expense").reduce((a, b) => a + b.amount, 0);
+    const net = income - expense;
+    const avg = monthTx.length ? (income + expense) / monthTx.length : 0;
+
+    // Build 30-day net series
+    const days = 30;
+    const daily = Array.from({ length: days }, (_, i) => {
+      const dayDate = new Date(year, month, i + 1);
+      const dayKey = dayDate.toDateString();
+      const dayNet = monthTx
+        .filter((t) => new Date(t.date).toDateString() === dayKey)
+        .reduce((acc, t) => acc + (t.type === "income" ? t.amount : -t.amount), 0);
+      return dayNet;
+    });
+
+    return {
+      kpis: [
+        { label: "INCOME", value: income.toFixed(2), color: "text-green-400" },
+        { label: "EXPENSE", value: expense.toFixed(2), color: "text-red-400" },
+        { label: "NET", value: net.toFixed(2), color: net >= 0 ? "text-emerald-400" : "text-red-500" },
+        { label: "AVG TX", value: avg.toFixed(2), color: "text-amber-300" },
+        { label: "CHK BAL", value: checkings.toFixed(2), color: "text-sky-300" },
+        { label: "SAV BAL", value: savings.toFixed(2), color: "text-sky-400" },
+        { label: "TX COUNT", value: monthTx.length, color: "text-amber-200" },
+      ],
+      spark: daily,
+    };
+  }, [transactions, checkings, savings, selectedMonth]);
+
+  const maxAbs = useMemo(() => Math.max(...spark.map((v) => Math.abs(v)), 1), [spark]);
+
+  return (
+    <Widget title="Monthly Metrics" className="font-mono text-[11px]">
+      <div className="terminal-kpi-grid mb-3">
+        {kpis.map((k) => (
+          <div key={k.label} className="terminal-kpi">
+            <div className="label">{k.label}</div>
+            <div className={`value tabular-nums font-semibold ${k.color}`}>{k.value}</div>
+          </div>
+        ))}
+      </div>
+      <Sparkline data={spark} maxAbs={maxAbs} />
+    </Widget>
+  );
+};
+
+// ---------------------------------------------------------------------------
+// Transaction / Budget / Bill Subcomponents
+// ---------------------------------------------------------------------------
+
+const AddTransactionForm = ({ categories, onTransactionAdded, terminalMode = false }) => {
   const [type, setType] = useState("expense");
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
@@ -307,9 +234,9 @@ const AddTransactionForm = ({ categories, onTransactionAdded }) => {
   };
 
   return (
-    <Widget title="Log New Transaction">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <Widget title="Log New Transaction" className={terminalMode ? "text-[11px] font-mono tracking-tight" : ""}>
+      <form onSubmit={handleSubmit} className={terminalMode ? "space-y-3" : "space-y-4"}>
+        <div className={`grid grid-cols-1 md:grid-cols-2 ${terminalMode ? "gap-3" : "gap-4"}`}>
           <div className="md:col-span-2">
             <StyledInput
               type="text"
@@ -317,7 +244,7 @@ const AddTransactionForm = ({ categories, onTransactionAdded }) => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
-              className="text-sm"
+              className={terminalMode ? "text-[11px] py-1" : "text-sm"}
             />
           </div>
 
@@ -329,14 +256,16 @@ const AddTransactionForm = ({ categories, onTransactionAdded }) => {
             required
             min="0.01"
             step="0.01"
-            className="text-sm"
+            className={terminalMode ? "text-[11px] py-1" : "text-sm"}
           />
 
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             required
-            className="w-full p-2 bg-gray-700 rounded border border-gray-600 text-sm"
+            className={`w-full bg-gray-700 rounded border border-gray-600 ${
+              terminalMode ? "p-1.5 text-[11px]" : "p-2 text-sm"
+            }`}
           >
             <option value="">-- Category --</option>
             {categories.map((cat) => (
@@ -351,10 +280,10 @@ const AddTransactionForm = ({ categories, onTransactionAdded }) => {
             value={date}
             onChange={(e) => setDate(e.target.value)}
             required
-            className="text-sm"
+            className={terminalMode ? "text-[11px] py-1" : "text-sm"}
           />
 
-          <div className="flex gap-2">
+          <div className={`flex gap-2 ${terminalMode ? "text-[11px]" : ""}`}>
             <button
               type="button"
               onClick={() => setType("income")}
@@ -375,8 +304,7 @@ const AddTransactionForm = ({ categories, onTransactionAdded }) => {
             </button>
           </div>
         </div>
-
-        <StyledButton type="submit" className="w-full text-sm py-2.5">
+        <StyledButton type="submit" className={`w-full ${terminalMode ? "!py-1.5 text-[11px]" : "text-sm py-2.5"}`}>
           Log Transaction
         </StyledButton>
       </form>
@@ -384,7 +312,6 @@ const AddTransactionForm = ({ categories, onTransactionAdded }) => {
   );
 };
 
-// --- Sub-Component: Budget Status ---
 const SortableTransactionItem = ({ id, transaction, onEdit, balance }) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
@@ -428,7 +355,7 @@ const SortableTransactionItem = ({ id, transaction, onEdit, balance }) => {
     </li>
   );
 };
-const BudgetStatus = ({ categories, transactions, selectedMonth, budgets, onUpdateBudgets }) => {
+const BudgetStatus = ({ categories, transactions, selectedMonth, budgets, onUpdateBudgets, terminalMode = false }) => {
   const [localBudgets, setLocalBudgets] = useState({});
 
   useEffect(() => {
@@ -474,9 +401,12 @@ const BudgetStatus = ({ categories, transactions, selectedMonth, budgets, onUpda
     }, {});
 
   return (
-    <Widget title="Monthly Budget Status" className="flex flex-col h-full">
+    <Widget
+      title="Monthly Budget Status"
+      className={`flex flex-col h-full ${terminalMode ? "text-[11px] font-mono tracking-tight" : ""}`}
+    >
       <div className="flex-grow min-h-0 flex flex-col">
-        <div className="space-y-4 overflow-y-auto pr-2 flex-grow min-h-0">
+        <div className={`${terminalMode ? "space-y-2" : "space-y-4"} overflow-y-auto pr-2 flex-grow min-h-0`}>
           {categories
             .filter((c) => c.name !== "Income") // Assuming 'Income' is not a budgetable category
             .map((cat) => {
@@ -492,7 +422,7 @@ const BudgetStatus = ({ categories, transactions, selectedMonth, budgets, onUpda
 
               return (
                 <div key={cat._id}>
-                  <div className="flex justify-between items-center mb-1 text-sm">
+                  <div className={`flex justify-between items-center mb-1 ${terminalMode ? "text-[11px]" : "text-sm"}`}>
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 rounded-full" style={{ backgroundColor: cat.color }}></div>
                       <span className="font-medium text-text-main">{cat.name}</span>
@@ -503,17 +433,21 @@ const BudgetStatus = ({ categories, transactions, selectedMonth, budgets, onUpda
                         placeholder="Budget"
                         value={localBudgets[cat._id] || ""}
                         onChange={(e) => handleBudgetChange(cat._id, e.target.value)}
-                        className="text-xs py-1 px-2 text-right"
+                        className={`${terminalMode ? "text-[10px] py-0.5 px-1.5" : "text-xs py-1 px-2"} text-right`}
                       />
                     </div>
                   </div>
-                  <div className="w-full bg-gray-700 rounded-full h-2.5">
+                  <div className={`w-full bg-gray-700 rounded-full ${terminalMode ? "h-2" : "h-2.5"}`}>
                     <div
-                      className={`${progressBarColor} h-2.5 rounded-full`}
+                      className={`${progressBarColor} ${terminalMode ? "h-2" : "h-2.5"} rounded-full`}
                       style={{ width: `${Math.min(percentage, 100)}%` }}
                     ></div>
                   </div>
-                  <div className="flex justify-between text-xs text-text-secondary mt-1">
+                  <div
+                    className={`flex justify-between ${
+                      terminalMode ? "text-[10px]" : "text-xs"
+                    } text-text-secondary mt-1 tabular-nums`}
+                  >
                     <span>${spent.toFixed(2)} spent</span>
                     <span>
                       {budget > 0
@@ -528,7 +462,7 @@ const BudgetStatus = ({ categories, transactions, selectedMonth, budgets, onUpda
             })}
         </div>
         <div className="mt-4 pt-4 border-t border-gray-700/50">
-          <StyledButton onClick={handleSave} className="w-full">
+          <StyledButton onClick={handleSave} className={`w-full ${terminalMode ? "!py-1 text-[11px]" : ""}`}>
             Save Budgets
           </StyledButton>
         </div>
@@ -537,7 +471,6 @@ const BudgetStatus = ({ categories, transactions, selectedMonth, budgets, onUpda
   );
 };
 
-// --- Sub-Component: Transaction List ---
 const TransactionList = ({ transactions, onEdit, currentPage, setCurrentPage, totalPages, onSortEnd, balances }) => {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -583,6 +516,69 @@ const TransactionList = ({ transactions, onEdit, currentPage, setCurrentPage, to
             disabled={currentPage === totalPages}
           >
             <ChevronRight size={16} />
+          </StyledButton>
+        </div>
+      )}
+    </Widget>
+  );
+};
+
+const TransactionBlotter = ({ transactions, balances, onEdit, currentPage, totalPages, setCurrentPage }) => {
+  return (
+    <Widget title="Blotter" className="h-full flex flex-col font-mono text-[11px]">
+      <div className="overflow-auto max-h-[560px] border border-amber-700/40 rounded bg-[#0B0E0A]">
+        <table className="w-full border-collapse">
+          <thead className="bg-[#161C12] text-amber-300 sticky top-0">
+            <tr className="uppercase tracking-wider">
+              <th className="p-1 font-semibold text-left">Date</th>
+              <th className="p-1 font-semibold text-left">Desc</th>
+              <th className="p-1 font-semibold text-left">Cat</th>
+              <th className="p-1 font-semibold text-right">Amt</th>
+              <th className="p-1 font-semibold text-right">Bal</th>
+              <th className="p-1 font-semibold">Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {transactions.map((t, i) => {
+              const amt = (t.type === "income" ? "+" : "-") + "$" + t.amount.toFixed(2);
+              const bal = `$${balances[i]?.toFixed(2)}`;
+              return (
+                <tr key={t._id} className="odd:bg-[#10140F] even:bg-[#121811] hover:bg-[#1d2618] transition-colors">
+                  <td className="p-1 whitespace-nowrap text-amber-200/90">{new Date(t.date).toLocaleDateString()}</td>
+                  <td className="p-1 max-w-[160px] truncate text-gray-200">{t.description}</td>
+                  <td className="p-1 whitespace-nowrap" style={{ color: t.category?.color || "#888" }}>
+                    {t.category?.name || "—"}
+                  </td>
+                  <td
+                    className={`p-1 text-right tabular-nums ${t.type === "income" ? "text-green-400" : "text-red-400"}`}
+                  >
+                    {amt}
+                  </td>
+                  <td className="p-1 text-right tabular-nums text-sky-300">{bal}</td>
+                  <td className="p-1 text-center">
+                    <button onClick={() => onEdit(t)} className="text-amber-300 hover:text-amber-200">
+                      <Edit size={12} />
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      {totalPages > 1 && (
+        <div className="flex-shrink-0 flex justify-between items-center mt-2 pt-2 border-t border-[#2a3322] text-[10px]">
+          <StyledButton onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))} disabled={currentPage === 1}>
+            <ChevronLeft size={14} />
+          </StyledButton>
+          <span className="text-amber-300">
+            Page {currentPage} / {totalPages}
+          </span>
+          <StyledButton
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            disabled={currentPage === totalPages}
+          >
+            <ChevronRight size={14} />
           </StyledButton>
         </div>
       )}
@@ -721,8 +717,7 @@ const BillManagerModal = ({ isOpen, onClose, bills, categories, onUpdate }) => {
   );
 };
 
-// --- Sub-Component: Bill Checklist ---
-const BillChecklist = ({ bills, onTogglePaid, selectedMonth, setSelectedMonth }) => {
+const BillChecklist = ({ bills, onTogglePaid, selectedMonth, setSelectedMonth, terminalMode = false }) => {
   const changeMonth = (offset) => {
     const newDate = new Date(selectedMonth);
     newDate.setMonth(newDate.getMonth() + offset);
@@ -735,7 +730,10 @@ const BillChecklist = ({ bills, onTogglePaid, selectedMonth, setSelectedMonth })
   const totalAmount = bills.reduce((acc, bill) => acc + bill.amount, 0);
 
   return (
-    <Widget title="Monthly Bills & Subscriptions" className="h-full">
+    <Widget
+      title="Monthly Bills & Subscriptions"
+      className={`h-full ${terminalMode ? "text-[11px] font-mono tracking-tight" : ""}`}
+    >
       <div className="flex flex-col h-full">
         <div className="flex items-center justify-between mb-4 flex-shrink-0">
           <button onClick={() => changeMonth(-1)} className="p-2 hover:bg-gray-700 rounded-full">
@@ -746,14 +744,16 @@ const BillChecklist = ({ bills, onTogglePaid, selectedMonth, setSelectedMonth })
             <ChevronRight size={20} />
           </button>
         </div>
-        <div className="space-y-1 overflow-y-auto flex-grow pr-2">
+        <div className="space-y-[2px] overflow-y-auto flex-grow pr-2">
           {bills.map((bill) => {
             const isPaid = bill.paidForMonths.includes(currentMonthKey);
             return (
               <div
                 key={bill._id}
-                className={`flex items-center p-2 rounded-md transition-colors ${
-                  isPaid ? "bg-green-900/30" : "bg-gray-900/50"
+                className={`flex items-center ${terminalMode ? "p-1.5" : "p-2"} rounded-sm transition-colors border ${
+                  isPaid
+                    ? "bg-green-900/20 border-green-700/40"
+                    : "bg-gray-900/40 border-gray-700/40 hover:border-amber-600/40"
                 }`}
               >
                 <button onClick={() => onTogglePaid(bill._id, !isPaid)} className="mr-3">
@@ -767,13 +767,17 @@ const BillChecklist = ({ bills, onTogglePaid, selectedMonth, setSelectedMonth })
                   <p className={`font-medium ${isPaid ? "line-through text-gray-500" : "text-text-main"}`}>
                     {bill.name}
                   </p>
-                  <p className="text-xs text-text-secondary">Due: Day {bill.dueDay}</p>
+                  <p className="text-[10px] text-text-secondary">Due: {bill.dueDay}</p>
                 </div>
                 <div className="text-right">
-                  <p className={`font-mono font-semibold ${isPaid ? "line-through text-gray-500" : "text-white"}`}>
+                  <p
+                    className={`tabular-nums ${terminalMode ? "text-[11px]" : "font-mono font-semibold"} ${
+                      isPaid ? "line-through text-gray-500" : "text-white"
+                    }`}
+                  >
                     ${bill.amount.toFixed(2)}
                   </p>
-                  <p className="text-xs" style={{ color: bill.category?.color }}>
+                  <p className={`${terminalMode ? "text-[10px]" : "text-xs"}`} style={{ color: bill.category?.color }}>
                     {bill.category?.name}
                   </p>
                 </div>
@@ -781,16 +785,19 @@ const BillChecklist = ({ bills, onTogglePaid, selectedMonth, setSelectedMonth })
             );
           })}
         </div>
-        <div className="mt-2 pt-3 border-t border-gray-700/50 flex justify-between font-bold text-white flex-shrink-0">
-          <span>Total Monthly Bills:</span>
-          <span>${totalAmount.toFixed(2)}</span>
+        <div
+          className={`mt-2 pt-2 border-t border-gray-700/50 flex justify-between font-bold text-white flex-shrink-0 ${
+            terminalMode ? "text-[11px]" : ""
+          }`}
+        >
+          <span>Total:</span>
+          <span className="tabular-nums">${totalAmount.toFixed(2)}</span>
         </div>
       </div>
     </Widget>
   );
 };
 
-// --- Sub-Component: Bill Analytics ---
 const BillAnalytics = ({ bills, selectedMonth }) => {
   const currentMonthKey = `${selectedMonth.getFullYear()}-${String(selectedMonth.getMonth() + 1).padStart(2, "0")}`;
   const paidBills = bills.filter((b) => b.paidForMonths.includes(currentMonthKey));
@@ -848,7 +855,285 @@ const BillAnalytics = ({ bills, selectedMonth }) => {
   );
 };
 
-// --- Main Page Component ---
+// Simple toolbar component (re-implemented - original was lost in corruption)
+const TransactionToolbar = ({
+  txSearch,
+  setTxSearch,
+  txCategoryFilter,
+  setTxCategoryFilter,
+  txTypeFilter,
+  setTxTypeFilter,
+  categories,
+  shownCount,
+  onReset,
+}) => {
+  return (
+    <Widget title="Filters" className="flex flex-col gap-2 font-mono text-[11px]">
+      <div className="grid grid-cols-2 gap-2">
+        <StyledInput
+          placeholder="Search..."
+          value={txSearch}
+          onChange={(e) => setTxSearch(e.target.value)}
+          className="text-[11px] py-1"
+        />
+        <select
+          value={txCategoryFilter}
+          onChange={(e) => setTxCategoryFilter(e.target.value)}
+          className="bg-gray-700 border border-gray-600 rounded text-[11px] px-2"
+        >
+          <option value="All">All Categories</option>
+          {categories.map((c) => (
+            <option key={c._id} value={c._id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="flex items-center gap-2">
+        <select
+          value={txTypeFilter}
+          onChange={(e) => setTxTypeFilter(e.target.value)}
+          className="bg-gray-700 border border-gray-600 rounded text-[11px] px-2 flex-1"
+        >
+          <option value="All">All Types</option>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
+        <StyledButton type="button" onClick={onReset} className="text-[11px] py-1 px-2">
+          Reset
+        </StyledButton>
+        <span className="text-[10px] text-amber-300 tabular-nums">{shownCount} shown</span>
+      </div>
+    </Widget>
+  );
+};
+
+// Category manager modal (re-implemented)
+const CategoryManagerModal = ({ isOpen, onClose, categories, onUpdate }) => {
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newCategoryColor, setNewCategoryColor] = useState("#ffaa00");
+  const [editingCategory, setEditingCategory] = useState(null);
+
+  if (!isOpen) return null;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const payload = { name: newCategoryName, color: newCategoryColor };
+    try {
+      if (editingCategory) {
+        await api.put(`/finance/categories/${editingCategory._id}`, payload);
+      } else {
+        await api.post("/finance/categories", payload);
+      }
+      setEditingCategory(null);
+      setNewCategoryName("");
+      onUpdate();
+    } catch {
+      alert("Failed to save category");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this category?")) return;
+    try {
+      await api.delete(`/finance/categories/${id}`);
+      onUpdate();
+    } catch {
+      alert("Failed to delete category");
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50" onClick={onClose}>
+      <div
+        className="bg-surface w-full max-w-md rounded-lg border border-gray-700 p-6 space-y-4"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="text-lg font-bold">Categories</h2>
+        <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+          {categories.map((c) => (
+            <div key={c._id} className="flex items-center justify-between p-2 bg-gray-900/50 rounded">
+              <div className="flex items-center gap-2">
+                <span className="w-4 h-4 rounded-full" style={{ backgroundColor: c.color }} />
+                <span>{c.name}</span>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    setEditingCategory(c);
+                    setNewCategoryName(c.name);
+                    setNewCategoryColor(c.color);
+                  }}
+                  className="text-gray-400 hover:text-primary"
+                >
+                  <Edit size={14} />
+                </button>
+                <button onClick={() => handleDelete(c._id)} className="text-gray-400 hover:text-red-400">
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+        <form onSubmit={handleSubmit} className="flex items-center gap-2 pt-2 border-t border-gray-700/50">
+          <input
+            type="color"
+            value={newCategoryColor}
+            onChange={(e) => setNewCategoryColor(e.target.value)}
+            className="h-10 w-10 p-1 bg-transparent"
+          />
+          <StyledInput
+            placeholder="Name"
+            value={newCategoryName}
+            onChange={(e) => setNewCategoryName(e.target.value)}
+            required
+          />
+          <StyledButton type="submit" className="py-2 px-3">
+            {editingCategory ? "Update" : <Plus size={16} />}
+          </StyledButton>
+          {editingCategory && (
+            <button
+              type="button"
+              onClick={() => {
+                setEditingCategory(null);
+                setNewCategoryName("");
+              }}
+              className="p-2 rounded bg-gray-600 hover:bg-gray-500"
+            >
+              <X size={16} />
+            </button>
+          )}
+        </form>
+      </div>
+    </div>
+  );
+};
+
+// Edit transaction modal (minimal)
+const TransactionEditModal = ({ isOpen, transaction, onClose, onUpdate, categories, onDelete }) => {
+  const [form, setForm] = useState(null);
+  useEffect(() => {
+    if (transaction) setForm({ ...transaction, category: transaction.category?._id || "" });
+  }, [transaction]);
+  if (!isOpen || !form) return null;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await api.put(`/finance/transactions/${transaction._id}`, {
+        description: form.description,
+        amount: Number(form.amount),
+        date: form.date,
+        type: form.type,
+        category: form.category,
+      });
+      onUpdate();
+      onClose();
+    } catch {
+      alert("Failed to update transaction");
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm("Delete this transaction?")) return;
+    try {
+      await api.delete(`/finance/transactions/${transaction._id}`);
+      onDelete();
+      onClose();
+    } catch {
+      alert("Delete failed");
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50" onClick={onClose}>
+      <div
+        className="bg-surface w-full max-w-md p-6 rounded border border-gray-700"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="text-lg font-bold mb-4">Edit Transaction</h2>
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <StyledInput
+            value={form.description}
+            onChange={(e) => setForm({ ...form, description: e.target.value })}
+            required
+          />
+          <StyledInput
+            type="number"
+            value={form.amount}
+            onChange={(e) => setForm({ ...form, amount: e.target.value })}
+            required
+          />
+          <StyledInput
+            type="date"
+            value={form.date.split("T")[0]}
+            onChange={(e) => setForm({ ...form, date: e.target.value })}
+            required
+          />
+          <select
+            value={form.type}
+            onChange={(e) => setForm({ ...form, type: e.target.value })}
+            className="w-full bg-gray-700 border border-gray-600 rounded p-2"
+          >
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+          <select
+            value={form.category}
+            onChange={(e) => setForm({ ...form, category: e.target.value })}
+            className="w-full bg-gray-700 border border-gray-600 rounded p-2"
+          >
+            <option value="">-- Category --</option>
+            {categories.map((c) => (
+              <option key={c._id} value={c._id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+          <div className="flex justify-between pt-2">
+            <StyledButton type="button" onClick={handleDelete} className="bg-red-700 hover:bg-red-600">
+              Delete
+            </StyledButton>
+            <div className="flex gap-2">
+              <StyledButton type="button" onClick={onClose} className="bg-gray-600 hover:bg-gray-500">
+                Cancel
+              </StyledButton>
+              <StyledButton type="submit">Save</StyledButton>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+const FinancialActionLogModal = ({ isOpen, onClose, logs }) => {
+  if (!isOpen) return null;
+  return (
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50" onClick={onClose}>
+      <div
+        className="bg-surface max-w-2xl w-full p-6 rounded border border-gray-700"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="text-lg font-bold mb-4">Action Log</h2>
+        <div className="max-h-[60vh] overflow-y-auto space-y-1 font-mono text-[11px] pr-2">
+          {logs.map((l) => (
+            <div key={l._id || l.timestamp} className="flex justify-between border-b border-gray-700/50 py-1">
+              <span className="text-amber-300">{new Date(l.timestamp).toLocaleString()}</span>
+              <span className="text-gray-200 truncate flex-1 px-2">{l.message || l.action}</span>
+              <span className="text-gray-500">{l.user || "you"}</span>
+            </div>
+          ))}
+        </div>
+        <div className="text-right mt-4">
+          <StyledButton onClick={onClose}>Close</StyledButton>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Main Finance Page
 const FinancePage = () => {
   const [transactions, setTransactions] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -885,6 +1170,8 @@ const FinancePage = () => {
   const [displayTransactions, setDisplayTransactions] = useState([]);
   const [showQuickAdd, setShowQuickAdd] = useState(false);
   const [groupByDay, setGroupByDay] = useState(false);
+  // Experimental: Bloomberg-style dense terminal UI mode
+  const [terminalMode, setTerminalMode] = useState(false);
   // Filter controls
   const [txSearch, setTxSearch] = useState("");
   const [txCategoryFilter, setTxCategoryFilter] = useState("All");
@@ -1029,9 +1316,6 @@ const FinancePage = () => {
     setCurrentPage(1);
   }, [txSearch, txCategoryFilter, txTypeFilter]);
 
-  // Place loading gate AFTER all hooks to preserve consistent hook order
-  if (loading) return <p className="text-center text-text-secondary">Loading Financial Data...</p>;
-
   // --- Pagination Logic (after filtering) ---
   const totalPages = Math.ceil(filteredTransactions.length / ITEMS_PER_PAGE) || 1;
   const paginatedTransactions = filteredTransactions.slice(
@@ -1040,134 +1324,296 @@ const FinancePage = () => {
   );
   const paginatedBalances = transactionBalances.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
+  // Command handler (must be declared before any conditional return to preserve hook order)
+  const handleCommand = useCallback(
+    (raw) => {
+      const parts = raw.split(/\s+/);
+      const cmd = parts[0].toUpperCase();
+      switch (cmd) {
+        case "HELP":
+          alert("Commands: HELP, ADD, CAT, BILL, LOG, CLR, ACC SAV|CHK, SRCH <text>");
+          break;
+        case "ADD":
+          document.querySelector('input[placeholder^="Description"], input[placeholder^="Search" ]')?.focus();
+          break;
+        case "CAT":
+          setIsCategoryModalOpen(true);
+          break;
+        case "BILL":
+          setIsBillModalOpen(true);
+          break;
+        case "LOG":
+          setIsLogModalOpen(true);
+          break;
+        case "CLR":
+          handleClearFinances();
+          break;
+        case "ACC":
+          if (parts[1]) setActiveAccount(parts[1].toLowerCase().startsWith("s") ? "savings" : "checkings");
+          break;
+        case "SRCH":
+          setTxSearch(parts.slice(1).join(" "));
+          break;
+        default:
+          break;
+      }
+    },
+    [handleClearFinances]
+  );
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[calc(100vh-120px)] px-4">
+        <p className="text-center text-text-secondary animate-pulse">Loading Financial Data...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col h-[calc(100vh-120px)] max-w-[1600px] mx-auto w-full px-4">
+    <div
+      className={`flex flex-col h-[calc(100vh-120px)] max-w-[1800px] mx-auto w-full px-4 ${
+        terminalMode ? "terminal-mode" : ""
+      }`}
+    >
+      {/* Header */}
       <div className="flex justify-between items-center flex-shrink-0">
         <PageHeader title="Financial Tracker" subtitle={`Managing your ${activeAccount} account.`} />
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap justify-end">
+          <StyledButton
+            onClick={() => setTerminalMode((m) => !m)}
+            className={`py-2 px-3 flex items-center gap-2 text-sm transition-colors ${
+              terminalMode
+                ? "bg-amber-600 hover:bg-amber-500 text-black font-semibold"
+                : "bg-gray-700 hover:bg-gray-600 text-amber-300"
+            }`}
+            title="Toggle Bloomberg Terminal Style"
+          >
+            {terminalMode ? "Terminal On" : "Terminal Off"}
+          </StyledButton>
           <StyledButton
             onClick={() => setIsBillModalOpen(true)}
             className="py-2 px-3 flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-sm"
           >
-            <Plus size={16} /> Manage Bills
+            <Plus size={16} /> Bills
           </StyledButton>
           <StyledButton
             onClick={() => setIsCategoryModalOpen(true)}
             className="py-2 px-3 flex items-center gap-2 text-sm"
           >
-            <Settings size={16} /> Manage Categories
+            <Settings size={16} /> Categories
           </StyledButton>
           <StyledButton
             onClick={handleClearFinances}
             className="py-2 px-3 flex items-center gap-2 bg-red-700 hover:bg-red-600 text-sm"
           >
-            <Trash2 size={16} /> Clear Finances
+            <Trash2 size={16} /> Clear
           </StyledButton>
           <StyledButton onClick={() => setIsLogModalOpen(true)} className="py-2 px-3 flex items-center gap-2 text-sm">
             Log
           </StyledButton>
         </div>
       </div>
+      {/* Overview / Ticker */}
       <div className="mt-4">
-        <OverviewBar
-          selectedMonth={selectedMonth}
-          checkings={checkingsBalance}
-          savings={savingsBalance}
-          transactions={transactions}
-        />
-      </div>
-      {/* Main Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4">
-        {/* Left Column (Bills / Budgets / Add) */}
-        <div className="lg:col-span-3 flex flex-col gap-5">
-          {/* Account Toggle */}
-          <div className="flex items-center justify-center bg-gray-800 p-1 rounded-lg border border-gray-700">
-            <button
-              onClick={() => setActiveAccount("checkings")}
-              className={`flex-1 py-2 px-4 text-sm font-bold rounded-md transition-colors ${
-                activeAccount === "checkings"
-                  ? "bg-emerald-500 text-white"
-                  : "bg-transparent text-gray-400 hover:bg-gray-700"
-              }`}
-            >
-              Checkings
-            </button>
-            <button
-              onClick={() => setActiveAccount("savings")}
-              className={`flex-1 py-2 px-4 text-sm font-bold rounded-md transition-colors ${
-                activeAccount === "savings" ? "bg-sky-500 text-white" : "bg-transparent text-gray-400 hover:bg-gray-700"
-              }`}
-            >
-              Savings
-            </button>
-          </div>
-          <BillChecklist
-            bills={bills}
-            onTogglePaid={handleToggleBillPaid}
+        {terminalMode ? (
+          <TickerBar
             selectedMonth={selectedMonth}
-            setSelectedMonth={setSelectedMonth}
-          />
-          <BudgetStatus
-            categories={categories}
+            checkings={checkingsBalance}
+            savings={savingsBalance}
             transactions={transactions}
+          />
+        ) : (
+          <OverviewBar
             selectedMonth={selectedMonth}
-            budgets={bills}
-            onUpdateBudgets={async (budgets) => {
-              try {
-                await Promise.all(
-                  budgets.map((b) => api.put(`/finance/bills/${b.category}/budget`, { amount: b.amount }))
-                );
-                refreshData();
-              } catch {
-                alert("Failed to update budgets.");
-              }
-            }}
+            checkings={checkingsBalance}
+            savings={savingsBalance}
+            transactions={transactions}
           />
-          <AddTransactionForm categories={categories} onTransactionAdded={refreshData} />
-        </div>
-        {/* Middle Column (Ledger) */}
-        <div className="lg:col-span-5 flex flex-col gap-4">
-          <TransactionToolbar
-            txSearch={txSearch}
-            setTxSearch={setTxSearch}
-            txCategoryFilter={txCategoryFilter}
-            setTxCategoryFilter={setTxCategoryFilter}
-            txTypeFilter={txTypeFilter}
-            setTxTypeFilter={setTxTypeFilter}
-            categories={categories}
-            shownCount={filteredTransactions.length}
-            onReset={() => {
-              setTxSearch("");
-              setTxCategoryFilter("All");
-              setTxTypeFilter("All");
-              setGroupByDay(false);
-            }}
-            onToggleGroup={() => setGroupByDay((g) => !g)}
-            groupByDay={groupByDay}
-            onAddQuick={() => setShowQuickAdd((s) => !s)}
-          />
-          {/* Transactions List */}
-          <TransactionList
-            transactions={paginatedTransactions}
-            onEdit={handleEditTransaction}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            totalPages={totalPages}
-            onSortEnd={handleSortEnd}
-            balances={paginatedBalances}
-          />
-        </div>
-        {/* Right Column (Analytics / Debt / Insights) */}
-        <div className="lg:col-span-4 flex flex-col gap-5">
-          <DebtTracker />
-          <BillAnalytics bills={bills} selectedMonth={selectedMonth} />
-          <Widget title="Insights Coming Soon">
-            <p className="text-xs text-text-secondary leading-relaxed">
-              Space reserved for trends, category breakdowns, burn rate, saving trajectory, etc.
-            </p>
-          </Widget>
-        </div>
+        )}
       </div>
+      {terminalMode && <CommandBar onCommand={handleCommand} />}
+      {/* Layout */}
+      {terminalMode ? (
+        <div className="terminal-layout mt-5">
+          {/* Metrics / Left */}
+          <div className="flex flex-col gap-4 overflow-hidden">
+            <MetricsPanel
+              transactions={transactions}
+              checkings={checkingsBalance}
+              savings={savingsBalance}
+              selectedMonth={selectedMonth}
+            />
+            <div className="flex items-center justify-center bg-gray-800 p-1 rounded-lg border border-gray-700">
+              <button
+                onClick={() => setActiveAccount("checkings")}
+                className={`flex-1 py-2 px-4 text-sm font-bold rounded-md transition-colors ${
+                  activeAccount === "checkings"
+                    ? "bg-emerald-500 text-white"
+                    : "bg-transparent text-gray-400 hover:bg-gray-700"
+                }`}
+              >
+                Checkings
+              </button>
+              <button
+                onClick={() => setActiveAccount("savings")}
+                className={`flex-1 py-2 px-4 text-sm font-bold rounded-md transition-colors ${
+                  activeAccount === "savings"
+                    ? "bg-sky-500 text-white"
+                    : "bg-transparent text-gray-400 hover:bg-gray-700"
+                }`}
+              >
+                Savings
+              </button>
+            </div>
+            <BillChecklist
+              bills={bills}
+              onTogglePaid={handleToggleBillPaid}
+              selectedMonth={selectedMonth}
+              setSelectedMonth={setSelectedMonth}
+              terminalMode
+            />
+            <BudgetStatus
+              categories={categories}
+              transactions={transactions}
+              selectedMonth={selectedMonth}
+              budgets={bills}
+              onUpdateBudgets={async (budgets) => {
+                try {
+                  await Promise.all(
+                    budgets.map((b) => api.put(`/finance/bills/${b.category}/budget`, { amount: b.amount }))
+                  );
+                  refreshData();
+                } catch {
+                  alert("Failed to update budgets.");
+                }
+              }}
+              terminalMode
+            />
+            <AddTransactionForm categories={categories} onTransactionAdded={refreshData} terminalMode />
+          </div>
+          {/* Center - Blotter */}
+          <div className="flex flex-col gap-3">
+            <TransactionToolbar
+              txSearch={txSearch}
+              setTxSearch={setTxSearch}
+              txCategoryFilter={txCategoryFilter}
+              setTxCategoryFilter={setTxCategoryFilter}
+              txTypeFilter={txTypeFilter}
+              setTxTypeFilter={setTxTypeFilter}
+              categories={categories}
+              shownCount={filteredTransactions.length}
+              onReset={() => {
+                setTxSearch("");
+                setTxCategoryFilter("All");
+                setTxTypeFilter("All");
+              }}
+            />
+            <TransactionBlotter
+              transactions={paginatedTransactions}
+              balances={paginatedBalances}
+              onEdit={handleEditTransaction}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={setCurrentPage}
+            />
+          </div>
+          {/* Right - Analytics */}
+          <div className="flex flex-col gap-4">
+            <DebtTracker />
+            <BillAnalytics bills={bills} selectedMonth={selectedMonth} />
+            <Widget title="Insights Coming Soon">
+              <p className="text-xs text-text-secondary leading-relaxed">
+                Trends, breakdowns, burn rate, saving trajectory coming soon.
+              </p>
+            </Widget>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4">
+          <div className="lg:col-span-3 flex flex-col gap-5">
+            <div className="flex items-center justify-center bg-gray-800 p-1 rounded-lg border border-gray-700">
+              <button
+                onClick={() => setActiveAccount("checkings")}
+                className={`flex-1 py-2 px-4 text-sm font-bold rounded-md transition-colors ${
+                  activeAccount === "checkings"
+                    ? "bg-emerald-500 text-white"
+                    : "bg-transparent text-gray-400 hover:bg-gray-700"
+                }`}
+              >
+                Checkings
+              </button>
+              <button
+                onClick={() => setActiveAccount("savings")}
+                className={`flex-1 py-2 px-4 text-sm font-bold rounded-md transition-colors ${
+                  activeAccount === "savings"
+                    ? "bg-sky-500 text-white"
+                    : "bg-transparent text-gray-400 hover:bg-gray-700"
+                }`}
+              >
+                Savings
+              </button>
+            </div>
+            <BillChecklist
+              bills={bills}
+              onTogglePaid={handleToggleBillPaid}
+              selectedMonth={selectedMonth}
+              setSelectedMonth={setSelectedMonth}
+            />
+            <BudgetStatus
+              categories={categories}
+              transactions={transactions}
+              selectedMonth={selectedMonth}
+              budgets={bills}
+              onUpdateBudgets={async (budgets) => {
+                try {
+                  await Promise.all(
+                    budgets.map((b) => api.put(`/finance/bills/${b.category}/budget`, { amount: b.amount }))
+                  );
+                  refreshData();
+                } catch {
+                  alert("Failed to update budgets.");
+                }
+              }}
+            />
+            <AddTransactionForm categories={categories} onTransactionAdded={refreshData} />
+          </div>
+          <div className="lg:col-span-5 flex flex-col gap-4">
+            <TransactionToolbar
+              txSearch={txSearch}
+              setTxSearch={setTxSearch}
+              txCategoryFilter={txCategoryFilter}
+              setTxCategoryFilter={setTxCategoryFilter}
+              txTypeFilter={txTypeFilter}
+              setTxTypeFilter={setTxTypeFilter}
+              categories={categories}
+              shownCount={filteredTransactions.length}
+              onReset={() => {
+                setTxSearch("");
+                setTxCategoryFilter("All");
+                setTxTypeFilter("All");
+              }}
+            />
+            <TransactionList
+              transactions={paginatedTransactions}
+              onEdit={handleEditTransaction}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              totalPages={totalPages}
+              onSortEnd={handleSortEnd}
+              balances={paginatedBalances}
+            />
+          </div>
+          <div className="lg:col-span-4 flex flex-col gap-5">
+            <DebtTracker />
+            <BillAnalytics bills={bills} selectedMonth={selectedMonth} />
+            <Widget title="Insights Coming Soon">
+              <p className="text-xs text-text-secondary leading-relaxed">
+                Trends, category breakdowns, burn rate, saving trajectory, etc.
+              </p>
+            </Widget>
+          </div>
+        </div>
+      )}
       {/* Modals */}
       <CategoryManagerModal
         isOpen={isCategoryModalOpen}
@@ -1182,16 +1628,14 @@ const FinancePage = () => {
         categories={categories}
         onUpdate={refreshData}
       />
-      {isEditTransactionModalOpen && (
-        <TransactionEditModal
-          transaction={selectedTransaction}
-          isOpen={isEditTransactionModalOpen}
-          onClose={() => setIsEditTransactionModalOpen(false)}
-          onUpdate={refreshData}
-          onDelete={refreshData}
-          categories={categories}
-        />
-      )}
+      <TransactionEditModal
+        isOpen={isEditTransactionModalOpen}
+        transaction={selectedTransaction}
+        onClose={() => setIsEditTransactionModalOpen(false)}
+        onUpdate={refreshData}
+        onDelete={refreshData}
+        categories={categories}
+      />
       <FinancialActionLogModal isOpen={isLogModalOpen} onClose={() => setIsLogModalOpen(false)} logs={actionLogs} />
     </div>
   );

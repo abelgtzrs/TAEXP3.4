@@ -1,8 +1,8 @@
-import api from './api';
+import api from "./api";
 
 export const adminUserService = {
   list: async () => {
-    const res = await api.get('/admin/users');
+    const res = await api.get("/admin/users");
     return res.data.data;
   },
   update: async (id, payload) => {
@@ -12,5 +12,5 @@ export const adminUserService = {
   resetPassword: async (id, newPassword) => {
     const res = await api.put(`/admin/users/${id}/reset-password`, { newPassword });
     return res.data;
-  }
+  },
 };

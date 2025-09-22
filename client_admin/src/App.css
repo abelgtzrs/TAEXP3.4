@@ -47,14 +47,224 @@
 
 /* You can define your base styles for :root CSS variables here if needed for default theme */
 :root {
-  --theme-primary: #14B8A6; /* Default Teal */
-  --theme-secondary: #0D9488;
-  --theme-accent: #2DD4BF;
+  --theme-primary: #14b8a6; /* Default Teal */
+  --theme-secondary: #0d9488;
+  --theme-accent: #2dd4bf;
   --theme-background: #111827; /* Default Dark Background */
-  --theme-text: #E5E7EB;     /* Default Light Text */
+  --theme-text: #e5e7eb; /* Default Light Text */
 }
 body {
   background-color: var(--theme-background);
   color: var(--theme-text);
   /* Add other global styles if needed */
+}
+
+/* Terminal Mode Theme */
+.terminal-mode {
+  --terminal-bg: #0a0d09;
+  --terminal-panel: #10140f;
+  --terminal-border: #2a3322;
+  --terminal-border-strong: #3e4c34;
+  --terminal-amber: #f7c948;
+  --terminal-amber-dim: #b89027;
+  --terminal-green: #34d399;
+  --terminal-red: #f87171;
+  --terminal-cyan: #38bdf8;
+  --terminal-text: #e5e7eb;
+  --terminal-text-dim: #9ca3af;
+  --terminal-purple: #a78bfa;
+  background: radial-gradient(circle at 25% 0%, #131a12 0%, #090c08 70%) fixed;
+  color: var(--terminal-text);
+}
+
+.terminal-mode .widget,
+.terminal-mode [data-widget],
+.terminal-mode .Widget {
+  background: var(--terminal-panel) !important;
+  border: 1px solid var(--terminal-border) !important;
+  box-shadow: 0 0 0 1px rgba(255, 193, 60, 0.05), 0 0 8px -2px rgba(255, 193, 60, 0.15);
+}
+
+.terminal-mode .widget h2,
+.terminal-mode .widget h3,
+.terminal-mode .widget .title {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: var(--terminal-amber);
+}
+
+/* Data cells */
+.terminal-mode .data-kpi {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.terminal-mode .data-kpi.positive {
+  color: var(--terminal-green);
+}
+.terminal-mode .data-kpi.negative {
+  color: var(--terminal-red);
+}
+
+/* Command bar */
+.terminal-command-bar {
+  background: linear-gradient(90deg, #1b2216, #141a12);
+  border: 1px solid var(--terminal-border-strong);
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}
+.terminal-command-bar input {
+  background: #0d110c;
+  border: 1px solid var(--terminal-border-strong);
+  color: var(--terminal-text);
+  padding: 0.35rem 0.6rem;
+  border-radius: 4px;
+  font-size: 12px;
+  flex: 1;
+}
+.terminal-command-bar input:focus {
+  outline: 1px solid var(--terminal-amber);
+}
+
+/* KPI Grid */
+.terminal-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 6px;
+}
+.terminal-kpi {
+  background: #121810;
+  border: 1px solid var(--terminal-border);
+  padding: 0.5rem 0.55rem 0.4rem;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+}
+.terminal-kpi:hover {
+  border-color: var(--terminal-amber-dim);
+}
+.terminal-kpi .label {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--terminal-text-dim);
+  text-transform: uppercase;
+}
+.terminal-kpi .value {
+  font-size: 13px;
+  font-weight: 600;
+}
+.terminal-kpi .delta {
+  font-size: 10px;
+}
+
+/* Sparkline */
+.sparkline {
+  width: 100%;
+  height: 28px;
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+}
+.sparkline-bar {
+  flex: 1;
+  background: var(--terminal-amber-dim);
+}
+.sparkline-bar.pos {
+  background: var(--terminal-green);
+}
+.sparkline-bar.neg {
+  background: var(--terminal-red);
+}
+
+/* Scrollbar refinement */
+.terminal-mode ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.terminal-mode ::-webkit-scrollbar-track {
+  background: #0d110c;
+}
+.terminal-mode ::-webkit-scrollbar-thumb {
+  background: #2a3322;
+  border: 2px solid #0d110c;
+  border-radius: 8px;
+}
+.terminal-mode ::-webkit-scrollbar-thumb:hover {
+  background: #3e4c34;
+}
+
+/* Table header accent */
+.terminal-mode table thead {
+  background: #1a2216;
+}
+.terminal-mode table thead th {
+  color: var(--terminal-amber);
+  font-weight: 600;
+  font-size: 11px;
+}
+
+/* Focus ring override */
+.terminal-mode :focus-visible {
+  outline: 1px solid var(--terminal-amber);
+  outline-offset: 1px;
+}
+
+/* Page structural helpers */
+.terminal-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr 360px;
+  gap: 14px;
+  height: 100%;
+}
+@media (max-width: 1400px) {
+  .terminal-layout {
+    grid-template-columns: 220px 1fr 340px;
+  }
+}
+@media (max-width: 1200px) {
+  .terminal-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Bloomberg-style finance terminal enhancements */
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Subtle scanline / noise overlay utility (optional to use) */
+.terminal-noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.03) 0px,
+    rgba(255, 255, 255, 0.03) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  mix-blend-mode: overlay;
+  opacity: 0.2;
+}
+
+.shadow-terminal-glow {
+  box-shadow: 0 0 0 1px rgba(255, 180, 0, 0.15), 0 0 12px -2px rgba(255, 180, 0, 0.25);
 }
