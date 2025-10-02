@@ -235,15 +235,17 @@ exports.syncRecentTracks = async (req, res) => {
       const result = await SpotifyLog.insertMany(newLogs, { ordered: false });
       insertedCount = result.length;
     } catch (err) {
-      // Handle duplicate key errors gracefully
-      if (err.code === 11000) {
-        // Count successful inserts from the error
-        insertedCount = err.result?.result?.insertedIds ? Object.keys(err.result.result.insertedIds).length : 0;
+      // Handle duplicate key errors gracefully across driver versions
+      const isDup =
+        err?.code === 11000 || (Array.isArray(err?.writeErrors) && err.writeErrors.some((e) => e?.code === 11000));
+      if (isDup) {
+        // Some driver versions don't expose insertedIds on error reliably; default to 0 and proceed
+        insertedCount = 0;
         console.log(
-          `Sync complete with ${insertedCount} new tracks and ${newLogs.length - insertedCount} duplicates skipped.`
+          `Sync completed with duplicates skipped. Inserted ${insertedCount} new tracks (duplicates ignored).`
         );
       } else {
-        console.error("Sync error:", err);
+        console.error("Sync error (non-duplicate):", err);
         throw err;
       }
     }

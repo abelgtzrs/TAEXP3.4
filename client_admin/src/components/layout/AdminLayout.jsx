@@ -24,6 +24,7 @@ import {
   DollarSign,
   Music,
   FileSignature,
+  Trophy,
 } from "lucide-react";
 
 const NavItem = ({ to, icon: Icon, children, isCollapsed }) => {
@@ -210,6 +211,22 @@ const AdminLayout = () => {
             <ul className="space-y-0.1">
               <NavItem to="/spotify-stats" icon={Music} isCollapsed={isSidebarCollapsed}>
                 Spotify Analytics
+              </NavItem>
+            </ul>
+          </div>
+
+          {/* Sports */}
+          <div>
+            <p
+              className={`px-1 text-[10px] font-semibold text-text-tertiary uppercase mb-1 transition-all ${
+                isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-1"
+              }`}
+            >
+              Sports
+            </p>
+            <ul className="space-y-0.1">
+              <NavItem to="/football-tracker" icon={Trophy} isCollapsed={isSidebarCollapsed}>
+                Football Tracker
               </NavItem>
             </ul>
           </div>

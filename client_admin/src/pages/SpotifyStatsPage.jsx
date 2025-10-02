@@ -30,7 +30,8 @@ const SpotifyStatsPage = () => {
       setStats(res.data.stats);
     } catch (err) {
       console.error("Failed to fetch stats:", err);
-      setError("Failed to fetch Spotify statistics.");
+      const msg = err?.response?.data?.message || "Failed to fetch Spotify statistics.";
+      setError(msg);
     }
   };
 
@@ -41,7 +42,8 @@ const SpotifyStatsPage = () => {
       setPagination(res.data.pagination || { currentPage: 1, totalPages: 1, totalTracks: 0, limit: 100 });
     } catch (err) {
       console.error("Failed to fetch tracks:", err);
-      setError("Failed to fetch recent tracks.");
+      const msg = err?.response?.data?.message || "Failed to fetch recent tracks.";
+      setError(msg);
     }
   };
 
@@ -59,7 +61,8 @@ const SpotifyStatsPage = () => {
     } catch (err) {
       console.error("Sync failed:", err);
       if (!isAutoSync) {
-        setError("Failed to sync Spotify data.");
+        const msg = err?.response?.data?.message || "Failed to sync Spotify data.";
+        setError(msg);
       }
     } finally {
       if (!isAutoSync) setSyncing(false);

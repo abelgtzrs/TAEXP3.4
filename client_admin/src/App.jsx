@@ -30,6 +30,7 @@ import RichFinancePage from "./pages/RichFinancePage";
 import SpotifyStatsPage from "./pages/SpotifyStatsPage";
 import VolumeWorkbenchPage from "./pages/VolumeWorkbenchPage";
 import AdminUserManagementPage from "./pages/AdminUserManagementPage";
+import FootballTrackerPage from "./pages/FootballTrackerPage";
 
 function App() {
   useTheme();
@@ -55,6 +56,7 @@ function App() {
           <Route path="/finance" element={<FinancePage />} />
           <Route path="/finance/rich" element={<RichFinancePage />} />
           <Route path="/spotify-stats" element={<SpotifyStatsPage />} />
+          <Route path="/football-tracker" element={<FootballTrackerPage />} />
         </Route>
       </Route>
 
