@@ -8,6 +8,14 @@ import VolumeForm from "../components/volumes/VolumeForm"; // Import the refacto
 const INITIAL_FORM_STATE = {
   rawPastedText: "",
   status: "draft",
+  // Structured fields for explicit editing
+  volumeNumber: "",
+  title: "",
+  bodyText: "", // UI representation; convert to bodyLines[] on submit
+  blessingIntro: "",
+  blessings: [], // [{ item, description }]
+  dream: "",
+  edition: "",
 };
 
 const VolumesPage = () => {
@@ -51,8 +59,15 @@ const VolumesPage = () => {
   const handleEditClick = (volume) => {
     setEditingId(volume._id);
     setFormData({
-      rawPastedText: volume.rawPastedText,
-      status: volume.status,
+      rawPastedText: volume.rawPastedText || "",
+      status: volume.status || "draft",
+      volumeNumber: volume.volumeNumber ?? "",
+      title: volume.title ?? "",
+      bodyText: Array.isArray(volume.bodyLines) ? volume.bodyLines.join("\n") : "",
+      blessingIntro: volume.blessingIntro ?? "",
+      blessings: Array.isArray(volume.blessings) ? volume.blessings : [],
+      dream: volume.dream ?? "",
+      edition: volume.edition ?? "",
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -69,12 +84,28 @@ const VolumesPage = () => {
     setFormLoading(true);
     setError("");
     try {
+      // Build payload from structured fields; convert bodyText -> bodyLines
+      const finalPayload = {
+        rawPastedText: formData.rawPastedText,
+        status: formData.status,
+        volumeNumber: formData.volumeNumber === "" ? null : Number(formData.volumeNumber),
+        title: formData.title,
+        bodyLines: (formData.bodyText || "")
+          .split(/\r?\n/)
+          .map((l) => l.trimEnd())
+          .filter((l, idx, arr) => true),
+        blessingIntro: formData.blessingIntro,
+        blessings: Array.isArray(formData.blessings) ? formData.blessings : [],
+        dream: formData.dream,
+        edition: formData.edition,
+      };
+
       if (editingId) {
         // If we are editing, send a PUT request.
-        await api.put(`/admin/volumes/${editingId}`, formData);
+        await api.put(`/admin/volumes/${editingId}`, finalPayload);
       } else {
         // Otherwise, send a POST request to create.
-        await api.post("/admin/volumes", formData);
+        await api.post("/admin/volumes", finalPayload);
       }
       resetForm(); // Reset the form fields after success
       await fetchVolumes(); // Refresh the list
