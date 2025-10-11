@@ -30,6 +30,7 @@ import RichFinancePage from "./pages/RichFinancePage";
 import SpotifyStatsPage from "./pages/SpotifyStatsPage";
 import VolumeWorkbenchPage from "./pages/VolumeWorkbenchPage";
 import AdminUserManagementPage from "./pages/AdminUserManagementPage";
+import BlessingsAdminPage from "./pages/BlessingsAdminPage";
 import FootballTrackerPage from "./pages/FootballTrackerPage";
 
 function App() {
@@ -75,6 +76,7 @@ function App() {
           <Route path="/pokedex" element={<PokedexPage />} />
           <Route path="/admin/pokemon-editor" element={<PokemonEditorPage />} />
           <Route path="/admin/users" element={<AdminUserManagementPage />} />
+          <Route path="/admin/blessings" element={<BlessingsAdminPage />} />
         </Route>
       </Route>
 

@@ -7,6 +7,8 @@ const BlessingSchema = new mongoose.Schema(
     // Description was required, but parser may produce blank entries (e.g., item without parentheses).
     // Make it optional with default empty string to avoid validation failures on bulk uploads.
     description: { type: String, trim: true, default: "" },
+    // Optional AI guidance context for this blessing to keep lore accuracy during generation
+    context: { type: String, trim: true, default: "" },
   },
   { _id: false }
 );

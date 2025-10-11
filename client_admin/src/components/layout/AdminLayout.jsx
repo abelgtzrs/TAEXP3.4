@@ -250,6 +250,9 @@ const AdminLayout = () => {
                   <NavItem to="/admin/volume-workbench" icon={FileSignature} isCollapsed={isSidebarCollapsed}>
                     Workbench
                   </NavItem>
+                  <NavItem to="/admin/blessings" icon={ClipboardList} isCollapsed={isSidebarCollapsed}>
+                    Blessings Library
+                  </NavItem>
                   <p
                     className={`px-1 text-[10px] font-semibold text-text-tertiary uppercase mb-1 transition-all ${
                       isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-1"

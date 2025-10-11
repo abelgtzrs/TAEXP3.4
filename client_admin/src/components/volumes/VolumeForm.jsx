@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { parseRawGreentext } from "../../utils/greentextParser";
+import { listBlessingDefs } from "../../services/blessingsService";
 
 // The component now receives formData and a handler to change it.
 const VolumeForm = ({ formData, onFormChange, onSubmit, loading, submitButtonText = "Submit" }) => {
@@ -21,21 +23,82 @@ const VolumeForm = ({ formData, onFormChange, onSubmit, loading, submitButtonTex
     onFormChange({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Blessings handlers
-  const handleBlessingChange = (index, field, value) => {
-    const list = Array.isArray(formData.blessings) ? [...formData.blessings] : [];
-    if (!list[index]) list[index] = { item: "", description: "" };
-    list[index] = { ...list[index], [field]: value };
-    onFormChange({ ...formData, blessings: list });
+  // Inline blessings editor helpers
+  const blessings = Array.isArray(formData.blessings) ? formData.blessings : [];
+  const updateBlessing = (idx, field, value) => {
+    const next = [...blessings];
+    next[idx] = { item: "", description: "", context: "", ...next[idx], [field]: value };
+    onFormChange({ ...formData, blessings: next });
   };
-  const addBlessingRow = () => {
-    const list = Array.isArray(formData.blessings) ? [...formData.blessings] : [];
-    list.push({ item: "", description: "" });
-    onFormChange({ ...formData, blessings: list });
+  const addBlessing = () => {
+    onFormChange({
+      ...formData,
+      blessings: [...blessings, { item: "", description: "", context: "" }],
+    });
   };
-  const removeBlessingRow = (index) => {
-    const list = Array.isArray(formData.blessings) ? [...formData.blessings] : [];
-    onFormChange({ ...formData, blessings: list.filter((_, i) => i !== index) });
+  const removeBlessing = (idx) => {
+    const next = blessings.filter((_, i) => i !== idx);
+    onFormChange({ ...formData, blessings: next });
+  };
+  const moveBlessing = (idx, dir) => {
+    const nextIdx = idx + dir;
+    if (nextIdx < 0 || nextIdx >= blessings.length) return;
+    const arr = [...blessings];
+    const [it] = arr.splice(idx, 1);
+    arr.splice(nextIdx, 0, it);
+    onFormChange({ ...formData, blessings: arr });
+  };
+
+  // Master blessings: fetch and compute which are missing on this volume
+  const [masterBlessings, setMasterBlessings] = useState([]);
+  const [masterError, setMasterError] = useState("");
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const defs = await listBlessingDefs();
+        if (mounted) setMasterBlessings(Array.isArray(defs) ? defs : []);
+      } catch (e) {
+        if (mounted) setMasterError("Failed to load master blessings");
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const presentNameSet = new Set(
+    blessings
+      .map((b) => (b?.item || "").trim().toLowerCase())
+      .filter(Boolean)
+  );
+  const missingFromMaster = (masterBlessings || [])
+    .filter((m) => m?.active !== false)
+    .filter((m) => !presentNameSet.has(String(m?.name || "").trim().toLowerCase()));
+
+  const addFromMaster = (m) => {
+    const item = String(m?.name || "");
+    if (!item) return;
+    if (presentNameSet.has(item.trim().toLowerCase())) return; // guard against race duplicates
+    const next = [
+      ...blessings,
+      { item, description: m?.defaultDescription || "", context: m?.context || "" },
+    ];
+    onFormChange({ ...formData, blessings: next });
+  };
+  const addAllMissingFromMaster = () => {
+    if (!missingFromMaster.length) return;
+    const next = [...blessings];
+    const currentSet = new Set(presentNameSet);
+    missingFromMaster.forEach((m) => {
+      const name = String(m?.name || "").trim();
+      if (!name) return;
+      const key = name.toLowerCase();
+      if (currentSet.has(key)) return;
+      currentSet.add(key);
+      next.push({ item: name, description: m?.defaultDescription || "", context: m?.context || "" });
+    });
+    onFormChange({ ...formData, blessings: next });
   };
 
   // Apply parsed data from raw text into structured fields
@@ -132,49 +195,119 @@ const VolumeForm = ({ formData, onFormChange, onSubmit, loading, submitButtonTex
         </div>
       </div>
 
-      {/* Blessings Editor */}
+      {/* Inline Blessings Editor */}
       <div className="mt-6">
         <div className="flex items-center justify-between mb-2">
-          <label className="block text-sm font-medium text-gray-300">Blessings</label>
-          <button
-            type="button"
-            onClick={addBlessingRow}
-            className="px-3 py-1 text-xs rounded bg-gray-700 hover:bg-gray-600 border border-gray-600 text-white"
-          >
-            Add Blessing
-          </button>
+          <label className="block text-sm font-medium text-gray-300">
+            Blessings (per-volume)
+            {missingFromMaster?.length > 0 && (
+              <span className="ml-2 text-[10px] text-amber-300">{missingFromMaster.length} missing from master</span>
+            )}
+          </label>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/admin/blessings"
+              target="_blank"
+              className="px-3 py-1 text-xs rounded bg-gray-700 hover:bg-gray-600 border border-gray-600 text-white"
+            >
+              Manage master blessings
+            </Link>
+            <button
+              type="button"
+              onClick={addBlessing}
+              className="px-3 py-1 text-xs rounded bg-teal-700 hover:bg-teal-600 border border-teal-500 text-white"
+            >
+              Add Blessing
+            </button>
+          </div>
         </div>
-        <div className="space-y-2">
-          {(formData.blessings || []).map((b, i) => (
-            <div key={i} className="grid grid-cols-1 md:grid-cols-3 gap-2 items-center">
-              <input
-                type="text"
-                placeholder="Blessing name"
-                value={b.item || ""}
-                onChange={(e) => handleBlessingChange(i, "item", e.target.value)}
-                className="p-2 bg-gray-900 rounded border border-gray-600 text-white"
-              />
-              <input
-                type="text"
-                placeholder="Blessing description"
-                value={b.description || ""}
-                onChange={(e) => handleBlessingChange(i, "description", e.target.value)}
-                className="md:col-span-2 p-2 bg-gray-900 rounded border border-gray-600 text-white"
-              />
-              <div className="md:col-span-3 flex justify-end">
+        {/* Missing master blessings panel */}
+        {(missingFromMaster?.length > 0 || masterError) && (
+          <div className="mb-3 p-2 rounded border border-amber-600 bg-amber-900/20">
+            <div className="flex items-center justify-between">
+              <div className="text-xs text-amber-200">
+                {masterError ? (
+                  <span>{masterError}</span>
+                ) : (
+                  <span>
+                    Missing from library: <strong>{missingFromMaster.length}</strong>
+                  </span>
+                )}
+              </div>
+              {!masterError && (
                 <button
                   type="button"
-                  onClick={() => removeBlessingRow(i)}
-                  className="px-2 py-1 text-xs rounded bg-red-700 hover:bg-red-600 border border-red-600 text-white"
+                  onClick={addAllMissingFromMaster}
+                  className="px-2 py-0.5 text-[11px] rounded bg-amber-700 hover:bg-amber-600 border border-amber-500 text-white"
                 >
-                  Remove
+                  Add all
                 </button>
+              )}
+            </div>
+            {!masterError && (
+              <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-1">
+                {missingFromMaster.map((m) => (
+                  <div key={m._id} className="flex items-center justify-between text-[11px] bg-gray-800/60 border border-gray-700 rounded px-2 py-1">
+                    <span className="truncate mr-2">{m.name}</span>
+                    <button
+                      type="button"
+                      onClick={() => addFromMaster(m)}
+                      className="px-2 py-0.5 text-[10px] rounded bg-teal-700 hover:bg-teal-600 border border-teal-500 text-white"
+                    >
+                      Add
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+        <div className="space-y-3 max-h-[420px] overflow-auto pr-1">
+          {blessings.length === 0 && (
+            <div className="text-xs text-gray-500">No blessings yet. Click Add Blessing to start.</div>
+          )}
+          {blessings.map((b, i) => (
+            <div key={i} className="p-3 rounded border border-gray-700 bg-gray-800/50">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-xs text-gray-400">Blessing #{i + 1}</div>
+                <div className="flex gap-2">
+                  <button type="button" className="px-2 py-0.5 text-xs bg-gray-700 rounded" onClick={() => moveBlessing(i, -1)}>
+                    ↑
+                  </button>
+                  <button type="button" className="px-2 py-0.5 text-xs bg-gray-700 rounded" onClick={() => moveBlessing(i, 1)}>
+                    ↓
+                  </button>
+                  <button type="button" className="px-2 py-0.5 text-xs bg-red-700 rounded" onClick={() => removeBlessing(i)}>
+                    Remove
+                  </button>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <input
+                  className="p-2 bg-gray-900 rounded border border-gray-600 text-white"
+                  placeholder="Blessing name"
+                  value={b.item || ""}
+                  onChange={(e) => updateBlessing(i, "item", e.target.value)}
+                />
+                <input
+                  className="md:col-span-2 p-2 bg-gray-900 rounded border border-gray-600 text-white"
+                  placeholder="Blessing description (this volume)"
+                  value={b.description || ""}
+                  onChange={(e) => updateBlessing(i, "description", e.target.value)}
+                />
+                <details className="md:col-span-3">
+                  <summary className="text-[11px] text-gray-400 cursor-pointer">Optional AI context (advanced)</summary>
+                  <textarea
+                    className="mt-2 w-full p-2 bg-gray-900 rounded border border-gray-600 text-white text-xs"
+                    placeholder="General guidance to preserve lore; typically managed globally."
+                    rows={2}
+                    value={b.context || ""}
+                    onChange={(e) => updateBlessing(i, "context", e.target.value)}
+                  />
+                </details>
               </div>
             </div>
           ))}
-          {(!formData.blessings || formData.blessings.length === 0) && (
-            <div className="text-xs text-gray-500">No blessings added yet.</div>
-          )}
         </div>
       </div>
 
