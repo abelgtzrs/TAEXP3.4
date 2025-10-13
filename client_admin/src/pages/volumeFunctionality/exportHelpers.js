@@ -12,19 +12,22 @@ export const buildExportText = (published) => {
       const edition = v?.edition ? ` ${v.edition}` : "";
 
       // Header line
-      lines.push(`The Abel Experience Volume ${volNum}: ${title}${edition}`);
+      lines.push(`The Abel Experience™: Volume ${volNum}: ${title}`);
 
       // Body section (raw body lines)
       const body = Array.isArray(v.bodyLines) ? v.bodyLines : [];
       if (body.length) {
         lines.push("");
-        body.forEach((l) => lines.push(l));
+        body.forEach((l) => {
+          const isBlank = !l || String(l).trim().length === 0;
+          lines.push(isBlank ? "" : `> ${l}`);
+        });
       }
 
       // Life is section
       if (v.blessingIntro) {
         lines.push("");
-        lines.push(`Life is: ${v.blessingIntro}`);
+        lines.push(`${v.blessingIntro}`);
       }
 
       // Blessings section (one per line: "Name - Description")
@@ -43,14 +46,14 @@ export const buildExportText = (published) => {
         lines.push(v.dream);
       }
 
-      // Closing line
+      // Closing line (no edition to avoid duplication)
       lines.push("");
-      lines.push(`The Abel Experience: ${title}${edition}`);
+      lines.push(`The Abel Experience™: ${edition}`);
 
-      // Blank line between volumes (except maybe after last; keep for consistency)
-      if (idx !== (published?.length ?? 0) - 1) {
-        lines.push("");
-      }
+      // Separator after each volume
+      lines.push("");
+      lines.push("===");
+      if (idx !== (published?.length ?? 0) - 1) lines.push("");
     });
 
   return lines.join("\n");

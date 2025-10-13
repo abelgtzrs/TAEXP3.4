@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { listBlessingDefs, createBlessingDef, updateBlessingDef, deleteBlessingDef } from "../services/blessingsService";
+import {
+  listBlessingDefs,
+  createBlessingDef,
+  updateBlessingDef,
+  deleteBlessingDef,
+} from "../services/blessingsService";
 
 const emptyForm = { key: "", name: "", context: "", defaultDescription: "", tags: "", active: true };
 
@@ -30,9 +35,11 @@ export default function BlessingsAdminPage() {
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return items;
-    return items.filter((x) => [x.key, x.name, x.context, x.defaultDescription, (x.tags || []).join(", ")]
-      .filter(Boolean)
-      .some((field) => String(field).toLowerCase().includes(q)));
+    return items.filter((x) =>
+      [x.key, x.name, x.context, x.defaultDescription, (x.tags || []).join(", ")]
+        .filter(Boolean)
+        .some((field) => String(field).toLowerCase().includes(q))
+    );
   }, [items, search]);
 
   const resetForm = () => {
@@ -148,16 +155,31 @@ export default function BlessingsAdminPage() {
             />
           </div>
           <div className="flex items-center gap-2 mt-5">
-            <input id="active" type="checkbox" checked={!!form.active} onChange={(e) => setForm({ ...form, active: e.target.checked })} />
-            <label htmlFor="active" className="text-xs text-gray-300">Active</label>
+            <input
+              id="active"
+              type="checkbox"
+              checked={!!form.active}
+              onChange={(e) => setForm({ ...form, active: e.target.checked })}
+            />
+            <label htmlFor="active" className="text-xs text-gray-300">
+              Active
+            </label>
           </div>
         </div>
         <div className="mt-3 flex gap-2">
-          <button type="submit" className="px-3 py-1.5 text-xs rounded bg-teal-700 hover:bg-teal-600 border border-teal-500 text-white" disabled={loading}>
+          <button
+            type="submit"
+            className="px-3 py-1.5 text-xs rounded bg-teal-700 hover:bg-teal-600 border border-teal-500 text-white"
+            disabled={loading}
+          >
             {loading ? "Saving..." : editingId ? "Update" : "Create"}
           </button>
           {editingId && (
-            <button type="button" className="px-3 py-1.5 text-xs rounded bg-gray-700 hover:bg-gray-600 border border-gray-600 text-white" onClick={resetForm}>
+            <button
+              type="button"
+              className="px-3 py-1.5 text-xs rounded bg-gray-700 hover:bg-gray-600 border border-gray-600 text-white"
+              onClick={resetForm}
+            >
               Cancel
             </button>
           )}
@@ -192,14 +214,20 @@ export default function BlessingsAdminPage() {
                 <td className="p-2 text-gray-400">{(it.tags || []).join(", ")}</td>
                 <td className="p-2">{it.active ? "Yes" : "No"}</td>
                 <td className="p-2 space-x-2">
-                  <button className="text-blue-400 hover:text-blue-300" onClick={() => edit(it)}>Edit</button>
-                  <button className="text-red-400 hover:text-red-300" onClick={() => remove(it._id)}>Delete</button>
+                  <button className="text-blue-400 hover:text-blue-300" onClick={() => edit(it)}>
+                    Edit
+                  </button>
+                  <button className="text-red-400 hover:text-red-300" onClick={() => remove(it._id)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td className="p-3 text-center text-gray-500" colSpan={5}>No results</td>
+                <td className="p-3 text-center text-gray-500" colSpan={5}>
+                  No results
+                </td>
               </tr>
             )}
           </tbody>

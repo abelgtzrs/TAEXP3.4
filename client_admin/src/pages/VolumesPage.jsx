@@ -140,7 +140,7 @@ const VolumesPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6 w-full">
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -149,18 +149,6 @@ const VolumesPage = () => {
           >
             Greentext Volume Manager
           </motion.h1>
-          <motion.button
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, delay: 0.3 }}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={openExportModal}
-            className="px-3 py-2 rounded bg-primary/20 hover:bg-primary/30 text-primary border border-primary/40 text-sm"
-            title="Export all published volumes to raw text"
-          >
-            Export Published (TXT)
-          </motion.button>
         </div>
 
         {/* --- The Form Section --- */}
@@ -168,7 +156,6 @@ const VolumesPage = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          whileHover={{ scale: 1.005, transition: { duration: 0.2 } }}
         >
           <div className="flex justify-between items-center">
             <motion.h2
@@ -184,7 +171,6 @@ const VolumesPage = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: 0.6 }}
-                whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
                 onClick={resetForm}
                 className="text-sm text-main hover:text-primary mb-4"
               >
@@ -202,14 +188,27 @@ const VolumesPage = () => {
         </motion.div>
 
         {/* --- The List Section --- */}
-        <motion.h2
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          className="text-2xl font-semibold text-white mt-10 mb-4"
-        >
-          Existing Volumes
-        </motion.h2>
+        <div className="flex items-center justify-between mt-10 mb-4">
+          <motion.h2
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+            className="text-2xl font-semibold text-white"
+          >
+            Existing Volumes
+          </motion.h2>
+          <motion.button
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.9 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={openExportModal}
+            className="ml-auto px-3 py-2 rounded bg-primary/20 hover:bg-primary/30 border border-primary/40 text-sm"
+            title="Export all published volumes to raw text"
+          >
+            Export Published (TXT)
+          </motion.button>
+        </div>
 
         {loading && (
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -232,7 +231,6 @@ const VolumesPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.0 }}
-          whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
           className="bg-gray-800 rounded-lg overflow-hidden"
         >
           <table className="min-w-full text-left text-sm text-gray-300">

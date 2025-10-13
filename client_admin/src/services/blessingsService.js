@@ -1,12 +1,12 @@
-import api from './api';
+import api from "./api";
 
 export const listBlessingDefs = async () => {
-  const { data } = await api.get('/admin/blessings');
+  const { data } = await api.get("/admin/blessings");
   return data.items || [];
 };
 
 export const createBlessingDef = async (payload) => {
-  const { data } = await api.post('/admin/blessings', payload);
+  const { data } = await api.post("/admin/blessings", payload);
   return data.item;
 };
 
