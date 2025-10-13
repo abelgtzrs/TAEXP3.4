@@ -178,13 +178,19 @@ const VolumesPage = () => {
               </motion.button>
             )}
           </div>
-          <VolumeForm
-            formData={formData}
-            onFormChange={handleFormChange}
-            onSubmit={handleSubmit}
-            loading={formLoading}
-            submitButtonText={editingId ? "Update Volume" : "Create Volume"}
-          />
+          {/* Themed panel for the volume form matching active persona */}
+          <div
+            className="rounded-lg border shadow-sm"
+            style={{ backgroundColor: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+          >
+            <VolumeForm
+              formData={formData}
+              onFormChange={handleFormChange}
+              onSubmit={handleSubmit}
+              loading={formLoading}
+              submitButtonText={editingId ? "Update Volume" : "Create Volume"}
+            />
+          </div>
         </motion.div>
 
         {/* --- The List Section --- */}
@@ -193,7 +199,7 @@ const VolumesPage = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.8 }}
-            className="text-2xl font-semibold text-white"
+            className="text-2xl font-semibold text-main"
           >
             Existing Volumes
           </motion.h2>
@@ -201,10 +207,9 @@ const VolumesPage = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.9 }}
-            whileTap={{ scale: 0.98 }}
             onClick={openExportModal}
-            className="ml-auto px-3 py-2 rounded bg-primary/20 hover:bg-primary/30 border border-primary/40 text-sm"
             title="Export all published volumes to raw text"
+            className="ml-4 px-3 py-2 rounded bg-primary/20 hover:bg-primary/30 border border-primary/40 text-sm text-main"
           >
             Export Published (TXT)
           </motion.button>
@@ -231,10 +236,11 @@ const VolumesPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.0 }}
-          className="bg-gray-800 rounded-lg overflow-hidden"
+          className="rounded-lg overflow-hidden border shadow-sm"
+          style={{ backgroundColor: "var(--color-surface)", borderColor: "var(--color-primary)" }}
         >
-          <table className="min-w-full text-left text-sm text-gray-300">
-            <thead className="bg-gray-900 text-xs uppercase">
+          <table className="min-w-full text-left text-sm text-text-secondary">
+            <thead className="text-xs uppercase" style={{ backgroundColor: "var(--color-surface)" }}>
               <tr>
                 <th className="p-3">#</th>
                 <th className="p-3">Title</th>
@@ -251,8 +257,8 @@ const VolumesPage = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: 1.2 + index * 0.1 }}
-                  whileHover={{ backgroundColor: "rgba(55, 65, 81, 0.5)", transition: { duration: 0.2 } }}
-                  className="border-b border-gray-700"
+                  whileHover={{ backgroundColor: "rgba(20, 20, 20, 0.15)", transition: { duration: 0.2 } }}
+                  className="border-b border-primary/20"
                 >
                   <td className="p-3 font-bold">{vol.volumeNumber}</td>
                   <td className="p-3">{vol.title}</td>
@@ -302,6 +308,8 @@ const VolumesPage = () => {
             </tbody>
           </table>
         </motion.div>
+
+        {/* Close top-level page wrapper motion.div */}
       </motion.div>
 
       {/* Export Modal */}

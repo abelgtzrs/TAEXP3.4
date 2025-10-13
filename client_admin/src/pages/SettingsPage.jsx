@@ -89,7 +89,10 @@ const SettingsPage = () => {
   // add them here as label/value pairs.
   const FONT_OPTIONS = [
     { label: "Inter (default)", value: "Inter, sans-serif" },
-    { label: "System UI", value: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" },
+    {
+      label: "System UI",
+      value: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+    },
     { label: "Roboto", value: "Roboto, 'Helvetica Neue', Arial, sans-serif" },
     { label: "Open Sans", value: "'Open Sans', 'Helvetica Neue', Arial, sans-serif" },
     { label: "Lato", value: "Lato, 'Helvetica Neue', Arial, sans-serif" },
@@ -99,8 +102,16 @@ const SettingsPage = () => {
     { label: "Source Sans 3", value: "'Source Sans 3', 'Helvetica Neue', Arial, sans-serif" },
     { label: "Merriweather (serif)", value: "Merriweather, Georgia, 'Times New Roman', serif" },
     { label: "Playfair Display (serif)", value: "'Playfair Display', Georgia, 'Times New Roman', serif" },
-    { label: "Fira Code (mono)", value: "'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace" },
-    { label: "JetBrains Mono (mono)", value: "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace" },
+    {
+      label: "Fira Code (mono)",
+      value:
+        "'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+    },
+    {
+      label: "JetBrains Mono (mono)",
+      value:
+        "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+    },
   ];
 
   const activePersonaId = user?.activeAbelPersona?._id || null;
@@ -225,13 +236,11 @@ const SettingsPage = () => {
         {/* Left: Persona list and active selection */}
         <Widget title="Personas" className="lg:col-span-1">
           <div className="flex items-center justify-between mb-2">
-            <div className="text-xs text-text-secondary">Owned {ownedCount} / {personas.length}</div>
+            <div className="text-xs text-text-secondary">
+              Owned {ownedCount} / {personas.length}
+            </div>
             <label className="flex items-center gap-2 text-xs">
-              <input
-                type="checkbox"
-                checked={showOwnedOnly}
-                onChange={(e) => setShowOwnedOnly(e.target.checked)}
-              />
+              <input type="checkbox" checked={showOwnedOnly} onChange={(e) => setShowOwnedOnly(e.target.checked)} />
               <span>Owned only</span>
             </label>
           </div>
@@ -251,15 +260,21 @@ const SettingsPage = () => {
                     <div className="text-[11px] text-text-secondary truncate">Default system theme</div>
                   </div>
                   <div className="flex items-center gap-1 shrink-0">
-                    {[DEFAULT_THEME.colors.bg, DEFAULT_THEME.colors.surface, DEFAULT_THEME.colors.primary, DEFAULT_THEME.colors.secondary, DEFAULT_THEME.colors.tertiary].map(
-                      (c, i) => (
-                        <span key={i} className="w-3.5 h-3.5 rounded border border-gray-600" style={{ background: c }} />
-                      )
-                    )}
+                    {[
+                      DEFAULT_THEME.colors.bg,
+                      DEFAULT_THEME.colors.surface,
+                      DEFAULT_THEME.colors.primary,
+                      DEFAULT_THEME.colors.secondary,
+                      DEFAULT_THEME.colors.tertiary,
+                    ].map((c, i) => (
+                      <span key={i} className="w-3.5 h-3.5 rounded border border-gray-600" style={{ background: c }} />
+                    ))}
                   </div>
                 </div>
                 <div className="mt-1 flex items-center justify-between">
-                  <span className="px-1.5 py-0.5 text-[10px] rounded border border-gray-600 text-gray-300">Default</span>
+                  <span className="px-1.5 py-0.5 text-[10px] rounded border border-gray-600 text-gray-300">
+                    Default
+                  </span>
                 </div>
               </button>
               <button
@@ -304,9 +319,7 @@ const SettingsPage = () => {
                   <div className="mt-1 flex items-center justify-between">
                     <span
                       className={`px-1.5 py-0.5 text-[10px] rounded border ${
-                        unlockedIds.has(p._id)
-                          ? "border-green-600 text-green-300"
-                          : "border-gray-600 text-gray-400"
+                        unlockedIds.has(p._id) ? "border-green-600 text-green-300" : "border-gray-600 text-gray-400"
                       }`}
                     >
                       {unlockedIds.has(p._id) ? "Owned" : "Locked"}
@@ -332,7 +345,11 @@ const SettingsPage = () => {
             {/* Pagination controls */}
             <div className="pt-2 flex items-center justify-between text-xs">
               <button
-                className={`px-2 py-1 rounded border ${currentPage === 1 ? "border-gray-700 text-gray-500 cursor-not-allowed" : "border-gray-600 text-gray-300 hover:border-gray-500"}`}
+                className={`px-2 py-1 rounded border ${
+                  currentPage === 1
+                    ? "border-gray-700 text-gray-500 cursor-not-allowed"
+                    : "border-gray-600 text-gray-300 hover:border-gray-500"
+                }`}
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
               >
@@ -344,7 +361,11 @@ const SettingsPage = () => {
                 </span>
               </div>
               <button
-                className={`px-2 py-1 rounded border ${currentPage === totalPages ? "border-gray-700 text-gray-500 cursor-not-allowed" : "border-gray-600 text-gray-300 hover:border-gray-500"}`}
+                className={`px-2 py-1 rounded border ${
+                  currentPage === totalPages
+                    ? "border-gray-700 text-gray-500 cursor-not-allowed"
+                    : "border-gray-600 text-gray-300 hover:border-gray-500"
+                }`}
                 onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
               >
@@ -416,19 +437,51 @@ const SettingsPage = () => {
                 <div>
                   <div className="font-semibold text-white text-sm mb-2">Colors</div>
                   <div className="space-y-2">
-                    <ColorInput label="Background" value={editing.colors.bg} onChange={(v) => setEditing({ ...editing, colors: { ...editing.colors, bg: v } })} />
-                    <ColorInput label="Surface" value={editing.colors.surface} onChange={(v) => setEditing({ ...editing, colors: { ...editing.colors, surface: v } })} />
-                    <ColorInput label="Primary" value={editing.colors.primary} onChange={(v) => setEditing({ ...editing, colors: { ...editing.colors, primary: v } })} />
-                    <ColorInput label="Secondary" value={editing.colors.secondary} onChange={(v) => setEditing({ ...editing, colors: { ...editing.colors, secondary: v } })} />
-                    <ColorInput label="Tertiary" value={editing.colors.tertiary} onChange={(v) => setEditing({ ...editing, colors: { ...editing.colors, tertiary: v } })} />
+                    <ColorInput
+                      label="Background"
+                      value={editing.colors.bg}
+                      onChange={(v) => setEditing({ ...editing, colors: { ...editing.colors, bg: v } })}
+                    />
+                    <ColorInput
+                      label="Surface"
+                      value={editing.colors.surface}
+                      onChange={(v) => setEditing({ ...editing, colors: { ...editing.colors, surface: v } })}
+                    />
+                    <ColorInput
+                      label="Primary"
+                      value={editing.colors.primary}
+                      onChange={(v) => setEditing({ ...editing, colors: { ...editing.colors, primary: v } })}
+                    />
+                    <ColorInput
+                      label="Secondary"
+                      value={editing.colors.secondary}
+                      onChange={(v) => setEditing({ ...editing, colors: { ...editing.colors, secondary: v } })}
+                    />
+                    <ColorInput
+                      label="Tertiary"
+                      value={editing.colors.tertiary}
+                      onChange={(v) => setEditing({ ...editing, colors: { ...editing.colors, tertiary: v } })}
+                    />
                   </div>
                 </div>
                 <div>
                   <div className="font-semibold text-white text-sm mb-2">Text</div>
                   <div className="space-y-2">
-                    <ColorInput label="Main" value={editing.text.main} onChange={(v) => setEditing({ ...editing, text: { ...editing.text, main: v } })} />
-                    <ColorInput label="Secondary" value={editing.text.secondary} onChange={(v) => setEditing({ ...editing, text: { ...editing.text, secondary: v } })} />
-                    <ColorInput label="Tertiary" value={editing.text.tertiary} onChange={(v) => setEditing({ ...editing, text: { ...editing.text, tertiary: v } })} />
+                    <ColorInput
+                      label="Main"
+                      value={editing.text.main}
+                      onChange={(v) => setEditing({ ...editing, text: { ...editing.text, main: v } })}
+                    />
+                    <ColorInput
+                      label="Secondary"
+                      value={editing.text.secondary}
+                      onChange={(v) => setEditing({ ...editing, text: { ...editing.text, secondary: v } })}
+                    />
+                    <ColorInput
+                      label="Tertiary"
+                      value={editing.text.tertiary}
+                      onChange={(v) => setEditing({ ...editing, text: { ...editing.text, tertiary: v } })}
+                    />
                   </div>
                 </div>
               </div>
@@ -442,7 +495,9 @@ const SettingsPage = () => {
                       ? "bg-gray-800 border-gray-700 text-gray-500 cursor-not-allowed"
                       : "bg-primary/20 hover:bg-primary/30 border-primary/40 text-primary"
                   }`}
-                  title={editing?._id === "__standard__" ? "Standard Issue applies live; no save needed" : "Save to database"}
+                  title={
+                    editing?._id === "__standard__" ? "Standard Issue applies live; no save needed" : "Save to database"
+                  }
                 >
                   Save Changes
                 </button>
