@@ -1,11 +1,11 @@
-const BlessingDefinition = require('../models/BlessingDefinition');
+const BlessingDefinition = require("../models/BlessingDefinition");
 
 exports.listBlessings = async (req, res) => {
   try {
     const items = await BlessingDefinition.find({}).sort({ name: 1 }).lean();
     res.json({ success: true, items });
   } catch (e) {
-    res.status(500).json({ success: false, message: 'Failed to list blessings.' });
+    res.status(500).json({ success: false, message: "Failed to list blessings." });
   }
 };
 
@@ -22,7 +22,7 @@ exports.updateBlessing = async (req, res) => {
   try {
     const { id } = req.params;
     const updated = await BlessingDefinition.findByIdAndUpdate(id, req.body, { new: true });
-    if (!updated) return res.status(404).json({ success: false, message: 'Not found' });
+    if (!updated) return res.status(404).json({ success: false, message: "Not found" });
     res.json({ success: true, item: updated });
   } catch (e) {
     res.status(400).json({ success: false, message: e.message });

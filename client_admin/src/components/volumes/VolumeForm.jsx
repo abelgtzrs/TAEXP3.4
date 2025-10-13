@@ -67,23 +67,23 @@ const VolumeForm = ({ formData, onFormChange, onSubmit, loading, submitButtonTex
     };
   }, []);
 
-  const presentNameSet = new Set(
-    blessings
-      .map((b) => (b?.item || "").trim().toLowerCase())
-      .filter(Boolean)
-  );
+  const presentNameSet = new Set(blessings.map((b) => (b?.item || "").trim().toLowerCase()).filter(Boolean));
   const missingFromMaster = (masterBlessings || [])
     .filter((m) => m?.active !== false)
-    .filter((m) => !presentNameSet.has(String(m?.name || "").trim().toLowerCase()));
+    .filter(
+      (m) =>
+        !presentNameSet.has(
+          String(m?.name || "")
+            .trim()
+            .toLowerCase()
+        )
+    );
 
   const addFromMaster = (m) => {
     const item = String(m?.name || "");
     if (!item) return;
     if (presentNameSet.has(item.trim().toLowerCase())) return; // guard against race duplicates
-    const next = [
-      ...blessings,
-      { item, description: m?.defaultDescription || "", context: m?.context || "" },
-    ];
+    const next = [...blessings, { item, description: m?.defaultDescription || "", context: m?.context || "" }];
     onFormChange({ ...formData, blessings: next });
   };
   const addAllMissingFromMaster = () => {
@@ -247,7 +247,10 @@ const VolumeForm = ({ formData, onFormChange, onSubmit, loading, submitButtonTex
             {!masterError && (
               <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-1">
                 {missingFromMaster.map((m) => (
-                  <div key={m._id} className="flex items-center justify-between text-[11px] bg-gray-800/60 border border-gray-700 rounded px-2 py-1">
+                  <div
+                    key={m._id}
+                    className="flex items-center justify-between text-[11px] bg-gray-800/60 border border-gray-700 rounded px-2 py-1"
+                  >
                     <span className="truncate mr-2">{m.name}</span>
                     <button
                       type="button"
@@ -271,13 +274,25 @@ const VolumeForm = ({ formData, onFormChange, onSubmit, loading, submitButtonTex
               <div className="flex items-center justify-between mb-2">
                 <div className="text-xs text-gray-400">Blessing #{i + 1}</div>
                 <div className="flex gap-2">
-                  <button type="button" className="px-2 py-0.5 text-xs bg-gray-700 rounded" onClick={() => moveBlessing(i, -1)}>
+                  <button
+                    type="button"
+                    className="px-2 py-0.5 text-xs bg-gray-700 rounded"
+                    onClick={() => moveBlessing(i, -1)}
+                  >
                     ↑
                   </button>
-                  <button type="button" className="px-2 py-0.5 text-xs bg-gray-700 rounded" onClick={() => moveBlessing(i, 1)}>
+                  <button
+                    type="button"
+                    className="px-2 py-0.5 text-xs bg-gray-700 rounded"
+                    onClick={() => moveBlessing(i, 1)}
+                  >
                     ↓
                   </button>
-                  <button type="button" className="px-2 py-0.5 text-xs bg-red-700 rounded" onClick={() => removeBlessing(i)}>
+                  <button
+                    type="button"
+                    className="px-2 py-0.5 text-xs bg-red-700 rounded"
+                    onClick={() => removeBlessing(i)}
+                  >
                     Remove
                   </button>
                 </div>
