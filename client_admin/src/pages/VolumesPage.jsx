@@ -239,6 +239,7 @@ const VolumesPage = () => {
                 <th className="p-3">#</th>
                 <th className="p-3">Title</th>
                 <th className="p-3">Status</th>
+                <th className="p-3">Counts</th>
                 <th className="p-3">Created</th>
                 <th className="p-3">Actions</th>
               </tr>
@@ -265,6 +266,16 @@ const VolumesPage = () => {
                     >
                       {vol.status}
                     </span>
+                  </td>
+                  <td className="p-3">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="px-2 py-0.5 text-xs rounded border bg-indigo-500/10 border-indigo-400/30 text-indigo-300">
+                        {vol.blessings?.length ?? 0} blessings
+                      </span>
+                      <span className="px-2 py-0.5 text-xs rounded border bg-sky-500/10 border-sky-400/30 text-sky-300">
+                        {vol.bodyLines?.length ?? 0} lines
+                      </span>
+                    </div>
                   </td>
                   <td className="p-3">{new Date(vol.createdAt).toLocaleDateString()}</td>
                   <td className="p-3 space-x-4">

@@ -156,6 +156,7 @@ app.use("/api/admin/exercises", protect, authorize("admin"), require("./routes/e
 app.use("/api/admin/pokemon", protect, authorize("admin"), require("./routes/pokemonAdminRoutes"));
 app.use("/api/admin/habbo-rares", require("./routes/habboRareAdminRoutes"));
 app.use("/api/admin/blessings", require("./routes/blessingDefinitionRoutes"));
+app.use("/api/admin/personas", require("./routes/personaAdminRoutes"));
 app.use("/api/admin", require("./routes/adminUserRoutes"));
 
 // External integrations & additional features
