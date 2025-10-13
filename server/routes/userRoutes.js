@@ -41,11 +41,15 @@ const {
   setActivePersona,
   updateProfilePicture, // <-- IMPORT NEW FUNCTION
 } = require("../controllers/userController");
+const { getMe } = require("../controllers/authController");
 
 const { protect } = require("../middleware/authMiddleware");
 
 // Apply 'protect' middleware to all routes in this file
 router.use(protect);
+
+// Basic profile fetch for current user (mirrors /api/auth/me)
+router.get("/me", getMe);
 
 // --- ADD THIS NEW ROUTE for profile picture upload ---
 router.put("/me/profile-picture", upload.single("profilePicture"), updateProfilePicture);
