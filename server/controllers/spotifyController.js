@@ -176,7 +176,35 @@ exports.getCurrentlyPlaying = async (req, res) => {
     }
     res.json({ success: true, data: response.data });
   } catch (error) {
-    console.error("Error fetching currently playing:", error);
+    console.error("Error fetching currently playing:", error.response?.data || error.message || error);
+
+    const status = error.response?.status;
+    const errMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
+
+    if (status === 401) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Spotify authentication failed. Please reconnect your account." });
+    }
+    if (status === 429) {
+      return res
+        .status(429)
+        .json({ success: false, message: "Spotify API rate limit reached. Please try again later." });
+    }
+    if (status === 400 && /invalid_grant|refresh token/i.test(errMsg || "")) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Spotify session expired. Please reconnect your Spotify account." });
+    }
+    if (status === 403) {
+      return res.status(400).json({ success: false, message: "Spotify permission denied. Please re-authorize." });
+    }
+    if (error.code && ["ENOTFOUND", "ECONNRESET", "ETIMEDOUT"].includes(error.code)) {
+      return res
+        .status(502)
+        .json({ success: false, message: "Network error contacting Spotify. Please try again soon." });
+    }
+
     res.status(500).json({ success: false, message: "Could not fetch from Spotify." });
   }
 };
