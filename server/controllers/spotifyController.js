@@ -7,9 +7,22 @@ const SPOTIFY_AUTH_URL = "https://accounts.spotify.com/authorize";
 const SPOTIFY_TOKEN_URL = "https://accounts.spotify.com/api/token";
 const REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI || "http://127.0.0.1:5000/api/spotify/callback";
 
+// Small helper to determine if the current access token is expired or about to expire
+const isAccessTokenExpired = (user) => {
+  if (!user?.spotifyTokenExpiresAt) return true;
+  const expiresAt = new Date(user.spotifyTokenExpiresAt).getTime();
+  // Add a 60s safety window
+  return Date.now() >= expiresAt - 60000;
+};
+
 // Helper function to refresh Spotify access token
 const refreshSpotifyToken = async (user) => {
   try {
+    if (!user?.spotifyRefreshToken) {
+      const err = new Error("Missing Spotify refresh token. Please reconnect your Spotify account.");
+      err.code = "SPOTIFY_NO_REFRESH_TOKEN";
+      throw err;
+    }
     const response = await axios({
       method: "post",
       url: SPOTIFY_TOKEN_URL,
@@ -49,8 +62,15 @@ const refreshSpotifyToken = async (user) => {
 // Helper function to make authenticated Spotify API requests with auto-refresh
 const makeSpotifyRequest = async (user, url, options = {}) => {
   try {
+    let workingUser = user;
+    // Proactively refresh if token is missing or expired
+    if (!workingUser.spotifyAccessToken || isAccessTokenExpired(workingUser)) {
+      console.log("Spotify access token missing/expired. Refreshing before request...");
+      workingUser = await refreshSpotifyToken(workingUser);
+    }
+
     const response = await axios.get(url, {
-      headers: { Authorization: `Bearer ${user.spotifyAccessToken}` },
+      headers: { Authorization: `Bearer ${workingUser.spotifyAccessToken}` },
       ...options,
     });
     return response;
@@ -202,6 +222,11 @@ exports.syncRecentTracks = async (req, res) => {
   if (!user || !user.spotifyConnected) {
     return res.status(400).json({ success: false, message: "Spotify not connected." });
   }
+  if (!user.spotifyAccessToken && !user.spotifyRefreshToken) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Spotify session missing. Please reconnect your Spotify account." });
+  }
 
   try {
     // Get the most recent track timestamp to avoid duplicates
@@ -257,18 +282,39 @@ exports.syncRecentTracks = async (req, res) => {
       totalFetched: newLogs.length,
     });
   } catch (error) {
-    console.error("Sync error:", error);
+    console.error("Sync error:", error.response?.data || error.message || error);
 
     // Provide more specific error messages
-    if (error.response?.status === 401) {
-      res
+    const status = error.response?.status;
+    const errMsg = error.response?.data?.error?.message || error.response?.data?.message || error.message;
+
+    if (status === 401) {
+      return res
         .status(400)
         .json({ success: false, message: "Spotify authentication failed. Please reconnect your account." });
-    } else if (error.response?.status === 429) {
-      res.status(429).json({ success: false, message: "Spotify API rate limit reached. Please try again later." });
-    } else {
-      res.status(500).json({ success: false, message: "Could not sync from Spotify." });
     }
+    if (status === 429) {
+      return res
+        .status(429)
+        .json({ success: false, message: "Spotify API rate limit reached. Please try again later." });
+    }
+    if (status === 400 && /invalid_grant|refresh token/i.test(errMsg || "")) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Spotify session expired. Please reconnect your Spotify account." });
+    }
+    if (status === 403) {
+      return res.status(400).json({ success: false, message: "Spotify permission denied. Please re-authorize." });
+    }
+
+    // Network-ish
+    if (error.code && ["ENOTFOUND", "ECONNRESET", "ETIMEDOUT"].includes(error.code)) {
+      return res
+        .status(502)
+        .json({ success: false, message: "Network error contacting Spotify. Please try again soon." });
+    }
+
+    return res.status(500).json({ success: false, message: "Could not sync from Spotify." });
   }
 };
 
