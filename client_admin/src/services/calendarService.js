@@ -16,4 +16,10 @@ export const calendarService = {
   // Combined monthly schedule
   getMonthlySchedule: ({ year, month }) =>
     api.get(`/calendar/monthly-schedule`, { params: { year, month } }).then((r) => r.data.items),
+
+  // Yearly events
+  listYearly: () => api.get("/calendar/yearly").then((r) => r.data.items),
+  createYearly: (payload) => api.post("/calendar/yearly", payload).then((r) => r.data.item),
+  updateYearly: (id, payload) => api.put(`/calendar/yearly/${id}`, payload).then((r) => r.data.item),
+  deleteYearly: (id) => api.delete(`/calendar/yearly/${id}`).then((r) => r.data),
 };

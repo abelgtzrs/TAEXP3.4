@@ -23,10 +23,18 @@ export default function MonthlyCalendar({ year, month, items = [] }) {
   }, [items]);
 
   return (
-    <div className="rounded-lg border shadow-sm" style={{ backgroundColor: "var(--color-surface)", borderColor: "var(--color-primary)" }}>
-      <div className="grid grid-cols-7 text-center text-xs uppercase p-2" style={{ color: "var(--color-text-secondary)" }}>
-        {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d) => (
-          <div key={d} className="px-1 py-1">{d}</div>
+    <div
+      className="rounded-lg border shadow-sm"
+      style={{ backgroundColor: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+    >
+      <div
+        className="grid grid-cols-7 text-center text-xs uppercase p-2"
+        style={{ color: "var(--color-text-secondary)" }}
+      >
+        {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
+          <div key={d} className="px-1 py-1">
+            {d}
+          </div>
         ))}
       </div>
       <div className="grid grid-cols-7 gap-px p-2" style={{ backgroundColor: "var(--color-primary)", opacity: 0.3 }}>
@@ -34,15 +42,23 @@ export default function MonthlyCalendar({ year, month, items = [] }) {
           <div key={idx} className="min-h-[90px] p-2" style={{ backgroundColor: "var(--color-surface)" }}>
             {day && (
               <div>
-                <div className="text-right text-xs" style={{ color: "var(--color-text-secondary)" }}>{day}</div>
+                <div className="text-right text-xs" style={{ color: "var(--color-text-secondary)" }}>
+                  {day}
+                </div>
                 <div className="mt-1 space-y-1">
                   {(itemsByDay.get(day) || []).slice(0, 3).map((it, i) => (
-                    <div key={i} className="px-1 py-0.5 rounded text-xs truncate" style={{ backgroundColor: it.color || '#4b5563', color: '#fff' }}>
-                      {it.type === 'bill' ? `${it.title} $${it.amount}` : it.title}
+                    <div
+                      key={i}
+                      className="px-1 py-0.5 rounded text-xs truncate"
+                      style={{ backgroundColor: it.color || "#4b5563", color: "#fff" }}
+                    >
+                      {it.type === "bill" ? `${it.title} $${it.amount}` : it.title}
                     </div>
                   ))}
                   {(itemsByDay.get(day) || []).length > 3 && (
-                    <div className="text-[10px] opacity-70" style={{ color: "var(--color-text-secondary)" }}>+{(itemsByDay.get(day) || []).length - 3} more</div>
+                    <div className="text-[10px] opacity-70" style={{ color: "var(--color-text-secondary)" }}>
+                      +{(itemsByDay.get(day) || []).length - 3} more
+                    </div>
                   )}
                 </div>
               </div>

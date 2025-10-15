@@ -188,7 +188,7 @@ const PokemonEditorPage = () => {
         message="Pokémon updated successfully!"
       />
       {/* Main Content Area */}
-      <div className="flex-2 pr-56 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto" style={{ marginRight: "15rem" }}>
         <div>
           <PageHeader title="Pokémon Database Editor" subtitle="Select a Pokémon to view and modify its data." />
 

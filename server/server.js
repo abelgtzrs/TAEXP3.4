@@ -25,6 +25,7 @@ require("./models/WorkoutTemplate");
 // Calendar models
 require("./models/CalendarEvent");
 require("./models/MonthlyBill");
+require("./models/YearlyEvent");
 
 // Finance models
 require("./models/finance/FinancialCategory");

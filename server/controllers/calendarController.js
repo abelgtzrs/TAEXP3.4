@@ -1,5 +1,6 @@
 const CalendarEvent = require("../models/CalendarEvent");
 const MonthlyBill = require("../models/MonthlyBill");
+const YearlyEvent = require("../models/YearlyEvent");
 
 // Events CRUD
 exports.listEvents = async (req, res) => {
@@ -96,9 +97,10 @@ exports.getMonthlySchedule = async (req, res) => {
     const start = new Date(y, m, 1);
     const end = new Date(y, m + 1, 1);
 
-    const [events, bills] = await Promise.all([
+    const [events, bills, yearly] = await Promise.all([
       CalendarEvent.find({ user: req.user._id, date: { $gte: start, $lt: end } }).lean(),
       MonthlyBill.find({ user: req.user._id, isActive: true }).lean(),
+      YearlyEvent.find({ user: req.user._id, isActive: true, month: m + 1 }).lean(),
     ]);
 
     // Map bills to concrete dates within the month (use dueDay or last day if overflow)
@@ -124,11 +126,64 @@ exports.getMonthlySchedule = async (req, res) => {
       color: e.color || "#4f46e5",
     }));
 
-    const items = [...billItems, ...eventItems].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const yearlyItems = yearly
+      .map((y) => ({
+        type: "yearly",
+        id: y._id,
+        title: y.title,
+        date: new Date(year, m, Math.min(Math.max(1, y.day), daysInMonth)),
+        category: y.category,
+        color: y.color || "#10b981",
+      }))
+      .filter(Boolean);
+
+    const items = [...billItems, ...eventItems, ...yearlyItems].sort((a, b) => new Date(a.date) - new Date(b.date));
 
     res.json({ success: true, items });
   } catch (e) {
     console.error("getMonthlySchedule error:", e);
     res.status(500).json({ success: false, message: "Failed to load monthly schedule" });
+  }
+};
+
+// Yearly Events CRUD
+exports.listYearly = async (req, res) => {
+  try {
+    const items = await YearlyEvent.find({ user: req.user._id, isActive: true }).sort({ month: 1, day: 1 });
+    res.json({ success: true, items });
+  } catch (e) {
+    res.status(500).json({ success: false, message: "Failed to load yearly events" });
+  }
+};
+
+exports.createYearly = async (req, res) => {
+  try {
+    const payload = { ...req.body, user: req.user._id };
+    const doc = await YearlyEvent.create(payload);
+    res.status(201).json({ success: true, item: doc });
+  } catch (e) {
+    res.status(400).json({ success: false, message: e.message || "Failed to create yearly event" });
+  }
+};
+
+exports.updateYearly = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const doc = await YearlyEvent.findOneAndUpdate({ _id: id, user: req.user._id }, req.body, { new: true });
+    if (!doc) return res.status(404).json({ success: false, message: "Yearly event not found" });
+    res.json({ success: true, item: doc });
+  } catch (e) {
+    res.status(400).json({ success: false, message: e.message || "Failed to update yearly event" });
+  }
+};
+
+exports.deleteYearly = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const doc = await YearlyEvent.findOneAndDelete({ _id: id, user: req.user._id });
+    if (!doc) return res.status(404).json({ success: false, message: "Yearly event not found" });
+    res.json({ success: true });
+  } catch (e) {
+    res.status(400).json({ success: false, message: e.message || "Failed to delete yearly event" });
   }
 };

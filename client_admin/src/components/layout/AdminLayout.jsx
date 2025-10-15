@@ -25,6 +25,7 @@ import {
   Music,
   FileSignature,
   Trophy,
+  CalendarDays,
 } from "lucide-react";
 
 const NavItem = ({ to, icon: Icon, children, isCollapsed }) => {
@@ -299,6 +300,11 @@ const AdminLayout = () => {
                 <ul className="space-y-1">
                   <NavItem to="/admin/users" icon={Users} isCollapsed={isSidebarCollapsed}>
                     User Directory Admin
+                  </NavItem>
+                </ul>
+                <ul className="space-y-1">
+                  <NavItem to="/admin/calendar" icon={CalendarDays} isCollapsed={isSidebarCollapsed}>
+                    Calendar Admin
                   </NavItem>
                 </ul>
                 <ul className="space-y-1">

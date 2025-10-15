@@ -17,6 +17,12 @@ router.post("/bills", ctrl.createBill);
 router.put("/bills/:id", ctrl.updateBill);
 router.delete("/bills/:id", ctrl.deleteBill);
 
+// Yearly (birthday/anniversary)
+router.get("/yearly", ctrl.listYearly);
+router.post("/yearly", ctrl.createYearly);
+router.put("/yearly/:id", ctrl.updateYearly);
+router.delete("/yearly/:id", ctrl.deleteYearly);
+
 // Monthly schedule feed (for widget)
 router.get("/monthly-schedule", ctrl.getMonthlySchedule);
 

@@ -47,7 +47,10 @@ const PokemonCard = ({ pokemon, useGen6Sprites = false }) => {
       </div>
 
       {/* Hover Tooltip */}
-      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-72 bg-surface border border-gray-600 rounded-lg p-4 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50">
+      <div
+        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-72 bg-surface border rounded-lg p-4 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-[9999]"
+        style={{ borderColor: "var(--color-primary)" }}
+      >
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <h4 className="font-bold text-text-main">{pokemon.name}</h4>
@@ -95,7 +98,10 @@ const PokemonCard = ({ pokemon, useGen6Sprites = false }) => {
         </div>
 
         {/* Arrow pointing down */}
-        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-600"></div>
+        <div
+          className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent"
+          style={{ borderTopColor: "var(--color-primary)" }}
+        ></div>
       </div>
     </div>
   );
