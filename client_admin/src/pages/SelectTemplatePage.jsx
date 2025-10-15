@@ -23,12 +23,12 @@ const SelectTemplatePage = () => {
     fetchTemplates();
   }, []);
 
-  if (loading) return <p className="text-gray-400">Loading templates...</p>;
+  if (loading) return <p className="text-text-secondary">Loading templates...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-teal-400 mb-6">
+      <h1 className="text-3xl font-bold text-primary mb-6">
         Select a Prebuilt Workout
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -40,13 +40,16 @@ const SelectTemplatePage = () => {
             key={template._id}
             to="/workouts/log"
             state={{ templateData: template }} // Passing the chosen template data
-            className="p-6 bg-gray-800 rounded-lg hover:bg-gray-700 hover:border-teal-500 border-2 border-transparent transition-all duration-300 block"
+            className="p-6 rounded-lg border-2 transition-all duration-300 block"
+            style={{ background: "var(--color-surface)", borderColor: "transparent" }}
+            onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--color-primary)")}
+            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "transparent")}
           >
-            <h2 className="text-xl font-bold text-white mb-2">
+            <h2 className="text-xl font-bold text-primary mb-2">
               {template.name}
             </h2>
-            <p className="text-gray-400 text-sm mb-4">{template.description}</p>
-            <ul className="text-xs text-gray-300 list-disc list-inside">
+            <p className="text-text-secondary text-sm mb-4">{template.description}</p>
+            <ul className="text-xs text-text-main list-disc list-inside">
               {/* Display the names of the exercises in the template */}
               {template.exercises.map((ex) => (
                 <li key={ex._id}>{ex.name}</li>
@@ -55,7 +58,7 @@ const SelectTemplatePage = () => {
           </Link>
         ))}
         {templates.length === 0 && (
-          <p className="text-gray-500 col-span-full">
+          <p className="text-text-secondary col-span-full">
             No workout templates have been created yet.
           </p>
         )}

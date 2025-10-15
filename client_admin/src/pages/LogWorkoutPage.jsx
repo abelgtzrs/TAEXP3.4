@@ -7,9 +7,9 @@ import api from "../services/api";
 
 // --- INLINE HELPER COMPONENTS ---
 const StatBadge = ({ label, value }) => (
-  <div className="flex flex-col p-2 bg-gray-800/70 rounded-md border border-gray-700 min-w-[90px]">
-    <span className="text-[10px] tracking-wide text-gray-400 uppercase">{label}</span>
-    <span className="text-lg font-semibold text-teal-300">{value}</span>
+  <div className="flex flex-col p-2 rounded-md border min-w-[90px]" style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}>
+    <span className="text-[10px] tracking-wide text-text-secondary uppercase">{label}</span>
+    <span className="text-lg font-semibold text-primary">{value}</span>
   </div>
 );
 
@@ -150,13 +150,13 @@ const LogWorkoutPage = () => {
     <div className="grid grid-cols-12 gap-6">
       {/* LEFT: Meta & Exercise Library */}
       <div className="col-span-12 lg:col-span-3 flex flex-col gap-4">
-        <div className="bg-gray-900 p-4 rounded-lg border border-gray-700 space-y-3">
+        <div className="p-4 rounded-lg border space-y-3" style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}>
           <input
             type="text"
             value={workoutName}
             onChange={(e) => setWorkoutName(e.target.value)}
             placeholder="Workout name"
-            className="w-full bg-gray-800 rounded px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-1 focus:ring-teal-500"
+            className="w-full bg-background rounded px-3 py-2 text-sm font-semibold border border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
           <div className="grid grid-cols-2 gap-2">
             <input
@@ -165,25 +165,25 @@ const LogWorkoutPage = () => {
               value={durationMinutes}
               onChange={(e) => setDurationMinutes(e.target.value)}
               placeholder="Duration (min)"
-              className="bg-gray-800 rounded px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500"
+              className="bg-background rounded px-3 py-2 text-xs border border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
             <input
               type="text"
               value={overallFeeling}
               onChange={(e) => setOverallFeeling(e.target.value)}
               placeholder="Feeling (1-10 / words)"
-              className="bg-gray-800 rounded px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500"
+              className="bg-background rounded px-3 py-2 text-xs border border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Session notes..."
-            className="w-full bg-gray-800 rounded px-3 py-2 text-xs h-24 resize-none focus:outline-none focus:ring-1 focus:ring-teal-500"
+            className="w-full bg-background rounded px-3 py-2 text-xs h-24 resize-none border border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
-        <div className="bg-gray-900 p-4 rounded-lg border border-gray-700 flex flex-col gap-2 min-h-[320px]">
-          <h3 className="text-sm font-semibold text-teal-300 flex items-center gap-2">
+        <div className="p-4 rounded-lg border flex flex-col gap-2 min-h-[320px]" style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}>
+          <h3 className="text-sm font-semibold text-primary flex items-center gap-2">
             <ClipboardList size={16} /> Exercise Library
           </h3>
           <input
@@ -191,7 +191,7 @@ const LogWorkoutPage = () => {
             value={exerciseSearch}
             onChange={(e) => setExerciseSearch(e.target.value)}
             placeholder="Search exercises..."
-            className="bg-gray-800 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500"
+            className="bg-background rounded px-2 py-1 text-xs border border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
           <div className="overflow-y-auto custom-scroll min-h-[200px] flex flex-col gap-1 pr-1">
             {filteredExerciseOptions.map((ex) => {
@@ -201,7 +201,7 @@ const LogWorkoutPage = () => {
                   key={ex._id}
                   onClick={() => addExercise(ex._id)}
                   disabled={already}
-                  className={`text-left text-xs px-2 py-1 rounded bg-gray-800 hover:bg-gray-700 transition border border-gray-700 disabled:opacity-40 disabled:cursor-not-allowed`}
+                  className={`text-left text-xs px-2 py-1 rounded transition border bg-background hover:bg-[color:var(--color-surface)] border-primary disabled:opacity-40 disabled:cursor-not-allowed`}
                 >
                   {ex.name}
                 </button>
@@ -217,14 +217,14 @@ const LogWorkoutPage = () => {
       {/* CENTER: Exercise Editor */}
       <div className="col-span-12 lg:col-span-6 flex flex-col gap-4">
         {loggedExercises.length === 0 && (
-          <div className="p-6 border border-dashed border-gray-600 rounded-lg text-center text-sm text-gray-400">
+          <div className="p-6 border border-dashed rounded-lg text-center text-sm text-text-secondary" style={{ borderColor: "var(--color-primary)" }}>
             Select exercises from the library to begin logging.
           </div>
         )}
         {loggedExercises.map((ex, eIdx) => (
-          <div key={eIdx} className="bg-gray-900 rounded-lg border border-gray-700 p-4">
+          <div key={eIdx} className="rounded-lg border p-4" style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}>
             <div className="flex items-center justify-between mb-2">
-              <h4 className="font-semibold text-sm text-teal-300">{ex.name}</h4>
+              <h4 className="font-semibold text-sm text-primary">{ex.name}</h4>
               <button
                 onClick={() => removeExercise(eIdx)}
                 className="text-gray-500 hover:text-red-500 p-1"
@@ -236,7 +236,7 @@ const LogWorkoutPage = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
-                  <tr className="text-gray-400 border-b border-gray-700">
+                  <tr className="text-text-secondary border-b" style={{ borderColor: "var(--color-primary)" }}>
                     <th className="py-1 text-left w-10">#</th>
                     <th className="py-1 text-left w-20">Reps</th>
                     <th className="py-1 text-left w-24">Weight</th>
@@ -248,14 +248,14 @@ const LogWorkoutPage = () => {
                     const invalidReps = s.reps && isNaN(parseInt(s.reps));
                     const invalidWeight = s.weight && isNaN(parseFloat(s.weight));
                     return (
-                      <tr key={sIdx} className="border-b border-gray-800 last:border-0">
-                        <td className="py-1 pr-2 text-gray-500 font-mono">{sIdx + 1}</td>
+                      <tr key={sIdx} className="border-b last:border-0" style={{ borderColor: "var(--color-primary)" }}>
+                        <td className="py-1 pr-2 text-text-tertiary font-mono">{sIdx + 1}</td>
                         <td className="py-1 pr-2">
                           <input
                             value={s.reps}
                             onChange={(e) => updateSetField(eIdx, sIdx, "reps", e.target.value)}
                             placeholder="10"
-                            className={`w-full bg-gray-800 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-teal-500 ${
+                            className={`w-full bg-background rounded px-2 py-1 border border-primary focus:outline-none focus:ring-1 focus:ring-primary ${
                               invalidReps ? "ring-1 ring-red-500" : ""
                             }`}
                           />
@@ -265,7 +265,7 @@ const LogWorkoutPage = () => {
                             value={s.weight}
                             onChange={(e) => updateSetField(eIdx, sIdx, "weight", e.target.value)}
                             placeholder="45"
-                            className={`w-full bg-gray-800 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-teal-500 ${
+                            className={`w-full bg-background rounded px-2 py-1 border border-primary focus:outline-none focus:ring-1 focus:ring-primary ${
                               invalidWeight ? "ring-1 ring-red-500" : ""
                             }`}
                           />
@@ -288,7 +288,7 @@ const LogWorkoutPage = () => {
             <div className="pt-2 flex justify-end">
               <button
                 onClick={() => addSet(eIdx)}
-                className="text-xs flex items-center gap-1 text-teal-300 hover:text-teal-200"
+                className="text-xs flex items-center gap-1 text-primary hover:opacity-90"
               >
                 <Plus size={14} /> Add Set
               </button>
@@ -299,8 +299,8 @@ const LogWorkoutPage = () => {
 
       {/* RIGHT: Live Summary */}
       <div className="col-span-12 lg:col-span-3 flex flex-col gap-4">
-        <div className="bg-gray-900 p-4 rounded-lg border border-gray-700 space-y-3">
-          <h3 className="text-sm font-semibold text-teal-300 flex items-center gap-2">
+        <div className="p-4 rounded-lg border space-y-3" style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}>
+          <h3 className="text-sm font-semibold text-primary flex items-center gap-2">
             <Activity size={16} /> Session Summary
           </h3>
           <div className="flex flex-wrap gap-2">
@@ -309,7 +309,7 @@ const LogWorkoutPage = () => {
             <StatBadge label="Reps" value={stats.reps} />
             <StatBadge label="Volume" value={stats.volume} />
           </div>
-          <div className="text-[11px] text-gray-500 leading-relaxed border-t border-gray-800 pt-2">
+          <div className="text-[11px] text-text-secondary leading-relaxed border-t pt-2" style={{ borderColor: "var(--color-primary)" }}>
             Volume = sum(reps * weight). Add accurate numbers for better tracking.
           </div>
         </div>
@@ -323,8 +323,8 @@ const LogWorkoutPage = () => {
 
       {/* ACTION BAR */}
       <div className="col-span-12 sticky bottom-0 pt-2">
-        <div className="bg-gray-950/90 backdrop-blur border border-gray-800 rounded-lg p-4 flex flex-col md:flex-row items-center gap-3 justify-between">
-          <div className="text-[11px] text-gray-400">
+        <div className="backdrop-blur border rounded-lg p-4 flex flex-col md:flex-row items-center gap-3 justify-between" style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}>
+          <div className="text-[11px] text-text-secondary">
             {stats.sets === 0
               ? "No sets logged yet."
               : `${stats.sets} sets • ${stats.reps} reps • Volume ${stats.volume}`}
@@ -333,7 +333,7 @@ const LogWorkoutPage = () => {
             <button
               onClick={submitWorkout}
               disabled={loading}
-              className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-500 disabled:bg-gray-600 text-white text-sm font-semibold px-6 py-2 rounded"
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-primary hover:opacity-90 disabled:bg-gray-600 text-white text-sm font-semibold px-6 py-2 rounded"
             >
               {loading ? (
                 "Saving..."
@@ -345,7 +345,7 @@ const LogWorkoutPage = () => {
             </button>
             <button
               onClick={() => navigate("/workouts")}
-              className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium px-5 py-2 rounded"
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-background hover:opacity-90 border border-primary text-text-main text-sm font-medium px-5 py-2 rounded"
             >
               Cancel
             </button>

@@ -34,7 +34,7 @@ const WorkoutPage = () => {
         initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, delay: 0.1 }}
-        className="text-3xl font-bold text-teal-400 mb-8"
+  className="text-3xl font-bold text-primary mb-8"
       >
         Workout Tracker
       </motion.h1>
@@ -61,12 +61,12 @@ const WorkoutPage = () => {
           initial={{ opacity: 0, x: -14 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.45, delay: 0.4 }}
-          className="text-2xl font-semibold text-white mb-4"
+          className="text-2xl font-semibold text-primary mb-4"
         >
           Recent Workouts
         </motion.h2>
         {loading && (
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-gray-500 text-sm">
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-text-secondary text-sm">
             Loading history...
           </motion.p>
         )}
@@ -99,7 +99,7 @@ const WorkoutPage = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.6 }}
-                className="text-gray-500 text-sm"
+                className="text-text-secondary text-sm"
               >
                 Your past workout logs will appear here.
               </motion.p>

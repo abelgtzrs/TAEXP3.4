@@ -20,11 +20,14 @@ const ActionCard = ({ to, icon, title, description, delay = 0 }) => {
     >
       <Link
         to={to}
-        className="block p-8 bg-gray-800 rounded-lg hover:bg-gray-700 hover:border-teal-500 border-2 border-transparent transition-all duration-300 h-full text-left"
+        className="block p-8 rounded-lg border-2 transition-all duration-300 h-full text-left"
+        style={{ background: "var(--color-surface)", borderColor: "transparent" }}
+        onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--color-primary)")}
+        onMouseLeave={(e) => (e.currentTarget.style.borderColor = "transparent")}
       >
-        <div className="mb-4 text-teal-300">{icon}</div>
-        <h2 className="text-xl font-semibold text-white mb-1">{title}</h2>
-        <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
+        <div className="mb-4 text-primary">{icon}</div>
+        <h2 className="text-xl font-semibold text-primary mb-1">{title}</h2>
+        <p className="text-text-secondary text-sm leading-relaxed">{description}</p>
       </Link>
     </motion.div>
   );

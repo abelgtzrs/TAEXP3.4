@@ -192,7 +192,7 @@ const DisplayedCollection = ({ title, items, baseField }) => {
                   onMouseLeave={handleLeave}
                 >
                   {baseItem ? (
-                    <div className="w-full aspect-square flex items-center justify-center rounded-md bg-slate-800/30">
+                    <div className="w-full aspect-square flex items-center justify-center rounded-md bg-transparent">
                       {imageUrl ? (
                         <img
                           src={imageUrl}
