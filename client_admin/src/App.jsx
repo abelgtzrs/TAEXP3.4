@@ -32,6 +32,7 @@ import VolumeWorkbenchPage from "./pages/VolumeWorkbenchPage";
 import AdminUserManagementPage from "./pages/AdminUserManagementPage";
 import BlessingsAdminPage from "./pages/BlessingsAdminPage";
 import FootballTrackerPage from "./pages/FootballTrackerPage";
+import CalendarAdminPage from "./pages/CalendarAdminPage";
 
 function App() {
   useTheme();
@@ -77,6 +78,7 @@ function App() {
           <Route path="/admin/pokemon-editor" element={<PokemonEditorPage />} />
           <Route path="/admin/users" element={<AdminUserManagementPage />} />
           <Route path="/admin/blessings" element={<BlessingsAdminPage />} />
+          <Route path="/admin/calendar" element={<CalendarAdminPage />} />
         </Route>
       </Route>
 

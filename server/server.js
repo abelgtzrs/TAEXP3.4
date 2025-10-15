@@ -22,6 +22,9 @@ require("./models/ExerciseDefinition");
 require("./models/SpotifyLogs");
 require("./models/Volume");
 require("./models/WorkoutTemplate");
+// Calendar models
+require("./models/CalendarEvent");
+require("./models/MonthlyBill");
 
 // Finance models
 require("./models/finance/FinancialCategory");
@@ -164,6 +167,7 @@ app.use("/api/spotify", require("./routes/spotifyRoutes"));
 app.use("/api/finance", require("./routes/financeRoutes"));
 app.use("/api/strokes", strokesRoutes);
 app.use("/api/sports", require("./routes/sportsRoutes"));
+app.use("/api/calendar", require("./routes/calendarRoutes"));
 
 // Catch-all middleware: send back React's index.html file for client-side routing
 app.use((req, res, next) => {
