@@ -28,9 +28,7 @@ const SelectTemplatePage = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-primary mb-6">
-        Select a Prebuilt Workout
-      </h1>
+      <h1 className="text-3xl font-bold text-primary mb-6">Select a Prebuilt Workout</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {templates.map((template) => (
           // This Link navigates to the logging page.
@@ -45,9 +43,7 @@ const SelectTemplatePage = () => {
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--color-primary)")}
             onMouseLeave={(e) => (e.currentTarget.style.borderColor = "transparent")}
           >
-            <h2 className="text-xl font-bold text-primary mb-2">
-              {template.name}
-            </h2>
+            <h2 className="text-xl font-bold text-primary mb-2">{template.name}</h2>
             <p className="text-text-secondary text-sm mb-4">{template.description}</p>
             <ul className="text-xs text-text-main list-disc list-inside">
               {/* Display the names of the exercises in the template */}
@@ -58,9 +54,7 @@ const SelectTemplatePage = () => {
           </Link>
         ))}
         {templates.length === 0 && (
-          <p className="text-text-secondary col-span-full">
-            No workout templates have been created yet.
-          </p>
+          <p className="text-text-secondary col-span-full">No workout templates have been created yet.</p>
         )}
       </div>
     </div>

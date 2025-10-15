@@ -267,6 +267,9 @@ const AdminLayout = () => {
                   <NavItem to="/admin/habbo-rares" icon={Boxes} isCollapsed={isSidebarCollapsed}>
                     Habbo Rares Manager
                   </NavItem>
+                  <NavItem to="/admin/snoopys" icon={Boxes} isCollapsed={isSidebarCollapsed}>
+                    Snoopy Manager
+                  </NavItem>
                 </ul>
               </div>
               {/* Admin: Fitness */}

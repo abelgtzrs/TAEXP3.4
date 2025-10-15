@@ -16,6 +16,7 @@ import VolumesPage from "./pages/VolumesPage";
 import EditVolumePage from "./pages/EditVolumePage";
 import AdminExercisesPage from "./pages/AdminExercisesPage";
 import AdminTemplatesPage from "./pages/AdminTemplatesPage";
+import SnoopyAdminPage from "./pages/SnoopyAdminPage";
 import ShopPage from "./pages/ShopPage";
 import ProfilePage from "./pages/ProfilePage";
 import CollectionsPage from "./pages/CollectionsPage";
@@ -71,6 +72,7 @@ function App() {
           <Route path="/admin/exercises" element={<AdminExercisesPage />} />
           <Route path="/admin/templates" element={<AdminTemplatesPage />} />
           <Route path="/admin/habbo-rares" element={<HabboRareManagement />} />
+          <Route path="/admin/snoopys" element={<SnoopyAdminPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/collections" element={<CollectionsPage />} />
           <Route path="/collections/:collectionType" element={<CollectionDetailPage />} />

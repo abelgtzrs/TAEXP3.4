@@ -7,7 +7,10 @@ import api from "../services/api";
 
 // --- INLINE HELPER COMPONENTS ---
 const StatBadge = ({ label, value }) => (
-  <div className="flex flex-col p-2 rounded-md border min-w-[90px]" style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}>
+  <div
+    className="flex flex-col p-2 rounded-md border min-w-[90px]"
+    style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+  >
     <span className="text-[10px] tracking-wide text-text-secondary uppercase">{label}</span>
     <span className="text-lg font-semibold text-primary">{value}</span>
   </div>
@@ -150,7 +153,10 @@ const LogWorkoutPage = () => {
     <div className="grid grid-cols-12 gap-6">
       {/* LEFT: Meta & Exercise Library */}
       <div className="col-span-12 lg:col-span-3 flex flex-col gap-4">
-        <div className="p-4 rounded-lg border space-y-3" style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}>
+        <div
+          className="p-4 rounded-lg border space-y-3"
+          style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+        >
           <input
             type="text"
             value={workoutName}
@@ -182,7 +188,10 @@ const LogWorkoutPage = () => {
             className="w-full bg-background rounded px-3 py-2 text-xs h-24 resize-none border border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
-        <div className="p-4 rounded-lg border flex flex-col gap-2 min-h-[320px]" style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}>
+        <div
+          className="p-4 rounded-lg border flex flex-col gap-2 min-h-[320px]"
+          style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+        >
           <h3 className="text-sm font-semibold text-primary flex items-center gap-2">
             <ClipboardList size={16} /> Exercise Library
           </h3>
@@ -217,12 +226,19 @@ const LogWorkoutPage = () => {
       {/* CENTER: Exercise Editor */}
       <div className="col-span-12 lg:col-span-6 flex flex-col gap-4">
         {loggedExercises.length === 0 && (
-          <div className="p-6 border border-dashed rounded-lg text-center text-sm text-text-secondary" style={{ borderColor: "var(--color-primary)" }}>
+          <div
+            className="p-6 border border-dashed rounded-lg text-center text-sm text-text-secondary"
+            style={{ borderColor: "var(--color-primary)" }}
+          >
             Select exercises from the library to begin logging.
           </div>
         )}
         {loggedExercises.map((ex, eIdx) => (
-          <div key={eIdx} className="rounded-lg border p-4" style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}>
+          <div
+            key={eIdx}
+            className="rounded-lg border p-4"
+            style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+          >
             <div className="flex items-center justify-between mb-2">
               <h4 className="font-semibold text-sm text-primary">{ex.name}</h4>
               <button
@@ -299,7 +315,10 @@ const LogWorkoutPage = () => {
 
       {/* RIGHT: Live Summary */}
       <div className="col-span-12 lg:col-span-3 flex flex-col gap-4">
-        <div className="p-4 rounded-lg border space-y-3" style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}>
+        <div
+          className="p-4 rounded-lg border space-y-3"
+          style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+        >
           <h3 className="text-sm font-semibold text-primary flex items-center gap-2">
             <Activity size={16} /> Session Summary
           </h3>
@@ -309,7 +328,10 @@ const LogWorkoutPage = () => {
             <StatBadge label="Reps" value={stats.reps} />
             <StatBadge label="Volume" value={stats.volume} />
           </div>
-          <div className="text-[11px] text-text-secondary leading-relaxed border-t pt-2" style={{ borderColor: "var(--color-primary)" }}>
+          <div
+            className="text-[11px] text-text-secondary leading-relaxed border-t pt-2"
+            style={{ borderColor: "var(--color-primary)" }}
+          >
             Volume = sum(reps * weight). Add accurate numbers for better tracking.
           </div>
         </div>
@@ -323,7 +345,10 @@ const LogWorkoutPage = () => {
 
       {/* ACTION BAR */}
       <div className="col-span-12 sticky bottom-0 pt-2">
-        <div className="backdrop-blur border rounded-lg p-4 flex flex-col md:flex-row items-center gap-3 justify-between" style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}>
+        <div
+          className="backdrop-blur border rounded-lg p-4 flex flex-col md:flex-row items-center gap-3 justify-between"
+          style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+        >
           <div className="text-[11px] text-text-secondary">
             {stats.sets === 0
               ? "No sets logged yet."
