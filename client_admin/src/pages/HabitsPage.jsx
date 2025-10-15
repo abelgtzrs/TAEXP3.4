@@ -97,10 +97,10 @@ const HabitsPage = () => {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="text-right"
         >
-          <p className="text-lg text-white">
-            Temu Tokens: <span className="font-bold text-yellow-400">{user?.temuTokens || 0}</span>
+          <p className="text-lg text-text-main">
+            Temu Tokens: <span className="font-bold text-primary">{user?.temuTokens || 0}</span>
           </p>
-          <p className="text-xs text-gray-400">Earned from completing habits</p>
+          <p className="text-xs text-text-secondary">Earned from completing habits</p>
         </motion.div>
       </motion.div>
 
@@ -117,13 +117,13 @@ const HabitsPage = () => {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5, delay: 0.6 }}
-        className="text-2xl font-semibold text-white mt-10 mb-4"
+        className="text-2xl font-semibold text-primary mt-10 mb-4"
       >
         Your Habits
       </motion.h2>
 
       {loading && (
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-gray-500 py-8">
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-text-secondary py-8">
           Loading habits...
         </motion.p>
       )}
@@ -166,7 +166,7 @@ const HabitsPage = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.9 }}
-              className="text-center text-gray-500 py-8"
+              className="text-center text-text-secondary py-8"
             >
               You haven't added any habits yet. Add one above to get started!
             </motion.p>

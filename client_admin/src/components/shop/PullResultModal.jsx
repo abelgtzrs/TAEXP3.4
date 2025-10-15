@@ -1,5 +1,3 @@
-// --- FILE: client-admin/src/components/shop/PullResultModal.jsx (Corrected) ---
-
 const PullResultModal = ({ result, onClose }) => {
   // If there's no result data at all, render nothing.
   if (!result) return null;
@@ -20,6 +18,16 @@ const PullResultModal = ({ result, onClose }) => {
   const displayItems = isPack ? items : [item];
 
   // Helper function to get display properties for any item
+  // Build absolute URLs for relative images based on API base URL
+  const serverBaseUrl = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").split("/api")[0];
+  const buildImageUrl = (url) => {
+    if (!url) return null;
+    if (/^https?:\/\//i.test(url)) return url;
+    let path = url.replace(/^public\//, "").replace(/^\/public\//, "");
+    if (path.startsWith("/")) return `${serverBaseUrl}${path}`;
+    return `${serverBaseUrl}/${path}`;
+  };
+
   const getDisplayProps = (item) => {
     let displayImageUrl = item.imageUrl || item.iconUrlOrKey;
 
@@ -31,7 +39,7 @@ const PullResultModal = ({ result, onClose }) => {
 
     const displayRarity = item.rarity || item.rarityCategory || item.systemRarity;
 
-    return { displayImageUrl, displayRarity };
+    return { displayImageUrl: buildImageUrl(displayImageUrl), displayRarity };
   };
 
   const rarityColor = {
@@ -60,12 +68,11 @@ const PullResultModal = ({ result, onClose }) => {
       onClick={onClose}
     >
       <div
-        className={`widget-container p-8 rounded-lg shadow-2xl text-center w-full mx-4 ${
-          isPack ? "max-w-4xl" : "max-w-sm"
-        }`}
+        className={`p-8 rounded-lg shadow-2xl text-center w-full mx-4 border ${isPack ? "max-w-4xl" : "max-w-sm"}`}
+        style={{ background: 'var(--color-surface)', borderColor: 'var(--color-primary)' }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-2xl font-bold text-white mb-4">{message}</h2>
+        <h2 className="text-2xl font-bold text-text-main mb-4">{message}</h2>
 
         {isPack ? (
           // Pack display - grid of cards
@@ -74,15 +81,15 @@ const PullResultModal = ({ result, onClose }) => {
               {displayItems.map((item, index) => {
                 const { displayImageUrl, displayRarity } = getDisplayProps(item);
                 return (
-                  <div key={index} className="p-3 bg-gray-900/50 rounded-lg">
+                  <div key={index} className="p-3 rounded-lg border" style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)' }}>
                     {displayImageUrl ? (
                       <img src={displayImageUrl} alt={item.name} className="h-32 mx-auto object-contain mb-2" />
                     ) : (
-                      <div className="h-32 flex items-center justify-center text-gray-500 mb-2">[No Image]</div>
+                      <div className="h-32 flex items-center justify-center text-text-secondary mb-2">[No Image]</div>
                     )}
-                    <p className="text-sm font-semibold text-white mb-1">{item.name}</p>
+                    <p className="text-sm font-semibold text-text-main mb-1">{item.name}</p>
                     {displayRarity && (
-                      <p className={`font-bold uppercase text-xs ${rarityColor[displayRarity] || "text-gray-300"}`}>
+                      <p className={`font-bold uppercase text-xs ${rarityColor[displayRarity] || "text-text-secondary"}`}>
                         {displayRarity.replace(/_/g, " ")}
                       </p>
                     )}
@@ -93,7 +100,7 @@ const PullResultModal = ({ result, onClose }) => {
           </div>
         ) : (
           // Single item display - original layout
-          <div className="my-6 p-4 bg-gray-900/50 rounded-lg">
+          <div className="my-6 p-4 rounded-lg border" style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)' }}>
             {(() => {
               const { displayImageUrl, displayRarity } = getDisplayProps(displayItems[0]);
               return (
@@ -101,11 +108,11 @@ const PullResultModal = ({ result, onClose }) => {
                   {displayImageUrl ? (
                     <img src={displayImageUrl} alt={displayItems[0].name} className="h-40 mx-auto object-contain" />
                   ) : (
-                    <div className="h-40 flex items-center justify-center text-gray-500">[No Image]</div>
+                    <div className="h-40 flex items-center justify-center text-text-secondary">[No Image]</div>
                   )}
-                  <p className="mt-4 text-xl font-semibold text-white">{displayItems[0].name}</p>
+                  <p className="mt-4 text-xl font-semibold text-text-main">{displayItems[0].name}</p>
                   {displayRarity && (
-                    <p className={`font-bold uppercase text-sm ${rarityColor[displayRarity] || "text-gray-300"}`}>
+                    <p className={`font-bold uppercase text-sm ${rarityColor[displayRarity] || "text-text-secondary"}`}>
                       {displayRarity.replace(/_/g, " ")}
                     </p>
                   )}
@@ -117,7 +124,7 @@ const PullResultModal = ({ result, onClose }) => {
 
         <button
           onClick={onClose}
-          className="w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 rounded-lg transition"
+          className="w-full bg-primary hover:opacity-90 text-white font-bold py-3 rounded-lg transition"
         >
           Awesome!
         </button>

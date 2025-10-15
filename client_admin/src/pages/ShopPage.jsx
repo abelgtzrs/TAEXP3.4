@@ -104,7 +104,7 @@ const ShopPage = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="text-3xl font-bold text-teal-400 mb-2"
+        className="text-3xl font-bold text-primary mb-2"
       >
         The Gacha Shop
       </motion.h1>
@@ -112,7 +112,7 @@ const ShopPage = () => {
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
-        className="text-gray-400 mb-8"
+        className="text-text-secondary mb-8"
       >
         Spend your hard-earned currency to acquire new collectibles.
       </motion.p>
@@ -122,14 +122,15 @@ const ShopPage = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: 0.4 }}
         whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
-        className="flex flex-wrap gap-4 mb-8 text-white p-4 bg-gray-800/50 rounded-lg"
+        className="flex flex-wrap gap-4 mb-8 p-4 rounded-lg border"
+        style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
       >
-        <span>Balances:</span>
+        <span className="text-text-main">Balances:</span>
         <motion.span
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.3, delay: 0.6 }}
-          className="font-bold text-yellow-400"
+          className="font-bold text-primary"
         >
           {user?.temuTokens || 0} TT
         </motion.span>
@@ -137,7 +138,7 @@ const ShopPage = () => {
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.3, delay: 0.7 }}
-          className="font-bold text-amber-400"
+          className="font-bold text-primary"
         >
           {user?.gatillaGold || 0} GG
         </motion.span>
@@ -145,7 +146,7 @@ const ShopPage = () => {
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.3, delay: 0.8 }}
-          className="font-bold text-pink-400"
+          className="font-bold text-primary"
         >
           {user?.wendyHearts || 0} ❤️
         </motion.span>

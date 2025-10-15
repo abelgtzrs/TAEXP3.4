@@ -5,7 +5,6 @@ import api from "../services/api";
 import { Search, Dumbbell, Activity, LayoutList, Trash2, PlusCircle, XCircle, Save, RefreshCcw } from "lucide-react";
 
 // --- Configuration Data ---
-// It's good practice to define static option lists as constants.
 const MUSCLE_GROUP_OPTIONS = [
   "Chest",
   "Triceps",
@@ -39,7 +38,6 @@ const EQUIPMENT_OPTIONS = [
 
 const EXERCISE_TYPE_OPTIONS = ["Strength", "Cardio", "Flexibility"];
 
-// This is the starting state for a new, blank form.
 const STRENGTH_PRESET = [
   { name: "weight", unit: "lbs" },
   { name: "reps", unit: "count" },
@@ -60,7 +58,6 @@ const INITIAL_FORM_STATE = {
 };
 
 const AdminExercisesPage = () => {
-  // --- State Management ---
   const [exercises, setExercises] = useState([]);
   const [formData, setFormData] = useState(INITIAL_FORM_STATE);
   const [editingId, setEditingId] = useState(null);
@@ -68,7 +65,7 @@ const AdminExercisesPage = () => {
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("All");
-  const [touchedMetrics, setTouchedMetrics] = useState(false); // track if user manually changed metrics
+  const [touchedMetrics, setTouchedMetrics] = useState(false);
 
   // --- Data Fetching ---
   const fetchExercises = async () => {
@@ -83,14 +80,11 @@ const AdminExercisesPage = () => {
     }
   };
 
-  // Fetch exercises when the component first loads.
   useEffect(() => {
     fetchExercises();
   }, []);
 
   // --- Form Handlers ---
-
-  // Handles changes for simple text inputs and select dropdowns.
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     if (name === "exerciseType") {
@@ -108,16 +102,14 @@ const AdminExercisesPage = () => {
     }
   };
 
-  // Handles changes for the multi-select checkboxes.
   const handleCheckboxChange = (field, value) => {
     const currentValues = formData[field];
     const newValues = currentValues.includes(value)
-      ? currentValues.filter((item) => item !== value) // Uncheck: remove from array
-      : [...currentValues, value]; // Check: add to array
+      ? currentValues.filter((item) => item !== value)
+      : [...currentValues, value];
     setFormData({ ...formData, [field]: newValues });
   };
 
-  // Handles changes for the dynamic metrics inputs.
   const handleMetricChange = (index, field, value) => {
     const newMetrics = [...formData.defaultMetrics];
     newMetrics[index][field] = value;
@@ -125,13 +117,11 @@ const AdminExercisesPage = () => {
     setFormData({ ...formData, defaultMetrics: newMetrics });
   };
 
-  // Adds a new blank metric row to the form.
   const addMetric = () => {
     setTouchedMetrics(true);
     setFormData({ ...formData, defaultMetrics: [...formData.defaultMetrics, { name: "", unit: "" }] });
   };
 
-  // Removes a metric row from the form.
   const removeMetric = (index) => {
     setTouchedMetrics(true);
     const newMetrics = formData.defaultMetrics.filter((_, i) => i !== index);
@@ -139,8 +129,6 @@ const AdminExercisesPage = () => {
   };
 
   // --- Main Actions ---
-
-  // Populates the form when an "Edit" button is clicked.
   const handleEditClick = (exercise) => {
     setEditingId(exercise._id);
     setTouchedMetrics(false);
@@ -154,14 +142,12 @@ const AdminExercisesPage = () => {
     });
   };
 
-  // Clears the form and resets it to "Create" mode.
   const resetForm = () => {
     setFormData(INITIAL_FORM_STATE);
     setEditingId(null);
     setTouchedMetrics(false);
   };
 
-  // Handles form submission for both creating and updating.
   const validateMetrics = () => {
     if (!formData.defaultMetrics.length) return false;
     const seen = new Set();
@@ -194,7 +180,6 @@ const AdminExercisesPage = () => {
     }
   };
 
-  // Handles the delete action.
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure? This will delete the exercise definition permanently.")) {
       try {
@@ -206,7 +191,6 @@ const AdminExercisesPage = () => {
     }
   };
 
-  // Filtered list
   const filtered = useMemo(() => {
     return exercises.filter((ex) => {
       const m = ex.name.toLowerCase().includes(search.toLowerCase());
@@ -222,23 +206,25 @@ const AdminExercisesPage = () => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-      <h1 className="text-3xl font-bold text-teal-400 mb-6">Manage Exercise Definitions</h1>
+      <h1 className="text-3xl font-bold text-primary mb-6">Manage Exercise Definitions</h1>
       <div className="grid grid-cols-12 gap-2">
         {/* LEFT: List & Filters */}
         <div className="col-span-12 lg:col-span-4 flex flex-col gap-4">
-          <div className="bg-gray-900 rounded-lg border border-gray-700 p-4 flex flex-col gap-3">
+          <div className="rounded-lg border p-4 flex flex-col gap-3" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-primary)' }}>
             <div className="flex items-center gap-2">
-              <Search size={16} className="text-gray-500" />
+              <Search size={16} className="text-text-secondary" />
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search exercises..."
-                className="flex-grow bg-gray-800 rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="flex-grow rounded px-2 py-1 text-sm border focus:outline-none"
+                style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
               />
               <select
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
-                className="bg-gray-800 rounded px-2 py-1 text-xs focus:outline-none"
+                className="rounded px-2 py-1 text-xs border focus:outline-none"
+                style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
               >
                 <option>All</option>
                 {EXERCISE_TYPE_OPTIONS.map((t) => (
@@ -246,28 +232,29 @@ const AdminExercisesPage = () => {
                 ))}
               </select>
             </div>
-            <div className="text-[11px] text-gray-500">{filtered.length} matching</div>
+            <div className="text-[11px] text-text-secondary">{filtered.length} matching</div>
             <div className="overflow-y-auto max-h-[60vh] pr-1 space-y-1">
-              {filtered.map((ex) => (
-                <button
-                  key={ex._id}
-                  onClick={() => handleEditClick(ex)}
-                  className={`w-full text-left px-3 py-2 rounded border text-sm transition flex items-center justify-between ${
-                    editingId === ex._id
-                      ? "bg-teal-600/30 border-teal-600 text-teal-200"
-                      : "bg-gray-800 border-gray-700 hover:bg-gray-700"
-                  }`}
-                >
-                  <span className="truncate">{ex.name}</span>
-                  <span className="text-[10px] uppercase text-gray-400 ml-2">{ex.exerciseType}</span>
-                </button>
-              ))}
-              {!filtered.length && <div className="text-xs text-gray-500 py-4 text-center">No exercises found.</div>}
+              {filtered.map((ex) => {
+                const active = editingId === ex._id;
+                return (
+                  <button
+                    key={ex._id}
+                    onClick={() => handleEditClick(ex)}
+                    className="w-full text-left px-3 py-2 rounded border text-sm transition flex items-center justify-between"
+                    style={{
+                      background: active ? 'var(--color-surface)' : 'var(--color-background)',
+                      borderColor: 'var(--color-primary)',
+                      color: active ? 'var(--color-primary)' : 'var(--color-text-main)'
+                    }}
+                  >
+                    <span className="truncate">{ex.name}</span>
+                    <span className="text-[10px] uppercase ml-2" style={{ color: 'var(--color-text-secondary)' }}>{ex.exerciseType}</span>
+                  </button>
+                );
+              })}
+              {!filtered.length && <div className="text-xs text-text-secondary py-4 text-center">No exercises found.</div>}
             </div>
-            <button
-              onClick={resetForm}
-              className="mt-2 text-xs text-teal-300 hover:text-teal-200 flex items-center gap-1"
-            >
+            <button onClick={resetForm} className="mt-2 text-xs text-primary hover:opacity-90 flex items-center gap-1">
               <RefreshCcw size={14} /> New Definition
             </button>
           </div>
@@ -275,14 +262,14 @@ const AdminExercisesPage = () => {
 
         {/* CENTER: Editor */}
         <div className="col-span-12 lg:col-span-5">
-          <form onSubmit={handleSubmit} className="bg-gray-900 rounded-lg border border-gray-700 p-5 space-y-5">
+          <form onSubmit={handleSubmit} className="rounded-lg border p-5 space-y-5" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-primary)' }}>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-white">{editingId ? "Edit Exercise" : "Create Exercise"}</h2>
+              <h2 className="text-lg font-semibold text-text-main">{editingId ? "Edit Exercise" : "Create Exercise"}</h2>
               {editingId && (
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="text-xs text-gray-400 hover:text-gray-200 flex items-center gap-1"
+                  className="text-xs text-text-secondary hover:opacity-90 flex items-center gap-1"
                 >
                   <XCircle size={14} /> Cancel
                 </button>
@@ -294,21 +281,24 @@ const AdminExercisesPage = () => {
               onChange={handleFormChange}
               placeholder="Name (e.g. Bench Press, Running)"
               required
-              className="w-full bg-gray-800 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-500"
+              className="w-full rounded px-3 py-2 text-sm border focus:outline-none"
+              style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
             />
             <textarea
               name="description"
               value={formData.description}
               onChange={handleFormChange}
               placeholder="Description / cues / notes"
-              className="w-full bg-gray-800 rounded px-3 py-2 text-xs h-24 resize-none focus:outline-none focus:ring-1 focus:ring-teal-500"
+              className="w-full rounded px-3 py-2 text-xs h-24 resize-none border focus:outline-none"
+              style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
             />
             <div className="grid grid-cols-2 gap-3">
               <select
                 name="exerciseType"
                 value={formData.exerciseType}
                 onChange={handleFormChange}
-                className="bg-gray-800 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="rounded px-3 py-2 text-sm border focus:outline-none"
+                style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
               >
                 {EXERCISE_TYPE_OPTIONS.map((t) => (
                   <option key={t}>{t}</option>
@@ -318,21 +308,24 @@ const AdminExercisesPage = () => {
                 <button
                   type="button"
                   onClick={() => applyPreset(STRENGTH_PRESET)}
-                  className="flex-1 text-[10px] px-2 py-1 rounded bg-gray-800 hover:bg-gray-700 text-teal-300 border border-gray-700 flex items-center gap-1"
+                  className="flex-1 text-[10px] px-2 py-1 rounded border flex items-center gap-1 hover:opacity-90"
+                  style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-primary)' }}
                 >
                   <Dumbbell size={12} /> Strength Preset
                 </button>
                 <button
                   type="button"
                   onClick={() => applyPreset(CARDIO_PRESET)}
-                  className="flex-1 text-[10px] px-2 py-1 rounded bg-gray-800 hover:bg-gray-700 text-teal-300 border border-gray-700 flex items-center gap-1"
+                  className="flex-1 text-[10px] px-2 py-1 rounded border flex items-center gap-1 hover:opacity-90"
+                  style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-primary)' }}
                 >
                   <Activity size={12} /> Cardio Preset
                 </button>
                 <button
                   type="button"
                   onClick={() => applyPreset(FLEX_PRESET)}
-                  className="flex-1 text-[10px] px-2 py-1 rounded bg-gray-800 hover:bg-gray-700 text-teal-300 border border-gray-700 flex items-center gap-1"
+                  className="flex-1 text-[10px] px-2 py-1 rounded border flex items-center gap-1 hover:opacity-90"
+                  style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-primary)' }}
                 >
                   <LayoutList size={12} /> Flex Preset
                 </button>
@@ -340,7 +333,7 @@ const AdminExercisesPage = () => {
             </div>
             {/* Muscle Groups */}
             <div>
-              <h3 className="text-xs font-semibold text-gray-400 mb-1">Muscle Groups</h3>
+              <h3 className="text-xs font-semibold text-text-secondary mb-1">Muscle Groups</h3>
               <div className="flex flex-wrap gap-1">
                 {MUSCLE_GROUP_OPTIONS.map((g) => {
                   const active = formData.muscleGroups.includes(g);
@@ -349,11 +342,12 @@ const AdminExercisesPage = () => {
                       type="button"
                       key={g}
                       onClick={() => handleCheckboxChange("muscleGroups", g)}
-                      className={`px-2 py-1 rounded text-[10px] border ${
-                        active
-                          ? "bg-teal-600/30 border-teal-500 text-teal-200"
-                          : "bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
-                      }`}
+                      className={`px-2 py-1 rounded text-[10px] border`}
+                      style={{
+                        background: 'var(--color-background)',
+                        borderColor: 'var(--color-primary)',
+                        color: active ? 'var(--color-primary)' : 'var(--color-text-secondary)'
+                      }}
                     >
                       {g}
                     </button>
@@ -363,7 +357,7 @@ const AdminExercisesPage = () => {
             </div>
             {/* Equipment */}
             <div>
-              <h3 className="text-xs font-semibold text-gray-400 mb-1">Equipment</h3>
+              <h3 className="text-xs font-semibold text-text-secondary mb-1">Equipment</h3>
               <div className="flex flex-wrap gap-1">
                 {EQUIPMENT_OPTIONS.map((eq) => {
                   const active = formData.equipment.includes(eq);
@@ -372,11 +366,12 @@ const AdminExercisesPage = () => {
                       type="button"
                       key={eq}
                       onClick={() => handleCheckboxChange("equipment", eq)}
-                      className={`px-2 py-1 rounded text-[10px] border ${
-                        active
-                          ? "bg-teal-600/30 border-teal-500 text-teal-200"
-                          : "bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
-                      }`}
+                      className={`px-2 py-1 rounded text-[10px] border`}
+                      style={{
+                        background: 'var(--color-background)',
+                        borderColor: 'var(--color-primary)',
+                        color: active ? 'var(--color-primary)' : 'var(--color-text-secondary)'
+                      }}
                     >
                       {eq}
                     </button>
@@ -386,7 +381,7 @@ const AdminExercisesPage = () => {
             </div>
             {/* Metrics */}
             <div>
-              <h3 className="text-xs font-semibold text-gray-400 mb-2">Default Metrics</h3>
+              <h3 className="text-xs font-semibold text-text-secondary mb-2">Default Metrics</h3>
               <div className="space-y-2">
                 {formData.defaultMetrics.map((m, i) => {
                   const dupName =
@@ -397,20 +392,20 @@ const AdminExercisesPage = () => {
                         value={m.name}
                         onChange={(e) => handleMetricChange(i, "name", e.target.value)}
                         placeholder="metric (e.g. weight)"
-                        className={`flex-1 bg-gray-800 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500 ${
-                          dupName ? "ring-1 ring-red-500" : ""
-                        }`}
+                        className={`flex-1 rounded px-2 py-1 text-xs border focus:outline-none ${dupName ? "ring-1 ring-red-500" : ""}`}
+                        style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
                       />
                       <input
                         value={m.unit}
                         onChange={(e) => handleMetricChange(i, "unit", e.target.value)}
                         placeholder="unit (e.g. lbs)"
-                        className="w-24 bg-gray-800 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500"
+                        className="w-24 rounded px-2 py-1 text-xs border focus:outline-none"
+                        style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
                       />
                       <button
                         type="button"
                         onClick={() => removeMetric(i)}
-                        className="p-1 text-gray-500 hover:text-red-500"
+                        className="p-1 text-text-secondary hover:text-red-500"
                       >
                         <Trash2 size={14} />
                       </button>
@@ -421,7 +416,7 @@ const AdminExercisesPage = () => {
               <button
                 type="button"
                 onClick={addMetric}
-                className="mt-2 text-xs text-teal-300 hover:text-teal-200 flex items-center gap-1"
+                className="mt-2 text-xs text-primary hover:opacity-90 flex items-center gap-1"
               >
                 <PlusCircle size={14} /> Add Metric
               </button>
@@ -432,7 +427,7 @@ const AdminExercisesPage = () => {
             <div className="flex gap-2 pt-2">
               <button
                 type="submit"
-                className="flex-1 flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-500 text-white text-sm font-semibold px-4 py-2 rounded"
+                className="flex-1 flex items-center justify-center gap-2 bg-primary hover:opacity-90 text-white text-sm font-semibold px-4 py-2 rounded"
               >
                 <Save size={16} /> {editingId ? "Update" : "Create"}
               </button>
@@ -440,7 +435,8 @@ const AdminExercisesPage = () => {
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium px-4 py-2 rounded"
+                  className="flex items-center gap-2 border hover:opacity-90 text-text-main text-sm font-medium px-4 py-2 rounded bg-background"
+                  style={{ borderColor: 'var(--color-primary)' }}
                 >
                   <XCircle size={16} /> Reset
                 </button>
@@ -451,38 +447,38 @@ const AdminExercisesPage = () => {
 
         {/* RIGHT: Preview & Guidance */}
         <div className="col-span-12 lg:col-span-3 flex flex-col gap-4">
-          <div className="bg-gray-900 rounded-lg border border-gray-700 p-4 space-y-3">
-            <h3 className="text-sm font-semibold text-teal-300">Definition Preview</h3>
-            <div className="text-xs text-gray-400 space-y-1">
+          <div className="rounded-lg border p-4 space-y-3" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-primary)' }}>
+            <h3 className="text-sm font-semibold text-primary">Definition Preview</h3>
+            <div className="text-xs text-text-secondary space-y-1">
               <div>
-                <span className="text-gray-500">Name:</span>{" "}
-                {formData.name || <span className="italic">(untitled)</span>}
+                <span className="text-text-secondary">Name:</span>{" "}
+                {formData.name || <span className="italic text-text-secondary">(untitled)</span>}
               </div>
               <div>
-                <span className="text-gray-500">Type:</span> {formData.exerciseType}
+                <span className="text-text-secondary">Type:</span> {formData.exerciseType}
               </div>
               <div>
-                <span className="text-gray-500">Muscles:</span>{" "}
-                {formData.muscleGroups.length ? formData.muscleGroups.join(", ") : "—"}
+                <span className="text-text-secondary">Muscles:</span>{" "}
+                <span className="text-text-main">{formData.muscleGroups.length ? formData.muscleGroups.join(", ") : "—"}</span>
               </div>
               <div>
-                <span className="text-gray-500">Equipment:</span>{" "}
-                {formData.equipment.length ? formData.equipment.join(", ") : "—"}
+                <span className="text-text-secondary">Equipment:</span>{" "}
+                <span className="text-text-main">{formData.equipment.length ? formData.equipment.join(", ") : "—"}</span>
               </div>
             </div>
             <div>
-              <h4 className="text-[11px] uppercase tracking-wide text-gray-500 mb-1">Metrics</h4>
-              <ul className="text-xs list-disc list-inside space-y-0.5 text-gray-300">
+              <h4 className="text-[11px] uppercase tracking-wide text-text-secondary mb-1">Metrics</h4>
+              <ul className="text-xs list-disc list-inside space-y-0.5 text-text-main">
                 {formData.defaultMetrics.map((m, i) => (
                   <li key={i}>
-                    {m.name || <span className="italic text-gray-500">(name)</span>}{" "}
-                    <span className="text-gray-500">[{m.unit || "?"}]</span>
+                    {m.name || <span className="italic text-text-secondary">(name)</span>}{" "}
+                    <span className="text-text-secondary">[{m.unit || "?"}]</span>
                   </li>
                 ))}
-                {!formData.defaultMetrics.length && <li className="italic text-gray-500">None</li>}
+                {!formData.defaultMetrics.length && <li className="italic text-text-secondary">None</li>}
               </ul>
             </div>
-            <div className="text-[10px] text-gray-500 border-t border-gray-800 pt-2 leading-relaxed">
+            <div className="text-[10px] text-text-secondary border-t pt-2 leading-relaxed" style={{ borderColor: 'var(--color-primary)' }}>
               Cardio preset uses miles & minutes. Strength uses lbs & reps. You can customize metrics anytime—duplicates
               are flagged.
             </div>

@@ -15,8 +15,8 @@ const AddHabitForm = ({ onAddHabit, loading }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-8 p-6 bg-gray-800 rounded-lg">
-      <h2 className="text-xl text-white font-semibold mb-4">Add New Habit</h2>
+    <form onSubmit={handleSubmit} className="mb-8 p-6 rounded-lg border" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-primary)' }}>
+      <h2 className="text-xl text-text-main font-semibold mb-4">Add New Habit</h2>
       <div className="flex flex-col md:flex-row gap-4">
         <StyledInput
           type="text"
@@ -31,7 +31,7 @@ const AddHabitForm = ({ onAddHabit, loading }) => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <StyledButton type="submit" disabled={loading} className="py-3 px-6">
+        <StyledButton type="submit" disabled={loading} className="py-3 px-6 bg-primary hover:opacity-90 text-white">
           {loading ? "Adding..." : "Add Habit"}
         </StyledButton>
       </div>
