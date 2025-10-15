@@ -1,4 +1,4 @@
-import Widget from "../dashboard/Widget";
+import Widget from "../ui/Widget";
 
 const BadgeDisplay = ({ allBadges = [], earnedBadges = [] }) => {
   const earnedBadgeIds = new Set(earnedBadges.map((b) => b.badgeBase._id));

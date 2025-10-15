@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import PageHeader from "../components/ui/PageHeader";
 import StyledButton from "../components/ui/StyledButton";
-import { Trash2, PlusCircle } from "lucide-react";
+import { Trash2, PlusCircle, Search, ChevronRight } from "lucide-react";
 
 // A reusable input component with a label to keep the form clean
 const InputWithLabel = ({ label, id, ...props }) => (
@@ -11,7 +11,7 @@ const InputWithLabel = ({ label, id, ...props }) => (
     <label htmlFor={id} className="block text-xs font-medium text-text-secondary mb-1">
       {label}
     </label>
-    <input id={id} className="w-full p-3 bg-gray-700 rounded-md border border-gray-600 text-text-main" {...props} />
+    <input id={id} className="w-full p-3 bg-background rounded-md border border-primary text-text-main" {...props} />
   </div>
 );
 
@@ -51,6 +51,21 @@ const PokemonEditorPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [navCollapsed, setNavCollapsed] = useState(false);
+  const searchInputRef = useRef(null);
+  const headerRef = useRef(null);
+  const [headerHeight, setHeaderHeight] = useState(0);
+
+  useEffect(() => {
+    const measure = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.offsetHeight || 0);
+      }
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   // Fetch the list of all Pokémon for the dropdown on initial load
   useEffect(() => {
@@ -188,9 +203,11 @@ const PokemonEditorPage = () => {
         message="Pokémon updated successfully!"
       />
       {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto" style={{ marginRight: "15rem" }}>
+      <div className="flex-1 overflow-y-auto" style={{ marginRight: navCollapsed ? "4rem" : "15rem" }}>
         <div>
-          <PageHeader title="Pokémon Database Editor" subtitle="Select a Pokémon to view and modify its data." />
+          <div ref={headerRef}>
+            <PageHeader title="Pokémon Database Editor" subtitle="Select a Pokémon to view and modify its data." />
+          </div>
 
           {loading && <p className="text-white text-center">Loading Data...</p>}
           {error && <p className="text-red-500 text-center">{error}</p>}
@@ -198,7 +215,10 @@ const PokemonEditorPage = () => {
           {pokemon && !loading && (
             <form onSubmit={handleSubmit} className="space-y-2">
               {/* --- Basic Info Section --- */}
-              <div className="p-4 bg-gray-800 rounded-lg">
+              <div
+                className="p-4 rounded-lg border"
+                style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+              >
                 <h3 className="text-lg font-semibold text-white mb-4">Basic Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <InputWithLabel
@@ -234,7 +254,7 @@ const PokemonEditorPage = () => {
                     name="description"
                     value={pokemon.description}
                     onChange={handleInputChange}
-                    className="w-full p-3 bg-gray-700 rounded"
+                    className="w-full p-3 bg-background rounded border border-primary"
                     rows="3"
                   />
                 </div>
@@ -273,11 +293,18 @@ const PokemonEditorPage = () => {
               </div>
 
               {/* --- Forms Section --- */}
-              <div className="p-4 bg-gray-800 rounded-lg">
+              <div
+                className="p-4 rounded-lg border"
+                style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+              >
                 <h3 className="text-lg font-semibold text-white mb-4">Forms</h3>
                 <div className="space-y-4">
                   {pokemon.forms.map((form, index) => (
-                    <div key={index} className="p-4 bg-gray-900/50 rounded-md border border-gray-700">
+                    <div
+                      key={index}
+                      className="p-4 bg-gray-900/50 rounded-md border"
+                      style={{ borderColor: "var(--color-primary)" }}
+                    >
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="md:col-span-2 space-y-4">
                           <InputWithLabel
@@ -338,13 +365,17 @@ const PokemonEditorPage = () => {
               </div>
 
               {/* --- Evolution Paths Section --- */}
-              <div className="p-4 bg-gray-800 rounded-lg">
+              <div
+                className="p-4 rounded-lg border"
+                style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+              >
                 <h3 className="text-lg font-semibold text-white mb-4">Evolution Paths</h3>
                 <div className="space-y-4">
                   {pokemon.evolutionPaths.map((path, index) => (
                     <div
                       key={index}
-                      className="p-4 bg-gray-900/50 rounded-md grid grid-cols-1 md:grid-cols-4 gap-4 items-end"
+                      className="p-4 bg-gray-900/50 rounded-md grid grid-cols-1 md:grid-cols-4 gap-4 items-end border"
+                      style={{ borderColor: "var(--color-primary)" }}
                     >
                       <InputWithLabel
                         label="Evolves To (Species ID)"
@@ -381,7 +412,10 @@ const PokemonEditorPage = () => {
               </div>
 
               {/* --- Change Log Section --- */}
-              <div className="p-6 bg-gray-800 rounded-lg">
+              <div
+                className="p-6 rounded-lg border"
+                style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+              >
                 <h3 className="text-lg font-semibold text-white mb-4">Change History</h3>
                 <ul className="space-y-2 max-h-60 overflow-y-auto text-sm">
                   {changeLogs.map((log) => (
@@ -406,18 +440,56 @@ const PokemonEditorPage = () => {
       </div>
 
       {/* Right Sidebar - Pokemon Selector */}
-      <div className="fixed right-0 top-0 w-60 h-full bg-gray-900 border-l border-gray-700 flex flex-col z-50">
-        <div className="p-4 border-b border-gray-700">
-          <h3 className="text-lg font-semibold text-white mb-3">Select Pokémon</h3>
-          {/* Search Input */}
-          <input
-            type="text"
-            placeholder="Search by name or ID..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-2 bg-gray-700 rounded-md border border-gray-600 text-text-main text-sm"
-          />
+      <div
+        className={`fixed right-0 ${
+          navCollapsed ? "w-16" : "w-60"
+        } flex flex-col z-50 transition-all duration-300 ease-in-out border-l`}
+        style={{
+          top: headerHeight,
+          height: `calc(100vh - ${headerHeight}px)`,
+          background: "var(--color-surface)",
+          borderColor: "var(--color-primary)",
+        }}
+      >
+        <div className="p-2 border-b flex items-center justify-between" style={{ borderColor: "var(--color-primary)" }}>
+          {!navCollapsed ? (
+            <>
+              <h3 className="text-sm font-semibold text-white">Select Pokémon</h3>
+              <button
+                type="button"
+                onClick={() => setNavCollapsed(true)}
+                title="Collapse navigator"
+                className="p-1 rounded hover:bg-gray-800"
+              >
+                <ChevronRight size={16} className="text-text-secondary" />
+              </button>
+            </>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                setNavCollapsed(false);
+                setTimeout(() => searchInputRef.current?.focus(), 50);
+              }}
+              title="Search"
+              className="mx-auto p-1 rounded hover:bg-gray-800"
+            >
+              <Search size={18} className="text-text-secondary" />
+            </button>
+          )}
         </div>
+        {!navCollapsed && (
+          <div className="p-2 border-b" style={{ borderColor: "var(--color-primary)" }}>
+            <input
+              ref={searchInputRef}
+              type="text"
+              placeholder="Search by name or ID..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full p-2 bg-background rounded-md border border-primary text-text-main text-sm"
+            />
+          </div>
+        )}
 
         {/* Pokemon List */}
         <div className="flex-1 overflow-y-auto">
@@ -426,7 +498,9 @@ const PokemonEditorPage = () => {
               <button
                 key={p._id}
                 type="button"
-                className={`flex items-center w-full px-3 py-2 text-left hover:bg-gray-700/70 transition-colors ${
+                className={`flex items-center w-full ${
+                  navCollapsed ? "justify-center px-2 py-3" : "px-3 py-2"
+                } text-left hover:bg-gray-700/70 transition-colors ${
                   selectedPokemonId === p._id ? "bg-accent-primary/20 border-l-4 border-accent-primary" : ""
                 }`}
                 onClick={() => {
@@ -437,14 +511,16 @@ const PokemonEditorPage = () => {
                 <img
                   src={p.sprite || "https://placehold.co/32x32/161B22/4B5563?text=?"}
                   alt={p.name}
-                  className="w-8 h-8 mr-3 object-contain flex-shrink-0"
+                  className={`w-8 h-8 object-contain flex-shrink-0 ${navCollapsed ? "" : "mr-3"}`}
                   onError={(e) => {
                     e.target.src = "https://placehold.co/32x32/161B22/4B5563?text=?";
                   }}
                 />
-                <span className="text-sm">
-                  #{String(p.speciesId).padStart(3, "0")} - {p.name}
-                </span>
+                {!navCollapsed && (
+                  <span className="text-sm">
+                    #{String(p.speciesId).padStart(3, "0")} - {p.name}
+                  </span>
+                )}
               </button>
             ))
           ) : (
@@ -453,8 +529,11 @@ const PokemonEditorPage = () => {
         </div>
 
         {/* Selected Pokemon Info */}
-        {selectedPokemonInfo && (
-          <div className="p-4 border-t border-gray-700 bg-gray-800/50">
+        {selectedPokemonInfo && !navCollapsed && (
+          <div
+            className="p-4 border-t"
+            style={{ borderColor: "var(--color-primary)", background: "var(--color-surface)" }}
+          >
             <div className="flex items-center gap-2">
               <img
                 src={selectedPokemonInfo.sprite || "https://placehold.co/32x32/161B22/4B5563?text=?"}

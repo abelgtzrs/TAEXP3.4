@@ -71,12 +71,8 @@ const ProfilePage = () => {
           transition={{ duration: 0.5, delay: 0.6 }}
           className="lg:col-span-1 space-y-6"
         >
-          <motion.div whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}>
-            <UserInfoCard />
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}>
-            <BadgeDisplay allBadges={allBadges} earnedBadges={user.badges} />
-          </motion.div>
+          <UserInfoCard />
+          <BadgeDisplay allBadges={allBadges} earnedBadges={user.badges} />
         </motion.div>
 
         {/* === Middle Column (1/2 width) === */}

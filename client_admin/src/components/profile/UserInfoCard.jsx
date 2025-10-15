@@ -1,5 +1,5 @@
 import { useAuth } from "../../context/AuthContext";
-import Widget from "../dashboard/Widget";
+import Widget from "../ui/Widget";
 import StyledButton from "../ui/StyledButton";
 import { Camera } from "lucide-react";
 import { useRef } from "react";
