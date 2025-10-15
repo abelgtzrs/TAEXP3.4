@@ -164,37 +164,37 @@ const AdminTemplatesPage = () => {
   return (
     <div className="flex flex-col xl:grid xl:grid-cols-[260px_minmax(0,1fr)_380px] gap-4 h-full">
       {/* Column 1: Templates List */}
-      <div className="flex flex-col bg-gray-900/60 border border-white/10 rounded-lg overflow-hidden">
-        <div className="p-3 flex items-center gap-2 border-b border-white/10 bg-gray-800/60">
-          <FiSearch className="text-white/50" />
+      <div className="flex flex-col bg-[var(--color-surface)] border border-[var(--color-primary)]/25 rounded-lg overflow-hidden">
+        <div className="p-3 flex items-center gap-2 border-b border-[var(--color-primary)]/20 bg-[var(--color-background)]">
+          <FiSearch className="text-text-secondary" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search templates"
-            className="flex-1 bg-transparent text-xs focus:outline-none text-white"
+            className="flex-1 bg-transparent text-xs focus:outline-none text-text-main placeholder:text-text-secondary"
           />
           <button
             onClick={startNew}
-            className="px-2 py-1 bg-primary/40 hover:bg-primary/60 rounded text-[10px] flex items-center gap-1"
+            className="px-2 py-1 bg-primary hover:opacity-90 rounded text-[10px] text-white flex items-center gap-1"
           >
             <FiPlus /> New
           </button>
         </div>
         {loading ? (
-          <div className="p-3 text-xs">Loading...</div>
+          <div className="p-3 text-xs text-text-secondary">Loading...</div>
         ) : (
-          <ul className="flex-1 overflow-y-auto text-xs divide-y divide-white/5">
+          <ul className="flex-1 overflow-y-auto text-xs divide-y divide-[var(--color-primary)]/10">
             {filteredTemplates.map((t) => {
               const active = t._id === activeId;
               return (
                 <li
                   key={t._id}
-                  className={`p-3 cursor-pointer group ${active ? "bg-primary/20" : "hover:bg-white/5"}`}
+                  className={`p-3 cursor-pointer group ${active ? "bg-[var(--color-primary)]/15" : "hover:bg-[var(--color-background)]"}`}
                   onClick={() => loadTemplate(t)}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-white truncate">{t.name}</span>
-                    <span className="text-[10px] text-white/40">{t.exercises.length}</span>
+                    <span className="font-semibold text-text-main truncate">{t.name}</span>
+                    <span className="text-[10px] text-text-secondary">{t.exercises.length}</span>
                   </div>
                   {active && (
                     <div className="mt-2 flex gap-1">
@@ -203,7 +203,7 @@ const AdminTemplatesPage = () => {
                           e.stopPropagation();
                           handleDuplicate(t);
                         }}
-                        className="px-2 py-1 bg-white/10 hover:bg-white/20 rounded flex items-center gap-1"
+                        className="px-2 py-1 rounded flex items-center gap-1 bg-[var(--color-background)] hover:bg-[var(--color-surface)] border border-[var(--color-primary)]/20 text-text-main"
                       >
                         <FiCopy size={12} />
                         Dup
@@ -213,7 +213,7 @@ const AdminTemplatesPage = () => {
                           e.stopPropagation();
                           handleDelete(t._id);
                         }}
-                        className="px-2 py-1 bg-red-600/60 hover:bg-red-600 rounded flex items-center gap-1"
+                        className="px-2 py-1 bg-red-600/70 hover:bg-red-600 rounded flex items-center gap-1 text-white"
                       >
                         <FiTrash2 size={12} />
                         Del
@@ -223,17 +223,17 @@ const AdminTemplatesPage = () => {
                 </li>
               );
             })}
-            {!filteredTemplates.length && <li className="p-3 text-white/40 text-[11px]">No templates</li>}
+            {!filteredTemplates.length && <li className="p-3 text-text-secondary text-[11px]">No templates</li>}
           </ul>
         )}
       </div>
 
       {/* Column 2: Editor & Selected Exercises */}
-      <div className="flex flex-col bg-gray-900/40 border border-white/10 rounded-lg p-4 overflow-hidden">
+      <div className="flex flex-col bg-[var(--color-surface)] border border-[var(--color-primary)]/25 rounded-lg p-4 overflow-hidden">
         <div className="flex items-start justify-between mb-3">
           <div>
-            <h1 className="text-lg font-bold text-white">{isEdit ? "Edit Template" : "Create Template"}</h1>
-            <p className="text-[11px] text-white/40">
+            <h1 className="text-lg font-bold text-primary">{isEdit ? "Edit Template" : "Create Template"}</h1>
+            <p className="text-[11px] text-text-secondary">
               {isEdit ? "Modify and save changes" : "Define a new reusable workout template"}
             </p>
           </div>
@@ -250,20 +250,20 @@ const AdminTemplatesPage = () => {
         )}
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-wide text-white/60">Name</label>
+            <label className="text-[10px] uppercase tracking-wide text-text-secondary">Name</label>
             <input
               value={form.name}
               onChange={(e) => onFieldChange("name", e.target.value)}
-              className="w-full bg-gray-800/70 border border-white/10 rounded px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-primary/60"
+              className="w-full bg-[var(--color-background)] border border-[var(--color-primary)]/30 rounded px-3 py-2 text-xs text-text-main placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]/60"
               placeholder="Push Day A"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-wide text-white/60">Description</label>
+            <label className="text-[10px] uppercase tracking-wide text-text-secondary">Description</label>
             <input
               value={form.description}
               onChange={(e) => onFieldChange("description", e.target.value)}
-              className="w-full bg-gray-800/70 border border-white/10 rounded px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-primary/60"
+              className="w-full bg-[var(--color-background)] border border-[var(--color-primary)]/30 rounded px-3 py-2 text-xs text-text-main placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]/60"
               placeholder="Upper body push focus"
             />
           </div>
@@ -272,11 +272,11 @@ const AdminTemplatesPage = () => {
         <div className="mt-5">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <span className="text-[11px] uppercase tracking-wide text-white/60">Selected Exercises</span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/30 text-white/80">{exerciseCount}</span>
+              <span className="text-[11px] uppercase tracking-wide text-text-secondary">Selected Exercises</span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/30 text-white">{exerciseCount}</span>
             </div>
             {form.exercises.length > 1 && (
-              <span className="text-[10px] text-white/30">Drag not enabled yet – use arrows</span>
+              <span className="text-[10px] text-text-secondary">Drag not enabled yet – use arrows</span>
             )}
           </div>
           <ul className="space-y-1 max-h-60 overflow-y-auto pr-1 custom-scrollbar">
@@ -286,7 +286,7 @@ const AdminTemplatesPage = () => {
               return (
                 <li
                   key={id}
-                  className="group flex items-center gap-2 bg-gray-800/50 border border-white/5 rounded px-2 py-1 text-[11px] text-white/80"
+                  className="group flex items-center gap-2 bg-[var(--color-background)] border border-[var(--color-primary)]/20 rounded px-2 py-1 text-[11px] text-text-main"
                 >
                   <span className="flex-1 truncate" title={ex.name}>
                     {idx + 1}. {ex.name}
@@ -296,7 +296,7 @@ const AdminTemplatesPage = () => {
                       aria-label="Move up"
                       disabled={idx === 0}
                       onClick={() => moveExercise(idx, -1)}
-                      className="p-1 disabled:opacity-30 hover:bg-white/10 rounded"
+                      className="p-1 disabled:opacity-30 hover:bg-[var(--color-surface)] rounded"
                     >
                       <FiArrowUp size={12} />
                     </button>
@@ -304,14 +304,14 @@ const AdminTemplatesPage = () => {
                       aria-label="Move down"
                       disabled={idx === form.exercises.length - 1}
                       onClick={() => moveExercise(idx, 1)}
-                      className="p-1 disabled:opacity-30 hover:bg-white/10 rounded"
+                      className="p-1 disabled:opacity-30 hover:bg-[var(--color-surface)] rounded"
                     >
                       <FiArrowDown size={12} />
                     </button>
                     <button
                       aria-label="Remove"
                       onClick={() => removeExerciseAt(idx)}
-                      className="p-1 hover:bg-red-600/50 rounded text-red-400"
+                      className="p-1 hover:bg-red-600/20 rounded text-red-500"
                     >
                       <FiMinusCircle size={12} />
                     </button>
@@ -320,29 +320,31 @@ const AdminTemplatesPage = () => {
               );
             })}
             {!form.exercises.length && (
-              <li className="text-white/40 text-[11px] py-4 text-center bg-white/5 rounded">No exercises selected</li>
+              <li className="text-text-secondary text-[11px] py-4 text-center bg-[var(--color-background)] rounded border border-[var(--color-primary)]/15">
+                No exercises selected
+              </li>
             )}
           </ul>
         </div>
-        <div className="mt-4 flex items-center gap-2 bg-gray-800/60 rounded px-2 py-2">
-          <FiSearch className="text-white/40" />
+        <div className="mt-4 flex items-center gap-2 bg-[var(--color-background)] rounded px-2 py-2 border border-[var(--color-primary)]/20">
+          <FiSearch className="text-text-secondary" />
           <input
             value={exerciseSearch}
             onChange={(e) => setExerciseSearch(e.target.value)}
             placeholder="Search exercises"
-            className="flex-1 bg-transparent text-xs focus:outline-none"
+            className="flex-1 bg-transparent text-xs focus:outline-none text-text-main placeholder:text-text-secondary"
           />
-          <button onClick={toggleAllExercises} className="text-[10px] px-2 py-1 rounded bg-white/10 hover:bg-white/20">
+          <button onClick={toggleAllExercises} className="text-[10px] px-2 py-1 rounded bg-[var(--color-background)] hover:bg-[var(--color-surface)] border border-[var(--color-primary)]/20 text-text-main">
             {form.exercises.length === filteredExercises.length ? "Clear" : "Add All"}
           </button>
           <button
             onClick={cycleDensity}
-            className={`text-[10px] px-2 py-1 rounded border border-white/10 transition ${
+            className={`text-[10px] px-2 py-1 rounded border transition ${
               density === "ultra"
-                ? "bg-primary/60 hover:bg-primary/70"
+                ? "bg-primary hover:opacity-90 border-transparent text-white"
                 : density === "compact"
-                ? "bg-primary/30 hover:bg-primary/40"
-                : "bg-white/5 hover:bg-white/10"
+                ? "bg-primary/70 hover:bg-primary/80 border-transparent text-white"
+                : "bg-[var(--color-background)] hover:bg-[var(--color-surface)] border-[var(--color-primary)]/20 text-text-main"
             }`}
             title="Cycle density (ultra → compact → comfort)"
           >
@@ -350,7 +352,7 @@ const AdminTemplatesPage = () => {
           </button>
           <button
             onClick={() => setShowLibrary((s) => !s)}
-            className="text-[10px] px-2 py-1 rounded bg-white/10 hover:bg-white/20 xl:hidden flex items-center gap-1"
+            className="text-[10px] px-2 py-1 rounded bg-[var(--color-background)] hover:bg-[var(--color-surface)] border border-[var(--color-primary)]/20 xl:hidden flex items-center gap-1 text-text-main"
           >
             <FiList size={12} /> {showLibrary ? "Hide" : "Show"} Library
           </button>
@@ -360,7 +362,7 @@ const AdminTemplatesPage = () => {
             <button
               disabled={saving || !form.name || !form.exercises.length}
               onClick={handleCreate}
-              className="flex items-center gap-1 px-3 py-2 bg-primary/60 hover:bg-primary/80 disabled:opacity-40 rounded text-xs font-semibold text-white"
+              className="flex items-center gap-1 px-3 py-2 bg-primary hover:opacity-90 disabled:opacity-40 rounded text-xs font-semibold text-white"
             >
               <FiPlus size={12} />
               Create
@@ -370,7 +372,7 @@ const AdminTemplatesPage = () => {
             <button
               disabled={saving || !dirty}
               onClick={handleUpdate}
-              className="flex items-center gap-1 px-3 py-2 bg-emerald-600/70 hover:bg-emerald-600 disabled:opacity-40 rounded text-xs font-semibold text-white"
+              className="flex items-center gap-1 px-3 py-2 bg-primary hover:opacity-90 disabled:opacity-40 rounded text-xs font-semibold text-white"
             >
               <FiSave size={12} />
               Save
@@ -387,7 +389,7 @@ const AdminTemplatesPage = () => {
           )}
           <button
             onClick={startNew}
-            className="flex items-center gap-1 px-3 py-2 bg-white/10 hover:bg-white/20 rounded text-xs text-white"
+            className="flex items-center gap-1 px-3 py-2 rounded text-xs bg-[var(--color-background)] hover:bg-[var(--color-surface)] border border-[var(--color-primary)]/20 text-text-main"
           >
             <FiX size={12} />
             Reset
@@ -397,18 +399,18 @@ const AdminTemplatesPage = () => {
 
       {/* Column 3: Exercise Library */}
       <div
-        className={`flex flex-col bg-gray-900/40 border border-white/10 rounded-lg p-3 overflow-hidden ${
+        className={`flex flex-col bg-[var(--color-surface)] border border-[var(--color-primary)]/25 rounded-lg p-3 overflow-hidden ${
           showLibrary ? "" : "hidden xl:flex"
         }`}
       >
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-xs font-semibold tracking-wide text-white/70 flex items-center gap-1">
-            <FiSearch className="opacity-60" /> Library
+          <h2 className="text-xs font-semibold tracking-wide text-text-main flex items-center gap-1">
+            <FiSearch className="text-text-secondary" /> Library
           </h2>
-          <span className="text-[10px] text-white/40">{filteredExercises.length}</span>
+          <span className="text-[10px] text-text-secondary">{filteredExercises.length}</span>
         </div>
         <div
-          className={`h-full overflow-y-auto rounded border border-white/10 ${
+          className={`h-full overflow-y-auto rounded border border-[var(--color-primary)]/20 ${
             density === "ultra" ? "p-1" : density === "compact" ? "p-1.5" : "p-2"
           } grid ${density === "ultra" ? "gap-[2px]" : density === "compact" ? "gap-[3px]" : "gap-1.5"}
           ${
@@ -417,7 +419,7 @@ const AdminTemplatesPage = () => {
               : density === "compact"
               ? "grid-cols-[repeat(auto-fill,minmax(130px,1fr))]"
               : "sm:grid-cols-2 md:grid-cols-3"
-          } bg-gray-950/40`}
+          } bg-[var(--color-background)]`}
         >
           {filteredExercises.map((ex) => {
             const active = form.exercises.includes(ex._id);
@@ -431,18 +433,18 @@ const AdminTemplatesPage = () => {
               <button
                 key={ex._id}
                 onClick={() => handleExerciseToggle(ex._id)}
-                className={`${base} flex items-center text-left transition overflow-hidden text-ellipsis focus:outline-none focus:ring-1 focus:ring-primary/60 ${
+                className={`${base} flex items-center text-left transition overflow-hidden text-ellipsis focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]/60 ${
                   active
                     ? density === "comfort"
-                      ? "bg-primary/45 border border-primary/60 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06)]"
+                      ? "bg-primary/80 border border-[var(--color-primary)]/60 text-white"
                       : density === "compact"
-                      ? "bg-primary/70 text-white font-medium"
-                      : "bg-primary/80 text-white font-semibold"
+                      ? "bg-primary/80 text-white font-medium"
+                      : "bg-primary text-white font-semibold"
                     : density === "comfort"
-                    ? "bg-white/5 border border-white/10 hover:bg-white/10 text-white/75 hover:text-white"
+                    ? "bg-[var(--color-background)] border border-[var(--color-primary)]/20 hover:bg-[var(--color-surface)] text-text-main"
                     : density === "compact"
-                    ? "bg-white/5 hover:bg-white/15 text-white/70 hover:text-white"
-                    : "bg-white/5 hover:bg-white/20 text-white/65 hover:text-white"
+                    ? "bg-[var(--color-background)] hover:bg-[var(--color-surface)] text-text-main"
+                    : "bg-[var(--color-background)] hover:bg-[var(--color-surface)] text-text-main"
                 } `}
                 title={ex.name}
               >
@@ -451,7 +453,7 @@ const AdminTemplatesPage = () => {
             );
           })}
           {!filteredExercises.length && (
-            <div className="text-white/40 text-[11px] col-span-full py-4 text-center">No exercises</div>
+            <div className="text-text-secondary text-[11px] col-span-full py-4 text-center">No exercises</div>
           )}
         </div>
       </div>
