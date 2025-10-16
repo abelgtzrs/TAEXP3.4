@@ -189,7 +189,9 @@ const AdminTemplatesPage = () => {
               return (
                 <li
                   key={t._id}
-                  className={`p-3 cursor-pointer group ${active ? "bg-[var(--color-primary)]/15" : "hover:bg-[var(--color-background)]"}`}
+                  className={`p-3 cursor-pointer group ${
+                    active ? "bg-[var(--color-primary)]/15" : "hover:bg-[var(--color-background)]"
+                  }`}
                   onClick={() => loadTemplate(t)}
                 >
                   <div className="flex items-center justify-between">
@@ -334,7 +336,10 @@ const AdminTemplatesPage = () => {
             placeholder="Search exercises"
             className="flex-1 bg-transparent text-xs focus:outline-none text-text-main placeholder:text-text-secondary"
           />
-          <button onClick={toggleAllExercises} className="text-[10px] px-2 py-1 rounded bg-[var(--color-background)] hover:bg-[var(--color-surface)] border border-[var(--color-primary)]/20 text-text-main">
+          <button
+            onClick={toggleAllExercises}
+            className="text-[10px] px-2 py-1 rounded bg-[var(--color-background)] hover:bg-[var(--color-surface)] border border-[var(--color-primary)]/20 text-text-main"
+          >
             {form.exercises.length === filteredExercises.length ? "Clear" : "Add All"}
           </button>
           <button

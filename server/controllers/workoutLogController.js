@@ -2,6 +2,7 @@
 
 const WorkoutLog = require("../models/userSpecific/WorkoutLog"); // Import the WorkoutLog model.
 const User = require("../models/User"); // Import User model for rewards.
+const ExerciseDefinition = require("../models/ExerciseDefinition");
 
 // @desc    Create a new workout log
 // @route   POST /api/workouts
@@ -186,5 +187,114 @@ exports.getUserWorkoutLogs = async (req, res) => {
     res.status(200).json({ success: true, count: logs.length, data: logs });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// @desc    Bulk import workout logs from structured JSON lines
+// @route   POST /api/workouts/bulk-import
+exports.bulkImportWorkoutLogs = async (req, res) => {
+  try {
+    const rawBody = req.body;
+
+    // Accept either an array of sessions or newline-separated JSON objects
+    let sessions = [];
+    if (Array.isArray(rawBody)) {
+      sessions = rawBody;
+    } else if (typeof rawBody === "string") {
+      sessions = rawBody
+        .split(/\r?\n/) // split by lines
+        .map((l) => l.trim())
+        .filter(Boolean)
+        .map((line) => JSON.parse(line));
+    } else if (rawBody && rawBody.sessions) {
+      sessions = rawBody.sessions;
+    } else {
+      // Also support form field 'text'
+      if (typeof req.body?.text === "string") {
+        sessions = req.body.text
+          .split(/\r?\n/)
+          .map((l) => l.trim())
+          .filter(Boolean)
+          .map((line) => JSON.parse(line));
+      } else {
+        return res.status(400).json({ success: false, message: "Provide array or JSON lines payload" });
+      }
+    }
+
+  const createdLogs = [];
+  const createdDefinitions = [];
+
+    const mapUnit = (u) => {
+      const v = String(u || "kg").toLowerCase();
+      if (v === "lb" || v === "lbs") return "lbs";
+      if (v === "kg" || v === "kgs") return "kg";
+      if (v.includes("body")) return "bodyweight";
+      if (v.includes("band")) return "band";
+      return "kg";
+    };
+
+    for (const s of sessions) {
+      const date = s.date ? new Date(s.date) : new Date();
+      const exPerformances = [];
+      const exercises = Array.isArray(s.exercises) ? s.exercises : [];
+
+      for (const ex of exercises) {
+        const name = (ex.nameRaw || ex.name || "").trim();
+        if (!name) continue;
+
+        // Ensure ExerciseDefinition exists; create if missing with no muscle groups
+        let def = await ExerciseDefinition.findOne({ name });
+        if (!def) {
+          def = await ExerciseDefinition.create({
+            name,
+            exerciseType: "Strength",
+            muscleGroups: [], // explicitly none as requested
+            defaultMetrics: [
+              { name: "weight", unit: mapUnit(ex.unit) },
+              { name: "reps", unit: "count" },
+            ],
+          });
+          createdDefinitions.push({ _id: def._id, name: def.name, exerciseType: def.exerciseType, muscleGroups: def.muscleGroups, equipment: def.equipment || [], defaultMetrics: def.defaultMetrics || [] });
+        }
+
+        const sets = Array.isArray(ex.sets)
+          ? ex.sets.map((st) => ({
+              reps: Number(st.reps) || 0,
+              weight: Number(st.weight) || 0,
+              weightUnit: mapUnit(ex.unit),
+              notes: st.notes || undefined,
+            }))
+          : [];
+
+        exPerformances.push({ exerciseDefinition: def._id, sets });
+      }
+
+      if (exPerformances.length === 0) continue;
+
+      const log = await WorkoutLog.create({
+        user: req.user.id,
+        date,
+        workoutName: s.workoutName || "Imported Workout",
+        durationSessionMinutes: s.durationSessionMinutes || undefined,
+        exercises: exPerformances,
+        overallFeeling: s.overallFeeling || undefined,
+        notesSession: s.notes || s.notesSession || undefined,
+      });
+
+      createdLogs.push(log);
+    }
+
+    // Populate the created logs with exercise names for client display
+    const createdIds = createdLogs.map((l) => l._id);
+    const populatedLogs = await WorkoutLog.find({ _id: { $in: createdIds } })
+      .populate("exercises.exerciseDefinition", "name exerciseType")
+      .sort({ date: -1 });
+
+    return res
+      .status(201)
+      .json({ success: true, count: createdLogs.length, data: populatedLogs, createdDefinitions });
+  } catch (error) {
+    console.error("Bulk Import Error:", error);
+    return res.status(400).json({ success: false, message: error.message || "Malformed input" });
   }
 };

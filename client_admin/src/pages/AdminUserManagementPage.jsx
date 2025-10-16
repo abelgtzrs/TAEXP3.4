@@ -30,7 +30,15 @@ const AdminUserManagementPage = () => {
 
   const startEdit = (u) => {
     setEditingId(u._id);
-    setDraft({ username: u.username, role: u.role, level: u.level, experience: u.experience });
+    setDraft({
+      username: u.username,
+      role: u.role,
+      level: u.level,
+      experience: u.experience,
+      temuTokens: Number(u.temuTokens || 0),
+      gatillaGold: Number(u.gatillaGold || 0),
+      wendyHearts: Number(u.wendyHearts || 0),
+    });
   };
   const cancelEdit = () => {
     setEditingId(null);
@@ -92,6 +100,9 @@ const AdminUserManagementPage = () => {
                 <th className="p-2">Role</th>
                 <th className="p-2">Lvl</th>
                 <th className="p-2">XP</th>
+                <th className="p-2">TT</th>
+                <th className="p-2">GG</th>
+                <th className="p-2">Hearts</th>
                 <th className="p-2">Login Streak</th>
                 <th className="p-2">Created</th>
                 <th className="p-2 text-right">Actions</th>
@@ -153,6 +164,52 @@ const AdminUserManagementPage = () => {
                         />
                       ) : (
                         u.experience
+                      )}
+                    </td>
+                    {/* Currency columns */}
+                    <td className="p-2 w-24">
+                      {editing ? (
+                        <input
+                          type="number"
+                          min={0}
+                          value={draft.temuTokens}
+                          onChange={(e) =>
+                            setDraft((d) => ({ ...d, temuTokens: Math.max(0, Number(e.target.value || 0)) }))
+                          }
+                          className="bg-black/30 border border-white/20 px-2 py-1 rounded w-24"
+                        />
+                      ) : (
+                        <span className="font-mono">{Number(u.temuTokens || 0)}</span>
+                      )}
+                    </td>
+                    <td className="p-2 w-24">
+                      {editing ? (
+                        <input
+                          type="number"
+                          min={0}
+                          value={draft.gatillaGold}
+                          onChange={(e) =>
+                            setDraft((d) => ({ ...d, gatillaGold: Math.max(0, Number(e.target.value || 0)) }))
+                          }
+                          className="bg-black/30 border border-white/20 px-2 py-1 rounded w-24"
+                        />
+                      ) : (
+                        <span className="font-mono">{Number(u.gatillaGold || 0)}</span>
+                      )}
+                    </td>
+                    <td className="p-2 w-24">
+                      {editing ? (
+                        <input
+                          type="number"
+                          min={0}
+                          value={draft.wendyHearts}
+                          onChange={(e) =>
+                            setDraft((d) => ({ ...d, wendyHearts: Math.max(0, Number(e.target.value || 0)) }))
+                          }
+                          className="bg-black/30 border border-white/20 px-2 py-1 rounded w-24"
+                        />
+                      ) : (
+                        <span className="font-mono">{Number(u.wendyHearts || 0)}</span>
                       )}
                     </td>
                     <td className="p-2">

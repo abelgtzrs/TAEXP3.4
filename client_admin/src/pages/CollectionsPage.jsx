@@ -12,7 +12,11 @@ const collections = [
 const Badge = ({ text }) => (
   <div
     className="flex h-12 w-12 items-center justify-center rounded-full border font-bold"
-    style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-primary)' }}
+    style={{
+      background: "var(--color-background)",
+      borderColor: "var(--color-primary)",
+      color: "var(--color-primary)",
+    }}
   >
     {text}
   </div>
@@ -37,29 +41,41 @@ const CollectionsPage = () => {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search collections by name or type"
             className="w-full rounded-md border px-4 py-2 focus:outline-none"
-            style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
+            style={{
+              background: "var(--color-background)",
+              borderColor: "var(--color-primary)",
+              color: "var(--color-text-main)",
+            }}
           />
         </div>
       </div>
 
       {/* Table layout for md+ screens */}
-      <div className="hidden md:block overflow-x-auto rounded-lg border" style={{ borderColor: 'var(--color-primary)' }}>
-        <table className="min-w-full divide-y" style={{ borderColor: 'var(--color-primary)' }}>
-          <thead style={{ background: 'var(--color-surface)' }}>
+      <div
+        className="hidden md:block overflow-x-auto rounded-lg border"
+        style={{ borderColor: "var(--color-primary)" }}
+      >
+        <table className="min-w-full divide-y" style={{ borderColor: "var(--color-primary)" }}>
+          <thead style={{ background: "var(--color-surface)" }}>
             <tr>
               <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">
                 Collection
               </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Type</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                Type
+              </th>
               <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">
                 Description
               </th>
               <th className="px-6 py-3" />
             </tr>
           </thead>
-          <tbody className="divide-y" style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)' }}>
+          <tbody
+            className="divide-y"
+            style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
+          >
             {filtered.map((c) => (
-              <tr key={c.type} className="" style={{ background: 'var(--color-surface)' }}>
+              <tr key={c.type} className="" style={{ background: "var(--color-surface)" }}>
                 <td className="whitespace-nowrap px-6 py-4">
                   <div className="flex items-center gap-3">
                     <Badge text={c.abbr} />
@@ -87,7 +103,11 @@ const CollectionsPage = () => {
       {/* Card layout for small screens */}
       <div className="md:hidden grid grid-cols-1 gap-4">
         {filtered.map((c) => (
-          <div key={c.type} className="rounded-lg border p-4" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-primary)' }}>
+          <div
+            key={c.type}
+            className="rounded-lg border p-4"
+            style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+          >
             <div className="flex items-center gap-4">
               <Badge text={c.abbr} />
               <div className="flex-1">

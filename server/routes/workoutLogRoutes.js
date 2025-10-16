@@ -8,6 +8,7 @@ const {
   getWorkoutLogById,
   updateWorkoutLog,
   deleteWorkoutLog,
+  bulkImportWorkoutLogs,
 } = require("../controllers/workoutLogController");
 
 // Import the 'protect' middleware to secure all routes.
@@ -18,6 +19,7 @@ router.use(protect);
 
 // Routes for getting the user's list of logs and creating a new one.
 router.route("/").get(getUserWorkoutLogs).post(createWorkoutLog);
+router.post("/bulk-import", bulkImportWorkoutLogs);
 
 // Routes for getting, updating, or deleting a specific workout log by its ID.
 router.route("/:logId").get(getWorkoutLogById).put(updateWorkoutLog).delete(deleteWorkoutLog);

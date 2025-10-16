@@ -126,7 +126,11 @@ export default function SnoopyAdminPage() {
               <ImageUploader label="Upload Image" onUploaded={(url) => setForm((f) => ({ ...f, imageUrl: url }))} />
               {form.imageUrl && (
                 <div className="mt-2 w-24 h-24 bg-background rounded flex items-center justify-center overflow-hidden border border-primary">
-                  <img src={buildImageUrl(form.imageUrl)} alt="preview" className="max-w-full max-h-full object-contain" />
+                  <img
+                    src={buildImageUrl(form.imageUrl)}
+                    alt="preview"
+                    className="max-w-full max-h-full object-contain"
+                  />
                 </div>
               )}
             </div>
@@ -202,7 +206,11 @@ export default function SnoopyAdminPage() {
             <div key={it._id} className="p-3 flex items-center gap-3">
               <div className="w-12 h-12 rounded-md bg-background flex items-center justify-center overflow-hidden">
                 {it.imageUrl ? (
-                  <img src={buildImageUrl(it.imageUrl)} alt={it.name} className="max-w-full max-h-full object-contain" />
+                  <img
+                    src={buildImageUrl(it.imageUrl)}
+                    alt={it.name}
+                    className="max-w-full max-h-full object-contain"
+                  />
                 ) : (
                   <ImageIcon size={20} className="text-text-secondary" />
                 )}

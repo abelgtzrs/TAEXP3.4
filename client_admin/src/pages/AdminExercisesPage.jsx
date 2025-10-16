@@ -5,7 +5,7 @@ import api from "../services/api";
 import { Search, Dumbbell, Activity, LayoutList, Trash2, PlusCircle, XCircle, Save, RefreshCcw } from "lucide-react";
 
 // --- Configuration Data ---
-const MUSCLE_GROUP_OPTIONS = [
+export const MUSCLE_GROUP_OPTIONS = [
   "Chest",
   "Triceps",
   "Biceps",
@@ -23,7 +23,7 @@ const MUSCLE_GROUP_OPTIONS = [
   "Full Body",
 ];
 
-const EQUIPMENT_OPTIONS = [
+export const EQUIPMENT_OPTIONS = [
   "Machine",
   "Cables",
   "Dumbbell",
@@ -36,17 +36,17 @@ const EQUIPMENT_OPTIONS = [
   "Resistance Band",
 ];
 
-const EXERCISE_TYPE_OPTIONS = ["Strength", "Cardio", "Flexibility"];
+export const EXERCISE_TYPE_OPTIONS = ["Strength", "Cardio", "Flexibility"];
 
-const STRENGTH_PRESET = [
+export const STRENGTH_PRESET = [
   { name: "weight", unit: "lbs" },
   { name: "reps", unit: "count" },
 ];
-const CARDIO_PRESET = [
+export const CARDIO_PRESET = [
   { name: "distance", unit: "miles" },
   { name: "duration", unit: "min" },
 ];
-const FLEX_PRESET = [{ name: "duration", unit: "min" }];
+export const FLEX_PRESET = [{ name: "duration", unit: "min" }];
 
 const INITIAL_FORM_STATE = {
   name: "",
@@ -210,7 +210,10 @@ const AdminExercisesPage = () => {
       <div className="grid grid-cols-12 gap-2">
         {/* LEFT: List & Filters */}
         <div className="col-span-12 lg:col-span-4 flex flex-col gap-4">
-          <div className="rounded-lg border p-4 flex flex-col gap-3" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-primary)' }}>
+          <div
+            className="rounded-lg border p-4 flex flex-col gap-3"
+            style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+          >
             <div className="flex items-center gap-2">
               <Search size={16} className="text-text-secondary" />
               <input
@@ -218,13 +221,21 @@ const AdminExercisesPage = () => {
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search exercises..."
                 className="flex-grow rounded px-2 py-1 text-sm border focus:outline-none"
-                style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
+                style={{
+                  background: "var(--color-background)",
+                  borderColor: "var(--color-primary)",
+                  color: "var(--color-text-main)",
+                }}
               />
               <select
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
                 className="rounded px-2 py-1 text-xs border focus:outline-none"
-                style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
+                style={{
+                  background: "var(--color-background)",
+                  borderColor: "var(--color-primary)",
+                  color: "var(--color-text-main)",
+                }}
               >
                 <option>All</option>
                 {EXERCISE_TYPE_OPTIONS.map((t) => (
@@ -242,17 +253,21 @@ const AdminExercisesPage = () => {
                     onClick={() => handleEditClick(ex)}
                     className="w-full text-left px-3 py-2 rounded border text-sm transition flex items-center justify-between"
                     style={{
-                      background: active ? 'var(--color-surface)' : 'var(--color-background)',
-                      borderColor: 'var(--color-primary)',
-                      color: active ? 'var(--color-primary)' : 'var(--color-text-main)'
+                      background: active ? "var(--color-surface)" : "var(--color-background)",
+                      borderColor: "var(--color-primary)",
+                      color: active ? "var(--color-primary)" : "var(--color-text-main)",
                     }}
                   >
                     <span className="truncate">{ex.name}</span>
-                    <span className="text-[10px] uppercase ml-2" style={{ color: 'var(--color-text-secondary)' }}>{ex.exerciseType}</span>
+                    <span className="text-[10px] uppercase ml-2" style={{ color: "var(--color-text-secondary)" }}>
+                      {ex.exerciseType}
+                    </span>
                   </button>
                 );
               })}
-              {!filtered.length && <div className="text-xs text-text-secondary py-4 text-center">No exercises found.</div>}
+              {!filtered.length && (
+                <div className="text-xs text-text-secondary py-4 text-center">No exercises found.</div>
+              )}
             </div>
             <button onClick={resetForm} className="mt-2 text-xs text-primary hover:opacity-90 flex items-center gap-1">
               <RefreshCcw size={14} /> New Definition
@@ -262,9 +277,15 @@ const AdminExercisesPage = () => {
 
         {/* CENTER: Editor */}
         <div className="col-span-12 lg:col-span-5">
-          <form onSubmit={handleSubmit} className="rounded-lg border p-5 space-y-5" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-primary)' }}>
+          <form
+            onSubmit={handleSubmit}
+            className="rounded-lg border p-5 space-y-5"
+            style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+          >
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-text-main">{editingId ? "Edit Exercise" : "Create Exercise"}</h2>
+              <h2 className="text-lg font-semibold text-text-main">
+                {editingId ? "Edit Exercise" : "Create Exercise"}
+              </h2>
               {editingId && (
                 <button
                   type="button"
@@ -282,7 +303,11 @@ const AdminExercisesPage = () => {
               placeholder="Name (e.g. Bench Press, Running)"
               required
               className="w-full rounded px-3 py-2 text-sm border focus:outline-none"
-              style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
+              style={{
+                background: "var(--color-background)",
+                borderColor: "var(--color-primary)",
+                color: "var(--color-text-main)",
+              }}
             />
             <textarea
               name="description"
@@ -290,7 +315,11 @@ const AdminExercisesPage = () => {
               onChange={handleFormChange}
               placeholder="Description / cues / notes"
               className="w-full rounded px-3 py-2 text-xs h-24 resize-none border focus:outline-none"
-              style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
+              style={{
+                background: "var(--color-background)",
+                borderColor: "var(--color-primary)",
+                color: "var(--color-text-main)",
+              }}
             />
             <div className="grid grid-cols-2 gap-3">
               <select
@@ -298,7 +327,11 @@ const AdminExercisesPage = () => {
                 value={formData.exerciseType}
                 onChange={handleFormChange}
                 className="rounded px-3 py-2 text-sm border focus:outline-none"
-                style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
+                style={{
+                  background: "var(--color-background)",
+                  borderColor: "var(--color-primary)",
+                  color: "var(--color-text-main)",
+                }}
               >
                 {EXERCISE_TYPE_OPTIONS.map((t) => (
                   <option key={t}>{t}</option>
@@ -309,7 +342,11 @@ const AdminExercisesPage = () => {
                   type="button"
                   onClick={() => applyPreset(STRENGTH_PRESET)}
                   className="flex-1 text-[10px] px-2 py-1 rounded border flex items-center gap-1 hover:opacity-90"
-                  style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-primary)' }}
+                  style={{
+                    background: "var(--color-background)",
+                    borderColor: "var(--color-primary)",
+                    color: "var(--color-primary)",
+                  }}
                 >
                   <Dumbbell size={12} /> Strength Preset
                 </button>
@@ -317,7 +354,11 @@ const AdminExercisesPage = () => {
                   type="button"
                   onClick={() => applyPreset(CARDIO_PRESET)}
                   className="flex-1 text-[10px] px-2 py-1 rounded border flex items-center gap-1 hover:opacity-90"
-                  style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-primary)' }}
+                  style={{
+                    background: "var(--color-background)",
+                    borderColor: "var(--color-primary)",
+                    color: "var(--color-primary)",
+                  }}
                 >
                   <Activity size={12} /> Cardio Preset
                 </button>
@@ -325,7 +366,11 @@ const AdminExercisesPage = () => {
                   type="button"
                   onClick={() => applyPreset(FLEX_PRESET)}
                   className="flex-1 text-[10px] px-2 py-1 rounded border flex items-center gap-1 hover:opacity-90"
-                  style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-primary)' }}
+                  style={{
+                    background: "var(--color-background)",
+                    borderColor: "var(--color-primary)",
+                    color: "var(--color-primary)",
+                  }}
                 >
                   <LayoutList size={12} /> Flex Preset
                 </button>
@@ -344,9 +389,9 @@ const AdminExercisesPage = () => {
                       onClick={() => handleCheckboxChange("muscleGroups", g)}
                       className={`px-2 py-1 rounded text-[10px] border`}
                       style={{
-                        background: 'var(--color-background)',
-                        borderColor: 'var(--color-primary)',
-                        color: active ? 'var(--color-primary)' : 'var(--color-text-secondary)'
+                        background: "var(--color-background)",
+                        borderColor: "var(--color-primary)",
+                        color: active ? "var(--color-primary)" : "var(--color-text-secondary)",
                       }}
                     >
                       {g}
@@ -368,9 +413,9 @@ const AdminExercisesPage = () => {
                       onClick={() => handleCheckboxChange("equipment", eq)}
                       className={`px-2 py-1 rounded text-[10px] border`}
                       style={{
-                        background: 'var(--color-background)',
-                        borderColor: 'var(--color-primary)',
-                        color: active ? 'var(--color-primary)' : 'var(--color-text-secondary)'
+                        background: "var(--color-background)",
+                        borderColor: "var(--color-primary)",
+                        color: active ? "var(--color-primary)" : "var(--color-text-secondary)",
                       }}
                     >
                       {eq}
@@ -392,15 +437,25 @@ const AdminExercisesPage = () => {
                         value={m.name}
                         onChange={(e) => handleMetricChange(i, "name", e.target.value)}
                         placeholder="metric (e.g. weight)"
-                        className={`flex-1 rounded px-2 py-1 text-xs border focus:outline-none ${dupName ? "ring-1 ring-red-500" : ""}`}
-                        style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
+                        className={`flex-1 rounded px-2 py-1 text-xs border focus:outline-none ${
+                          dupName ? "ring-1 ring-red-500" : ""
+                        }`}
+                        style={{
+                          background: "var(--color-background)",
+                          borderColor: "var(--color-primary)",
+                          color: "var(--color-text-main)",
+                        }}
                       />
                       <input
                         value={m.unit}
                         onChange={(e) => handleMetricChange(i, "unit", e.target.value)}
                         placeholder="unit (e.g. lbs)"
                         className="w-24 rounded px-2 py-1 text-xs border focus:outline-none"
-                        style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
+                        style={{
+                          background: "var(--color-background)",
+                          borderColor: "var(--color-primary)",
+                          color: "var(--color-text-main)",
+                        }}
                       />
                       <button
                         type="button"
@@ -436,7 +491,7 @@ const AdminExercisesPage = () => {
                   type="button"
                   onClick={resetForm}
                   className="flex items-center gap-2 border hover:opacity-90 text-text-main text-sm font-medium px-4 py-2 rounded bg-background"
-                  style={{ borderColor: 'var(--color-primary)' }}
+                  style={{ borderColor: "var(--color-primary)" }}
                 >
                   <XCircle size={16} /> Reset
                 </button>
@@ -447,7 +502,10 @@ const AdminExercisesPage = () => {
 
         {/* RIGHT: Preview & Guidance */}
         <div className="col-span-12 lg:col-span-3 flex flex-col gap-4">
-          <div className="rounded-lg border p-4 space-y-3" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-primary)' }}>
+          <div
+            className="rounded-lg border p-4 space-y-3"
+            style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+          >
             <h3 className="text-sm font-semibold text-primary">Definition Preview</h3>
             <div className="text-xs text-text-secondary space-y-1">
               <div>
@@ -459,11 +517,15 @@ const AdminExercisesPage = () => {
               </div>
               <div>
                 <span className="text-text-secondary">Muscles:</span>{" "}
-                <span className="text-text-main">{formData.muscleGroups.length ? formData.muscleGroups.join(", ") : "—"}</span>
+                <span className="text-text-main">
+                  {formData.muscleGroups.length ? formData.muscleGroups.join(", ") : "—"}
+                </span>
               </div>
               <div>
                 <span className="text-text-secondary">Equipment:</span>{" "}
-                <span className="text-text-main">{formData.equipment.length ? formData.equipment.join(", ") : "—"}</span>
+                <span className="text-text-main">
+                  {formData.equipment.length ? formData.equipment.join(", ") : "—"}
+                </span>
               </div>
             </div>
             <div>
@@ -478,7 +540,10 @@ const AdminExercisesPage = () => {
                 {!formData.defaultMetrics.length && <li className="italic text-text-secondary">None</li>}
               </ul>
             </div>
-            <div className="text-[10px] text-text-secondary border-t pt-2 leading-relaxed" style={{ borderColor: 'var(--color-primary)' }}>
+            <div
+              className="text-[10px] text-text-secondary border-t pt-2 leading-relaxed"
+              style={{ borderColor: "var(--color-primary)" }}
+            >
               Cardio preset uses miles & minutes. Strength uses lbs & reps. You can customize metrics anytime—duplicates
               are flagged.
             </div>

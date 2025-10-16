@@ -314,7 +314,9 @@ const getDashboardStats = async (req, res) => {
 const getAllUsersAdmin = async (req, res) => {
   try {
     const users = await User.find({})
-      .select("email username role level experience currentLoginStreak longestLoginStreak createdAt profilePicture")
+      .select(
+        "email username role level experience temuTokens gatillaGold wendyHearts currentLoginStreak longestLoginStreak createdAt profilePicture"
+      )
       .sort({ createdAt: -1 });
     res.status(200).json({ success: true, data: users });
   } catch (error) {
@@ -323,20 +325,35 @@ const getAllUsersAdmin = async (req, res) => {
   }
 };
 
-// --- Admin: Update user fields (role, username, level etc) ---
+// --- Admin: Update user fields (role, username, level, XP, and currency balances) ---
 const updateUserAdmin = async (req, res) => {
   try {
     const { id } = req.params;
-    const allowed = ["username", "role", "level", "experience"]; // safe updatable fields
+    const allowed = ["username", "role", "level", "experience", "temuTokens", "gatillaGold", "wendyHearts"]; // safe updatable fields
     const updates = {};
+
     for (const k of allowed) {
-      if (k in req.body) updates[k] = req.body[k];
+      if (k in req.body) {
+        // Coerce numeric fields and validate non-negativity where applicable
+        if (["level", "experience", "temuTokens", "gatillaGold", "wendyHearts"].includes(k)) {
+          const num = Number(req.body[k]);
+          if (!Number.isFinite(num)) {
+            return res.status(400).json({ success: false, message: `${k} must be a number` });
+          }
+          if (["experience", "temuTokens", "gatillaGold", "wendyHearts"].includes(k) && num < 0) {
+            return res.status(400).json({ success: false, message: `${k} cannot be negative` });
+          }
+          updates[k] = num;
+        } else {
+          updates[k] = req.body[k];
+        }
+      }
     }
     if (Object.keys(updates).length === 0) {
       return res.status(400).json({ success: false, message: "No valid fields supplied" });
     }
     const user = await User.findByIdAndUpdate(id, updates, { new: true, runValidators: true }).select(
-      "email username role level experience currentLoginStreak longestLoginStreak createdAt profilePicture"
+      "email username role level experience temuTokens gatillaGold wendyHearts currentLoginStreak longestLoginStreak createdAt profilePicture"
     );
     if (!user) return res.status(404).json({ success: false, message: "User not found" });
     res.status(200).json({ success: true, data: user });

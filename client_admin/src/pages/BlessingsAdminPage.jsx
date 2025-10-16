@@ -109,7 +109,7 @@ export default function BlessingsAdminPage() {
       <form
         onSubmit={submit}
         className="p-4 rounded border mb-6"
-        style={{ background: 'var(--color-surface)', borderColor: 'var(--color-primary)' }}
+        style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
       >
         <h2 className="text-lg text-text-main mb-3">{editingId ? "Edit Blessing" : "Create Blessing"}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -117,7 +117,11 @@ export default function BlessingsAdminPage() {
             <label className="block text-xs text-text-secondary mb-1">Key (unique)</label>
             <input
               className="w-full p-2 rounded border"
-              style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
+              style={{
+                background: "var(--color-background)",
+                borderColor: "var(--color-primary)",
+                color: "var(--color-text-main)",
+              }}
               value={form.key}
               onChange={(e) => setForm({ ...form, key: e.target.value })}
               required={!editingId}
@@ -128,7 +132,11 @@ export default function BlessingsAdminPage() {
             <label className="block text-xs text-text-secondary mb-1">Name</label>
             <input
               className="w-full p-2 rounded border"
-              style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
+              style={{
+                background: "var(--color-background)",
+                borderColor: "var(--color-primary)",
+                color: "var(--color-text-main)",
+              }}
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               required
@@ -138,7 +146,11 @@ export default function BlessingsAdminPage() {
             <label className="block text-xs text-text-secondary mb-1">Canonical Context</label>
             <textarea
               className="w-full p-2 rounded border"
-              style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
+              style={{
+                background: "var(--color-background)",
+                borderColor: "var(--color-primary)",
+                color: "var(--color-text-main)",
+              }}
               rows={3}
               value={form.context}
               onChange={(e) => setForm({ ...form, context: e.target.value })}
@@ -148,7 +160,11 @@ export default function BlessingsAdminPage() {
             <label className="block text-xs text-text-secondary mb-1">Default Description</label>
             <textarea
               className="w-full p-2 rounded border"
-              style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
+              style={{
+                background: "var(--color-background)",
+                borderColor: "var(--color-primary)",
+                color: "var(--color-text-main)",
+              }}
               rows={2}
               value={form.defaultDescription}
               onChange={(e) => setForm({ ...form, defaultDescription: e.target.value })}
@@ -158,7 +174,11 @@ export default function BlessingsAdminPage() {
             <label className="block text-xs text-text-secondary mb-1">Tags (comma-separated)</label>
             <input
               className="w-full p-2 rounded border"
-              style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
+              style={{
+                background: "var(--color-background)",
+                borderColor: "var(--color-primary)",
+                color: "var(--color-text-main)",
+              }}
               value={form.tags}
               onChange={(e) => setForm({ ...form, tags: e.target.value })}
             />
@@ -179,7 +199,7 @@ export default function BlessingsAdminPage() {
           <button
             type="submit"
             className="px-3 py-1.5 text-xs rounded bg-primary hover:opacity-90 border text-white"
-            style={{ borderColor: 'var(--color-primary)' }}
+            style={{ borderColor: "var(--color-primary)" }}
             disabled={loading}
           >
             {loading ? "Saving..." : editingId ? "Update" : "Create"}
@@ -188,7 +208,7 @@ export default function BlessingsAdminPage() {
             <button
               type="button"
               className="px-3 py-1.5 text-xs rounded border bg-background text-text-main hover:opacity-90"
-              style={{ borderColor: 'var(--color-primary)' }}
+              style={{ borderColor: "var(--color-primary)" }}
               onClick={resetForm}
             >
               Cancel
@@ -202,14 +222,18 @@ export default function BlessingsAdminPage() {
         <input
           placeholder="Search..."
           className="w-56 p-2 rounded border text-xs"
-          style={{ background: 'var(--color-background)', borderColor: 'var(--color-primary)', color: 'var(--color-text-main)' }}
+          style={{
+            background: "var(--color-background)",
+            borderColor: "var(--color-primary)",
+            color: "var(--color-text-main)",
+          }}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
-      <div className="overflow-auto rounded border" style={{ borderColor: 'var(--color-primary)' }}>
-        <table className="min-w-full text-left text-xs" style={{ color: 'var(--color-text-secondary)' }}>
-          <thead style={{ background: 'var(--color-surface)' }}>
+      <div className="overflow-auto rounded border" style={{ borderColor: "var(--color-primary)" }}>
+        <table className="min-w-full text-left text-xs" style={{ color: "var(--color-text-secondary)" }}>
+          <thead style={{ background: "var(--color-surface)" }}>
             <tr>
               <th className="p-2 text-text-secondary">Key</th>
               <th className="p-2 text-text-secondary">Name</th>
@@ -218,9 +242,9 @@ export default function BlessingsAdminPage() {
               <th className="p-2 text-text-secondary">Actions</th>
             </tr>
           </thead>
-          <tbody style={{ background: 'var(--color-background)' }}>
+          <tbody style={{ background: "var(--color-background)" }}>
             {filtered.map((it) => (
-              <tr key={it._id} className="border-t" style={{ borderColor: 'var(--color-primary)' }}>
+              <tr key={it._id} className="border-t" style={{ borderColor: "var(--color-primary)" }}>
                 <td className="p-2 font-mono text-[11px] text-text-main">{it.key}</td>
                 <td className="p-2 text-text-main">{it.name}</td>
                 <td className="p-2 text-text-secondary">{(it.tags || []).join(", ")}</td>

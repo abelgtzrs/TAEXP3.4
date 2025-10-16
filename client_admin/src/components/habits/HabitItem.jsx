@@ -13,8 +13,8 @@ const HabitItem = ({ habit, onComplete, onDelete }) => {
     <div
       className={`p-4 rounded-lg flex items-center justify-between transition-all duration-300 border`}
       style={{
-        background: completed ? 'color-mix(in srgb, var(--color-surface), #16a34a 10%)' : 'var(--color-surface)',
-        borderColor: completed ? '#16a34a80' : 'var(--color-primary)'
+        background: completed ? "color-mix(in srgb, var(--color-surface), #16a34a 10%)" : "var(--color-surface)",
+        borderColor: completed ? "#16a34a80" : "var(--color-primary)",
       }}
     >
       <div>

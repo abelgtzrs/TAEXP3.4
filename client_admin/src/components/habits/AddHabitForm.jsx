@@ -15,7 +15,11 @@ const AddHabitForm = ({ onAddHabit, loading }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-8 p-6 rounded-lg border" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-primary)' }}>
+    <form
+      onSubmit={handleSubmit}
+      className="mb-8 p-6 rounded-lg border"
+      style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+    >
       <h2 className="text-xl text-text-main font-semibold mb-4">Add New Habit</h2>
       <div className="flex flex-col md:flex-row gap-4">
         <StyledInput
