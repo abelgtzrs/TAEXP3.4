@@ -221,8 +221,8 @@ exports.bulkImportWorkoutLogs = async (req, res) => {
       }
     }
 
-  const createdLogs = [];
-  const createdDefinitions = [];
+    const createdLogs = [];
+    const createdDefinitions = [];
 
     const mapUnit = (u) => {
       const v = String(u || "kg").toLowerCase();
@@ -254,7 +254,14 @@ exports.bulkImportWorkoutLogs = async (req, res) => {
               { name: "reps", unit: "count" },
             ],
           });
-          createdDefinitions.push({ _id: def._id, name: def.name, exerciseType: def.exerciseType, muscleGroups: def.muscleGroups, equipment: def.equipment || [], defaultMetrics: def.defaultMetrics || [] });
+          createdDefinitions.push({
+            _id: def._id,
+            name: def.name,
+            exerciseType: def.exerciseType,
+            muscleGroups: def.muscleGroups,
+            equipment: def.equipment || [],
+            defaultMetrics: def.defaultMetrics || [],
+          });
         }
 
         const sets = Array.isArray(ex.sets)
@@ -290,9 +297,7 @@ exports.bulkImportWorkoutLogs = async (req, res) => {
       .populate("exercises.exerciseDefinition", "name exerciseType")
       .sort({ date: -1 });
 
-    return res
-      .status(201)
-      .json({ success: true, count: createdLogs.length, data: populatedLogs, createdDefinitions });
+    return res.status(201).json({ success: true, count: createdLogs.length, data: populatedLogs, createdDefinitions });
   } catch (error) {
     console.error("Bulk Import Error:", error);
     return res.status(400).json({ success: false, message: error.message || "Malformed input" });

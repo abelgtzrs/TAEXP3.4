@@ -23,7 +23,10 @@ export default function BulkWorkoutImportPage() {
 
   const parsePreview = () => {
     try {
-      const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+      const lines = text
+        .split(/\r?\n/)
+        .map((l) => l.trim())
+        .filter(Boolean);
       const sessions = lines.map((l) => JSON.parse(l));
       return { sessions, count: sessions.length };
     } catch (e) {
@@ -97,11 +100,7 @@ export default function BulkWorkoutImportPage() {
             </button>
           </div>
           {error && <div className="text-red-500 text-sm">{error}</div>}
-          {result && (
-            <div className="text-sm">
-              Imported {result.count} logs.
-            </div>
-          )}
+          {result && <div className="text-sm">Imported {result.count} logs.</div>}
         </div>
       </Widget>
 
@@ -134,9 +133,11 @@ export default function BulkWorkoutImportPage() {
                             {exs.map((ex, i) => (
                               <div key={i} className="flex items-center justify-between">
                                 <div className="truncate pr-2 text-text-main">
-                                  {(ex.nameRaw || ex.name || "(unnamed)")}
+                                  {ex.nameRaw || ex.name || "(unnamed)"}
                                 </div>
-                                <div className="text-text-secondary">{Array.isArray(ex.sets) ? ex.sets.length : 0} sets</div>
+                                <div className="text-text-secondary">
+                                  {Array.isArray(ex.sets) ? ex.sets.length : 0} sets
+                                </div>
                               </div>
                             ))}
                           </div>
@@ -174,9 +175,7 @@ export default function BulkWorkoutImportPage() {
                       <td className="p-2">{log.workoutName || "Imported Workout"}</td>
                       <td className="p-2">
                         <details>
-                          <summary className="cursor-pointer text-text-secondary">
-                            {exs.length} exercises
-                          </summary>
+                          <summary className="cursor-pointer text-text-secondary">{exs.length} exercises</summary>
                           <div className="mt-2 space-y-1">
                             {exs.map((ex, i) => (
                               <div key={i} className="flex items-center justify-between">
@@ -233,7 +232,9 @@ export default function BulkWorkoutImportPage() {
                 <div key={d._id} className="rounded-lg border p-3" style={{ borderColor: "var(--color-primary)" }}>
                   <div className="mb-2">
                     <div className="text-sm font-semibold text-text-main">{d.name}</div>
-                    <div className="text-xs text-text-secondary">Select type, muscle groups, equipment, and metrics.</div>
+                    <div className="text-xs text-text-secondary">
+                      Select type, muscle groups, equipment, and metrics.
+                    </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {/* Type */}
