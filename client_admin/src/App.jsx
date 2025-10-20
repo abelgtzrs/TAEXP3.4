@@ -32,6 +32,7 @@ import SpotifyStatsPage from "./pages/SpotifyStatsPage";
 import VolumeWorkbenchPage from "./pages/VolumeWorkbenchPage";
 import AdminUserManagementPage from "./pages/AdminUserManagementPage";
 import BlessingsAdminPage from "./pages/BlessingsAdminPage";
+import BlessingsUsagePage from "./pages/BlessingsUsagePage";
 import FootballTrackerPage from "./pages/FootballTrackerPage";
 import CalendarAdminPage from "./pages/CalendarAdminPage";
 import BulkWorkoutImportPage from "./pages/BulkWorkoutImportPage";
@@ -81,6 +82,7 @@ function App() {
           <Route path="/admin/pokemon-editor" element={<PokemonEditorPage />} />
           <Route path="/admin/users" element={<AdminUserManagementPage />} />
           <Route path="/admin/blessings" element={<BlessingsAdminPage />} />
+          <Route path="/admin/blessings/usage" element={<BlessingsUsagePage />} />
           <Route path="/admin/calendar" element={<CalendarAdminPage />} />
           <Route path="/admin/workouts/bulk-import" element={<BulkWorkoutImportPage />} />
         </Route>
