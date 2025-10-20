@@ -30,6 +30,38 @@ const VolumeForm = ({ formData, onFormChange, onSubmit, loading, submitButtonTex
     next[idx] = { item: "", description: "", context: "", ...next[idx], [field]: value };
     onFormChange({ ...formData, blessings: next });
   };
+  // Split helper: prefer en dash "– ", fallback to parentheses "(desc)"
+  const splitBlessingString = (text) => {
+    const s = String(text || "");
+    const dashIdx = s.indexOf("– ");
+    if (dashIdx !== -1) {
+      const left = s.slice(0, dashIdx).trim();
+      const right = s.slice(dashIdx + 2).trim();
+      return { item: left, description: right };
+    }
+    const m = s.match(/^(.*?)(?:\s*\((.*)\))?$/);
+    if (!m) return { item: s, description: "" };
+    return { item: (m[1] || "").trim(), description: (m[2] || "").trim() };
+  };
+  const splitBlessingAtIndex = (idx) => {
+    const b = blessings[idx] || {};
+    const { item, description } = splitBlessingString(b.item || "");
+    const next = [...blessings];
+    next[idx] = { item, description, context: b.context || "" };
+    onFormChange({ ...formData, blessings: next });
+  };
+  const splitAllBlessings = () => {
+    if (!blessings.length) return;
+    const next = blessings.map((b) => {
+      const split = splitBlessingString(b?.item || "");
+      return {
+        item: split.item,
+        description: b?.description ? b.description : split.description,
+        context: b?.context || "",
+      };
+    });
+    onFormChange({ ...formData, blessings: next });
+  };
   const addBlessing = () => {
     onFormChange({
       ...formData,
@@ -246,6 +278,14 @@ const VolumeForm = ({ formData, onFormChange, onSubmit, loading, submitButtonTex
             </Link>
             <button
               type="button"
+              onClick={splitAllBlessings}
+              title="Split all names with '– ' or '(...)' into name + description"
+              className="px-3 py-1 text-xs rounded bg-primary/20 hover:bg-primary/30 border border-primary/40 text-main"
+            >
+              Split All
+            </button>
+            <button
+              type="button"
               onClick={addBlessing}
               className="px-3 py-1 text-xs rounded bg-primary/20 hover:bg-primary/30 border border-primary/40 text-main"
             >
@@ -335,17 +375,28 @@ const VolumeForm = ({ formData, onFormChange, onSubmit, loading, submitButtonTex
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                <input
-                  className="p-2 rounded"
-                  style={{
-                    backgroundColor: "var(--color-bg)",
-                    border: "1px solid var(--color-primary)",
-                    color: "var(--color-text-main)",
-                  }}
-                  placeholder="Blessing name"
-                  value={b.item || ""}
-                  onChange={(e) => updateBlessing(i, "item", e.target.value)}
-                />
+                <div className="flex gap-2">
+                  <input
+                    className="flex-1 p-2 rounded"
+                    style={{
+                      backgroundColor: "var(--color-bg)",
+                      border: "1px solid var(--color-primary)",
+                      color: "var(--color-text-main)",
+                    }}
+                    placeholder="Blessing name"
+                    value={b.item || ""}
+                    onChange={(e) => updateBlessing(i, "item", e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => splitBlessingAtIndex(i)}
+                    className="px-2 py-1 text-[11px] rounded border"
+                    style={{ borderColor: "var(--color-primary)" }}
+                    title="Split 'Name – desc' or 'Name (desc)' into fields"
+                  >
+                    Split
+                  </button>
+                </div>
                 <input
                   className="md:col-span-2 p-2 rounded"
                   style={{
