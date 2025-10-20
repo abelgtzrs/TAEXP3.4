@@ -632,7 +632,7 @@ const RichFinancePage = () => {
   return (
     <div className="flex flex-col h-[calc(100vh-80px)] mx-auto w-full max-w-[1900px] px-4 gap-3 overflow-hidden">
       <div className="flex items-center justify-between">
-        <PageHeader title="Rich Finance" subtitle="High-density view" />
+        <PageHeader title="Financial Tracker" subtitle="High-density view" />
         <div className="flex gap-2">
           <StyledButton
             className="text-xs px-3 py-1"
@@ -641,7 +641,7 @@ const RichFinancePage = () => {
               setShowAddBill(false);
             }}
           >
-            Add Tx
+            Add Transaction
           </StyledButton>
           <StyledButton
             className="text-xs px-3 py-1"
