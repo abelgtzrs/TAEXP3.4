@@ -11,6 +11,8 @@ export default function BlessingsUsagePage() {
   const [search, setSearch] = useState("");
   // Editing state: volumeId -> { index -> { item, description } }
   const [edits, setEdits] = useState({});
+  // Full volume preview modal state
+  const [previewVol, setPreviewVol] = useState(null);
 
   useEffect(() => {
     const load = async () => {
@@ -174,13 +176,38 @@ export default function BlessingsUsagePage() {
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 blessings-usage-page" style={{ height: "calc(100vh - 64px)", overflow: "hidden" }}>
+      <style>
+        {`
+        /* Scoped scrollbar styling for BlessingsUsagePage */
+        .blessings-usage-page * {
+          scrollbar-width: thin;
+          scrollbar-color: var(--color-primary) var(--color-background);
+        }
+        .blessings-usage-page *::-webkit-scrollbar {
+          width: 10px;
+          height: 10px;
+        }
+        .blessings-usage-page *::-webkit-scrollbar-track {
+          background: var(--color-background);
+          border-radius: 8px;
+        }
+        .blessings-usage-page *::-webkit-scrollbar-thumb {
+          background: var(--color-primary);
+          border: 2px solid var(--color-surface);
+          border-radius: 8px;
+        }
+        .blessings-usage-page *::-webkit-scrollbar-thumb:hover {
+          filter: brightness(1.1);
+        }
+        `}
+      </style>
       <h1 className="text-2xl font-bold text-primary">Blessings Usage</h1>
-      <div className="grid grid-cols-12 gap-3">
-        {/* Left: Blessings selector */}
-        <div className="col-span-12 lg:col-span-3">
+      <div className="grid grid-cols-12 gap-3 h-full overflow-hidden min-h-0">
+  {/* Left: Blessings selector (aligned with right; no vertical offset) */}
+  <div className="col-span-12 lg:col-span-3" style={{ height: "calc(100vh - 114px)" }}>
           <div
-            className="rounded-lg border p-3 flex flex-col gap-2"
+            className="rounded-lg border p-3 flex flex-col gap-2 h-full min-h-0"
             style={{ borderColor: "var(--color-primary)", background: "var(--color-surface)" }}
           >
             <div className="text-sm font-semibold">Blessings</div>
@@ -192,7 +219,7 @@ export default function BlessingsUsagePage() {
               style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
             />
             <div className="text-[11px] text-text-secondary">{filteredBlessings.length} results</div>
-            <div className="overflow-y-auto max-h-[65vh] pr-1 space-y-1">
+            <div className="overflow-y-auto flex-1 pr-1 space-y-1 min-h-0 pb-10" style={{ WebkitOverflowScrolling: "touch" }}>
               {filteredBlessings.map((b) => {
                 const usedNums = Array.from(b.usedVolumes.keys()).sort((a, z) => a - z);
                 const missingNums = allVolumeNumbers.filter((n) => !b.usedVolumes.has(n));
@@ -223,8 +250,8 @@ export default function BlessingsUsagePage() {
           </div>
         </div>
 
-        {/* Right: Detail editor */}
-        <div className="col-span-12 lg:col-span-9">
+        {/* Right: Detail editor (volumes fixed, entries scroll) */}
+        <div className="col-span-12 lg:col-span-9 min-h-0 overflow-hidden">
           {!selectedBlessing ? (
             <div
               className="rounded-lg border p-6 text-sm text-text-secondary"
@@ -234,38 +261,50 @@ export default function BlessingsUsagePage() {
             </div>
           ) : (
             <Widget title={`Blessing: ${selectedBlessing.key}`}>
-              <div className="space-y-3">
-                <div className="text-xs text-text-secondary">
-                  Click a volume number to preview; hover to see details. Missing volumes are highlighted.
-                </div>
-                <div className="flex flex-wrap gap-2 items-center">
-                  {allVolumeNumbers.map((vn) => {
-                    const used = selectedBlessing.usedVolumes.has(vn);
-                    const vol = volumes.find((v) => v.volumeNumber === vn);
-                    return (
-                      <div key={vn} className="relative">
-                        <div
-                          className={`px-2 py-1 text-xs rounded border ${
-                            used ? "bg-primary/20" : "bg-red-900/20 border-red-700/40"
-                          }`}
-                          style={{ borderColor: used ? "var(--color-primary)" : undefined }}
-                        >
-                          <div className="group inline-block">
-                            <span className="underline">Vol {vn}</span>
-                            <div className="absolute z-10 hidden group-hover:block mt-1">
-                              <div className="shadow-lg rounded border" style={{ borderColor: "var(--color-primary)" }}>
-                                {vol ? <VolumePreview vol={vol} /> : <div className="p-2 text-xs">No data</div>}
+              <div className="flex flex-col min-h-0" style={{ height: "calc(100vh - 54px)" }}>
+                <div className="shrink-0 space-y-3">
+                  <div className="text-xs text-text-secondary">
+                    Click a volume number to preview; hover to see details. Missing volumes are highlighted.
+                  </div>
+                  <div className="flex flex-wrap gap-2 items-center">
+                    {allVolumeNumbers.map((vn) => {
+                      const used = selectedBlessing.usedVolumes.has(vn);
+                      const vol = volumes.find((v) => v.volumeNumber === vn);
+                      return (
+                        <div key={vn} className="relative">
+                          <div
+                            className={`px-2 py-1 text-xs rounded border ${
+                              used ? "bg-primary/20" : "bg-red-900/20 border-red-700/40"
+                            }`}
+                            style={{ borderColor: used ? "var(--color-primary)" : undefined }}
+                          >
+                            <div className="group inline-block">
+                              <button
+                                type="button"
+                                className="underline"
+                                title="Click to preview full volume"
+                                onClick={() => vol && setPreviewVol(vol)}
+                              >
+                                Vol {vn}
+                              </button>
+                              <div className="absolute z-10 hidden group-hover:block mt-1">
+                                <div
+                                  className="shadow-lg rounded border"
+                                  style={{ borderColor: "var(--color-primary)" }}
+                                >
+                                  {vol ? <VolumePreview vol={vol} /> : <div className="p-2 text-xs">No data</div>}
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
 
                 {/* Per-volume entries for this blessing (editable) */}
-                <div className="mt-3">
+                <div className="mt-3 flex-1 overflow-y-auto min-h-0 pb-12" style={{ WebkitOverflowScrolling: "touch" }}>
                   <div className="flex items-center justify-between mb-2">
                     <div className="text-sm font-semibold">Entries</div>
                     <button
@@ -281,6 +320,7 @@ export default function BlessingsUsagePage() {
                       .sort((a, b) => a[0] - b[0])
                       .map(([vn, entries]) => {
                         const volumeId = entries[0]?.volumeId;
+                        const vol = volumes.find((v) => v.volumeNumber === vn);
                         return (
                           <div
                             key={vn}
@@ -288,7 +328,7 @@ export default function BlessingsUsagePage() {
                             style={{ borderColor: "var(--color-primary)" }}
                           >
                             <div className="flex items-center justify-between">
-                              <div className="text-xs font-semibold">Volume {vn}</div>
+                              <div className="text-xs font-semibold">Volume {vn}{vol?.title ? ` – ${vol.title}` : ""}</div>
                               {volumeId && (
                                 <button
                                   onClick={() => saveVolumeEdits(volumeId)}
@@ -366,6 +406,44 @@ export default function BlessingsUsagePage() {
           )}
         </div>
       </div>
+      {/* Full volume preview modal */}
+      {previewVol && (
+        <div
+          className="fixed inset-0 z-[200] bg-black/80 flex items-center justify-center p-4"
+          onClick={() => setPreviewVol(null)}
+        >
+          <div
+            className="max-w-5xl w-full max-h-[85vh] overflow-auto rounded-lg border shadow-2xl"
+            style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: "var(--color-primary)" }}>
+              <div className="text-lg font-semibold text-primary">
+                Volume {previewVol.volumeNumber} – {previewVol.title}
+              </div>
+              <button
+                className="px-3 py-1.5 rounded border text-sm hover:opacity-90"
+                style={{ borderColor: "var(--color-primary)" }}
+                onClick={() => setPreviewVol(null)}
+              >
+                Close
+              </button>
+            </div>
+            <div className="p-4 space-y-3">
+              {previewVol.blessingIntro && (
+                <div className="text-sm text-text-secondary">{previewVol.blessingIntro}</div>
+              )}
+              <div className="border rounded p-3 space-y-1" style={{ borderColor: "var(--color-primary)" }}>
+                {(previewVol.bodyLines || []).map((l, i) => (
+                  <div key={i} className="font-mono text-sm" style={{ color: "#7CFC00" }}>
+                    &gt; {l}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
