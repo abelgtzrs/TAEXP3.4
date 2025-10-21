@@ -4,6 +4,101 @@ const Book = require("../models/userSpecific/Book");
 const WorkoutLog = require("../models/userSpecific/WorkoutLog");
 const Volume = require("../models/Volume");
 
+// --- Daily Login Streak Utilities ---
+const isSameDay = (a, b) => a && b && new Date(a).toDateString() === new Date(b).toDateString();
+
+// Return whether today has been counted and current streaks
+const getStreakStatus = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("lastLoginDate currentLoginStreak longestLoginStreak");
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+    const today = new Date();
+    const countedToday = isSameDay(user.lastLoginDate, today);
+    return res.status(200).json({
+      success: true,
+      data: {
+        countedToday,
+        currentLoginStreak: user.currentLoginStreak || 0,
+        longestLoginStreak: user.longestLoginStreak || 0,
+        lastLoginDate: user.lastLoginDate || null,
+      },
+    });
+  } catch (error) {
+    console.error("Get Streak Status Error:", error);
+    return res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// Increment today's streak if not already counted; mirrors login logic safely
+const tickLoginStreak = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select(
+      "+password lastLoginDate currentLoginStreak longestLoginStreak email"
+    );
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+    const today = new Date();
+    const lastLogin = user.lastLoginDate ? new Date(user.lastLoginDate) : null;
+
+    // If already counted today, no-op
+    if (isSameDay(lastLogin, today)) {
+      return res.status(200).json({
+        success: true,
+        data: {
+          changed: false,
+          countedToday: true,
+          currentLoginStreak: user.currentLoginStreak || 0,
+          longestLoginStreak: user.longestLoginStreak || 0,
+          lastLoginDate: user.lastLoginDate || null,
+        },
+      });
+    }
+
+    // Determine if yesterday to continue streak
+    let wasYesterday = false;
+    if (lastLogin) {
+      const yesterday = new Date(today);
+      yesterday.setDate(today.getDate() - 1);
+      wasYesterday = lastLogin.toDateString() === yesterday.toDateString();
+    }
+
+    if (wasYesterday) {
+      user.currentLoginStreak = (user.currentLoginStreak || 0) + 1;
+    } else {
+      user.currentLoginStreak = 1;
+    }
+
+    if ((user.currentLoginStreak || 0) > (user.longestLoginStreak || 0)) {
+      user.longestLoginStreak = user.currentLoginStreak;
+    }
+
+    // Optional: badge awarding hook every 3 days
+    if (user.currentLoginStreak > 0 && user.currentLoginStreak % 3 === 0) {
+      console.log(
+        `User ${user.email} reached a ${user.currentLoginStreak}-day streak via tick! Consider awarding a badge.`
+      );
+    }
+
+    user.lastLoginDate = today;
+    await user.save({ validateBeforeSave: false });
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        changed: true,
+        countedToday: true,
+        currentLoginStreak: user.currentLoginStreak || 0,
+        longestLoginStreak: user.longestLoginStreak || 0,
+        lastLoginDate: user.lastLoginDate || null,
+      },
+    });
+  } catch (error) {
+    console.error("Tick Login Streak Error:", error);
+    return res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
 // --- ADD THIS NEW FUNCTION ---
 const updateProfilePicture = async (req, res) => {
   try {
@@ -310,6 +405,40 @@ const getDashboardStats = async (req, res) => {
   }
 };
 
+// --- Update profile fields (bio, location, website, pronouns) ---
+const updateProfileBio = async (req, res) => {
+  try {
+    const allowed = ["bio", "location", "website", "motto"];
+    const updates = {};
+    for (const k of allowed) {
+      if (k in req.body) updates[k] = req.body[k];
+    }
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ success: false, message: "No valid fields supplied" });
+    }
+
+    const user = await User.findByIdAndUpdate(req.user.id, updates, {
+      new: true,
+      runValidators: true,
+    })
+      .select("-password")
+      .populate({ path: "activeAbelPersona", model: "AbelPersonaBase" })
+      .populate({ path: "unlockedAbelPersonas", model: "AbelPersonaBase" })
+      .populate({ path: "displayedPokemon", populate: { path: "basePokemon", model: "PokemonBase" } })
+      .populate({ path: "displayedSnoopyArt", populate: { path: "snoopyArtBase", model: "SnoopyArtBase" } })
+      .populate({ path: "displayedHabboRares", populate: { path: "habboRareBase", model: "HabboRareBase" } })
+      .populate({ path: "displayedYugiohCards", populate: { path: "yugiohCardBase", model: "YugiohCardBase" } })
+      .populate({ path: "badges", populate: { path: "badgeBase", model: "BadgeBase" } })
+      .populate({ path: "equippedTitle", populate: { path: "titleBase", model: "TitleBase" } });
+
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+    return res.status(200).json({ success: true, data: user });
+  } catch (error) {
+    console.error("Update Profile Bio Error:", error);
+    return res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
 // --- Admin: Get all users (lean list) ---
 const getAllUsersAdmin = async (req, res) => {
   try {
@@ -392,4 +521,8 @@ module.exports = {
   getAllUsersAdmin,
   updateUserAdmin,
   resetUserPasswordAdmin,
+  // Streak endpoints
+  getStreakStatus,
+  tickLoginStreak,
+  updateProfileBio,
 };

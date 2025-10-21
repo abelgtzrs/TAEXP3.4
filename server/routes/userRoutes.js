@@ -40,6 +40,9 @@ const {
   getDashboardStats,
   setActivePersona,
   updateProfilePicture, // <-- IMPORT NEW FUNCTION
+  getStreakStatus,
+  tickLoginStreak,
+  updateProfileBio,
 } = require("../controllers/userController");
 const { getMe } = require("../controllers/authController");
 
@@ -55,6 +58,7 @@ router.get("/me", getMe);
 router.put("/me/profile-picture", upload.single("profilePicture"), updateProfilePicture);
 
 router.put("/me/profile/active-persona", setActivePersona);
+router.put("/me/profile", updateProfileBio);
 
 // Temporary route to unlock all personas for testing
 router.post("/me/test/unlock-personas", async (req, res) => {
@@ -79,6 +83,10 @@ router.post("/me/test/unlock-personas", async (req, res) => {
 
 // It should be placed before any routes with URL parameters if possible, for clarity.
 router.get("/me/dashboard-stats", getDashboardStats);
+
+// Daily login streak helpers
+router.get("/me/streak/status", getStreakStatus);
+router.post("/me/streak/tick", tickLoginStreak);
 
 // Existing routes
 router.get("/me/collection/:type", getUserCollection);

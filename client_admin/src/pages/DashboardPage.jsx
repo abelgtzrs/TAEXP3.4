@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
@@ -29,20 +29,53 @@ const DashboardPage = () => {
   const { user } = useAuth();
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
+  const [streakStatus, setStreakStatus] = useState({ countedToday: true, currentLoginStreak: 0 });
+  const [ticking, setTicking] = useState(false);
+  // Team popover moved to global Header; local state removed
+
+  // Resolve server base for images
+  const serverBaseUrl = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").split("/api")[0];
+
+  const getPokemonSprite = (basePokemon) => {
+    if (!basePokemon) return null;
+    const firstForm = basePokemon.forms?.[0];
+    const sprite = firstForm?.spriteGen6Animated || firstForm?.spriteGen5Animated || null;
+    return sprite ? `${serverBaseUrl}${sprite}` : null;
+  };
 
   useEffect(() => {
-    const fetchDashboardStats = async () => {
+    const fetchAll = async () => {
       try {
-        const response = await api.get("/users/me/dashboard-stats");
-        setStats(response.data.data);
+        const [statsRes, streakRes] = await Promise.all([
+          api.get("/users/me/dashboard-stats"),
+          api.get("/users/me/streak/status"),
+        ]);
+        setStats(statsRes.data.data);
+        setStreakStatus(streakRes.data.data);
       } catch (error) {
-        console.error("Failed to fetch dashboard stats:", error);
+        console.error("Failed to fetch dashboard data:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchDashboardStats();
+    fetchAll();
   }, []);
+
+  const handleTickStreak = async () => {
+    try {
+      setTicking(true);
+      const res = await api.post("/users/me/streak/tick");
+      const data = res.data?.data || {};
+      setStreakStatus((prev) => ({ ...prev, ...data }));
+      // Refresh dashboard stats to reflect new streak immediately
+      const statsRes = await api.get("/users/me/dashboard-stats");
+      setStats(statsRes.data.data);
+    } catch (err) {
+      console.error("Failed to tick streak:", err);
+    } finally {
+      setTicking(false);
+    }
+  };
 
   return (
     <motion.div
@@ -62,6 +95,20 @@ const DashboardPage = () => {
           subtitle={`Cognitive Framework Status for ${user.username || "Admin"}.`}
           className="mt-1 mb-1 pl-4"
         />
+        {/* Daily Streak Button: show only if today hasn't been counted */}
+        {!loading && streakStatus && !streakStatus.countedToday && (
+          <div className="px-4">
+            <button
+              onClick={handleTickStreak}
+              disabled={ticking}
+              className="mt-2 inline-flex items-center gap-2 rounded-md bg-emerald-600 text-white px-4 py-2 text-sm hover:bg-emerald-500 disabled:opacity-60 disabled:cursor-not-allowed shadow"
+              title="Count today's login toward your streak"
+            >
+              {ticking ? "Updating…" : "Count today's login (streak)"}
+            </button>
+            <span className="ml-3 text-xs opacity-70">Current streak: {streakStatus.currentLoginStreak || 0}</span>
+          </div>
+        )}
       </motion.div>
 
       {/* --- Main Dashboard Grid --- */}

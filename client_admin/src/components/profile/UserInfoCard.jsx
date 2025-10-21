@@ -2,12 +2,18 @@ import { useAuth } from "../../context/AuthContext";
 import Widget from "../ui/Widget";
 import StyledButton from "../ui/StyledButton";
 import { Camera } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import api from "../../services/api";
 
 const UserInfoCard = () => {
   const { user, setUser } = useAuth();
   const fileInputRef = useRef(null);
+  const [editing, setEditing] = useState(false);
+  const [bio, setBio] = useState(user?.bio || "");
+  const [location, setLocation] = useState(user?.location || "");
+  const [website, setWebsite] = useState(user?.website || "");
+  const [motto, setMotto] = useState(user?.motto || "");
+  const [saving, setSaving] = useState(false);
 
   if (!user) return null;
 
@@ -45,6 +51,20 @@ const UserInfoCard = () => {
   };
 
   const xpPercentage = user.xpToNextLevel > 0 ? (user.experience / user.xpToNextLevel) * 100 : 0;
+
+  const handleSaveProfile = async () => {
+    try {
+      setSaving(true);
+  const { data } = await api.put("/users/me/profile", { bio, location, website, motto });
+      setUser(data.data);
+      setEditing(false);
+    } catch (err) {
+      console.error("Failed to update profile:", err);
+      alert("Failed to update profile. Please try again.");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <Widget title="User Profile" className="flex flex-col items-center text-center h-full">
@@ -84,8 +104,97 @@ const UserInfoCard = () => {
             <div className="bg-primary h-2.5 rounded-full" style={{ width: `${xpPercentage}%` }}></div>
           </div>
         </div>
+        {/* Bio / Profile Fields */}
+        {!editing ? (
+          <div className="w-full text-left mt-3 space-y-2">
+            {bio && (
+              <div>
+                <div className="text-xs text-text-tertiary uppercase tracking-wide font-semibold">Bio</div>
+                <p className="text-sm text-text-main whitespace-pre-wrap">{bio}</p>
+              </div>
+            )}
+            {(location || motto) && (
+              <div className="flex items-center gap-3 text-sm text-text-secondary">
+                {location && <span>📍 {location}</span>}
+                {motto && <span>• “{motto}”</span>}
+              </div>
+            )}
+            {website && (
+              <div className="text-sm">
+                <a
+                  href={website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-primary hover:underline break-all"
+                >
+                  {website}
+                </a>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="w-full text-left mt-3 space-y-3">
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wide text-text-tertiary mb-1">Bio</label>
+              <textarea
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                maxLength={500}
+                rows={4}
+                className="w-full rounded-md bg-black/40 border border-white/15 text-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                placeholder="Tell us about yourself..."
+              />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wide text-text-tertiary mb-1">Location</label>
+                <input
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  maxLength={100}
+                  className="w-full rounded-md bg-black/40 border border-white/15 text-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  placeholder="City, Country"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wide text-text-tertiary mb-1">Motto</label>
+                <input
+                  value={motto}
+                  onChange={(e) => setMotto(e.target.value)}
+                  maxLength={80}
+                  className="w-full rounded-md bg-black/40 border border-white/15 text-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  placeholder="Stay curious. Keep building."
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wide text-text-tertiary mb-1">Website</label>
+              <input
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+                maxLength={200}
+                className="w-full rounded-md bg-black/40 border border-white/15 text-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                placeholder="https://example.com"
+              />
+            </div>
+          </div>
+        )}
+
         <div className="flex-grow"></div> {/* Spacer */}
-        <StyledButton className="w-full mt-4">Edit Profile</StyledButton>
+        {!editing ? (
+          <StyledButton className="w-full mt-4" onClick={() => setEditing(true)}>
+            Edit Profile
+          </StyledButton>
+        ) : (
+          <div className="w-full flex gap-2 mt-4">
+            <StyledButton className="flex-1" onClick={() => setEditing(false)} variant="secondary">
+              Cancel
+            </StyledButton>
+            <StyledButton className="flex-1" onClick={handleSaveProfile} disabled={saving}>
+              {saving ? "Saving…" : "Save Changes"}
+            </StyledButton>
+          </div>
+        )}
       </div>
     </Widget>
   );

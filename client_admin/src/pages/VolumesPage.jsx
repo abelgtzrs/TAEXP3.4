@@ -334,22 +334,19 @@ const VolumesPage = () => {
                 {sortedVolumes.map((vol) => (
                   <div
                     key={vol._id}
-                    className="rounded border p-2 hover:bg-white/5 transition"
+                    className="rounded border p-2 hover:bg-white/5 transition cursor-pointer"
                     style={{ borderColor: "var(--color-primary)" }}
+                    onClick={() => handleEditClick(vol)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") handleEditClick(vol);
+                    }}
                   >
                     <div className="flex items-center justify-between">
                       <div className="font-semibold text-text-main truncate">
                         Vol {vol.volumeNumber}: {vol.title}
                       </div>
-                      <span
-                        className={`ml-2 px-2 py-0.5 text-[10px] rounded-full ${
-                          vol.status === "published"
-                            ? "bg-green-500/20 text-green-300"
-                            : "bg-yellow-500/20 text-yellow-300"
-                        }`}
-                      >
-                        {vol.status}
-                      </span>
                     </div>
                     <div className="mt-1 flex items-center gap-2 text-[10px] text-text-secondary flex-wrap">
                       <span className="px-2 py-0.5 rounded border" style={{ borderColor: "var(--color-primary)" }}>
@@ -360,19 +357,25 @@ const VolumesPage = () => {
                       </span>
                       <span className="opacity-70">{new Date(vol.createdAt).toLocaleDateString()}</span>
                     </div>
-                    <div className="mt-2 flex gap-3">
+                    <div className="mt-2 flex items-center justify-between gap-3">
                       <button
-                        onClick={() => handleEditClick(vol)}
-                        className="text-blue-400 hover:text-blue-300 text-xs"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDeleteVolume(vol._id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteVolume(vol._id);
+                        }}
                         className="text-red-500 hover:text-red-400 text-xs"
                       >
                         Delete
                       </button>
+                      <span
+                        className={`px-2 py-0.5 text-[10px] rounded-full ${
+                          vol.status === "published"
+                            ? "bg-green-500/20 text-green-300"
+                            : "bg-yellow-500/20 text-yellow-300"
+                        }`}
+                      >
+                        {vol.status}
+                      </span>
                     </div>
                   </div>
                 ))}

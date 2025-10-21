@@ -1,19 +1,31 @@
-import { Search, Bell, Mail, User, LogOut } from "lucide-react";
+import { Search, Bell, Mail, User, LogOut, CalendarDays } from "lucide-react";
 import { useState, useRef } from "react";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
 import { Link } from "react-router-dom";
+import CalendarWidget from "../dashboard/CalendarWidget";
 
 const Header = ({ forcedHeight }) => {
   const { user, logout, setUser } = useAuth();
   const [personaDropdownOpen, setPersonaDropdownOpen] = useState(false);
   const personaButtonRef = useRef(null);
+  const [teamOpen, setTeamOpen] = useState(false);
+  const teamHoverTimer = useRef(null);
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const calendarHoverTimer = useRef(null);
   const unlockedPersonas = user?.unlockedAbelPersonas || [];
   const activePersona = user?.activeAbelPersona || null;
   const activePersonaId = activePersona?._id || null;
 
   // Construct the base URL for the server to correctly resolve image paths
   const serverBaseUrl = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").split("/api")[0];
+
+  const getPokemonSprite = (basePokemon) => {
+    if (!basePokemon) return null;
+    const firstForm = basePokemon.forms?.[0];
+    const sprite = firstForm?.spriteGen6Animated || firstForm?.spriteGen5Animated || null;
+    return sprite ? `${serverBaseUrl}${sprite}` : null;
+  };
 
   const handleSelectPersona = async (personaId) => {
     if (personaId === activePersonaId) {
@@ -63,6 +75,152 @@ const Header = ({ forcedHeight }) => {
         <button className="p-2 rounded-xl text-white/60 hover:bg-white/10 hover:text-primary transition-all duration-300 hover:scale-105 active:scale-95">
           <Mail size={16} />
         </button>
+        {/* Team icon and popover - placed to the right of the Mail icon */}
+        <div
+          className="relative"
+          onMouseEnter={() => {
+            if (teamHoverTimer.current) {
+              clearTimeout(teamHoverTimer.current);
+              teamHoverTimer.current = null;
+            }
+            setTeamOpen(true);
+          }}
+          onMouseLeave={() => {
+            teamHoverTimer.current = setTimeout(() => setTeamOpen(false), 120);
+          }}
+        >
+          <button
+            type="button"
+            aria-haspopup="dialog"
+            aria-expanded={teamOpen}
+            onClick={() => setTeamOpen((v) => !v)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") setTeamOpen(false);
+            }}
+            title="Show current Pokémon team"
+            className="p-2 rounded-xl text-white/70 hover:bg-white/10 hover:text-white transition-all duration-300 hover:scale-105 active:scale-95"
+          >
+            {/* Pokéball icon */}
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 3a9 9 0 0 0-8.485 6h4.146a4.5 4.5 0 0 1 8.678 0h4.146A9 9 0 0 0 12 3Zm0 18a9 9 0 0 0 8.485-6h-4.146a4.5 4.5 0 0 1-8.678 0H3.515A9 9 0 0 0 12 21Zm0-12a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+          {teamOpen && (
+            <div
+              role="dialog"
+              aria-label="Current Pokémon Team"
+              className="absolute right-0 mt-2 z-50 w-80 max-h-80 overflow-y-auto rounded-xl bg-black/85 backdrop-blur-xl border border-white/15 shadow-2xl p-3"
+              onMouseEnter={() => {
+                if (teamHoverTimer.current) {
+                  clearTimeout(teamHoverTimer.current);
+                  teamHoverTimer.current = null;
+                }
+                setTeamOpen(true);
+              }}
+              onMouseLeave={() => {
+                teamHoverTimer.current = setTimeout(() => setTeamOpen(false), 120);
+              }}
+            >
+              <div className="mb-2 flex items-center justify-between">
+                <div className="text-sm font-semibold text-white">Current Pokémon Team</div>
+                <button
+                  className="text-slate-300 hover:text-white"
+                  onClick={() => setTeamOpen(false)}
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                {(user?.displayedPokemon || []).map((p) => {
+                  const base = p?.basePokemon;
+                  const sprite = getPokemonSprite(base);
+                  return (
+                    <div key={p?._id || base?._id} className="flex flex-col items-center text-center">
+                      <div className="w-20 h-20 flex items-center justify-center">
+                        {sprite ? (
+                          <img
+                            src={sprite}
+                            alt={base?.name || "Pokemon"}
+                            className="max-w-full max-h-full object-contain"
+                          />
+                        ) : (
+                          <span className="text-slate-500 text-xs">[IMG]</span>
+                        )}
+                      </div>
+                      <div className="mt-1 text-[11px] text-slate-200 truncate w-full" title={base?.name}>
+                        {base?.name || "Unknown"}
+                      </div>
+                    </div>
+                  );
+                })}
+                {(!user?.displayedPokemon || user.displayedPokemon.length === 0) && (
+                  <div className="col-span-full text-center text-slate-300 text-sm py-2">No Pokémon selected yet.</div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+        {/* Calendar icon and popover - placed to the right of the Pokémon icon */}
+        <div
+          className="relative"
+          onMouseEnter={() => {
+            if (calendarHoverTimer.current) {
+              clearTimeout(calendarHoverTimer.current);
+              calendarHoverTimer.current = null;
+            }
+            setCalendarOpen(true);
+          }}
+          onMouseLeave={() => {
+            calendarHoverTimer.current = setTimeout(() => setCalendarOpen(false), 120);
+          }}
+        >
+          <button
+            type="button"
+            aria-haspopup="dialog"
+            aria-expanded={calendarOpen}
+            onClick={() => setCalendarOpen((v) => !v)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") setCalendarOpen(false);
+            }}
+            title="Show calendar"
+            className="p-2 rounded-xl text-white/70 hover:bg-white/10 hover:text-white transition-all duration-300 hover:scale-105 active:scale-95"
+          >
+            <CalendarDays size={16} />
+          </button>
+          {calendarOpen && (
+            <div
+              role="dialog"
+              aria-label="Calendar"
+              className="absolute right-0 mt-2 z-50 w-[380px] max-h-[520px] overflow-y-auto"
+              onMouseEnter={() => {
+                if (calendarHoverTimer.current) {
+                  clearTimeout(calendarHoverTimer.current);
+                  calendarHoverTimer.current = null;
+                }
+                setCalendarOpen(true);
+              }}
+              onMouseLeave={() => {
+                calendarHoverTimer.current = setTimeout(() => setCalendarOpen(false), 120);
+              }}
+            >
+              {/* Using the full CalendarWidget inside a lightweight container */}
+              <div className="rounded-xl bg-black/85 backdrop-blur-xl border border-white/15 shadow-2xl p-2">
+                <CalendarWidget />
+              </div>
+            </div>
+          )}
+        </div>
         <div className="h-6 w-px bg-white/15"></div>
         <div
           className="relative group"
@@ -77,7 +235,7 @@ const Header = ({ forcedHeight }) => {
               <img
                 src={
                   user?.profilePicture
-                    ? `${serverBaseUrl}${user.profilePicture}`
+                    ? `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api"}/users/me/profile-picture`
                     : `https://api.dicebear.com/8.x/pixel-art/svg?seed=${user?.username || "user"}`
                 }
                 alt="User Avatar"

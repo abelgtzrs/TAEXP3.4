@@ -28,6 +28,31 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  // Public profile fields
+  bio: {
+    type: String,
+    maxlength: [500, "Bio cannot exceed 500 characters"],
+    default: "",
+    trim: true,
+  },
+  location: {
+    type: String,
+    maxlength: [100, "Location cannot exceed 100 characters"],
+    default: "",
+    trim: true,
+  },
+  website: {
+    type: String,
+    maxlength: [200, "Website URL cannot exceed 200 characters"],
+    default: "",
+    trim: true,
+  },
+  motto: {
+    type: String,
+    maxlength: [80, "Motto cannot exceed 80 characters"],
+    default: "",
+    trim: true,
+  },
   role: {
     type: String,
     enum: ["admin", "wife_of_the_year", "user"],

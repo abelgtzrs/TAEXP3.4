@@ -204,8 +204,8 @@ export default function BlessingsUsagePage() {
       </style>
       <h1 className="text-2xl font-bold text-primary">Blessings Usage</h1>
       <div className="grid grid-cols-12 gap-3 h-full overflow-hidden min-h-0">
-  {/* Left: Blessings selector (aligned with right; no vertical offset) */}
-  <div className="col-span-12 lg:col-span-3" style={{ height: "calc(100vh - 114px)" }}>
+        {/* Left: Blessings selector (aligned with right; no vertical offset) */}
+        <div className="col-span-12 lg:col-span-3" style={{ height: "calc(100vh - 114px)" }}>
           <div
             className="rounded-lg border p-3 flex flex-col gap-2 h-full min-h-0"
             style={{ borderColor: "var(--color-primary)", background: "var(--color-surface)" }}
@@ -219,7 +219,10 @@ export default function BlessingsUsagePage() {
               style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
             />
             <div className="text-[11px] text-text-secondary">{filteredBlessings.length} results</div>
-            <div className="overflow-y-auto flex-1 pr-1 space-y-1 min-h-0 pb-10" style={{ WebkitOverflowScrolling: "touch" }}>
+            <div
+              className="overflow-y-auto flex-1 pr-1 space-y-1 min-h-0 pb-10"
+              style={{ WebkitOverflowScrolling: "touch" }}
+            >
               {filteredBlessings.map((b) => {
                 const usedNums = Array.from(b.usedVolumes.keys()).sort((a, z) => a - z);
                 const missingNums = allVolumeNumbers.filter((n) => !b.usedVolumes.has(n));
@@ -328,7 +331,10 @@ export default function BlessingsUsagePage() {
                             style={{ borderColor: "var(--color-primary)" }}
                           >
                             <div className="flex items-center justify-between">
-                              <div className="text-xs font-semibold">Volume {vn}{vol?.title ? ` – ${vol.title}` : ""}</div>
+                              <div className="text-xs font-semibold">
+                                Volume {vn}
+                                {vol?.title ? ` – ${vol.title}` : ""}
+                              </div>
                               {volumeId && (
                                 <button
                                   onClick={() => saveVolumeEdits(volumeId)}
@@ -417,7 +423,10 @@ export default function BlessingsUsagePage() {
             style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: "var(--color-primary)" }}>
+            <div
+              className="flex items-center justify-between px-4 py-3 border-b"
+              style={{ borderColor: "var(--color-primary)" }}
+            >
               <div className="text-lg font-semibold text-primary">
                 Volume {previewVol.volumeNumber} – {previewVol.title}
               </div>
