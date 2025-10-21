@@ -2,17 +2,60 @@ import { useAuth } from "../../context/AuthContext";
 import Widget from "../ui/Widget";
 import StyledButton from "../ui/StyledButton";
 import { Camera } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, memo } from "react";
 import api from "../../services/api";
+
+const AvatarUploader = memo(function AvatarUploader({ src, username, onPick, uploading }) {
+  return (
+    <div className="relative group w-60 h-60 mb-4">
+      <img
+        src={src}
+        alt={username ? `${username}'s avatar` : "User Avatar"}
+        className="w-full h-full rounded-full object-cover border-2 border-primary/50 shadow-lg"
+      />
+      <button
+        type="button"
+        aria-label="Upload profile picture"
+        className="absolute inset-0 rounded-full bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-100 cursor-pointer"
+        onClick={onPick}
+        disabled={uploading}
+      >
+        <Camera size={32} className="text-white" />
+      </button>
+    </div>
+  );
+});
+
+const XPBar = memo(function XPBar({ level, xp, xpToNextLevel }) {
+  const percent = useMemo(() => {
+    if (!xpToNextLevel || xpToNextLevel <= 0) return 0;
+    const p = Math.max(0, Math.min(100, (xp / xpToNextLevel) * 100));
+    return p;
+  }, [xp, xpToNextLevel]);
+  return (
+    <div className="w-full my-4">
+      <div className="flex justify-between text-sm font-bold mb-1">
+        <span className="text-text-main">Level {level}</span>
+        <span className="text-text-main">
+          {xp} / {xpToNextLevel} XP
+        </span>
+      </div>
+      <div className="w-full bg-background rounded-full h-3.5">
+        <div className="bg-primary h-2.5 rounded-full" style={{ width: `${percent}%` }}></div>
+      </div>
+    </div>
+  );
+});
 
 const UserInfoCard = () => {
   const { user, setUser } = useAuth();
   const fileInputRef = useRef(null);
+  const [uploading, setUploading] = useState(false);
   const [editing, setEditing] = useState(false);
-  const [bio, setBio] = useState(user?.bio || "");
-  const [location, setLocation] = useState(user?.location || "");
-  const [website, setWebsite] = useState(user?.website || "");
-  const [motto, setMotto] = useState(user?.motto || "");
+  const [bio, setBio] = useState("");
+  const [location, setLocation] = useState("");
+  const [website, setWebsite] = useState("");
+  const [motto, setMotto] = useState("");
   const [saving, setSaving] = useState(false);
 
   if (!user) return null;
@@ -20,42 +63,56 @@ const UserInfoCard = () => {
   // Construct the base URL for the server to correctly resolve image paths
   const serverBaseUrl = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").split("/api")[0];
 
-  const handleFileSelect = () => {
-    fileInputRef.current.click();
-  };
+  useEffect(() => {
+    // Sync local edit fields with latest user data
+    setBio(user?.bio || "");
+    setLocation(user?.location || "");
+    setWebsite(user?.website || "");
+    setMotto(user?.motto || "");
+  }, [user]);
+
+  const handleFileSelect = () => fileInputRef.current?.click();
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
-    console.log("Selected file:", file.name, file.size, file.type);
-
     const formData = new FormData();
     formData.append("profilePicture", file);
 
     try {
-      console.log("Uploading to:", "/users/me/profile-picture");
+      setUploading(true);
       const { data } = await api.put("/users/me/profile-picture", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("Upload response:", data);
-      console.log("New profilePicture value:", data.data.profilePicture);
-      console.log("Constructed URL will be:", `${serverBaseUrl}${data.data.profilePicture}`);
       setUser(data.data); // Update user context with new data from server
     } catch (error) {
       console.error("Error uploading profile picture:", error);
       alert("Failed to upload profile picture. Please try again.");
+    } finally {
+      setUploading(false);
     }
   };
 
-  const xpPercentage = user.xpToNextLevel > 0 ? (user.experience / user.xpToNextLevel) * 100 : 0;
+  const normalizeUrl = (url) => {
+    const trimmed = (url || "").trim();
+    if (!trimmed) return "";
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+    return `https://${trimmed}`;
+  };
 
   const handleSaveProfile = async () => {
     try {
       setSaving(true);
-  const { data } = await api.put("/users/me/profile", { bio, location, website, motto });
+      const payload = {
+        bio: bio.trim(),
+        location: location.trim(),
+        website: normalizeUrl(website),
+        motto: motto.trim(),
+      };
+      const { data } = await api.put("/users/me/profile", payload);
       setUser(data.data);
       setEditing(false);
     } catch (err) {
@@ -70,40 +127,23 @@ const UserInfoCard = () => {
     <Widget title="User Profile" className="flex flex-col items-center text-center h-full">
       <div className="flex flex-col items-center text-center h-full">
         {/* Avatar with Upload Button */}
-        <div className="relative group w-60 h-60 mb-4">
-          <img
-            src={
-              user.profilePicture
-                ? `${serverBaseUrl}${user.profilePicture}`
-                : `https://cdn.artphotolimited.com/images/60229b05bd40b857475a9987/1000x1000/the-strokes.jpg`
-            }
-            alt="User Avatar"
-            className="w-full h-full rounded-full object-cover border-2 border-primary/50 shadow-lg"
-          />
-          <div
-            className="absolute inset-0 rounded-full bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-100 cursor-pointer"
-            onClick={handleFileSelect}
-          >
-            <Camera size={32} className="text-white" />
-          </div>
-          <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
-        </div>
+        <AvatarUploader
+          src={
+            user.profilePicture
+              ? `${serverBaseUrl}${user.profilePicture}`
+              : `https://api.dicebear.com/8.x/pixel-art/svg?seed=${user?.username || "user"}`
+          }
+          username={user.username}
+          onPick={handleFileSelect}
+          uploading={uploading}
+        />
+        <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
         <h2 className="text-xl font-bold text-white">{user.username}</h2>
         <p className="text-sm font-semibold text-primary mb-4">
           {user.equippedTitle?.titleBase?.name || "Cognitive Framework User"}
         </p>
         {/* XP Bar */}
-        <div className="w-full my-4">
-          <div className="flex justify-between text-sm font-bold mb-1">
-            <span className="text-text-main">Level {user.level}</span>
-            <span className="text-text-main">
-              {user.experience} / {user.xpToNextLevel} XP
-            </span>
-          </div>
-          <div className="w-full bg-background rounded-full h-3.5">
-            <div className="bg-primary h-2.5 rounded-full" style={{ width: `${xpPercentage}%` }}></div>
-          </div>
-        </div>
+        <XPBar level={user.level} xp={user.experience} xpToNextLevel={user.xpToNextLevel} />
         {/* Bio / Profile Fields */}
         {!editing ? (
           <div className="w-full text-left mt-3 space-y-2">
@@ -121,12 +161,7 @@ const UserInfoCard = () => {
             )}
             {website && (
               <div className="text-sm">
-                <a
-                  href={website}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-primary hover:underline break-all"
-                >
+                <a href={website} target="_blank" rel="noreferrer" className="text-primary hover:underline break-all">
                   {website}
                 </a>
               </div>
@@ -147,7 +182,9 @@ const UserInfoCard = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wide text-text-tertiary mb-1">Location</label>
+                <label className="block text-xs font-semibold uppercase tracking-wide text-text-tertiary mb-1">
+                  Location
+                </label>
                 <input
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
@@ -157,7 +194,9 @@ const UserInfoCard = () => {
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wide text-text-tertiary mb-1">Motto</label>
+                <label className="block text-xs font-semibold uppercase tracking-wide text-text-tertiary mb-1">
+                  Motto
+                </label>
                 <input
                   value={motto}
                   onChange={(e) => setMotto(e.target.value)}
@@ -168,7 +207,9 @@ const UserInfoCard = () => {
               </div>
             </div>
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wide text-text-tertiary mb-1">Website</label>
+              <label className="block text-xs font-semibold uppercase tracking-wide text-text-tertiary mb-1">
+                Website
+              </label>
               <input
                 value={website}
                 onChange={(e) => setWebsite(e.target.value)}
@@ -179,7 +220,6 @@ const UserInfoCard = () => {
             </div>
           </div>
         )}
-
         <div className="flex-grow"></div> {/* Spacer */}
         {!editing ? (
           <StyledButton className="w-full mt-4" onClick={() => setEditing(true)}>

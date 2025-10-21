@@ -167,6 +167,62 @@ const updateProfilePicture = async (req, res) => {
   }
 };
 
+// Upload profile banner image
+const updateProfileBanner = async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ success: false, message: "No file uploaded." });
+    const bannerUrl = `/uploads/banners/${req.file.filename}`;
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { bannerImage: bannerUrl },
+      { new: true, runValidators: true }
+    )
+      .select("-password")
+      .populate({ path: "activeAbelPersona", model: "AbelPersonaBase" })
+      .populate({ path: "unlockedAbelPersonas", model: "AbelPersonaBase" })
+      .populate({ path: "displayedPokemon", populate: { path: "basePokemon", model: "PokemonBase" } })
+      .populate({ path: "displayedSnoopyArt", populate: { path: "snoopyArtBase", model: "SnoopyArtBase" } })
+      .populate({ path: "displayedHabboRares", populate: { path: "habboRareBase", model: "HabboRareBase" } })
+      .populate({ path: "displayedYugiohCards", populate: { path: "yugiohCardBase", model: "YugiohCardBase" } })
+      .populate({ path: "badges", populate: { path: "badgeBase", model: "BadgeBase" } })
+      .populate({ path: "equippedTitle", populate: { path: "titleBase", model: "TitleBase" } });
+
+    if (!user) return res.status(404).json({ success: false, message: "User not found." });
+    res.status(200).json({ success: true, data: user });
+  } catch (error) {
+    console.error("Update Profile Banner Error:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// Update banner display settings
+const updateBannerSettings = async (req, res) => {
+  try {
+    const { bannerFitMode, bannerPositionX, bannerPositionY } = req.body;
+    const updates = {};
+    if (bannerFitMode) updates.bannerFitMode = bannerFitMode;
+    if (typeof bannerPositionX === "number") updates.bannerPositionX = Math.max(0, Math.min(100, bannerPositionX));
+    if (typeof bannerPositionY === "number") updates.bannerPositionY = Math.max(0, Math.min(100, bannerPositionY));
+
+    const user = await User.findByIdAndUpdate(req.user.id, updates, { new: true, runValidators: true })
+      .select("-password")
+      .populate({ path: "activeAbelPersona", model: "AbelPersonaBase" })
+      .populate({ path: "unlockedAbelPersonas", model: "AbelPersonaBase" })
+      .populate({ path: "displayedPokemon", populate: { path: "basePokemon", model: "PokemonBase" } })
+      .populate({ path: "displayedSnoopyArt", populate: { path: "snoopyArtBase", model: "SnoopyArtBase" } })
+      .populate({ path: "displayedHabboRares", populate: { path: "habboRareBase", model: "HabboRareBase" } })
+      .populate({ path: "displayedYugiohCards", populate: { path: "yugiohCardBase", model: "YugiohCardBase" } })
+      .populate({ path: "badges", populate: { path: "badgeBase", model: "BadgeBase" } })
+      .populate({ path: "equippedTitle", populate: { path: "titleBase", model: "TitleBase" } });
+
+    if (!user) return res.status(404).json({ success: false, message: "User not found." });
+    res.status(200).json({ success: true, data: user });
+  } catch (error) {
+    console.error("Update Banner Settings Error:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
 // --- Define all functions as constants before exporting ---
 
 const setActivePersona = async (req, res) => {
@@ -518,6 +574,8 @@ module.exports = {
   getDashboardStats,
   setActivePersona,
   updateProfilePicture, // <-- EXPORT NEW FUNCTION
+  updateProfileBanner,
+  updateBannerSettings,
   getAllUsersAdmin,
   updateUserAdmin,
   resetUserPasswordAdmin,

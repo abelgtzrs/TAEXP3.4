@@ -5,7 +5,8 @@ const DisplayedCollection = ({ title, items, baseField }) => {
   // --- THIS IS THE FIX ---
   // We ensure that 'items' is treated as an array, even if it's undefined or null.
   // We also create a new array to avoid modifying the original.
-  const displayItems = Array.isArray(items) ? [...items] : [];
+  // Normalize: remove null/undefined entries that could create leading blanks
+  const displayItems = Array.isArray(items) ? items.filter((it) => it && it[baseField]) : [];
 
   // Fill the rest of the grid with nulls for consistent spacing.
   while (displayItems.length < 6) {

@@ -235,7 +235,7 @@ const Header = ({ forcedHeight }) => {
               <img
                 src={
                   user?.profilePicture
-                    ? `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api"}/users/me/profile-picture`
+                    ? `${serverBaseUrl}${user.profilePicture}`
                     : `https://api.dicebear.com/8.x/pixel-art/svg?seed=${user?.username || "user"}`
                 }
                 alt="User Avatar"

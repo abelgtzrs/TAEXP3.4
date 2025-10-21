@@ -28,6 +28,28 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  // Profile banner fields
+  bannerImage: {
+    type: String, // URL path like /uploads/banners/<file>
+    default: null,
+  },
+  bannerFitMode: {
+    type: String,
+    enum: ["cover", "contain", "fill"],
+    default: "cover",
+  },
+  bannerPositionX: {
+    type: Number, // percentage 0-100
+    min: 0,
+    max: 100,
+    default: 50,
+  },
+  bannerPositionY: {
+    type: Number, // percentage 0-100
+    min: 0,
+    max: 100,
+    default: 50,
+  },
   // Public profile fields
   bio: {
     type: String,

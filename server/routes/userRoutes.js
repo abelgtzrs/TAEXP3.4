@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
 // --- Multer Configuration for file uploads ---
 const storage = multer.diskStorage({
@@ -34,6 +35,40 @@ const upload = multer({
 });
 // --- End Multer Configuration ---
 
+// --- Banner upload configuration ---
+const bannerDir = path.join("public", "uploads", "banners");
+try {
+  if (!fs.existsSync(bannerDir)) {
+    fs.mkdirSync(bannerDir, { recursive: true });
+  }
+} catch (e) {
+  console.error("Failed to ensure banner uploads directory:", e.message);
+}
+
+const bannerStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, bannerDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, req.user.id + "-" + uniqueSuffix + path.extname(file.originalname));
+  },
+});
+
+const bannerUpload = multer({
+  storage: bannerStorage,
+  fileFilter: function (req, file, cb) {
+    const allowedMimeTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
+    const allowedExtensions = /\.(jpg|jpeg|png|gif)$/i;
+    if (allowedMimeTypes.includes(file.mimetype) && allowedExtensions.test(file.originalname)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files (jpg, jpeg, png, gif) are allowed!"), false);
+    }
+  },
+  limits: { fileSize: 8 * 1024 * 1024 },
+});
+
 const {
   getUserCollection,
   updateDisplayedItems,
@@ -43,6 +78,8 @@ const {
   getStreakStatus,
   tickLoginStreak,
   updateProfileBio,
+  updateProfileBanner,
+  updateBannerSettings,
 } = require("../controllers/userController");
 const { getMe } = require("../controllers/authController");
 
@@ -56,6 +93,9 @@ router.get("/me", getMe);
 
 // --- ADD THIS NEW ROUTE for profile picture upload ---
 router.put("/me/profile-picture", upload.single("profilePicture"), updateProfilePicture);
+// Banner routes
+router.put("/me/profile-banner", bannerUpload.single("profileBanner"), updateProfileBanner);
+router.put("/me/profile/banner-settings", updateBannerSettings);
 
 router.put("/me/profile/active-persona", setActivePersona);
 router.put("/me/profile", updateProfileBio);
