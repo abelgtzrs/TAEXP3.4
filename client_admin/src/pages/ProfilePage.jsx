@@ -7,13 +7,7 @@ import BadgeDisplay from "../components/profile/BadgeDisplay";
 import UserStatsWidget from "../components/profile/UserStatsWidget";
 import DisplayedCollection from "../components/profile/DisplayedCollection";
 import CompactDisplayedCollections from "../components/profile/CompactDisplayedCollections";
-import {
-  Flame,
-  Images,
-  Star,
-  User as UserIcon,
-  Image as ImageIcon,
-} from "lucide-react";
+import { Flame, Images, Star, User as UserIcon, Image as ImageIcon } from "lucide-react";
 import ProfileEditPanel from "../components/profile/ProfileEditPanel";
 
 const ProfilePage = () => {
@@ -111,7 +105,7 @@ const ProfilePage = () => {
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
       {/* Hero header */}
       <div className="relative px-1 sm:px-2 mb-4">
-        <div className="relative h-44 sm:h-52 md:h-64 w-full rounded-xl sm:rounded-2xl overflow-hidden">
+        <div className="relative h-[13.75rem] sm:h-[16.25rem] md:h-[20rem] w-full md:w-[125%] md:mx-[-12.5%] rounded-xl sm:rounded-2xl overflow-hidden">
           {/* Banner image layer */}
           {bannerUrl ? (
             <div

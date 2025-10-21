@@ -35,9 +35,7 @@ export default function UserOverviewCard({ onEdit }) {
               </span>
             )}
           </div>
-          {user?.motto && (
-            <div className="text-xs text-slate-300/90 italic mt-0.5 truncate">“{user.motto}”</div>
-          )}
+          {user?.motto && <div className="text-xs text-slate-300/90 italic mt-0.5 truncate">“{user.motto}”</div>}
           <div className="mt-2 grid grid-cols-3 gap-2 text-[11px]">
             <div className="inline-flex items-center gap-1 text-slate-200">
               <Images size={14} /> {totalCollectibles}
@@ -45,9 +43,7 @@ export default function UserOverviewCard({ onEdit }) {
             <div className="inline-flex items-center gap-1 text-amber-300">
               <Flame size={14} /> {streak}
             </div>
-            <div className="inline-flex items-center gap-1 text-sky-300">
-              Lv {user.level}
-            </div>
+            <div className="inline-flex items-center gap-1 text-sky-300">Lv {user.level}</div>
           </div>
           <div className="mt-2 text-xs text-slate-300 flex items-center gap-3 flex-wrap">
             {user.location && (

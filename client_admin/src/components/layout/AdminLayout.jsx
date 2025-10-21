@@ -73,8 +73,103 @@ const AdminLayout = () => {
 
   const logoImg = import.meta.env.VITE_TAE_LOGO;
 
+  // Load and apply glass + background settings from localStorage
+  const loadUiSettings = () => {
+    try {
+      return {
+        pageBgImage: localStorage.getItem("tae.pageBgImage") || null,
+        pageBgFit: localStorage.getItem("tae.pageBgFit") || "cover",
+        pageBgPosX: Number(localStorage.getItem("tae.pageBgPosX") || 50),
+        pageBgPosY: Number(localStorage.getItem("tae.pageBgPosY") || 50),
+        pageBgTint: localStorage.getItem("tae.pageBgTint") || "rgba(0,0,0,0)",
+        glassBlur: localStorage.getItem("tae.glass.blur") || "8px",
+        glassSurfaceAlpha: localStorage.getItem("tae.glass.surfaceAlpha") || "0.6",
+      };
+    } catch (e) {
+      return {
+        pageBgImage: null,
+        pageBgFit: "cover",
+        pageBgPosX: 50,
+        pageBgPosY: 50,
+        pageBgTint: "rgba(0,0,0,0)",
+        glassBlur: "8px",
+        glassSurfaceAlpha: "0.6",
+      };
+    }
+  };
+
+  const applyCssVars = (settings) => {
+    const root = document.documentElement;
+    if (!root) return;
+    root.style.setProperty("--glass-blur", settings.glassBlur || "8px");
+    root.style.setProperty("--glass-surface-alpha", settings.glassSurfaceAlpha || "0.6");
+  };
+
+  const [uiSettings, setUiSettings] = useState(loadUiSettings());
+
+  useEffect(() => {
+    applyCssVars(uiSettings);
+  }, [uiSettings]);
+
+  useEffect(() => {
+    const onStorage = (e) => {
+      if (!e || (e && !e.key)) {
+        setUiSettings(loadUiSettings());
+        return;
+      }
+      if (
+        [
+          "tae.pageBgImage",
+          "tae.pageBgFit",
+          "tae.pageBgPosX",
+          "tae.pageBgPosY",
+          "tae.pageBgTint",
+          "tae.glass.blur",
+          "tae.glass.surfaceAlpha",
+        ].includes(e.key)
+      ) {
+        setUiSettings(loadUiSettings());
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("tae:settings-changed", onStorage);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("tae:settings-changed", onStorage);
+    };
+  }, []);
+
   return (
-    <div className="h-screen w-screen overflow-hidden bg-background text-text-main text-xs">
+    <div className="relative h-screen w-screen overflow-hidden bg-background text-text-main text-xs">
+      {/* Default gradient background (visible when no custom image set) */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(1200px 400px at 0% 0%, var(--color-primary) 6%, transparent 60%), radial-gradient(1000px 600px at 100% 100%, var(--color-secondary) 5%, transparent 60%), linear-gradient(135deg, var(--color-surface) 0%, var(--color-background) 80%)",
+          opacity: 0.35,
+        }}
+      />
+      {/* Page background layer */}
+      {uiSettings.pageBgImage && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            backgroundImage: `url(${uiSettings.pageBgImage})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: uiSettings.pageBgFit || "cover",
+            backgroundPosition: `${uiSettings.pageBgPosX || 50}% ${uiSettings.pageBgPosY || 50}%`,
+          }}
+        />
+      )}
+      {/* Optional tint overlay */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{ background: uiSettings.pageBgTint }}
+      />
       {/* Sidebar full height */}
       <aside
         className={`fixed top-0 left-0 bottom-0 z-50 flex flex-col bg-surface/40 backdrop-blur-md border-r border-gray-700/80 shadow-2xl transition-all duration-500 ease-in-out ${

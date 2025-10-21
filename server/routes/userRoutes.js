@@ -5,11 +5,20 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-// --- Multer Configuration for file uploads ---
+// --- Multer Configuration for avatar uploads ---
+const avatarDir = path.join("public", "uploads", "avatars");
+try {
+  if (!fs.existsSync(avatarDir)) {
+    fs.mkdirSync(avatarDir, { recursive: true });
+  }
+} catch (e) {
+  console.error("Failed to ensure avatar uploads directory:", e.message);
+}
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     // Define the destination directory for uploads
-    cb(null, "public/uploads/avatars/");
+    cb(null, avatarDir);
   },
   filename: function (req, file, cb) {
     // Create a unique filename to avoid conflicts
@@ -22,13 +31,13 @@ const upload = multer({
   storage: storage,
   fileFilter: function (req, file, cb) {
     // Check both MIME type and file extension
-    const allowedMimeTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
-    const allowedExtensions = /\.(jpg|jpeg|png|gif)$/i;
+    const allowedMimeTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"];
+    const allowedExtensions = /\.(jpg|jpeg|png|gif|webp)$/i;
 
     if (allowedMimeTypes.includes(file.mimetype) && allowedExtensions.test(file.originalname)) {
       cb(null, true);
     } else {
-      cb(new Error("Only image files (jpg, jpeg, png, gif) are allowed!"), false);
+      cb(new Error("Only image files (jpg, jpeg, png, gif, webp) are allowed!"), false);
     }
   },
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB file size limit
@@ -58,12 +67,12 @@ const bannerStorage = multer.diskStorage({
 const bannerUpload = multer({
   storage: bannerStorage,
   fileFilter: function (req, file, cb) {
-    const allowedMimeTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
-    const allowedExtensions = /\.(jpg|jpeg|png|gif)$/i;
+    const allowedMimeTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"];
+    const allowedExtensions = /\.(jpg|jpeg|png|gif|webp)$/i;
     if (allowedMimeTypes.includes(file.mimetype) && allowedExtensions.test(file.originalname)) {
       cb(null, true);
     } else {
-      cb(new Error("Only image files (jpg, jpeg, png, gif) are allowed!"), false);
+      cb(new Error("Only image files (jpg, jpeg, png, gif, webp) are allowed!"), false);
     }
   },
   limits: { fileSize: 8 * 1024 * 1024 },

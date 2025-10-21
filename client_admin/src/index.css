@@ -3,13 +3,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Glassmorphism variables (editable via Profile > Edit) */
+:root {
+  --glass-blur: 8px; /* default blur for translucent elements */
+  --glass-surface-alpha: 0.6; /* 0.0 - 1.0 alpha for widget/container backgrounds */
+  --glass-tint: rgba(0, 0, 0, 0); /* overlay tint on page background */
+}
+
 /* Base style for all widgets */
 .widget-container {
-  background-color: rgba(23, 31, 42, 0.6); /* Semi-transparent dark surface */
+  background-color: rgba(23, 31, 42, var(--glass-surface-alpha, 0.6)); /* Semi-transparent dark surface */
   border: 1px solid #374151; /* gray-700, for structure */
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(var(--glass-blur, 8px));
   position: relative;
   box-shadow: inset 0 0 15px rgba(14, 165, 233, 0.1), 0 0 15px rgba(14, 165, 233, 0.1); /* Inner and outer glow */
+  -webkit-backdrop-filter: blur(var(--glass-blur, 8px));
 }
 
 /* NEW class for the cut-corner effect */
@@ -33,4 +41,15 @@
 .no-hover .recharts-active-bar {
   fill-opacity: 1 !important;
   filter: none !important;
+}
+
+/* Override Tailwind backdrop blur utilities to reflect --glass-blur */
+.backdrop-blur,
+.backdrop-blur-sm,
+.backdrop-blur-md,
+.backdrop-blur-lg,
+.backdrop-blur-xl,
+.backdrop-blur-2xl {
+  backdrop-filter: blur(var(--glass-blur, 8px)) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur, 8px)) !important;
 }

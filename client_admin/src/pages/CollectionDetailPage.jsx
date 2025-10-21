@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import PageHeader from "../components/ui/PageHeader";
 import CollectionItemCard from "../components/collections/CollectionItemCard";
+import SuccessToast from "../components/ui/SuccessToast";
 
 const collectionConfig = {
   pokemon: { title: "Pokédex Collection", baseField: "basePokemon", displayField: "displayedPokemon", limit: 6 },
@@ -20,6 +21,8 @@ const CollectionDetailPage = () => {
   const [collection, setCollection] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   const config = collectionConfig[collectionType];
 
@@ -32,7 +35,32 @@ const CollectionDetailPage = () => {
       }
       try {
         const response = await api.get(`/users/me/collection/${collectionType}`);
-        setCollection(response.data.data);
+        const fetched = response.data.data || [];
+        setCollection(fetched);
+
+        // Reconcile displayed items: if any displayed IDs aren't in the fetched collection
+        // (e.g., collectible was deleted), remove them from the displayed array for this type.
+        const displayedIdsSafe = Array.isArray(user?.[config.displayField])
+          ? user[config.displayField].map((it) => it._id)
+          : [];
+        const ownedIds = new Set(fetched.map((it) => it._id));
+        const reconciled = displayedIdsSafe.filter((id) => ownedIds.has(id));
+        if (reconciled.length !== displayedIdsSafe.length) {
+          try {
+            await api.put("/users/me/profile/display", {
+              collectionType: collectionType,
+              items: reconciled,
+            });
+            // Refresh user context so UI reflects changes everywhere
+            const updatedUserRes = await api.get("/auth/me");
+            setUser(updatedUserRes.data.data);
+            const removedCount = displayedIdsSafe.length - reconciled.length;
+            setToastMessage(`Removed ${removedCount} no-longer-owned displayed item${removedCount > 1 ? "s" : ""}.`);
+            setToastOpen(true);
+          } catch (reconErr) {
+            console.warn("Failed to reconcile displayed items after deletion:", reconErr);
+          }
+        }
       } catch (err) {
         setError("Failed to fetch collection.");
       } finally {
@@ -83,6 +111,29 @@ const CollectionDetailPage = () => {
     }
   };
 
+  const handleClearDisplayed = async () => {
+    if (!config) return;
+    const currentDisplayedIds = Array.isArray(user?.[config.displayField])
+      ? user[config.displayField].map((it) => it._id)
+      : [];
+    if (currentDisplayedIds.length === 0) return;
+    const ok = window.confirm("Remove all displayed items from your profile for this collection?");
+    if (!ok) return;
+    try {
+      await api.put("/users/me/profile/display", {
+        collectionType: collectionType,
+        items: [],
+      });
+      const updatedUserRes = await api.get("/auth/me");
+      setUser(updatedUserRes.data.data);
+      setToastMessage("Cleared all displayed items for this collection.");
+      setToastOpen(true);
+    } catch (err) {
+      console.error("Failed to clear displayed items:", err);
+      alert("Failed to clear displayed items.");
+    }
+  };
+
   if (!config)
     return (
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-500 text-2xl">
@@ -123,6 +174,7 @@ const CollectionDetailPage = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
+      <SuccessToast open={toastOpen} message={toastMessage} onClose={() => setToastOpen(false)} />
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -162,6 +214,15 @@ const CollectionDetailPage = () => {
               {displayedIds.length}/{config.limit}
             </div>
             <div className="text-xs text-gray-400">Selected</div>
+            {displayedIds.length > 0 && (
+              <button
+                onClick={handleClearDisplayed}
+                className="mt-2 inline-flex items-center gap-1 px-2 py-1 rounded-md bg-red-600/80 hover:bg-red-600 text-white text-xs"
+                title="Clear all displayed items"
+              >
+                Clear Displayed
+              </button>
+            )}
           </div>
         </div>
       </motion.div>

@@ -7,7 +7,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, AreaChart, Area, XAxis, YAxis } from "recharts";
 import { Plus, Trash2, Edit, ChevronLeft, ChevronRight, X } from "lucide-react";
-import Widget from "../components/ui/Widget";
+import Widget from "../dashboard/Widget";
 import StyledButton from "../components/ui/StyledButton";
 import StyledInput from "../components/ui/StyledInput";
 import PageHeader from "../components/ui/PageHeader";
@@ -23,8 +23,8 @@ const fmt = (n) => Number(n).toLocaleString(undefined, { minimumFractionDigits: 
 const KpiGrid = ({ kpis }) => (
   <div className="grid grid-cols-4 gap-2 text-[11px] font-mono">
     {kpis.map((k) => (
-      <div key={k.label} className="p-2 rounded bg-gray-800/60 border border-gray-700 flex flex-col">
-        <span className="text-[10px] tracking-wide text-gray-400">{k.label}</span>
+      <div key={k.label} className="p-2 rounded border flex flex-col" style={{ borderColor: "var(--color-primary)" }}>
+        <span className="text-[10px] uppercase tracking-wide text-text-secondary">{k.label}</span>
         <span className={`tabular-nums font-semibold ${k.color || "text-amber-200"}`}>{k.value}</span>
       </div>
     ))}
