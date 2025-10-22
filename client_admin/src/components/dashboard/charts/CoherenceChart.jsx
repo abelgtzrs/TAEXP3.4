@@ -1,15 +1,21 @@
+import React from "react";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 import Widget from "../../ui/Widget";
-import { chartData } from "./chartData";
 import { getTheme } from "./theme";
+import { useChartData } from "./ChartDataContext";
 
 export default function CoherenceChart() {
   const { primary, secondary, textSecondary } = getTheme();
+  const { coherenceSeries } = useChartData();
+  const data = React.useMemo(
+    () => coherenceSeries.map((d) => ({ name: d.name, coherence: d.value })),
+    [coherenceSeries]
+  );
   return (
     <Widget title="Narrative Coherence Index" className="h-full min-h-0">
       <div className="flex-1 w-full h-full min-h-0 py-2">
         <ResponsiveContainer width="100%" height="100%" minHeight={120}>
-          <AreaChart data={chartData} margin={{ top: 10, right: 20, left: -15, bottom: 10 }}>
+          <AreaChart data={data} margin={{ top: 10, right: 20, left: -15, bottom: 10 }}>
             <defs>
               <linearGradient id="colorCoherence" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="50%" stopColor={primary} stopOpacity={0.4} />

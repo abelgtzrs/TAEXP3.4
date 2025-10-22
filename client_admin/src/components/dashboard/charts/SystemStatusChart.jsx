@@ -1,10 +1,11 @@
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 import Widget from "../../ui/Widget";
-import { systemStatus } from "./chartData";
 import { getTheme } from "./theme";
+import { useChartData } from "./ChartDataContext";
 
 export default function SystemStatusChart() {
   const { textSecondary } = getTheme();
+  const { systemStatus } = useChartData();
   return (
     <Widget title="System Status Overview" className="h-full min-h-0">
       <div className="flex-1 w-full h-full min-h-0 flex flex-col justify-center py-2">
