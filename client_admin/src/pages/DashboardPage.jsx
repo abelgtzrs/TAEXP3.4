@@ -31,6 +31,7 @@ const DashboardPage = () => {
   const [loading, setLoading] = useState(true);
   const [streakStatus, setStreakStatus] = useState({ countedToday: true, currentLoginStreak: 0 });
   const [ticking, setTicking] = useState(false);
+  const [showStreakModal, setShowStreakModal] = useState(false);
   // Team popover moved to global Header; local state removed
 
   // Resolve server base for images
@@ -52,6 +53,8 @@ const DashboardPage = () => {
         ]);
         setStats(statsRes.data.data);
         setStreakStatus(streakRes.data.data);
+        // If the new day started (per backend status), prompt via modal
+        setShowStreakModal(!streakRes.data?.data?.countedToday);
       } catch (error) {
         console.error("Failed to fetch dashboard data:", error);
       } finally {
@@ -67,6 +70,7 @@ const DashboardPage = () => {
       const res = await api.post("/users/me/streak/tick");
       const data = res.data?.data || {};
       setStreakStatus((prev) => ({ ...prev, ...data }));
+      setShowStreakModal(false);
       // Refresh dashboard stats to reflect new streak immediately
       const statsRes = await api.get("/users/me/dashboard-stats");
       setStats(statsRes.data.data);
@@ -76,6 +80,52 @@ const DashboardPage = () => {
       setTicking(false);
     }
   };
+
+  // --- Midnight (America/New_York) refresh scheduler ---
+  // Utility: extract current NY time parts using Intl (handles EST/EDT automatically)
+  const getNYParts = () => {
+    const fmt = new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/New_York",
+      hour12: false,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+    const parts = Object.fromEntries(fmt.formatToParts(new Date()).map((p) => [p.type, p.value]));
+    const hour = parseInt(parts.hour || "0", 10);
+    const minute = parseInt(parts.minute || "0", 10);
+    const second = parseInt(parts.second || "0", 10);
+    return { hour, minute, second };
+  };
+
+  const msUntilNextNYMidnight = () => {
+    const { hour, minute, second } = getNYParts();
+    const secondsToday = hour * 3600 + minute * 60 + second;
+    const remaining = 24 * 3600 - secondsToday;
+    // add a small buffer to cross the boundary safely
+    return Math.max(remaining * 1000 + 500, 1000);
+  };
+
+  // Schedule a refresh at 0:00 America/New_York and show the modal if needed
+  useEffect(() => {
+    let timerId = setTimeout(async function midnightTick() {
+      try {
+        const streakRes = await api.get("/users/me/streak/status");
+        setStreakStatus(streakRes.data.data);
+        setShowStreakModal(!streakRes.data?.data?.countedToday);
+      } catch (e) {
+        console.error("Midnight streak refresh failed:", e);
+      } finally {
+        // schedule the next midnight tick again
+        timerId = setTimeout(midnightTick, msUntilNextNYMidnight());
+      }
+    }, msUntilNextNYMidnight());
+
+    return () => clearTimeout(timerId);
+  }, []);
 
   return (
     <motion.div
@@ -95,19 +145,9 @@ const DashboardPage = () => {
           subtitle={`Cognitive Framework Status for ${user.username || "Admin"}.`}
           className="mt-1 mb-1 pl-4"
         />
-        {/* Daily Streak Button: show only if today hasn't been counted */}
-        {!loading && streakStatus && !streakStatus.countedToday && (
-          <div className="px-4">
-            <button
-              onClick={handleTickStreak}
-              disabled={ticking}
-              className="mt-2 inline-flex items-center gap-2 rounded-md bg-emerald-600 text-white px-4 py-2 text-sm hover:bg-emerald-500 disabled:opacity-60 disabled:cursor-not-allowed shadow"
-              title="Count today's login toward your streak"
-            >
-              {ticking ? "Updating…" : "Count today's login (streak)"}
-            </button>
-            <span className="ml-3 text-xs opacity-70">Current streak: {streakStatus.currentLoginStreak || 0}</span>
-          </div>
+        {/* Current streak hint below header */}
+        {!loading && (
+          <div className="px-4 text-xs opacity-70">Current streak: {streakStatus.currentLoginStreak || 0}</div>
         )}
       </motion.div>
 
@@ -279,6 +319,38 @@ const DashboardPage = () => {
           <CurrencySourceWidget />
         </motion.div>
       </motion.div>
+
+      {/* Streak Modal (appears at 0:00 America/New_York if not yet counted) */}
+      {showStreakModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setShowStreakModal(false)} />
+          <div className="relative z-10 widget-container rounded-xl p-6 w-[92%] max-w-md border border-white/10">
+            <h3 className="text-lg font-semibold text-white">New Day! Count Your Login</h3>
+            <p className="mt-2 text-sm text-slate-300">
+              It just turned 12:00 AM (New York). Count today’s login to continue your streak.
+            </p>
+            <div className="mt-4 flex items-center gap-3">
+              <button
+                onClick={handleTickStreak}
+                disabled={ticking}
+                className="inline-flex items-center gap-2 rounded-md bg-emerald-600 text-white px-4 py-2 text-sm hover:bg-emerald-500 disabled:opacity-60 disabled:cursor-not-allowed shadow"
+                title="Count today's login toward your streak"
+              >
+                {ticking ? "Updating…" : "Count today’s login"}
+              </button>
+              <button
+                onClick={() => setShowStreakModal(false)}
+                className="inline-flex items-center gap-2 rounded-md bg-white/10 text-white px-3 py-2 text-sm hover:bg-white/15 border border-white/10"
+              >
+                Not now
+              </button>
+            </div>
+            <div className="mt-3 text-xs text-slate-400">
+              Current streak: {streakStatus.currentLoginStreak || 0}
+            </div>
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 };

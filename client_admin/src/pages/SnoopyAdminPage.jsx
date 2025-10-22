@@ -120,7 +120,7 @@ export default function SnoopyAdminPage() {
               value={form.imageUrl}
               onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
               className="w-full bg-background rounded px-3 py-2 border border-primary"
-              placeholder="/public/snoopy/file.png or https://..."
+              placeholder="/uploads/snoopys/file.png or https://..."
             />
             <div className="mt-2">
               <ImageUploader label="Upload Image" onUploaded={(url) => setForm((f) => ({ ...f, imageUrl: url }))} />
@@ -130,6 +130,12 @@ export default function SnoopyAdminPage() {
                     src={buildImageUrl(form.imageUrl)}
                     alt="preview"
                     className="max-w-full max-h-full object-contain"
+                    onError={(e) => {
+                      console.warn("Snoopy preview failed to load", {
+                        original: form.imageUrl,
+                        resolved: e.currentTarget?.src,
+                      });
+                    }}
                   />
                 </div>
               )}
@@ -179,7 +185,7 @@ export default function SnoopyAdminPage() {
           </div>
           <div className="md:col-span-2">
             <div className="text-[11px] text-text-secondary">
-              Tip: For local files, ensure the image exists under <code>/public/</code> so it can be served.
+              Tip: Use the uploader above (recommended) or set a URL. For local files, the server serves <code>/uploads/snoopys/*</code>.
             </div>
           </div>
         </div>

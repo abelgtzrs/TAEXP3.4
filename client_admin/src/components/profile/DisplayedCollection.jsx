@@ -55,6 +55,16 @@ const DisplayedCollection = ({ title, items, baseField }) => {
         finalImageSrc: fullUrl,
       });
     }
+    if (baseField === "snoopyArtBase") {
+      console.log("Snoopy Debug:", {
+        baseItem: baseItem.name,
+        originalImageUrl: baseItem.imageUrl,
+        cleanedImageUrl: imageUrl,
+        serverBaseUrl,
+        fullUrl,
+        finalImageSrc: fullUrl,
+      });
+    }
     return fullUrl;
   };
 
@@ -199,6 +209,15 @@ const DisplayedCollection = ({ title, items, baseField }) => {
                           src={imageUrl}
                           alt={baseItem.name}
                           className="max-w-full max-h-full object-contain rounded-md"
+                          onError={(e) => {
+                            // Helpful diagnostics in console when an image fails
+                            console.warn("Collection image failed to load", {
+                              title,
+                              baseField,
+                              itemName: baseItem?.name,
+                              src: e.currentTarget?.src,
+                            });
+                          }}
                         />
                       ) : (
                         <div className="w-full h-full rounded-md flex items-center justify-center text-xs text-gray-500">
