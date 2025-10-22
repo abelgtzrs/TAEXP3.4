@@ -20,9 +20,22 @@ const CompactDisplayedCollections = ({
     let imageUrl = baseItem.imageUrl;
     if (!imageUrl) return null;
     if (imageUrl.startsWith("http")) return imageUrl;
+    // Normalize Windows backslashes and remove public prefixes
+    imageUrl = imageUrl.replace(/\\/g, "/");
     imageUrl = imageUrl.replace(/^public\//, "").replace(/^\/public\//, "");
     imageUrl = imageUrl.replace(/^\//, "");
-    return `${serverBaseUrl}/${imageUrl}`;
+    const fullUrl = `${serverBaseUrl}/${imageUrl}`;
+    if (typeof baseItem.imageUrl === "string" && /snoopy/i.test(baseItem.imageUrl)) {
+      console.log("Snoopy (Compact) Debug:", {
+        baseItem: baseItem.name,
+        originalImageUrl: baseItem.imageUrl,
+        cleanedImageUrl: imageUrl,
+        serverBaseUrl,
+        fullUrl,
+        finalImageSrc: fullUrl,
+      });
+    }
+    return fullUrl;
   };
 
   const Section = ({ title, items, baseField, getThumb }) => (
@@ -36,7 +49,20 @@ const CompactDisplayedCollections = ({
             <div key={item?._id || base?._id} className="flex flex-col items-center text-center">
               <div className="w-14 h-14 flex items-center justify-center">
                 {thumb ? (
-                  <img src={thumb} alt={base?.name || "thumb"} className="max-w-full max-h-full object-contain" />
+                  <img
+                    src={thumb}
+                    alt={base?.name || "thumb"}
+                    className="max-w-full max-h-full object-contain"
+                    onError={(e) => {
+                      console.warn("Compact collection image failed to load", {
+                        section: title,
+                        baseField,
+                        itemName: base?.name,
+                        src: e.currentTarget?.src,
+                        original: base?.imageUrl,
+                      });
+                    }}
+                  />
                 ) : (
                   <span className="text-slate-500 text-[10px]">[IMG]</span>
                 )}

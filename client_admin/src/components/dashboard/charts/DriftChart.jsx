@@ -7,10 +7,7 @@ import React from "react";
 export default function DriftChart() {
   const { primary, textSecondary } = getTheme();
   const { driftSeries } = useChartData();
-  const data = React.useMemo(
-    () => driftSeries.map((d) => ({ name: d.name, drift: d.value })),
-    [driftSeries]
-  );
+  const data = React.useMemo(() => driftSeries.map((d) => ({ name: d.name, drift: d.value })), [driftSeries]);
   return (
     <Widget title="Temporal Drift Analysis" className="h-full min-h-0">
       <div className="flex-1 w-full h-full min-h-0 py-2">

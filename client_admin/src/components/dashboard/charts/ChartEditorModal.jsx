@@ -35,10 +35,7 @@ export default function ChartEditorModal({ isOpen, onClose }) {
     }
   }, [isOpen, coherenceSeries, anomalySeries, driftSeries, systemStatus]);
 
-  const totalStatus = useMemo(
-    () => statusDraft.reduce((sum, s) => sum + (Number(s.value) || 0), 0),
-    [statusDraft]
-  );
+  const totalStatus = useMemo(() => statusDraft.reduce((sum, s) => sum + (Number(s.value) || 0), 0), [statusDraft]);
 
   // Shared helpers for series drafts
   const addRow = (setter, list) => {
@@ -52,7 +49,9 @@ export default function ChartEditorModal({ isOpen, onClose }) {
   };
 
   const updateRow = (setter, i, field, value) => {
-    setter((prev) => prev.map((row, idx) => (idx === i ? { ...row, [field]: field === "name" ? value : Number(value) } : row)));
+    setter((prev) =>
+      prev.map((row, idx) => (idx === i ? { ...row, [field]: field === "name" ? value : Number(value) } : row))
+    );
   };
 
   const addStatusRow = () => {
@@ -64,7 +63,9 @@ export default function ChartEditorModal({ isOpen, onClose }) {
   };
 
   const updateStatusRow = (i, field, value) => {
-    setStatusDraft((prev) => prev.map((row, idx) => (idx === i ? { ...row, [field]: field === "value" ? Number(value) : value } : row)));
+    setStatusDraft((prev) =>
+      prev.map((row, idx) => (idx === i ? { ...row, [field]: field === "value" ? Number(value) : value } : row))
+    );
   };
 
   const handleSave = () => {
@@ -85,7 +86,11 @@ export default function ChartEditorModal({ isOpen, onClose }) {
       return true;
     };
 
-    if (!validateSeries(coherenceDraft, "Coherence") || !validateSeries(anomalyDraft, "Anomaly") || !validateSeries(driftDraft, "Drift")) {
+    if (
+      !validateSeries(coherenceDraft, "Coherence") ||
+      !validateSeries(anomalyDraft, "Anomaly") ||
+      !validateSeries(driftDraft, "Drift")
+    ) {
       return;
     }
 
@@ -122,7 +127,9 @@ export default function ChartEditorModal({ isOpen, onClose }) {
       <div className="bg-slate-900 text-slate-100 rounded-lg shadow-xl w-[90vw] max-w-5xl max-h-[85vh] flex flex-col">
         <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700">
           <h3 className="text-lg font-semibold">Edit Charts</h3>
-          <button onClick={onClose} className="px-2 py-1 text-sm rounded hover:bg-slate-800">Close</button>
+          <button onClick={onClose} className="px-2 py-1 text-sm rounded hover:bg-slate-800">
+            Close
+          </button>
         </div>
 
         <div className="px-4 pt-3">
@@ -183,7 +190,9 @@ export default function ChartEditorModal({ isOpen, onClose }) {
             <div>
               <div className="flex justify-between items-center mb-2">
                 <h4 className="font-medium">System Status Slices</h4>
-                <button onClick={addStatusRow} className="px-3 py-1 text-sm rounded bg-blue-600 hover:bg-blue-500">Add Slice</button>
+                <button onClick={addStatusRow} className="px-3 py-1 text-sm rounded bg-blue-600 hover:bg-blue-500">
+                  Add Slice
+                </button>
               </div>
               <div className="overflow-auto border border-slate-700 rounded">
                 <table className="min-w-full text-sm">
@@ -231,7 +240,10 @@ export default function ChartEditorModal({ isOpen, onClose }) {
                           </div>
                         </td>
                         <td className="px-2 py-1 text-right">
-                          <button onClick={() => removeStatusRow(i)} className="px-2 py-1 text-xs rounded bg-red-600 hover:bg-red-500">
+                          <button
+                            onClick={() => removeStatusRow(i)}
+                            className="px-2 py-1 text-xs rounded bg-red-600 hover:bg-red-500"
+                          >
                             Remove
                           </button>
                         </td>
@@ -259,8 +271,12 @@ export default function ChartEditorModal({ isOpen, onClose }) {
           >
             Reset to defaults
           </button>
-          <button onClick={onClose} className="px-3 py-1.5 text-sm rounded bg-slate-800 hover:bg-slate-700">Cancel</button>
-          <button onClick={handleSave} className="px-3 py-1.5 text-sm rounded bg-green-600 hover:bg-green-500">Save Changes</button>
+          <button onClick={onClose} className="px-3 py-1.5 text-sm rounded bg-slate-800 hover:bg-slate-700">
+            Cancel
+          </button>
+          <button onClick={handleSave} className="px-3 py-1.5 text-sm rounded bg-green-600 hover:bg-green-500">
+            Save Changes
+          </button>
         </div>
       </div>
     </div>
@@ -272,7 +288,9 @@ function SeriesEditor({ title, rows, onAdd, onRemove, onUpdate }) {
     <div>
       <div className="flex justify-between items-center mb-2">
         <h4 className="font-medium">{title} Series</h4>
-        <button onClick={onAdd} className="px-3 py-1 text-sm rounded bg-blue-600 hover:bg-blue-500">Add Row</button>
+        <button onClick={onAdd} className="px-3 py-1 text-sm rounded bg-blue-600 hover:bg-blue-500">
+          Add Row
+        </button>
       </div>
       <div className="overflow-auto border border-slate-700 rounded">
         <table className="min-w-full text-sm">

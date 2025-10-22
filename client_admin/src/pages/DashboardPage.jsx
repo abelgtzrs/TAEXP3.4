@@ -345,9 +345,7 @@ const DashboardPage = () => {
                 Not now
               </button>
             </div>
-            <div className="mt-3 text-xs text-slate-400">
-              Current streak: {streakStatus.currentLoginStreak || 0}
-            </div>
+            <div className="mt-3 text-xs text-slate-400">Current streak: {streakStatus.currentLoginStreak || 0}</div>
           </div>
         </div>
       )}

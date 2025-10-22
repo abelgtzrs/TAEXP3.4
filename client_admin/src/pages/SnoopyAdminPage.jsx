@@ -22,8 +22,11 @@ export default function SnoopyAdminPage() {
   const buildImageUrl = (url) => {
     if (!url) return null;
     if (/^https?:\/\//i.test(url)) return url; // absolute URL
-    // Normalize local paths (handle leading /public and leading slash)
-    let path = url.replace(/^public\//, "").replace(/^\/public\//, "");
+    // Normalize local paths: Windows backslashes, leading /public, and leading slash
+    let path = url
+      .replace(/\\/g, "/")
+      .replace(/^public\//, "")
+      .replace(/^\/public\//, "");
     if (path.startsWith("/")) return `${serverBaseUrl}${path}`;
     return `${serverBaseUrl}/${path}`;
   };
@@ -185,7 +188,8 @@ export default function SnoopyAdminPage() {
           </div>
           <div className="md:col-span-2">
             <div className="text-[11px] text-text-secondary">
-              Tip: Use the uploader above (recommended) or set a URL. For local files, the server serves <code>/uploads/snoopys/*</code>.
+              Tip: Use the uploader above (recommended) or set a URL. For local files, the server serves{" "}
+              <code>/uploads/snoopys/*</code>.
             </div>
           </div>
         </div>

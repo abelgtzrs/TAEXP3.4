@@ -37,7 +37,9 @@ const DisplayedCollection = ({ title, items, baseField }) => {
       return imageUrl;
     }
 
-    // Otherwise, it's a local path - prefix with server URL
+    // Otherwise, it's a local path - normalize and prefix with server URL
+    // Normalize Windows backslashes first
+    imageUrl = imageUrl.replace(/\\/g, "/");
     // Remove leading 'public/' or '/public/' if present
     imageUrl = imageUrl.replace(/^public\//, "").replace(/^\/public\//, "");
     // Remove leading slash if present
