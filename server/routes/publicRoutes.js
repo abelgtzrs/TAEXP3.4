@@ -11,6 +11,8 @@ const {
   rateVolume,
   exportVolumeRange,
   favoriteVolume,
+  getDailyBlessing,
+  getRandomBlessingDetailed,
 } = require("../controllers/publicController");
 
 // Existing Routes
@@ -25,5 +27,7 @@ router.post("/volumes/rate", rateVolume);
 router.post("/volumes/:volumeNumber/favorite", favoriteVolume);
 router.post("/volumes/export", exportVolumeRange);
 router.get("/motd", getRandomBlessing);
+router.get("/random-blessing", getRandomBlessingDetailed);
+router.get("/daily-blessing", getDailyBlessing);
 
 module.exports = router;

@@ -1,5 +1,15 @@
 const Volume = require("../models/Volume");
 
+function dayOfYear(d) {
+  const start = new Date(d.getFullYear(), 0, 0);
+  const diff = d - start;
+  return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
+
+function mod(n, m) {
+  return ((n % m) + m) % m;
+}
+
 exports.favoriteVolume = async (req, res) => {
   try {
     const volume = await Volume.findOne({
@@ -94,6 +104,78 @@ exports.getRandomBlessing = async (req, res) => {
       return res.status(404).json({ success: false, message: "No blessings found." });
     res.status(200).json({ success: true, data: randomBlessing[0].blessings });
   } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// New: Random blessing with volume metadata for UI consumption
+exports.getRandomBlessingDetailed = async (req, res) => {
+  try {
+    const sampled = await Volume.aggregate([
+      { $match: { status: "published", "blessings.0": { $exists: true } } },
+      { $unwind: "$blessings" },
+      { $sample: { size: 1 } },
+      {
+        $project: {
+          volumeNumber: 1,
+          title: 1,
+          name: "$blessings.item",
+          description: "$blessings.description",
+        },
+      },
+    ]);
+    if (!sampled || sampled.length === 0)
+      return res.status(404).json({ success: false, message: "No blessings found." });
+
+    const r = sampled[0];
+    return res.status(200).json({
+      success: true,
+      data: {
+        name: r.name,
+        description: r.description || "",
+        volumeNumber: r.volumeNumber,
+        volumeTitle: r.title,
+      },
+    });
+  } catch (error) {
+    console.error("getRandomBlessingDetailed error:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// Deterministic daily blessing drawn from published volumes' blessings
+// GET /api/public/daily-blessing?offset=0
+exports.getDailyBlessing = async (req, res) => {
+  try {
+    const offset = parseInt(req.query.offset || "0", 10) || 0;
+
+    // Pull all blessings from published volumes in a stable order
+    const volumes = await Volume.find({ status: "published", "blessings.0": { $exists: true } })
+      .sort({ volumeNumber: 1 })
+      .select("volumeNumber title blessings");
+
+    const blessings = [];
+    for (const v of volumes) {
+      for (const b of v.blessings) {
+        if (!b || !b.item) continue;
+        blessings.push({
+          name: b.item,
+          description: b.description || "",
+          volumeNumber: v.volumeNumber,
+          volumeTitle: v.title,
+        });
+      }
+    }
+
+    if (blessings.length === 0) {
+      return res.status(404).json({ success: false, message: "No blessings available from published volumes." });
+    }
+
+    const idx = mod(dayOfYear(new Date()) - offset, blessings.length);
+    const selected = blessings[idx];
+    return res.status(200).json({ success: true, data: selected });
+  } catch (error) {
+    console.error("getDailyBlessing error:", error);
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
