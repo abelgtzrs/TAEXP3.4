@@ -288,7 +288,7 @@ const VolumesPage = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.25 }}
-              className="fixed right-0 top-16 bottom-0 w-96 rounded-lg border shadow-sm flex flex-col"
+              className="fixed right-0 top-[63px] bottom-0 w-96 rounded-b-lg border-x border-b shadow-sm flex flex-col"
               style={{ backgroundColor: "var(--color-surface)", borderColor: "var(--color-primary)" }}
             >
               <div

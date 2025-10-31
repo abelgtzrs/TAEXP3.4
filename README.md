@@ -108,6 +108,18 @@ Future iterations may explore native desktop (C# or C++) and mobile UI clients t
 
 ---
 
+## Developer Notes
+
+If you want my behind-the-scenes notes on how this codebase is wired and how I approach changes, see:
+
+- docs/DEVELOPER_NOTES.md — repo-wide overview and conventions
+- client_admin/DEVELOPER_NOTES.md — admin dashboard specifics (widgets, theming, header sprites)
+- client_public/DEVELOPER_NOTES.md — public terminal viewer shape
+- server/DEVELOPER_NOTES.md — API layout, scripts, static assets
+- mobile/DEVELOPER_NOTES.md — Expo app layout
+
+---
+
 ## Installation
 
 ### Prerequisites

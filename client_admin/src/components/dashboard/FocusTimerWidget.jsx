@@ -58,11 +58,17 @@ export default function FocusTimerWidget() {
         <div className="text-3xl font-mono">{format(state.remaining)}</div>
         <div className="flex items-center gap-2">
           {!state.running ? (
-            <button onClick={start} className="px-3 py-1.5 text-xs rounded bg-emerald-600 hover:bg-emerald-500 text-white">
+            <button
+              onClick={start}
+              className="px-3 py-1.5 text-xs rounded bg-emerald-600 hover:bg-emerald-500 text-white"
+            >
               Start
             </button>
           ) : (
-            <button onClick={pause} className="px-3 py-1.5 text-xs rounded bg-yellow-600 hover:bg-yellow-500 text-white">
+            <button
+              onClick={pause}
+              className="px-3 py-1.5 text-xs rounded bg-yellow-600 hover:bg-yellow-500 text-white"
+            >
               Pause
             </button>
           )}

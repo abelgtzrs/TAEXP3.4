@@ -42,7 +42,7 @@ export default function QuickLinksWidget() {
             placeholder="Label"
             className="col-span-1 bg-background border border-gray-700/60 rounded px-2 py-1 text-xs"
           />
-        <input
+          <input
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="https://example.com"
@@ -57,7 +57,10 @@ export default function QuickLinksWidget() {
         <ul className="space-y-1 max-h-44 overflow-auto pr-1">
           {links.length === 0 && <li className="text-text-secondary text-xs">No links yet.</li>}
           {links.map((l) => (
-            <li key={l.id} className="flex items-center gap-2 bg-background/50 border border-gray-700/40 rounded px-2 py-1">
+            <li
+              key={l.id}
+              className="flex items-center gap-2 bg-background/50 border border-gray-700/40 rounded px-2 py-1"
+            >
               <a
                 href={l.url}
                 target="_blank"
@@ -67,7 +70,10 @@ export default function QuickLinksWidget() {
               >
                 {l.title}
               </a>
-              <button onClick={() => remove(l.id)} className="text-[10px] px-1 py-0.5 rounded bg-red-600 hover:bg-red-500 text-white">
+              <button
+                onClick={() => remove(l.id)}
+                className="text-[10px] px-1 py-0.5 rounded bg-red-600 hover:bg-red-500 text-white"
+              >
                 Del
               </button>
             </li>

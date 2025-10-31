@@ -1,5 +1,5 @@
 import { Search, Bell, Mail, User, LogOut, CalendarDays } from "lucide-react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
 import { Link } from "react-router-dom";
@@ -9,7 +9,19 @@ const Header = ({ forcedHeight }) => {
   const { user, logout, setUser } = useAuth();
   const [personaDropdownOpen, setPersonaDropdownOpen] = useState(false);
   const personaButtonRef = useRef(null);
-  const [teamOpen, setTeamOpen] = useState(false);
+  const [showTeamSprites, setShowTeamSprites] = useState(() => {
+    try {
+      const raw = localStorage.getItem("tae.header.showTeamSprites");
+      return raw ? JSON.parse(raw) === true : false;
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem("tae.header.showTeamSprites", JSON.stringify(!!showTeamSprites));
+    } catch {}
+  }, [showTeamSprites]);
   const teamHoverTimer = useRef(null);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const calendarHoverTimer = useRef(null);
@@ -23,7 +35,8 @@ const Header = ({ forcedHeight }) => {
   const getPokemonSprite = (basePokemon) => {
     if (!basePokemon) return null;
     const firstForm = basePokemon.forms?.[0];
-    const sprite = firstForm?.spriteGen6Animated || firstForm?.spriteGen5Animated || null;
+    // Use Gen5 animated sprite specifically for header display
+    const sprite = firstForm?.spriteGen5Animated || null;
     return sprite ? `${serverBaseUrl}${sprite}` : null;
   };
 
@@ -41,10 +54,95 @@ const Header = ({ forcedHeight }) => {
     }
   };
 
+  // Expand header to 112px when showing team to push page content down
+  const computedHeight = forcedHeight ? forcedHeight : showTeamSprites ? 112 : 48;
+
+  // Moving sprites state/logic
+  const spriteSize = showTeamSprites ? 72 : 36; // 50% smaller when header is contracted
+  const containerRef = useRef(null);
+  const rafRef = useRef(0);
+  const [actors, setActors] = useState([]);
+  const mailButtonRef = useRef(null);
+
+  // Initialize and run animation regardless of header expansion; size/wall adapt via state
+  useEffect(() => {
+    const team = (user?.displayedPokemon || []).slice(0, 6);
+    const el = containerRef.current;
+    if (!el || team.length === 0) return;
+    const rect = el.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+
+    // Distribute actors across vertical lanes to avoid all hugging the bottom/top
+    const padding = 8; // keep off exact edges for nicer look
+    const usableH = Math.max(height - spriteSize - padding * 2, 0);
+    const laneCount = Math.max(team.length, 1);
+    const laneStep = laneCount > 1 ? usableH / (laneCount - 1) : 0;
+    const init = team.map((p, i) => {
+      const x = Math.random() * Math.max(width - spriteSize, 0);
+      // Evenly spaced lanes with a tiny jitter
+      let baseY = padding + i * laneStep;
+      const jitter = (Math.random() - 0.5) * 12; // +/- 6px
+      let y = Math.min(Math.max(baseY + jitter, 0), Math.max(height - spriteSize, 0));
+      const speed = 0.6 + Math.random() * 1.0; // px per frame
+      const dir = Math.random() < 0.5 ? -1 : 1; // start left or right
+      const vx = dir * speed;
+      const vy = 0; // horizontal-only movement
+      return { key: p?._id || p?.basePokemon?._id || `${i}`, x, y, vx, vy };
+    });
+    setActors(init);
+
+    let lastTs = performance.now();
+    const step = (ts) => {
+      const dt = Math.min((ts - lastTs) / (1000 / 60), 2); // normalize to ~60fps steps, cap to avoid jumps
+      lastTs = ts;
+      setActors((prev) => {
+        if (!el) return prev;
+        const { width: w, height: h, left: contLeft } = el.getBoundingClientRect();
+        // Determine right boundary; place a wall just to the left of the Mail icon (not the button edge)
+        let rightLimit = w - spriteSize;
+        if (mailButtonRef.current) {
+          const mailRect = mailButtonRef.current.getBoundingClientRect();
+          const iconSize = 16; // Mail icon size in px
+          const iconLeftInContainer = mailRect.left - contLeft + (mailRect.width - iconSize) / 2;
+          const wallX = iconLeftInContainer - 2; // small 2px gap before the icon
+          rightLimit = Math.min(rightLimit, Math.max(wallX - spriteSize, 0));
+        }
+        const next = prev.map((a) => ({ ...a }));
+
+        // Integrate motion (horizontal only)
+        for (const a of next) {
+          a.x += a.vx * dt;
+
+          // Bounds with bounce (left/right)
+          if (a.x < 0) {
+            a.x = 0;
+            a.vx = Math.abs(a.vx);
+          } else if (a.x > rightLimit) {
+            a.x = Math.max(rightLimit, 0);
+            a.vx = -Math.abs(a.vx);
+          }
+
+          // Keep Y within bounds (no vertical motion, just clamp with padding)
+          const pad = 8;
+          if (a.y < pad) a.y = pad;
+          if (a.y > h - spriteSize - pad) a.y = Math.max(h - spriteSize - pad, 0);
+        }
+        // Allow overlapping — no separation logic
+        return next;
+      });
+      rafRef.current = requestAnimationFrame(step);
+    };
+    rafRef.current = requestAnimationFrame(step);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showTeamSprites, user?.displayedPokemon]);
   return (
     <header
-      className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-3 py-1.5 flex items-center justify-between sticky top-0 z-40 shadow-2xl shadow-black/50 h-12"
-      style={forcedHeight ? { height: forcedHeight } : {}}
+      className="relative bg-black/20 backdrop-blur-xl border-b border-white/10 px-3 py-1.5 flex items-center justify-between sticky top-0 z-40 shadow-2xl shadow-black/50 transition-[height] duration-300 ease-out"
+      style={{ height: computedHeight }}
     >
       {/* Left Side: Logo/Brand */}
       <div className="flex items-center">
@@ -72,105 +170,39 @@ const Header = ({ forcedHeight }) => {
 
       {/* Right Side: Action Icons and User Profile */}
       <div className="flex items-center space-x-2">
-        <button className="p-2 rounded-xl text-white/60 hover:bg-white/10 hover:text-primary transition-all duration-300 hover:scale-105 active:scale-95">
+        <button
+          ref={mailButtonRef}
+          className="p-2 rounded-xl text-white/60 hover:bg-white/10 hover:text-primary transition-all duration-300 hover:scale-105 active:scale-95"
+        >
           <Mail size={16} />
         </button>
-        {/* Team icon and popover - placed to the right of the Mail icon */}
-        <div
-          className="relative"
-          onMouseEnter={() => {
-            if (teamHoverTimer.current) {
-              clearTimeout(teamHoverTimer.current);
-              teamHoverTimer.current = null;
-            }
-            setTeamOpen(true);
-          }}
-          onMouseLeave={() => {
-            teamHoverTimer.current = setTimeout(() => setTeamOpen(false), 120);
-          }}
+        {/* Team toggle - Poké Ball icon */}
+        <button
+          type="button"
+          aria-pressed={showTeamSprites}
+          onClick={() => setShowTeamSprites((v) => !v)}
+          title={showTeamSprites ? "Hide Pokémon team" : "Show Pokémon team in header"}
+          className={`p-2 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 ${
+            showTeamSprites
+              ? "bg-primary/20 text-primary hover:bg-primary/30"
+              : "text-white/70 hover:bg-white/10 hover:text-white"
+          }`}
         >
-          <button
-            type="button"
-            aria-haspopup="dialog"
-            aria-expanded={teamOpen}
-            onClick={() => setTeamOpen((v) => !v)}
-            onKeyDown={(e) => {
-              if (e.key === "Escape") setTeamOpen(false);
-            }}
-            title="Show current Pokémon team"
-            className="p-2 rounded-xl text-white/70 hover:bg-white/10 hover:text-white transition-all duration-300 hover:scale-105 active:scale-95"
+          {/* Pokéball icon */}
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
           >
-            {/* Pokéball icon */}
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path
-                d="M12 3a9 9 0 0 0-8.485 6h4.146a4.5 4.5 0 0 1 8.678 0h4.146A9 9 0 0 0 12 3Zm0 18a9 9 0 0 0 8.485-6h-4.146a4.5 4.5 0 0 1-8.678 0H3.515A9 9 0 0 0 12 21Zm0-12a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
-                fill="currentColor"
-              />
-            </svg>
-          </button>
-          {teamOpen && (
-            <div
-              role="dialog"
-              aria-label="Current Pokémon Team"
-              className="absolute right-0 mt-2 z-50 w-80 max-h-80 overflow-y-auto rounded-xl bg-black/85 backdrop-blur-xl border border-white/15 shadow-2xl p-3"
-              onMouseEnter={() => {
-                if (teamHoverTimer.current) {
-                  clearTimeout(teamHoverTimer.current);
-                  teamHoverTimer.current = null;
-                }
-                setTeamOpen(true);
-              }}
-              onMouseLeave={() => {
-                teamHoverTimer.current = setTimeout(() => setTeamOpen(false), 120);
-              }}
-            >
-              <div className="mb-2 flex items-center justify-between">
-                <div className="text-sm font-semibold text-white">Current Pokémon Team</div>
-                <button
-                  className="text-slate-300 hover:text-white"
-                  onClick={() => setTeamOpen(false)}
-                  aria-label="Close"
-                >
-                  ✕
-                </button>
-              </div>
-              <div className="grid grid-cols-3 gap-3">
-                {(user?.displayedPokemon || []).map((p) => {
-                  const base = p?.basePokemon;
-                  const sprite = getPokemonSprite(base);
-                  return (
-                    <div key={p?._id || base?._id} className="flex flex-col items-center text-center">
-                      <div className="w-20 h-20 flex items-center justify-center">
-                        {sprite ? (
-                          <img
-                            src={sprite}
-                            alt={base?.name || "Pokemon"}
-                            className="max-w-full max-h-full object-contain"
-                          />
-                        ) : (
-                          <span className="text-slate-500 text-xs">[IMG]</span>
-                        )}
-                      </div>
-                      <div className="mt-1 text-[11px] text-slate-200 truncate w-full" title={base?.name}>
-                        {base?.name || "Unknown"}
-                      </div>
-                    </div>
-                  );
-                })}
-                {(!user?.displayedPokemon || user.displayedPokemon.length === 0) && (
-                  <div className="col-span-full text-center text-slate-300 text-sm py-2">No Pokémon selected yet.</div>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
+            <path
+              d="M12 3a9 9 0 0 0-8.485 6h4.146a4.5 4.5 0 0 1 8.678 0h4.146A9 9 0 0 0 12 3Zm0 18a9 9 0 0 0 8.485-6h-4.146a4.5 4.5 0 0 1-8.678 0H3.515A9 9 0 0 0 12 21Zm0-12a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
         {/* Calendar icon and popover - placed to the right of the Pokémon icon */}
         <div
           className="relative"
@@ -304,6 +336,41 @@ const Header = ({ forcedHeight }) => {
               </button>
             </div>
           </div>
+        </div>
+      </div>
+      {/* Full-header field with freely moving Pokémon team (always visible; horizontal only, overlapping; mirror on right) */}
+      <div ref={containerRef} className="pointer-events-none absolute inset-0" style={{ height: "100%" }}>
+        {/* Render sprites positioned absolutely within the field */}
+        <div className="relative w-full h-full">
+          {(user?.displayedPokemon || []).slice(0, 6).map((p, idx) => {
+            const base = p?.basePokemon;
+            const sprite = getPokemonSprite(base);
+            if (!sprite) return null;
+            const actor = actors[idx];
+            const x = actor?.x ?? 0;
+            const y = actor?.y ?? 0;
+            const vx = actor?.vx ?? 0.8;
+            const mirrorOnRight = vx > 0; // mirror when moving right
+            return (
+              <img
+                key={actor?.key || p?._id || base?._id || idx}
+                src={sprite}
+                alt={base?.name || "Pokemon"}
+                height={spriteSize}
+                style={{
+                  position: "absolute",
+                  left: x,
+                  top: y,
+                  height: spriteSize,
+                  width: "auto",
+                  transform: mirrorOnRight ? "scaleX(-1)" : "none",
+                  transformOrigin: "center",
+                  imageRendering: "auto",
+                  filter: "drop-shadow(0 4px 10px rgba(0,0,0,0.5))",
+                }}
+              />
+            );
+          })}
         </div>
       </div>
     </header>
