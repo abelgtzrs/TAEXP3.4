@@ -11,6 +11,7 @@ This is my admin HUD: React + Vite + Tailwind with a modular widget system, pers
 - `services/api.js` wraps Axios with auth header + base URL
 
 Folder highlights:
+
 - `src/components/layout/` — shell pieces (Header, Sidebar, layout frames)
 - `src/components/dashboard/` — widgets for the main dashboard
 - `src/pages/` — route-level screens
@@ -21,9 +22,11 @@ Folder highlights:
 ## Environment
 
 Create `.env.local` here as needed:
+
 ```
 VITE_API_BASE_URL=http://localhost:5000/api
 ```
+
 I derive the server base with `split('/api')[0]` to build image URLs.
 
 ## Theming (Personas)

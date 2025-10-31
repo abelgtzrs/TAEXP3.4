@@ -302,7 +302,6 @@ The dashboard now provides a view of your digital sanctuary with responsive char
 
 <img width="1201" height="1221" alt="Screenshot 2025-07-25 010747" src="https://github.com/user-attachments/assets/98c78e88-8d93-495d-8ce9-2f3e7bba88ae" />
 
-
 ---
 
 ## License

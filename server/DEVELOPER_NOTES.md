@@ -17,6 +17,7 @@ This is the single API the clients talk to. It also serves static assets under `
 ## Environment
 
 Create `server/.env` (see `.env.example`):
+
 - `MONGO_URI` (required)
 - `JWT_SECRET` (required)
 - `PORT` (default 5000)

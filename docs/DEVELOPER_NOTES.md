@@ -35,11 +35,13 @@ I separate “base” definitions (e.g., PokemonBase, HabboRareBase, exercise de
   - npm run dev
 
 Mobile (optional):
+
 - cd mobile; npm start (Expo), then run the platform you care about.
 
 ## Environment variables (server)
 
 Put these in `server/.env` (see `.env.example` too):
+
 - MONGO_URI
 - JWT_SECRET
 - PORT (default 5000)
@@ -47,6 +49,7 @@ Put these in `server/.env` (see `.env.example` too):
 - FRONTEND_URL (for redirects)
 
 Frontend env (client_admin and client_public):
+
 - VITE_API_BASE_URL=http://localhost:5000/api
 
 ## Conventions I stick to

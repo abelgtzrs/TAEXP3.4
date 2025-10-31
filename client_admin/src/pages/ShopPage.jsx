@@ -1,11 +1,13 @@
-// --- FILE: client-admin/src/pages/ShopPage.jsx (Corrected) ---
-import { useMemo, useState } from "react";
+// --- FILE: client-admin/src/pages/ShopPage.jsx ---
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Coins, Gem, Heart, Filter, X, ShoppingBag, AlertCircle } from "lucide-react";
+import { Coins, Gem, Heart, X, ShoppingBag, AlertCircle } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
-import GachaCard from "../components/shop/GachaCard";
 import PullResultModal from "../components/shop/PullResultModal";
+import ShopFilter from "../components/shop/ShopFilter";
+import BalancesChips from "../components/shop/BalancesChips";
+import CategoryPanel from "../components/shop/CategoryPanel";
 
 const ShopPage = () => {
   const { user, setUser } = useAuth();
@@ -13,6 +15,65 @@ const ShopPage = () => {
   const [error, setError] = useState("");
   const [lastPulledItem, setLastPulledItem] = useState(null);
   const [filterCurrency, setFilterCurrency] = useState("all");
+  // Per-category last 5 pulls, persisted locally (with migration from old flat list)
+  const [recentByCategory, setRecentByCategory] = useState(() => {
+    try {
+      const raw = localStorage.getItem("tae.shop.recentByCategory.v1");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === "object" ? parsed : {};
+      }
+      const legacyRaw = localStorage.getItem("tae.shop.recentPulls");
+      const mapping = {};
+      if (legacyRaw) {
+        const flat = JSON.parse(legacyRaw);
+        if (Array.isArray(flat)) {
+          for (const e of flat) {
+            const cat = e?.category || "misc";
+            if (!mapping[cat]) mapping[cat] = [];
+            mapping[cat].push(e);
+          }
+          for (const k of Object.keys(mapping)) mapping[k] = mapping[k].slice(0, 5);
+        }
+      }
+      return mapping;
+    } catch {
+      return {};
+    }
+  });
+
+  // Build absolute URLs for relative images based on API base URL
+  const serverBaseUrl = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").split("/api")[0];
+  const buildImageUrl = (url) => {
+    if (!url) return null;
+    if (/^https?:\/\//i.test(url)) return url;
+    let path = url.replace(/^public\//, "").replace(/^\/public\//, "");
+    if (path.startsWith("/")) return `${serverBaseUrl}${path}`;
+    return `${serverBaseUrl}/${path}`;
+  };
+
+  // Label helper for sections
+  const categoryLabel = (cat) => {
+    const map = {
+      pokemon: "Pokémon",
+      yugioh: "Yu-Gi-Oh!",
+      snoopy: "Snoopy",
+      habbo: "Habbo Rare",
+      abelpersona: "Persona",
+    };
+    return map[cat] || cat;
+  };
+
+  // Persist per-category recents (cap 5 per category)
+  useEffect(() => {
+    try {
+      const capped = {};
+      for (const [cat, arr] of Object.entries(recentByCategory || {})) {
+        capped[cat] = (Array.isArray(arr) ? arr : []).slice(0, 5);
+      }
+      localStorage.setItem("tae.shop.recentByCategory.v1", JSON.stringify(capped));
+    } catch {}
+  }, [recentByCategory]);
 
   const SHOP_CONFIG = [
     {
@@ -103,17 +164,42 @@ const ShopPage = () => {
 
     try {
       const response = await api.post(`/shop/pull/${category}`);
-      // Set the entire response data to state, our modal will parse it.
       setLastPulledItem(response.data);
 
-      // Update the user's currency in the global context state.
+      const nested = response.data?.data || {};
+      const pulledItems =
+        nested.items && Array.isArray(nested.items) && nested.items.length > 0
+          ? nested.items
+          : nested.item
+          ? [nested.item]
+          : [];
+      const ts = Date.now();
+      const entries = pulledItems.map((it) => {
+        let img = it.imageUrl;
+        if (!img && it.forms) img = it.forms?.[0]?.spriteGen5Animated || it.forms?.[0]?.spriteGen6Animated;
+        const imageUrl = buildImageUrl(img);
+        const name = it.name || it.title || "Unknown";
+        const rarity = it.rarity || it.rarityCategory || it.systemRarity || null;
+        const id = it._id || it.id || `${name}-${ts}`;
+        return { id, name, imageUrl, rarity, category, ts };
+      });
+      setRecentByCategory((prev) => {
+        const next = { ...prev };
+        const cat = category;
+        const existing = Array.isArray(next[cat]) ? [...next[cat]] : [];
+        for (const entry of entries) {
+          const withoutDup = existing.filter((e) => e.id !== entry.id);
+          existing.splice(0, existing.length, entry, ...withoutDup);
+        }
+        next[cat] = existing.slice(0, 5);
+        return next;
+      });
+
       setUser((prevUser) => {
         const newUserState = { ...prevUser };
         const currency = config.currencyName;
         const cost = config.cost;
         const refund = Math.floor(cost / 4);
-
-        // Safely check for the isDuplicate flag from the nested data object.
         if (response.data?.data?.isDuplicate) {
           newUserState[currency] = (newUserState[currency] || 0) - cost + refund;
         } else {
@@ -147,81 +233,16 @@ const ShopPage = () => {
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
-        className="text-text-secondary mb-8"
+        className="text-text-secondary mb-6"
       >
         Burn tokens to execute an RNG pull across active banners. Duplicates are auto-refunded at 25% of cost.
       </motion.p>
 
-      {/* Balances */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.98 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, delay: 0.35 }}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
-      >
-        {balances.map(({ label, value, symbol, icon: Icon, title }, i) => (
-          <motion.div
-            key={label}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, delay: 0.4 + i * 0.05 }}
-            className="rounded-lg border p-4 flex items-center justify-between"
-            style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
-            title={title}
-            aria-label={`${label} balance card`}
-          >
-            <div className="flex items-center gap-3">
-              <div
-                className="h-10 w-10 rounded-md flex items-center justify-center border"
-                style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
-              >
-                <Icon className="h-5 w-5 text-primary" aria-hidden="true" />
-              </div>
-              <div>
-                <div className="text-sm text-text-secondary">{label}</div>
-                <div className="text-xl font-semibold text-text-main">
-                  <span className="text-primary mr-1">{value}</span>
-                  <span className="text-text-secondary text-sm align-middle">{symbol}</span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
+      {/* Balances (compact chips) */}
+      <BalancesChips balances={balances} />
 
       {/* Controls */}
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-text-main">Active Banners</h2>
-        <div className="flex items-center gap-2">
-          <div className="text-text-secondary text-sm">Filter</div>
-          <div
-            className="inline-flex items-center rounded-lg border overflow-hidden"
-            style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
-          >
-            {[
-              { key: "all", label: "All" },
-              { key: "TT", label: "TT" },
-              { key: "GG", label: "GG" },
-              { key: "❤️", label: "Hearts" },
-            ].map((opt) => (
-              <button
-                key={opt.key}
-                onClick={() => setFilterCurrency(opt.key)}
-                className={`px-3 py-1.5 text-sm transition-colors ${
-                  filterCurrency === opt.key
-                    ? "bg-primary text-white"
-                    : "text-text-main hover:bg-[var(--color-background)]"
-                }`}
-                aria-pressed={filterCurrency === opt.key}
-                aria-label={`Filter banners: ${opt.label}`}
-              >
-                {opt.key === "all" ? <Filter className="inline h-4 w-4 mr-1 align-[-2px]" /> : null}
-                {opt.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+      <ShopFilter value={filterCurrency} onChange={setFilterCurrency} />
 
       {error && (
         <motion.div
@@ -245,47 +266,20 @@ const ShopPage = () => {
         </motion.div>
       )}
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-      >
-        {visibleConfigs.map((config, index) => {
-          if (config.category === "abelpersona" && user?.role !== "admin") {
-            return null;
-          }
-          return (
-            <motion.div
-              key={config.category}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.6 + index * 0.06 }}
-              whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-              className="relative"
-            >
-              {/* Cost pill overlay */}
-              <div
-                className="absolute -top-2 -right-2 z-10 rounded-full border px-3 py-1 text-xs font-medium"
-                style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
-                title={`Cost per roll: ${config.cost} ${config.currencySymbol}`}
-              >
-                <span className="text-primary">{config.cost}</span>
-                <span className="ml-1 text-text-secondary">{config.currencySymbol}</span>
-              </div>
-              <GachaCard
-                title={config.title}
-                description={config.description}
-                cost={config.cost}
-                currencyName={config.currencyName}
-                currencySymbol={config.currencySymbol}
-                isLoading={loadingCategory === config.category}
-                onPull={() => handlePull(config.category)}
-              />
-            </motion.div>
-          );
-        })}
-      </motion.div>
+      {/* Compact panels combining banner + recents */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {visibleConfigs.map((cfg) => (
+          <CategoryPanel
+            key={cfg.category}
+            config={cfg}
+            recentItems={recentByCategory[cfg.category] || []}
+            isAdmin={user?.role === "admin"}
+            onPull={handlePull}
+            isLoading={loadingCategory === cfg.category}
+            categoryLabel={categoryLabel}
+          />
+        ))}
+      </div>
 
       {/* Meta note */}
       <p className="mt-6 text-xs text-text-secondary">
