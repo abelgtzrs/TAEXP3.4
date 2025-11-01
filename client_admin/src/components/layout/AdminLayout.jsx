@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Outlet, Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Header from "./Header";
+import UiCustomizerModal from "../settings/UiCustomizerModal";
 import {
   LayoutDashboard,
   CheckSquare,
@@ -107,6 +108,55 @@ const AdminLayout = () => {
 
   const [uiSettings, setUiSettings] = useState(loadUiSettings());
 
+  // Theme & persona settings for live customization
+  const getRootVar = (name, fallback) => {
+    if (typeof window === "undefined") return fallback;
+    const cs = getComputedStyle(document.documentElement);
+    const v = cs.getPropertyValue(name);
+    return v?.trim() || fallback;
+  };
+
+  const loadThemeSettings = () => {
+    try {
+      return {
+        glassBlur: localStorage.getItem("tae.glass.blur") || getRootVar("--glass-blur", "8px"),
+        glassSurfaceAlpha: localStorage.getItem("tae.glass.surfaceAlpha") || getRootVar("--glass-surface-alpha", "0.6"),
+        primary: localStorage.getItem("tae.theme.primary") || getRootVar("--color-primary", "#00d4ff"),
+        secondary: localStorage.getItem("tae.theme.secondary") || getRootVar("--color-secondary", "#a855f7"),
+        background: localStorage.getItem("tae.theme.background") || getRootVar("--color-background", "#0b1220"),
+        surface: localStorage.getItem("tae.theme.surface") || getRootVar("--color-surface", "#0e1726"),
+        textMain: localStorage.getItem("tae.theme.textMain") || getRootVar("--color-text-main", "#e5e7eb"),
+        textSecondary:
+          localStorage.getItem("tae.theme.textSecondary") || getRootVar("--color-text-secondary", "#94a3b8"),
+        textTertiary: localStorage.getItem("tae.theme.textTertiary") || getRootVar("--color-text-tertiary", "#64748b"),
+        persona: localStorage.getItem("tae.persona") || "default",
+      };
+    } catch {
+      return {
+        glassBlur: "8px",
+        glassSurfaceAlpha: "0.6",
+        primary: "#00d4ff",
+        secondary: "#a855f7",
+        background: "#0b1220",
+        surface: "#0e1726",
+        textMain: "#e5e7eb",
+        textSecondary: "#94a3b8",
+        textTertiary: "#64748b",
+        persona: "default",
+      };
+    }
+  };
+
+  const [theme, setTheme] = useState(loadThemeSettings());
+  const [presets, setPresets] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("tae.theme.presets") || "[]");
+    } catch {
+      return [];
+    }
+  });
+  const [showCustomizer, setShowCustomizer] = useState(false);
+
   useEffect(() => {
     applyCssVars(uiSettings);
   }, [uiSettings]);
@@ -126,9 +176,18 @@ const AdminLayout = () => {
           "tae.pageBgTint",
           "tae.glass.blur",
           "tae.glass.surfaceAlpha",
+          "tae.theme.primary",
+          "tae.theme.secondary",
+          "tae.theme.background",
+          "tae.theme.surface",
+          "tae.theme.textMain",
+          "tae.theme.textSecondary",
+          "tae.theme.textTertiary",
+          "tae.persona",
         ].includes(e.key)
       ) {
         setUiSettings(loadUiSettings());
+        setTheme(loadThemeSettings());
       }
     };
     window.addEventListener("storage", onStorage);
@@ -139,12 +198,55 @@ const AdminLayout = () => {
     };
   }, []);
 
+  // Apply theme variables whenever theme changes (live preview + persist)
+  useEffect(() => {
+    const root = document.documentElement;
+    if (!root) return;
+    // Glass
+    root.style.setProperty("--glass-blur", theme.glassBlur || "8px");
+    root.style.setProperty("--glass-surface-alpha", theme.glassSurfaceAlpha || "0.6");
+    localStorage.setItem("tae.glass.blur", theme.glassBlur || "8px");
+    localStorage.setItem("tae.glass.surfaceAlpha", theme.glassSurfaceAlpha || "0.6");
+    // Colors
+    root.style.setProperty("--color-primary", theme.primary);
+    root.style.setProperty("--color-secondary", theme.secondary);
+    root.style.setProperty("--color-background", theme.background);
+    root.style.setProperty("--color-surface", theme.surface);
+    root.style.setProperty("--color-text-main", theme.textMain);
+    root.style.setProperty("--color-text-secondary", theme.textSecondary);
+    root.style.setProperty("--color-text-tertiary", theme.textTertiary);
+    localStorage.setItem("tae.theme.primary", theme.primary);
+    localStorage.setItem("tae.theme.secondary", theme.secondary);
+    localStorage.setItem("tae.theme.background", theme.background);
+    localStorage.setItem("tae.theme.surface", theme.surface);
+    localStorage.setItem("tae.theme.textMain", theme.textMain);
+    localStorage.setItem("tae.theme.textSecondary", theme.textSecondary);
+    localStorage.setItem("tae.theme.textTertiary", theme.textTertiary);
+    // Persona
+    if (theme.persona) localStorage.setItem("tae.persona", theme.persona);
+    // Notify
+    window.dispatchEvent(new Event("tae:settings-changed"));
+  }, [theme]);
+
+  const handleSavePreset = (name) => {
+    const id = `${Date.now()}`;
+    const entry = { id, name, settings: theme };
+    const next = [...presets, entry];
+    setPresets(next);
+    localStorage.setItem("tae.theme.presets", JSON.stringify(next));
+  };
+  const handleDeletePreset = (id) => {
+    const next = presets.filter((p) => p.id !== id);
+    setPresets(next);
+    localStorage.setItem("tae.theme.presets", JSON.stringify(next));
+  };
+
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-background text-text-main text-xs">
       {/* Default gradient background (visible when no custom image set) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
+        className="pointer-events-none absolute inset-0 z-0"
         style={{
           background:
             "radial-gradient(1200px 400px at 0% 0%, var(--color-primary) 6%, transparent 60%), radial-gradient(1000px 600px at 100% 100%, var(--color-secondary) 5%, transparent 60%), linear-gradient(135deg, var(--color-surface) 0%, var(--color-background) 80%)",
@@ -155,7 +257,7 @@ const AdminLayout = () => {
       {uiSettings.pageBgImage && (
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10"
+          className="pointer-events-none absolute inset-0 z-0"
           style={{
             backgroundImage: `url(${uiSettings.pageBgImage})`,
             backgroundRepeat: "no-repeat",
@@ -167,7 +269,7 @@ const AdminLayout = () => {
       {/* Optional tint overlay */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
+        className="pointer-events-none absolute inset-0 z-0"
         style={{ background: uiSettings.pageBgTint }}
       />
       {/* Sidebar full height */}
@@ -418,8 +520,25 @@ const AdminLayout = () => {
           )}
         </nav>
 
-        {/* Logout */}
-        <div className="mt-auto flex-shrink-0 border-t border-gray-700/50 pt-2 px-1 pb-3">
+        {/* Footer buttons */}
+        <div className="mt-auto flex-shrink-0 border-t border-gray-700/50 pt-2 px-1 pb-3 space-y-2">
+          <button
+            onClick={() => setShowCustomizer(true)}
+            className={`w-full flex items-center p-2 rounded-lg text-xs text-text-secondary hover:bg-primary/30 hover:text-white transition-all duration-300 ${
+              isSidebarCollapsed ? "justify-center" : ""
+            }`}
+            title="Customize UI (glass, colors, persona)"
+          >
+            <Settings2 size={14} className={isSidebarCollapsed ? "" : "mr-2"} />
+            <span
+              className={`transition-all duration-300 overflow-hidden whitespace-nowrap ${
+                isSidebarCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"
+              }`}
+            >
+              Customize UI
+            </span>
+          </button>
+          {/* Logout */}
           <button
             onClick={logout}
             className={`w-full flex items-center p-2 rounded-lg text-xs text-text-secondary hover:bg-red-800/50 hover:text-white transition-all duration-300 ${
@@ -438,6 +557,17 @@ const AdminLayout = () => {
         </div>
       </aside>
 
+      {/* UI Customizer Modal */}
+      <UiCustomizerModal
+        open={showCustomizer}
+        onClose={() => setShowCustomizer(false)}
+        settings={theme}
+        onChange={(s) => setTheme(s)}
+        presets={presets}
+        onSavePreset={handleSavePreset}
+        onDeletePreset={handleDeletePreset}
+      />
+
       {/* Header offset by sidebar width */}
       <div
         className="fixed top-0 right-0 z-40 transition-[left,width] duration-500"
@@ -448,7 +578,7 @@ const AdminLayout = () => {
 
       {/* Main content */}
       <main
-        className="absolute overflow-hidden flex flex-col"
+        className="absolute overflow-hidden flex flex-col z-10"
         style={{ left: sidebarWidth, top: headerHeight, right: 0, bottom: 0 }}
       >
         <div className="flex-1 overflow-y-auto scrollbar-hide p-2 lg:p-3 min-h-0">

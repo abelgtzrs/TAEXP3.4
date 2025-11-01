@@ -1,13 +1,6 @@
 import { motion } from "framer-motion";
 
-const CategoryPanel = ({
-  config,
-  recentItems = [],
-  isAdmin,
-  onPull,
-  isLoading,
-  categoryLabel,
-}) => {
+const CategoryPanel = ({ config, recentItems = [], isAdmin, onPull, isLoading, categoryLabel }) => {
   if (config.category === "abelpersona" && !isAdmin) return null;
 
   const label = categoryLabel ? categoryLabel(config.category) : config.title;
@@ -19,8 +12,8 @@ const CategoryPanel = ({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
-      className="relative rounded-lg border p-4 flex flex-col gap-3"
-      style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+      className="relative rounded-lg border p-4 flex flex-col gap-3 glass-surface"
+      style={{ borderColor: "var(--color-primary)" }}
     >
       {/* Cost pill */}
       <div
@@ -68,9 +61,7 @@ const CategoryPanel = ({
 
       {/* Actions */}
       <div className="flex items-center justify-between gap-2">
-        <div className="text-[11px] text-text-secondary truncate pr-2">
-          {config.description}
-        </div>
+        <div className="text-[11px] text-text-secondary truncate pr-2">{config.description}</div>
         <button
           onClick={() => onPull(config.category)}
           disabled={isLoading}

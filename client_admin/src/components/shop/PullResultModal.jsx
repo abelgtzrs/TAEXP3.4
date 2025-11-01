@@ -68,8 +68,10 @@ const PullResultModal = ({ result, onClose }) => {
       onClick={onClose}
     >
       <div
-        className={`p-8 rounded-lg shadow-2xl text-center w-full mx-4 border ${isPack ? "max-w-4xl" : "max-w-sm"}`}
-        style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+        className={`p-8 rounded-lg shadow-2xl text-center w-full mx-4 border glass-surface ${
+          isPack ? "max-w-4xl" : "max-w-sm"
+        }`}
+        style={{ borderColor: "var(--color-primary)" }}
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-2xl font-bold text-text-main mb-4">{message}</h2>
@@ -83,8 +85,8 @@ const PullResultModal = ({ result, onClose }) => {
                 return (
                   <div
                     key={index}
-                    className="p-3 rounded-lg border"
-                    style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
+                    className="p-3 rounded-lg border glass-surface"
+                    style={{ borderColor: "var(--color-primary)" }}
                   >
                     {displayImageUrl ? (
                       <img src={displayImageUrl} alt={item.name} className="h-32 mx-auto object-contain mb-2" />
@@ -106,10 +108,7 @@ const PullResultModal = ({ result, onClose }) => {
           </div>
         ) : (
           // Single item display - original layout
-          <div
-            className="my-6 p-4 rounded-lg border"
-            style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
-          >
+          <div className="my-6 p-4 rounded-lg border glass-surface" style={{ borderColor: "var(--color-primary)" }}>
             {(() => {
               const { displayImageUrl, displayRarity } = getDisplayProps(displayItems[0]);
               return (

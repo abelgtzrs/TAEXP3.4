@@ -14,8 +14,8 @@ const BalancesStrip = ({ balances }) => {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, delay: 0.4 + i * 0.05 }}
-          className="rounded-lg border p-4 flex items-center justify-between"
-          style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+          className="rounded-lg border p-4 flex items-center justify-between glass-surface"
+          style={{ borderColor: "var(--color-primary)" }}
           title={title}
           aria-label={`${label} balance card`}
         >

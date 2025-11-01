@@ -15,8 +15,8 @@ const BalancesChips = ({ balances }) => {
           initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25, delay: 0.25 + i * 0.04 }}
-          className="inline-flex items-center gap-2 rounded-full border px-3 py-1"
-          style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+          className="inline-flex items-center gap-2 rounded-full border px-3 py-1 glass-surface"
+          style={{ borderColor: "var(--color-primary)" }}
           title={title}
           aria-label={`${label}: ${value} ${symbol}`}
         >

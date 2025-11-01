@@ -4,8 +4,8 @@ const GachaCard = ({ title, description, cost, currencyName, currencySymbol, onP
   return (
     // The main container for the card, using our widget styles as a base.
     <div
-      className="flex flex-col items-center text-center p-6 rounded-lg border w-full"
-      style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+      className="flex flex-col items-center text-center p-6 rounded-lg border w-full glass-surface"
+      style={{ borderColor: "var(--color-primary)" }}
     >
       <h2 className="text-2xl font-bold text-text-main mb-2">{title}</h2>
       <p className="text-sm text-text-secondary flex-grow mb-4">{description}</p>

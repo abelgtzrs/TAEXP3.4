@@ -20,6 +20,13 @@
   -webkit-backdrop-filter: blur(var(--glass-blur, 8px));
 }
 
+/* Lightweight glass surface utility for UI widgets */
+.glass-surface {
+  background-color: rgba(23, 31, 42, var(--glass-surface-alpha, 0.6));
+  backdrop-filter: blur(var(--glass-blur, 8px));
+  -webkit-backdrop-filter: blur(var(--glass-blur, 8px));
+}
+
 /* NEW class for the cut-corner effect */
 .widget-cut-corners {
   /* This CSS property "cuts" the shape of the element */

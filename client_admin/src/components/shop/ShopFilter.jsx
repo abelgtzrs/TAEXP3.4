@@ -13,8 +13,8 @@ const ShopFilter = ({ value, onChange }) => {
       <div className="flex items-center gap-2">
         <div className="text-text-secondary text-sm">Filter</div>
         <div
-          className="inline-flex items-center rounded-lg border overflow-hidden"
-          style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+          className="inline-flex items-center rounded-lg border overflow-hidden glass-surface"
+          style={{ borderColor: "var(--color-primary)" }}
         >
           {options.map((opt) => (
             <button

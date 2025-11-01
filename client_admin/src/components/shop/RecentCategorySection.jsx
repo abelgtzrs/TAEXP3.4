@@ -27,8 +27,8 @@ const RecentCategorySection = ({ label, items, categoryLabel }) => {
           : items.map((rp) => (
               <div
                 key={`${rp.category}-${rp.id}-${rp.ts}`}
-                className="rounded-lg border p-2 flex items-center gap-2"
-                style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+                className="rounded-lg border p-2 flex items-center gap-2 glass-surface"
+                style={{ borderColor: "var(--color-primary)" }}
                 title={`${rp.name} • ${categoryLabel ? categoryLabel(rp.category) : rp.category}`}
               >
                 <div
