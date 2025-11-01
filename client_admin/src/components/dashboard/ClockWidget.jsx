@@ -356,7 +356,10 @@ const ClockWidget = () => {
 
         {/* Progress Bars Section */}
         <div className="space-y-2">
-          <div className="rounded-lg p-2 border border-gray-700/70">
+          <div
+            className="rounded-lg p-2 border"
+            style={{ borderColor: "var(--color-primary)", boxShadow: "0 0 6px 0 var(--color-primary)" }}
+          >
             <div className="flex justify-between text-xs mb-1">
               <span className="text-text-secondary">Week Progress</span>
               <span className="text-text-main font-bold">{getWeekProgress(time)}%</span>
@@ -369,7 +372,10 @@ const ClockWidget = () => {
             </div>
           </div>
 
-          <div className="rounded-lg p-2 border border-gray-700/70">
+          <div
+            className="rounded-lg p-2 border"
+            style={{ borderColor: "var(--color-primary)", boxShadow: "0 0 6px 0 var(--color-primary)" }}
+          >
             <div className="flex justify-between text-xs mb-1">
               <span className="text-text-secondary">Year Progress</span>
               <span className="text-accent font-bold">{getYearProgress(time)}%</span>
@@ -385,21 +391,30 @@ const ClockWidget = () => {
 
         {/* Enhanced Statistics Grid */}
         <div className="grid grid-cols-3 gap-2 text-xs">
-          <div className="rounded-lg p-2 text-center border border-gray-700/70">
+          <div
+            className="rounded-lg p-2 text-center border"
+            style={{ borderColor: "var(--color-primary)", boxShadow: "0 0 6px 0 var(--color-primary)" }}
+          >
             <p className="font-bold text-text-main flex items-center justify-center gap-1">
               <Calendar size={12} />
               {getDayOfYear(time)}
             </p>
             <p className="text-text-secondary">Day</p>
           </div>
-          <div className="rounded-lg p-2 text-center border border-gray-700/70">
+          <div
+            className="rounded-lg p-2 text-center border"
+            style={{ borderColor: "var(--color-primary)", boxShadow: "0 0 6px 0 var(--color-primary)" }}
+          >
             <p className="font-bold text-text-main flex items-center justify-center gap-1">
               <Calendar size={12} className="text-text-main" />
               {getWeekOfYear(time)}
             </p>
             <p className="text-text-main">Week</p>
           </div>
-          <div className="rounded-lg p-2 text-center border border-gray-700/70">
+          <div
+            className="rounded-lg p-2 text-center border"
+            style={{ borderColor: "var(--color-primary)", boxShadow: "0 0 6px 0 var(--color-primary)" }}
+          >
             <p className="font-bold text-accent flex items-center justify-center gap-1">
               <Clock size={12} />
               {getDaysUntilNewYear(time)}
@@ -409,14 +424,20 @@ const ClockWidget = () => {
         </div>
 
         <div className="grid grid-cols-2 gap-2 text-xs">
-          <div className="rounded-lg p-2 text-center border border-gray-700/70">
+          <div
+            className="rounded-lg p-2 text-center border"
+            style={{ borderColor: "var(--color-primary)", boxShadow: "0 0 6px 0 var(--color-primary)" }}
+          >
             <p className="font-bold text-accent flex items-center justify-center gap-1">
               <Clock size={12} />
               {getTimeUntilNextHour(time)}
             </p>
             <p className="text-text-secondary">Next Hour</p>
           </div>
-          <div className="rounded-lg p-2 text-center border border-gray-700/70">
+          <div
+            className="rounded-lg p-2 text-center border"
+            style={{ borderColor: "var(--color-primary)", boxShadow: "0 0 6px 0 var(--color-primary)" }}
+          >
             <p className="font-bold text-text-main flex items-center justify-center gap-1">
               <MapPin size={12} />
               {getTimezone(time)}
@@ -426,7 +447,10 @@ const ClockWidget = () => {
         </div>
 
         {/* System Performance */}
-        <div className="rounded-lg p-2 border border-gray-700/70">
+        <div
+          className="rounded-lg p-2 border"
+          style={{ borderColor: "var(--color-primary)", boxShadow: "0 0 6px 0 var(--color-primary)" }}
+        >
           <p className="text-xs font-semibold text-white mb-2 flex items-center gap-2">
             <Activity size={14} className="text-accent" />
             Performance Monitor
@@ -444,7 +468,10 @@ const ClockWidget = () => {
         </div>
 
         {/* System Information */}
-        <div className="rounded-lg p-2 border border-gray-700/70">
+        <div
+          className="rounded-lg p-2 border"
+          style={{ borderColor: "var(--color-primary)", boxShadow: "0 0 6px 0 var(--color-primary)" }}
+        >
           <p className="text-xs font-semibold text-white mb-2 flex items-center gap-2">
             <Monitor size={14} className="text-primary" />
             System Info
