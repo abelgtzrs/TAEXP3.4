@@ -24,8 +24,6 @@ export default function DraggableWidgetShell({ item, columnId, index, children }
     moveWidgetToAdjacentColumn,
     reorderWithinColumn,
     columns,
-    setMaxWidth,
-    adjustMaxWidth,
   } = useLayout();
 
   const height = item.height ?? sizeToPx(item.size);
@@ -131,49 +129,7 @@ export default function DraggableWidgetShell({ item, columnId, index, children }
             </button>
           ))}
 
-          {/* Width controls */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              adjustMaxWidth(item.id, -25);
-            }}
-            className="px-2 py-1 text-[10px] rounded border bg-slate-800/80 border-slate-600 hover:bg-slate-700"
-            title="Narrower width (-25px)"
-          >
-            -25w
-          </button>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              adjustMaxWidth(item.id, 25);
-            }}
-            className="px-2 py-1 text-[10px] rounded border bg-slate-800/80 border-slate-600 hover:bg-slate-700"
-            title="Wider width (+25px)"
-          >
-            +25w
-          </button>
-          {[
-            { label: "FIT", val: null },
-            { label: "SMW", val: 320 },
-            { label: "MDW", val: 480 },
-            { label: "LGW", val: 640 },
-          ].map((opt) => (
-            <button
-              key={opt.label}
-              onClick={(e) => {
-                e.preventDefault();
-                setMaxWidth(item.id, opt.val);
-              }}
-              className={`px-2 py-1 text-[10px] rounded border ${
-                (opt.val ?? null) === (item.maxWidth ?? null)
-                  ? "bg-emerald-600 border-emerald-500"
-                  : "bg-slate-800/80 border-slate-600 hover:bg-slate-700"
-              }`}
-              title={opt.val ? `Max width ${opt.val}px` : "Fit column width"}
-            >
-              {opt.label}
-            </button>
-          ))}
+          {/* Width controls removed per request */}
         </div>
       )}
       {children}

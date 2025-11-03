@@ -1,4 +1,6 @@
 import React from "react";
+import { useAuth } from "./AuthContext";
+import layoutService from "../services/layoutService";
 
 const LS_KEY = "dashboardLayoutV1";
 
@@ -33,6 +35,7 @@ const defaultLayout = {
 export const LayoutContext = React.createContext(null);
 
 export function LayoutProvider({ children }) {
+  const { user } = useAuth();
   const [editMode, setEditMode] = React.useState(false);
   const sizeToPx = (size) => {
     switch (size) {
@@ -92,6 +95,43 @@ export function LayoutProvider({ children }) {
       localStorage.setItem(LS_KEY, JSON.stringify(columns));
     } catch {}
   }, [columns]);
+
+  // Load per-user layout on login (if available)
+  React.useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      if (!user) return; // only for authenticated users
+      try {
+        const serverLayout = await layoutService.getLayout();
+        if (cancelled) return;
+        if (serverLayout && typeof serverLayout === "object") {
+          setColumns(withHeights(ensureNewItems(serverLayout)));
+        }
+      } catch (e) {
+        // ignore network errors; keep local layout
+        console.warn("Layout: failed to fetch user layout; using local", e?.message || e);
+      }
+    }
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
+
+  // Save layout to server on changes (debounced)
+  const saveTimerRef = React.useRef(null);
+  React.useEffect(() => {
+    if (!user) return; // only save when authenticated
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => {
+      layoutService
+        .saveLayout(columns)
+        .catch((e) => console.warn("Layout: save failed", e?.message || e));
+    }, 500);
+    return () => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    };
+  }, [columns, user]);
 
   const toggleEditMode = () => setEditMode((v) => !v);
 

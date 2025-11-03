@@ -89,6 +89,8 @@ const {
   updateProfileBio,
   updateProfileBanner,
   updateBannerSettings,
+  getDashboardLayout,
+  setDashboardLayout,
 } = require("../controllers/userController");
 const { getMe } = require("../controllers/authController");
 
@@ -132,6 +134,9 @@ router.post("/me/test/unlock-personas", async (req, res) => {
 
 // It should be placed before any routes with URL parameters if possible, for clarity.
 router.get("/me/dashboard-stats", getDashboardStats);
+// Dashboard layout persistence
+router.get("/me/dashboard-layout", getDashboardLayout);
+router.put("/me/dashboard-layout", setDashboardLayout);
 
 // Daily login streak helpers
 router.get("/me/streak/status", getStreakStatus);

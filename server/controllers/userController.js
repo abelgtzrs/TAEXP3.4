@@ -225,6 +225,37 @@ const updateBannerSettings = async (req, res) => {
 
 // --- Define all functions as constants before exporting ---
 
+// Get persisted dashboard layout for current user
+const getDashboardLayout = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("dashboardLayout");
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+    return res.status(200).json({ success: true, data: user.dashboardLayout || null });
+  } catch (error) {
+    console.error("Get Dashboard Layout Error:", error);
+    return res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// Save dashboard layout for current user
+const setDashboardLayout = async (req, res) => {
+  try {
+    const layout = req.body;
+    if (!layout || typeof layout !== "object")
+      return res.status(400).json({ success: false, message: "Invalid layout" });
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { dashboardLayout: layout },
+      { new: true, runValidators: false }
+    ).select("dashboardLayout");
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+    return res.status(200).json({ success: true, data: user.dashboardLayout || null });
+  } catch (error) {
+    console.error("Set Dashboard Layout Error:", error);
+    return res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
 const setActivePersona = async (req, res) => {
   try {
     const { personaId } = req.body;
@@ -583,4 +614,7 @@ module.exports = {
   getStreakStatus,
   tickLoginStreak,
   updateProfileBio,
+  // Dashboard layout persistence
+  getDashboardLayout,
+  setDashboardLayout,
 };

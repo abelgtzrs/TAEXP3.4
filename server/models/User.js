@@ -217,6 +217,11 @@ const UserSchema = new mongoose.Schema({
     ref: "UserTitle",
     default: null,
   },
+  // Persisted dashboard layout per user (columns with widgets, sizes, etc.)
+  dashboardLayout: {
+    type: mongoose.Schema.Types.Mixed,
+    default: null,
+  },
   unlockedGenerations: {
     type: [Number],
     default: [1],
