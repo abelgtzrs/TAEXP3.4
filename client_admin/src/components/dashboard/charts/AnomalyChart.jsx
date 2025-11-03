@@ -12,7 +12,7 @@ export default function AnomalyChart() {
     [anomalySeries]
   );
   return (
-    <Widget title="Anomaly Detection Events" className="h-full min-h-0">
+    <Widget title="Anomaly Detection Events" className="h-64">
       <div className="flex-1 w-full h-full min-h-0 py-2">
         <ResponsiveContainer width="100%" height="100%" minHeight={120}>
           <BarChart data={data} margin={{ top: 10, right: 20, left: -15, bottom: 10 }}>

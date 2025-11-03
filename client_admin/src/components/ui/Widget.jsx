@@ -3,7 +3,7 @@ const Widget = ({ title, children, className = "", padding = "p-6", titleChildre
   return (
     // We add `h-full` to make the widget fill its parent grid cell.
     // `flex flex-col` ensures the content inside can grow to fill the space.
-    <div className={`h-full flex flex-col bg-surface border border-gray-700/50 rounded-lg shadow-lg ${className}`}>
+    <div className={`h-full flex flex-col bg-surface border border-gray-700/50 shadow-lg ${className}`}>
       {/* Widget Header */}
       {title && (
         <div className="px-6 py-4 border-b border-gray-700/50 flex-shrink-0 flex justify-between items-center">

@@ -10,6 +10,7 @@ import WorkoutPage from "./pages/WorkoutPage";
 import SelectTemplatePage from "./pages/SelectTemplatePage";
 import LogWorkoutPage from "./pages/LogWorkoutPage";
 import AdminLayout from "./components/layout/AdminLayout";
+import { LayoutProvider } from "./context/LayoutContext";
 import ProtectedRoute from "./components/routing/ProtectedRoute";
 import AdminRoute from "./components/routing/AdminRoute";
 import VolumesPage from "./pages/VolumesPage";
@@ -36,6 +37,7 @@ import BlessingsUsagePage from "./pages/BlessingsUsagePage";
 import FootballTrackerPage from "./pages/FootballTrackerPage";
 import CalendarAdminPage from "./pages/CalendarAdminPage";
 import BulkWorkoutImportPage from "./pages/BulkWorkoutImportPage";
+import DailyDraftsPage from "./pages/DailyDraftsPage";
 
 function App() {
   useTheme();
@@ -47,7 +49,13 @@ function App() {
 
       {/* General Protected Routes for all logged-in users */}
       <Route element={<ProtectedRoute />}>
-        <Route element={<AdminLayout />}>
+        <Route
+          element={
+            <LayoutProvider>
+              <AdminLayout />
+            </LayoutProvider>
+          }
+        >
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/habits" element={<HabitsPage />} />
           <Route path="/books" element={<BooksPage />} />
@@ -62,12 +70,19 @@ function App() {
           <Route path="/finance/rich" element={<RichFinancePage />} />
           <Route path="/spotify-stats" element={<SpotifyStatsPage />} />
           <Route path="/football-tracker" element={<FootballTrackerPage />} />
+          <Route path="/daily-drafts" element={<DailyDraftsPage />} />
         </Route>
       </Route>
 
       {/* Admin-Only Routes */}
       <Route element={<AdminRoute />}>
-        <Route element={<AdminLayout />}>
+        <Route
+          element={
+            <LayoutProvider>
+              <AdminLayout />
+            </LayoutProvider>
+          }
+        >
           <Route path="/admin/volume-workbench" element={<VolumeWorkbenchPage />} />
           <Route path="/admin/volumes" element={<VolumesPage />} />
           <Route path="/admin/volumes/edit/:volumeId" element={<EditVolumePage />} />

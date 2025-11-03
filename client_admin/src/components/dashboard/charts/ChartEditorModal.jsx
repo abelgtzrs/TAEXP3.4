@@ -6,7 +6,7 @@ function isNumberLike(v) {
   return v !== "" && v !== null && !Number.isNaN(Number(v));
 }
 
-export default function ChartEditorModal({ isOpen, onClose }) {
+export default function ChartEditorModal({ isOpen, onClose, initialTab = "coherence" }) {
   const {
     coherenceSeries,
     setCoherenceSeries,
@@ -31,9 +31,9 @@ export default function ChartEditorModal({ isOpen, onClose }) {
       setAnomalyDraft(anomalySeries);
       setDriftDraft(driftSeries);
       setStatusDraft(systemStatus);
-      setActiveTab("coherence");
+      setActiveTab(initialTab || "coherence");
     }
-  }, [isOpen, coherenceSeries, anomalySeries, driftSeries, systemStatus]);
+  }, [isOpen, coherenceSeries, anomalySeries, driftSeries, systemStatus, initialTab]);
 
   const totalStatus = useMemo(() => statusDraft.reduce((sum, s) => sum + (Number(s.value) || 0), 0), [statusDraft]);
 

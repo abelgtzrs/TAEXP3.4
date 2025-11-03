@@ -1,79 +1,41 @@
 import StatBox from "./StatBox";
+import useStatTrend from "../../hooks/useStatTrend";
 
 const StatBoxRow = ({ stats, loading }) => {
+  // Define the stats we want to show along with their keys and labels
+  const items = [
+    { key: "habitsCompleted", title: "Habits Completed" },
+    { key: "totalWorkouts", title: "Total Workouts" },
+    { key: "booksFinished", title: "Books Finished" },
+    { key: "activeStreaks", title: "Login Streak" },
+    { key: "gachaPulls", title: "Total Collectibles" },
+    { key: "volumesPublished", title: "Volumes Published" },
+    { key: "tasksCompleted", title: "Tasks Completed" },
+    { key: "activeGoals", title: "Active Goals" },
+  ];
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-      <div className="bg-surface border border-gray-700/50 rounded-lg">
-        <StatBox
-          title="Habits Completed Today"
-          value={loading ? "..." : stats.habitsCompleted}
-          change="+5.0%"
-          changeType="increase"
-          period="yesterday"
-        />
-      </div>
-      <div className="bg-surface border border-gray-700/50 rounded-lg">
-        <StatBox
-          title="Total Workouts"
-          value={loading ? "..." : stats.totalWorkouts}
-          change="+2"
-          changeType="increase"
-          period="last week"
-        />
-      </div>
-      <div className="bg-surface border border-gray-700/50 rounded-lg">
-        <StatBox
-          title="Books Finished"
-          value={loading ? "..." : stats.booksFinished}
-          change="-1"
-          changeType="decrease"
-          period="last month"
-        />
-      </div>
-      <div className="bg-surface border border-gray-700/50 rounded-lg">
-        <StatBox
-          title="Login Streak"
-          value={loading ? "..." : stats.activeStreaks}
-          change="+1"
-          changeType="increase"
-          period="today"
-        />
-      </div>
-      <div className="bg-surface border border-gray-700/50 rounded-lg">
-        <StatBox
-          title="Total Collectibles"
-          value={loading ? "..." : stats.gachaPulls}
-          change="+12"
-          changeType="increase"
-          period="this week"
-        />
-      </div>
-      <div className="bg-surface border border-gray-700/50 rounded-lg">
-        <StatBox
-          title="Volumes Published"
-          value={loading ? "..." : stats.volumesPublished}
-          change="+0"
-          changeType="increase"
-          period="this quarter"
-        />
-      </div>
-      <div className="bg-surface border border-gray-700/50 rounded-lg">
-        <StatBox
-          title="Tasks Completed"
-          value={loading ? "..." : stats.tasksCompleted}
-          change="+8"
-          changeType="increase"
-          period="today"
-        />
-      </div>
-      <div className="bg-surface border border-gray-700/50 rounded-lg">
-        <StatBox
-          title="Active Goals"
-          value={loading ? "..." : stats.activeGoals}
-          change="+1"
-          changeType="increase"
-          period="this month"
-        />
+    <div className="widget-container border border-white/10 rounded-xl overflow-hidden">
+      <div className="flex flex-col md:flex-row">
+        {items.map((it, idx) => {
+          const val = loading ? "..." : stats?.[it.key] ?? 0;
+          const { trend, change, changeType, period } = useStatTrend(it.key, Number(stats?.[it.key] ?? 0), {
+            horizon: 14,
+            periodLabel: "yesterday",
+          });
+          return (
+            <StatBox
+              key={it.key}
+              title={it.title}
+              value={val}
+              change={change}
+              changeType={changeType}
+              period={period}
+              trend={trend}
+              compact
+            />
+          );
+        })}
       </div>
     </div>
   );

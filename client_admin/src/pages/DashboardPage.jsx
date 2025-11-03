@@ -10,6 +10,7 @@ import PageHeader from "../components/ui/PageHeader";
 import StatBoxRow from "../components/dashboard/StatBoxRow";
 import StatBox from "../components/dashboard/StatBox";
 import LoreChartWidget from "../components/dashboard/LoreChartWidget";
+import SingleLoreChartWidget from "../components/dashboard/SingleLoreChartWidget";
 import SecuritySettingsWidget from "../components/dashboard/SecuritySettingsWidget";
 import CurrencySourceWidget from "../components/dashboard/CurrencySourceWidget";
 import GoalsWidget from "../components/dashboard/GoalsWidget";
@@ -24,11 +25,7 @@ import WeatherWidget from "../components/dashboard/WeatherWidget";
 import PersonaWidget from "../components/dashboard/PersonaWidget";
 import CalendarWidget from "../components/dashboard/CalendarWidget";
 import StrokesLyricsWidget from "../components/dashboard/StrokesLyricsWidget";
-import QuickNotesWidget from "../components/dashboard/QuickNotesWidget";
-import QuickLinksWidget from "../components/dashboard/QuickLinksWidget";
-import FocusTimerWidget from "../components/dashboard/FocusTimerWidget";
-import DailyQuoteWidget from "../components/dashboard/DailyQuoteWidget";
-import CountdownWidget from "../components/dashboard/CountdownWidget";
+import LeftColumns from "../components/dashboard/layout/LeftColumns";
 
 const DashboardPage = () => {
   const { user } = useAuth();
@@ -133,24 +130,26 @@ const DashboardPage = () => {
   }, []);
 
   return (
-    <div className="max-w-[1800px] mx-auto px-2 md:px-4">
+    <div className="max-w-[1800px] mx-auto px-2 md:px-4 h-full min-h-0 overflow-hidden">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="space-y-3"
+        className="space-y-3 h-full min-h-0 flex flex-col"
         style={{ zoom: "0.75", transformOrigin: "top left" }}
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
+          className="flex-shrink-0"
         >
           <PageHeader
             title="Dashboard"
             subtitle={`Cognitive Framework Status for ${user.username || "Admin"}.`}
             className="mt-1 mb-1 pl-4"
           />
+          {/* Layout edit toggle is in the sidebar footer above Customize UI */}
           {/* Current streak hint below header */}
           {!loading && (
             <div className="px-4 text-xs opacity-70">Current streak: {streakStatus.currentLoginStreak || 0}</div>
@@ -162,7 +161,7 @@ const DashboardPage = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="grid grid-cols-8 gap-4 -mt-1"
+          className="grid grid-cols-8 gap-4 -mt-1 grid-flow-row-dense flex-1 min-h-0 overflow-hidden"
         >
           {/* Row 1: Full-width Stat Box */}
           <motion.div
@@ -188,190 +187,36 @@ const DashboardPage = () => {
 
           {/* --- Precise Widget Placement --- */}
 
-          {/* Calendar - Top left */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.9 }}
-            className="col-span-8 md:col-span-2 order-3 md:order-3"
-          >
-            <CalendarWidget />
-          </motion.div>
-
-          {/* Clock - Top right */}
+          {/* Right fixed column: Clock, Weather, Spotify */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.8 }}
-            className="col-span-8 md:col-span-2 order-2 md:order-4 row-span-1"
+            className="col-span-8 md:col-span-2 md:col-start-7 order-2 md:order-4"
           >
-            <ClockWidget />
-          </motion.div>
-
-          {/* Habit Tracker - Bottom left */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 1.1 }}
-            className="col-span-8 md:col-span-2 order-5 md:order-5 row-span-2"
-          >
-            <HabitTrackerWidget />
-          </motion.div>
-
-          {/* Weather - Bottom right */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.0 }}
-            className="col-span-8 md:col-span-2 order-4 md:order-6"
-          >
-            <WeatherWidget />
-          </motion.div>
-
-          {/* Workout Tracker - Fifth widget in mobile */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 1.2 }}
-            className="col-span-4 md:col-span-2 order-6 md:order-7 row-span-2"
-          >
-            <WorkoutTrackerWidget />
-          </motion.div>
-
-          {/* Charts - Last widget in mobile, first in desktop */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 1.3 }}
-            className="col-span-8 md:col-span-4 order-7 md:order-2 overflow-hidden"
-          >
-            <div className="w-full aspect-square overflow-hidden">
-              <LoreChartWidget />
+            <div className="sticky top-2 space-y-3">
+              <ClockWidget />
+              <WeatherWidget />
+              <SpotifyWidget />
             </div>
           </motion.div>
+          {/* Main content: first 3 columns (all other widgets) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.9 }}
+            className="col-span-8 md:col-span-6 md:col-start-1 order-3 md:order-3 h-full min-h-0 overflow-y-auto scrollbar-hide pr-1"
+          >
+            <LeftColumns
+              extraProps={{
+                goals: stats.goals,
+                loading,
+                acquisitions: stats.recentAcquisitions,
+                products: stats.topProducts,
+              }}
+            />
 
-          {/* Book Tracker - 2 columns, stacked below habit tracker */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 1.4 }}
-            className="col-span-8 md:col-span-2 order-8 md:order-8 row-span-1"
-          >
-            <BookTrackerWidget />
-          </motion.div>
-
-          {/* The rest of the widgets filling the remaining space */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.5 }}
-            className="col-span-8 md:col-span-4 lg:col-span-2 order-9 md:order-9 row-span-2"
-          >
-            <StrokesLyricsWidget />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.6 }}
-            className="col-span-6 md:col-span-3 lg:col-span-2 row-span-2"
-          ></motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.5 }}
-            className="col-span-8 md:col-span-4 lg:col-span-2 order-10 md:order-10 row-span-2"
-          >
-            <SpotifyWidget />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.6 }}
-            className="col-span-8 md:col-span-4 lg:col-span-2 order-11 md:order-11 row-span-2"
-          >
-            <SecuritySettingsWidget />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.7 }}
-            className="col-span-8 lg:col-span-2 order-12 md:order-12 row-span-2"
-          >
-            <GoalsWidget goals={stats.goals} loading={loading} />
-          </motion.div>
-          {/* Additional Widgets */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 1.8 }}
-            className="col-span-8 md:col-span-4 lg:col-span-2 order-12 md:order-12 row-span-2"
-          >
-            <RecentAcquisitionsWidget acquisitions={stats.recentAcquisitions} loading={loading} />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 1.9 }}
-            className="col-span-8 md:col-span-4 lg:col-span-2 order-12 md:order-12 row-span-2"
-          >
-            <TopProductsWidget products={stats.topProducts} loading={loading} />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 2.0 }}
-            className="col-span-8 md:col-span-4 lg:col-span-2 order-12 md:order-12 row-span-2"
-          >
-            <CurrencySourceWidget />
-          </motion.div>
-        </motion.div>
-
-        {/* Bottom section: New widgets always at the very bottom */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-8 gap-4 mt-4"
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="col-span-8 md:col-span-4 md:col-start-1 lg:col-span-2 lg:col-start-1"
-          >
-            <QuickNotesWidget />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="col-span-8 md:col-span-4 md:col-start-5 lg:col-span-2 lg:col-start-3"
-          >
-            <QuickLinksWidget />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="col-span-8 md:col-span-4 md:col-start-1 lg:col-span-2 lg:col-start-5"
-          >
-            <FocusTimerWidget />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            className="col-span-8 md:col-span-4 md:col-start-5 lg:col-span-2 lg:col-start-7"
-          >
-            <DailyQuoteWidget />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="col-span-8 md:col-span-4 md:col-start-1 lg:col-span-2 lg:col-start-1"
-          >
-            <CountdownWidget />
+            {/* All additional widgets now participate in the LeftColumns layout via registry */}
           </motion.div>
         </motion.div>
 
