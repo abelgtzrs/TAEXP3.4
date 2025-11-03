@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Outlet, Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Header from "./Header";
+import RightSidebar from "./RightSidebar";
 import UiCustomizerModal from "../settings/UiCustomizerModal";
 import { LayoutProvider, useLayout } from "../../context/LayoutContext";
 import {
@@ -68,7 +69,7 @@ const LayoutToggleButton = ({ isSidebarCollapsed }) => {
           ? "bg-emerald-600 text-white hover:bg-emerald-500"
           : "text-text-secondary hover:bg-primary/30 hover:text-white"
       } ${isSidebarCollapsed ? "justify-center" : ""}`}
-      title={editMode ? "Exit Layout Mode" : "Edit Layout (drag/resize widgets)"}
+      title={editMode ? "Exit Layout & Size Mode" : "Edit Layout & Size (drag/resize widgets & sidebar)"}
     >
       <LayoutDashboard size={14} className={isSidebarCollapsed ? "" : "mr-2"} />
       <span
@@ -76,7 +77,7 @@ const LayoutToggleButton = ({ isSidebarCollapsed }) => {
           isSidebarCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"
         }`}
       >
-        {editMode ? "Exit Layout Mode" : "Edit Layout"}
+        {editMode ? "Exit Layout & Size" : "Edit Layout & Size"}
       </span>
     </button>
   );
@@ -97,6 +98,32 @@ const AdminLayout = () => {
   const sidebarCollapsedWidth = 48; // w-12 (was ~40)
   const sidebarExpandedWidth = 208; // w-52 (was 176)
   const headerHeight = 48; // compact header height (was 56)
+  // Persistent right sidebar width (px), adjustable in Edit Layout & Size mode
+  const [rightSidebarWidthPx, setRightSidebarWidthPx] = useState(() => {
+    try {
+      const v = Number(localStorage.getItem("tae.rightSidebar.widthPx") || 360);
+      return isNaN(v) ? 360 : v;
+    } catch {
+      return 360;
+    }
+  });
+  const [rightSidebarCollapsed, setRightSidebarCollapsed] = useState(() => {
+    try {
+      return (localStorage.getItem("tae.rightSidebar.collapsed") ?? "false") === "true";
+    } catch {
+      return false;
+    }
+  });
+  const rightSidebarWidth = rightSidebarCollapsed ? "0px" : `${rightSidebarWidthPx}px`;
+  const toggleRightSidebar = () => {
+    setRightSidebarCollapsed((v) => {
+      const nv = !v;
+      try {
+        localStorage.setItem("tae.rightSidebar.collapsed", String(nv));
+      } catch {}
+      return nv;
+    });
+  };
   const sidebarWidth = isSidebarCollapsed ? sidebarCollapsedWidth : sidebarExpandedWidth;
 
   const logoImg = import.meta.env.VITE_TAE_LOGO;
@@ -272,9 +299,29 @@ const AdminLayout = () => {
     localStorage.setItem("tae.theme.presets", JSON.stringify(next));
   };
 
+  // Wire window event for right sidebar resizing (from RightSidebar drag handle)
+  useEffect(() => {
+    const onResizeEvt = (e) => {
+      if (!e || !e.detail) return;
+      const w = Math.max(240, Math.min(Number(e.detail.widthPx) || 0, 640));
+      setRightSidebarWidthPx(w);
+      try {
+        localStorage.setItem("tae.rightSidebar.widthPx", String(w));
+      } catch {}
+    };
+    window.addEventListener("tae:rightSidebar:resize", onResizeEvt);
+    return () => window.removeEventListener("tae:rightSidebar:resize", onResizeEvt);
+  }, []);
+
   return (
     <LayoutProvider>
       <div className="relative h-screen w-screen overflow-hidden bg-background text-text-main text-xs">
+        {/* Listen for sidebar resize events from RightSidebar handle */}
+        {/* Using a small effect here to wire window event to local state */}
+        {(() => {
+          // inline IIFE to use hooks conditionally is not allowed; define effect below
+          return null;
+        })()}
         {/* Default gradient background (visible when no custom image set) */}
         <div
           aria-hidden
@@ -617,12 +664,30 @@ const AdminLayout = () => {
         {/* Main content */}
         <main
           className="absolute overflow-hidden flex flex-col z-10"
-          style={{ left: sidebarWidth, top: headerHeight, right: 0, bottom: 0 }}
+          style={{ left: sidebarWidth, top: headerHeight, right: rightSidebarWidth, bottom: 0 }}
         >
           <div className="flex-1 overflow-y-auto scrollbar-hide p-2 lg:p-3 min-h-0">
             <Outlet />
           </div>
         </main>
+
+        {/* Persistent Right Sidebar */}
+        <aside className="fixed z-30" style={{ top: headerHeight, right: 0, bottom: 0, width: rightSidebarWidth }}>
+          <RightSidebar />
+        </aside>
+
+        {/* Right Sidebar Toggle Tab */}
+        <button
+          onClick={toggleRightSidebar}
+          className="fixed z-40 bg-surface/80 backdrop-blur-md border border-gray-700/40 rounded-l-md px-2 py-1 text-white hover:bg-gray-700/60 transition-all duration-300"
+          style={{
+            top: headerHeight + 12,
+            right: rightSidebarCollapsed ? 0 : rightSidebarWidth,
+          }}
+          title={rightSidebarCollapsed ? "Expand sidebar" : "Contract sidebar"}
+        >
+          {rightSidebarCollapsed ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+        </button>
       </div>
     </LayoutProvider>
   );

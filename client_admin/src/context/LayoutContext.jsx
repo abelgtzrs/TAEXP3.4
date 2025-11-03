@@ -52,7 +52,11 @@ export function LayoutProvider({ children }) {
   const withHeights = (layout) => {
     const copy = { col1: [], col2: [], col3: [] };
     for (const c of ["col1", "col2", "col3"]) {
-      copy[c] = (layout[c] || []).map((it) => ({ ...it, height: it.height ?? sizeToPx(it.size || "md") }));
+      copy[c] = (layout[c] || []).map((it) => ({
+        ...it,
+        height: it.height ?? sizeToPx(it.size || "md"),
+        maxWidth: it.maxWidth ?? null, // px; null means full width of the column
+      }));
     }
     return copy;
   };
@@ -157,6 +161,36 @@ export function LayoutProvider({ children }) {
     });
   };
 
+  const setMaxWidth = (id, pxOrNull) => {
+    setColumns((prev) => {
+      const next = { col1: [...prev.col1], col2: [...prev.col2], col3: [...prev.col3] };
+      for (const c of Object.keys(next)) {
+        const i = next[c].findIndex((x) => x.id === id);
+        if (i !== -1) {
+          next[c][i] = { ...next[c][i], maxWidth: pxOrNull };
+          break;
+        }
+      }
+      return next;
+    });
+  };
+
+  const adjustMaxWidth = (id, deltaPx) => {
+    setColumns((prev) => {
+      const next = { col1: [...prev.col1], col2: [...prev.col2], col3: [...prev.col3] };
+      for (const c of Object.keys(next)) {
+        const i = next[c].findIndex((x) => x.id === id);
+        if (i !== -1) {
+          const cur = next[c][i].maxWidth ?? 0; // 0 means no cap; treat as 0 then clamp upwards
+          const newVal = Math.max(200, Math.min(cur === 0 ? 400 + deltaPx : cur + deltaPx, 1200));
+          next[c][i] = { ...next[c][i], maxWidth: newVal };
+          break;
+        }
+      }
+      return next;
+    });
+  };
+
   const moveWidgetToAdjacentColumn = (id, direction) => {
     setColumns((prev) => {
       const order = ["col1", "col2", "col3"];
@@ -194,6 +228,8 @@ export function LayoutProvider({ children }) {
     resizeWidget,
     adjustHeight,
     moveWidgetToAdjacentColumn,
+    setMaxWidth,
+    adjustMaxWidth,
     resetLayout,
     findItem,
   };

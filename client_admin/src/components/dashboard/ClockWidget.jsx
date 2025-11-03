@@ -293,13 +293,13 @@ const ClockWidget = () => {
   };
 
   return (
-    <Widget title="System Time & Information">
-      <div className="flex flex-col space-y-2">
+    <Widget title="System Time & Information" className="h-full" variant="plain">
+      <div className="flex flex-col h-full space-y-2 overflow-y-auto scrollbar-hide">
         {/* Top section with analog and digital clocks */}
         <div className="flex items-center justify-around gap-2">
           <AnalogClock time={time} />
           <div className="text-left flex-1 min-w-0">
-            <p className="text-lg sm:text-xl lg:text-2xl font-mono font-bold text-secondary text-glow break-all">
+            <p className="text-xl sm:text-2xl lg:text-3xl font-mono font-bold text-secondary text-glow break-all">
               {time.toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",

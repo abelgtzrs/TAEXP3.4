@@ -1,30 +1,38 @@
-import { Search, Bell, Mail, User, LogOut, CalendarDays } from "lucide-react";
+import { Search, Bell, Mail, User, LogOut, CalendarDays, FileText, Save, History, Trash2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
 import { Link } from "react-router-dom";
 import CalendarWidget from "../dashboard/CalendarWidget";
+import {
+  listDates,
+  getHistory,
+  getLatest,
+  saveDraft,
+  deleteVersion,
+  formatDate,
+} from "../../services/dailyDraftsService";
 
 const Header = ({ forcedHeight }) => {
   const { user, logout, setUser } = useAuth();
   const [personaDropdownOpen, setPersonaDropdownOpen] = useState(false);
   const personaButtonRef = useRef(null);
-  const [showTeamSprites, setShowTeamSprites] = useState(() => {
-    try {
-      const raw = localStorage.getItem("tae.header.showTeamSprites");
-      return raw ? JSON.parse(raw) === true : false;
-    } catch {
-      return false;
-    }
-  });
-  useEffect(() => {
-    try {
-      localStorage.setItem("tae.header.showTeamSprites", JSON.stringify(!!showTeamSprites));
-    } catch {}
-  }, [showTeamSprites]);
+  const [pokemonOpen, setPokemonOpen] = useState(false);
   const teamHoverTimer = useRef(null);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const calendarHoverTimer = useRef(null);
+  const [dailyOpen, setDailyOpen] = useState(false);
+  const dailyHoverTimer = useRef(null);
+  const [dailyDateStr, setDailyDateStr] = useState(() => {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  });
+  const [dailyContent, setDailyContent] = useState("");
+  const [dailyHistory, setDailyHistory] = useState([]);
+  const [dailyAllDates, setDailyAllDates] = useState([]);
   const unlockedPersonas = user?.unlockedAbelPersonas || [];
   const activePersona = user?.activeAbelPersona || null;
   const activePersonaId = activePersona?._id || null;
@@ -40,6 +48,18 @@ const Header = ({ forcedHeight }) => {
     return sprite ? `${serverBaseUrl}${sprite}` : null;
   };
 
+  // --- Daily Drafts helpers ---
+  const refreshDaily = () => {
+    setDailyAllDates(listDates());
+    setDailyHistory(getHistory(dailyDateStr));
+    const latest = getLatest(dailyDateStr);
+    setDailyContent(latest ? latest.content : "");
+  };
+  useEffect(() => {
+    if (dailyOpen) refreshDaily();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dailyDateStr, dailyOpen]);
+
   const handleSelectPersona = async (personaId) => {
     if (personaId === activePersonaId) {
       setPersonaDropdownOpen(false);
@@ -54,11 +74,11 @@ const Header = ({ forcedHeight }) => {
     }
   };
 
-  // Expand header to 112px when showing team to push page content down
-  const computedHeight = forcedHeight ? forcedHeight : showTeamSprites ? 112 : 48;
+  // Keep header compact; Pokémon now render inside a popover
+  const computedHeight = forcedHeight ? forcedHeight : 48;
 
   // Moving sprites state/logic
-  const spriteSize = showTeamSprites ? 72 : 36; // 50% smaller when header is contracted
+  const spriteSize = 72; // popover field; comfortable size
   const containerRef = useRef(null);
   const rafRef = useRef(0);
   const [actors, setActors] = useState([]);
@@ -68,7 +88,7 @@ const Header = ({ forcedHeight }) => {
   useEffect(() => {
     const team = (user?.displayedPokemon || []).slice(0, 6);
     const el = containerRef.current;
-    if (!el || team.length === 0) return;
+    if (!pokemonOpen || !el || team.length === 0) return;
     const rect = el.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
@@ -98,16 +118,9 @@ const Header = ({ forcedHeight }) => {
       lastTs = ts;
       setActors((prev) => {
         if (!el) return prev;
-        const { width: w, height: h, left: contLeft } = el.getBoundingClientRect();
-        // Determine right boundary; place a wall just to the left of the Mail icon (not the button edge)
-        let rightLimit = w - spriteSize;
-        if (mailButtonRef.current) {
-          const mailRect = mailButtonRef.current.getBoundingClientRect();
-          const iconSize = 16; // Mail icon size in px
-          const iconLeftInContainer = mailRect.left - contLeft + (mailRect.width - iconSize) / 2;
-          const wallX = iconLeftInContainer - 2; // small 2px gap before the icon
-          rightLimit = Math.min(rightLimit, Math.max(wallX - spriteSize, 0));
-        }
+        const { width: w, height: h } = el.getBoundingClientRect();
+        // Boundaries are simply the container edges inside the popover
+        const rightLimit = Math.max(w - spriteSize, 0);
         const next = prev.map((a) => ({ ...a }));
 
         // Integrate motion (horizontal only)
@@ -138,7 +151,7 @@ const Header = ({ forcedHeight }) => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showTeamSprites, user?.displayedPokemon]);
+  }, [pokemonOpen, user?.displayedPokemon]);
   return (
     <header
       className="relative bg-black/20 backdrop-blur-xl border-b border-white/10 px-3 py-1.5 flex items-center justify-between sticky top-0 z-40 shadow-2xl shadow-black/50 transition-[height] duration-300 ease-out"
@@ -176,33 +189,253 @@ const Header = ({ forcedHeight }) => {
         >
           <Mail size={16} />
         </button>
-        {/* Team toggle - Poké Ball icon */}
-        <button
-          type="button"
-          aria-pressed={showTeamSprites}
-          onClick={() => setShowTeamSprites((v) => !v)}
-          title={showTeamSprites ? "Hide Pokémon team" : "Show Pokémon team in header"}
-          className={`p-2 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 ${
-            showTeamSprites
-              ? "bg-primary/20 text-primary hover:bg-primary/30"
-              : "text-white/70 hover:bg-white/10 hover:text-white"
-          }`}
+        {/* Daily Drafts popover */}
+        <div
+          className="relative"
+          onMouseEnter={() => {
+            if (dailyHoverTimer.current) {
+              clearTimeout(dailyHoverTimer.current);
+              dailyHoverTimer.current = null;
+            }
+          }}
+          onMouseLeave={() => {
+            dailyHoverTimer.current = setTimeout(() => setDailyOpen(false), 120);
+          }}
         >
-          {/* Pokéball icon */}
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
+          <button
+            type="button"
+            aria-haspopup="dialog"
+            aria-expanded={dailyOpen}
+            onClick={() => setDailyOpen((v) => !v)}
+            onKeyDown={(e) => e.key === "Escape" && setDailyOpen(false)}
+            title="Daily Drafts"
+            className={`p-2 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 ${
+              dailyOpen
+                ? "bg-primary/20 text-primary hover:bg-primary/30"
+                : "text-white/70 hover:bg-white/10 hover:text-white"
+            }`}
           >
-            <path
-              d="M12 3a9 9 0 0 0-8.485 6h4.146a4.5 4.5 0 0 1 8.678 0h4.146A9 9 0 0 0 12 3Zm0 18a9 9 0 0 0 8.485-6h-4.146a4.5 4.5 0 0 1-8.678 0H3.515A9 9 0 0 0 12 21Zm0-12a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
-              fill="currentColor"
-            />
-          </svg>
-        </button>
+            <FileText size={16} />
+          </button>
+          {dailyOpen && (
+            <div
+              role="dialog"
+              aria-label="Daily Drafts"
+              className="absolute right-0 mt-2 z-50 w-[760px] max-h-[600px]"
+              onMouseEnter={() => {
+                if (dailyHoverTimer.current) {
+                  clearTimeout(dailyHoverTimer.current);
+                  dailyHoverTimer.current = null;
+                }
+              }}
+              onMouseLeave={() => {
+                dailyHoverTimer.current = setTimeout(() => setDailyOpen(false), 120);
+              }}
+            >
+              <div className="rounded-xl bg-black/85 backdrop-blur-xl border border-white/15 shadow-2xl p-3">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {/* Editor */}
+                  <div className="md:col-span-2">
+                    <div className="flex items-center gap-2 mb-2">
+                      <label className="text-xs text-text-secondary">Date</label>
+                      <input
+                        type="date"
+                        className="rounded border px-2 py-1 text-xs bg-[var(--color-background)]"
+                        style={{ borderColor: "var(--color-primary)" }}
+                        value={dailyDateStr}
+                        onChange={(e) => setDailyDateStr(e.target.value)}
+                      />
+                      <div className="text-[11px] text-text-tertiary">Write today's draft and save versions.</div>
+                    </div>
+                    <textarea
+                      value={dailyContent}
+                      onChange={(e) => setDailyContent(e.target.value)}
+                      rows={12}
+                      className="w-full rounded border p-2 text-sm bg-[var(--color-background)] focus:outline-none"
+                      style={{ borderColor: "var(--color-primary)" }}
+                      placeholder="Draft today's events here..."
+                    />
+                    <div className="mt-2 flex justify-end gap-2">
+                      <button
+                        onClick={() => {
+                          if (!dailyDateStr) return;
+                          saveDraft(dailyDateStr, dailyContent || "");
+                          refreshDaily();
+                        }}
+                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded border text-xs bg-primary/20 hover:bg-primary/30"
+                        style={{ borderColor: "var(--color-primary)" }}
+                      >
+                        <Save className="w-4 h-4" /> Save New Version
+                      </button>
+                    </div>
+                  </div>
+                  {/* History / Other dates */}
+                  <div>
+                    <div className="text-[11px] text-text-secondary mb-2 flex items-center gap-2">
+                      <History className="w-4 h-4 text-primary" /> {dailyHistory.length} version(s)
+                    </div>
+                    {dailyHistory.length === 0 ? (
+                      <div className="text-[12px] text-text-tertiary mb-2">No history for this date.</div>
+                    ) : (
+                      <ul className="space-y-2 max-h-[280px] overflow-auto pr-1">
+                        {dailyHistory.map((v) => (
+                          <li
+                            key={v.ts}
+                            className="rounded border p-2 text-xs"
+                            style={{ borderColor: "var(--color-primary)" }}
+                          >
+                            <div className="flex items-center justify-between gap-2">
+                              <div className="text-text-secondary">{new Date(v.ts).toLocaleString()}</div>
+                              <div className="flex items-center gap-2">
+                                <button
+                                  className="px-2 py-0.5 rounded border text-[11px] hover:bg-primary/20"
+                                  style={{ borderColor: "var(--color-primary)" }}
+                                  onClick={() => setDailyContent(v.content || "")}
+                                >
+                                  Load
+                                </button>
+                                <button
+                                  className="px-2 py-0.5 rounded border text-[11px] hover:bg-red-900/40 text-red-300"
+                                  style={{ borderColor: "var(--color-primary)" }}
+                                  onClick={() => {
+                                    if (!confirm("Delete this version?")) return;
+                                    deleteVersion(dailyDateStr, v.ts);
+                                    refreshDaily();
+                                  }}
+                                >
+                                  <Trash2 className="inline-block w-3.5 h-3.5 mr-1" /> Delete
+                                </button>
+                              </div>
+                            </div>
+                            <pre className="mt-1 text-[11px] whitespace-pre-wrap break-words text-text-main max-h-20 overflow-auto">
+                              {v.content}
+                            </pre>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    <div className="mt-3">
+                      <div className="text-[11px] text-text-secondary mb-1">Other dates</div>
+                      {dailyAllDates.length === 0 ? (
+                        <div className="text-[12px] text-text-tertiary">No saved drafts yet.</div>
+                      ) : (
+                        <div className="flex flex-wrap gap-1 max-h-[120px] overflow-auto pr-1">
+                          {dailyAllDates.map((d) => (
+                            <button
+                              key={d}
+                              className={`px-2 py-0.5 rounded border text-[11px] hover:bg-primary/20 ${
+                                d === dailyDateStr ? "bg-primary/10" : ""
+                              }`}
+                              style={{ borderColor: "var(--color-primary)" }}
+                              onClick={() => setDailyDateStr(d)}
+                              title={formatDate(d)}
+                            >
+                              {d}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+        {/* Team toggle - Poké Ball icon with popover */}
+        <div
+          className="relative"
+          onMouseEnter={() => {
+            if (teamHoverTimer.current) {
+              clearTimeout(teamHoverTimer.current);
+              teamHoverTimer.current = null;
+            }
+          }}
+          onMouseLeave={() => {
+            teamHoverTimer.current = setTimeout(() => setPokemonOpen(false), 150);
+          }}
+        >
+          <button
+            type="button"
+            aria-haspopup="dialog"
+            aria-expanded={pokemonOpen}
+            onClick={() => setPokemonOpen((v) => !v)}
+            onKeyDown={(e) => e.key === "Escape" && setPokemonOpen(false)}
+            title={pokemonOpen ? "Hide Pokémon team" : "Show Pokémon team"}
+            className={`p-2 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 ${
+              pokemonOpen
+                ? "bg-primary/20 text-primary hover:bg-primary/30"
+                : "text-white/70 hover:bg-white/10 hover:text-white"
+            }`}
+          >
+            {/* Pokéball icon */}
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 3a9 9 0 0 0-8.485 6h4.146a4.5 4.5 0 0 1 8.678 0h4.146A9 9 0 0 0 12 3Zm0 18a9 9 0 0 0 8.485-6h-4.146a4.5 4.5 0 0 1-8.678 0H3.515A9 9 0 0 0 12 21Zm0-12a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+          {pokemonOpen && (
+            <div
+              role="dialog"
+              aria-label="Pokémon Team"
+              className="absolute right-0 mt-2 z-50"
+              onMouseEnter={() => {
+                if (teamHoverTimer.current) {
+                  clearTimeout(teamHoverTimer.current);
+                  teamHoverTimer.current = null;
+                }
+              }}
+              onMouseLeave={() => {
+                teamHoverTimer.current = setTimeout(() => setPokemonOpen(false), 150);
+              }}
+            >
+              <div className="rounded-xl bg-black/85 backdrop-blur-xl border border-white/15 shadow-2xl p-2">
+                {/* 400x300 moving field */}
+                <div className="relative w-[400px] h-[300px] overflow-hidden" ref={containerRef}>
+                  {(user?.displayedPokemon || []).slice(0, 6).map((p, idx) => {
+                    const base = p?.basePokemon;
+                    const sprite = getPokemonSprite(base);
+                    if (!sprite) return null;
+                    const actor = actors[idx];
+                    const x = actor?.x ?? 0;
+                    const y = actor?.y ?? 0;
+                    const vx = actor?.vx ?? 0.8;
+                    const mirrorOnRight = vx > 0; // mirror when moving right
+                    return (
+                      <img
+                        key={actor?.key || p?._id || base?._id || idx}
+                        src={sprite}
+                        alt={base?.name || "Pokemon"}
+                        height={spriteSize}
+                        className="pointer-events-none"
+                        style={{
+                          position: "absolute",
+                          left: x,
+                          top: y,
+                          height: spriteSize,
+                          width: "auto",
+                          transform: mirrorOnRight ? "scaleX(-1)" : "none",
+                          transformOrigin: "center",
+                          imageRendering: "auto",
+                          filter: "drop-shadow(0 4px 10px rgba(0,0,0,0.5))",
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
         {/* Calendar icon and popover - placed to the right of the Pokémon icon */}
         <div
           className="relative"
@@ -234,7 +467,7 @@ const Header = ({ forcedHeight }) => {
             <div
               role="dialog"
               aria-label="Calendar"
-              className="absolute right-0 mt-2 z-50 w-[380px] max-h-[520px] overflow-y-auto"
+              className="absolute right-0 mt-2 z-50 w-[400px]"
               onMouseEnter={() => {
                 if (calendarHoverTimer.current) {
                   clearTimeout(calendarHoverTimer.current);
@@ -338,41 +571,7 @@ const Header = ({ forcedHeight }) => {
           </div>
         </div>
       </div>
-      {/* Full-header field with freely moving Pokémon team (always visible; horizontal only, overlapping; mirror on right) */}
-      <div ref={containerRef} className="pointer-events-none absolute inset-0" style={{ height: "100%" }}>
-        {/* Render sprites positioned absolutely within the field */}
-        <div className="relative w-full h-full">
-          {(user?.displayedPokemon || []).slice(0, 6).map((p, idx) => {
-            const base = p?.basePokemon;
-            const sprite = getPokemonSprite(base);
-            if (!sprite) return null;
-            const actor = actors[idx];
-            const x = actor?.x ?? 0;
-            const y = actor?.y ?? 0;
-            const vx = actor?.vx ?? 0.8;
-            const mirrorOnRight = vx > 0; // mirror when moving right
-            return (
-              <img
-                key={actor?.key || p?._id || base?._id || idx}
-                src={sprite}
-                alt={base?.name || "Pokemon"}
-                height={spriteSize}
-                style={{
-                  position: "absolute",
-                  left: x,
-                  top: y,
-                  height: spriteSize,
-                  width: "auto",
-                  transform: mirrorOnRight ? "scaleX(-1)" : "none",
-                  transformOrigin: "center",
-                  imageRendering: "auto",
-                  filter: "drop-shadow(0 4px 10px rgba(0,0,0,0.5))",
-                }}
-              />
-            );
-          })}
-        </div>
-      </div>
+      {/* Pokémon sprites moved to popover above; no full-header overlay */}
     </header>
   );
 };

@@ -20,8 +20,9 @@ import TopProductsWidget from "../components/dashboard/TopProductsWidget";
 import HabitTrackerWidget from "../components/dashboard/HabitTrackerWidget";
 import BookTrackerWidget from "../components/dashboard/BookTrackerWidget";
 import WorkoutTrackerWidget from "../components/dashboard/WorkoutTrackerWidget";
-import ClockWidget from "../components/dashboard/ClockWidget";
-import WeatherWidget from "../components/dashboard/WeatherWidget";
+// Right sidebar widgets moved to AdminLayout persistently
+// import ClockWidget from "../components/dashboard/ClockWidget";
+// import WeatherWidget from "../components/dashboard/WeatherWidget";
 import PersonaWidget from "../components/dashboard/PersonaWidget";
 import CalendarWidget from "../components/dashboard/CalendarWidget";
 import StrokesLyricsWidget from "../components/dashboard/StrokesLyricsWidget";
@@ -186,26 +187,12 @@ const DashboardPage = () => {
           </motion.div>
 
           {/* --- Precise Widget Placement --- */}
-
-          {/* Right fixed column: Clock, Weather, Spotify */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
-            className="col-span-8 md:col-span-2 md:col-start-7 order-2 md:order-4"
-          >
-            <div className="sticky top-2 space-y-3">
-              <ClockWidget />
-              <WeatherWidget />
-              <SpotifyWidget />
-            </div>
-          </motion.div>
           {/* Main content: first 3 columns (all other widgets) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.9 }}
-            className="col-span-8 md:col-span-6 md:col-start-1 order-3 md:order-3 h-full min-h-0 overflow-y-auto scrollbar-hide pr-1"
+            className="col-span-8 md:col-span-8 md:col-start-1 order-3 md:order-3 h-full min-h-0 overflow-y-auto scrollbar-hide pr-1"
           >
             <LeftColumns
               extraProps={{

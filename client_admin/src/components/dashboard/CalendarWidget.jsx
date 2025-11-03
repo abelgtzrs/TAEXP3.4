@@ -94,15 +94,15 @@ const CalendarWidget = () => {
 
         days.push(
           <div
-            className={`p-1 h-12 flex flex-col items-center justify-start cursor-pointer border border-transparent rounded-lg transition-colors
-              ${!isCurrentMonth ? "text-text-tertiary" : "text-text-main"}
-              ${isToday ? "bg-primary/20" : ""}
+            className={`p-1 h-12 flex flex-col items-center justify-start cursor-pointer border rounded-lg transition-colors
+              ${!isCurrentMonth ? "text-text-tertiary border-transparent" : "text-text-main border-transparent"}
+              ${isToday ? "bg-primary/30 ring-2 ring-primary/70" : ""}
               ${isSelected ? "border-primary" : ""}
               hover:bg-gray-700/50`}
             key={day}
             onClick={() => setSelectedDate(cloneDay)}
           >
-            <span className={`text-xs ${isToday ? "font-bold text-primary" : ""}`}>{day.getDate()}</span>
+            <span className={`text-xs ${isToday ? "font-bold text-white" : ""}`}>{day.getDate()}</span>
             <div className="flex flex-wrap justify-center gap-0.5 mt-0.5">
               {isCurrentMonth &&
                 billsForDay.map((bill) => (

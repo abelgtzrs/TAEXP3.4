@@ -107,7 +107,7 @@ const SpotifyWidget = () => {
   // If user hasn't connected their Spotify account yet
   if (!user?.spotifyConnected) {
     return (
-      <Widget title="Spotify Activity">
+      <Widget title="Spotify Activity" variant="plain">
         <div className="flex flex-col items-center justify-center h-full">
           <p className="text-sm text-text-secondary mb-4">Connect your Spotify account to see your listening stats.</p>
           <button
@@ -124,7 +124,7 @@ const SpotifyWidget = () => {
   // If connected but no track data is loaded yet
   if (!currentTrack) {
     return (
-      <Widget title="Spotify Activity">
+      <Widget title="Spotify Activity" variant="plain">
         <p className="text-sm text-text-secondary">Loading listening data...</p>
       </Widget>
     );
@@ -136,7 +136,7 @@ const SpotifyWidget = () => {
   const artists = Array.isArray(track?.artists) ? track.artists.map((a) => a.name).join(", ") : "Unknown Artist";
 
   return (
-    <Widget title="Spotify Activity" className="flex flex-col">
+    <Widget title="Spotify Activity" className="flex flex-col" variant="plain">
       <div className="flex items-center gap-4">
         {albumArtUrl ? (
           <img src={albumArtUrl} alt={track.album.name} className="w-24 h-24 rounded-md object-cover" />
