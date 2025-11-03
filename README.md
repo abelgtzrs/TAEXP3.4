@@ -1,4 +1,4 @@
-# The Abel Experience™ CFW (Cognitive Framework) v3.5
+# The Abel Experience™ CFW (Cognitive Framework) v4.1
 
 ## Description
 
@@ -8,9 +8,41 @@ This project combines personal productivity tracking, content management, and ga
 
 The main client (`client-admin`) is a web application with a dark interface for registered users. A secondary client (`client-public`) provides a terminal-style interface for viewing published content.
 
-**Version 3.5** includes updated chart architecture, persona theming system, and responsive design with modular widget components.
+**Version 4.1** includes updated chart architecture, persona theming system, and responsive design with modular widget components.
 
-### What's New in v3.5
+### Recent Additions (Nov 2025)
+
+- Dashboard layout editing overhaul with persistent per-user layouts
+  - Three-column left container with drag/drop, up/down controls, and move-to-adjacent-column
+  - Height controls and size presets per widget; width controls removed (requested)
+  - Global "Edit Layout & Size" toggle to enable layout edits
+  - Server-backed persistence per user (GET/PUT `/api/users/me/dashboard-layout`) with debounce and local fallback
+- Persistent Right Sidebar across all pages
+  - Extracted `RightSidebar` with glass background; fills from header to page bottom
+  - Resizable width via draggable handle, plus collapse/expand; width persisted
+  - Clock, Weather, Spotify widgets scaled to 85% for compact design; always match sidebar width; unlimited height; transparent interiors; vertical gaps between widgets
+- Header enhancements
+  - Pokémon popover (Pokéball button) with 400x300 animated field
+  - Daily Drafts popover to write and browse previous days
+  - Calendar popover sized to 400px with more prominent “today” highlight
+- UX polish
+  - Left dashboard columns hide scrollbars, smoother interactions
+
+### What's New in v4.1
+
+- Latest changes (Nov 2025):
+
+  - Dashboard layout editing overhaul with persistent per-user layouts
+    - Three-column left container with drag/drop, up/down controls, and move-to-adjacent-column
+    - Height controls and size presets per widget; width controls removed
+    - Global "Edit Layout & Size" toggle
+    - Server-backed persistence per user (GET/PUT `/api/users/me/dashboard-layout`) with debounce and local fallback
+  - Persistent Right Sidebar across all pages
+    - Extracted `RightSidebar` with glass background; fills from header to page bottom
+    - Resizable width via draggable handle, collapse/expand; width persisted
+    - Clock, Weather, Spotify widgets scaled to 85%; always match sidebar width; unlimited height; transparent interiors; vertical gaps
+  - Header enhancements: Pokémon popover (400x300), Daily Drafts popover, Calendar popover width 400px with stronger "today" highlight
+  - UX polish: hidden left-column scrollbars and smoother interactions
 
 - **Updated Chart Architecture**: Data visualization system changes including:
 
@@ -224,6 +256,10 @@ After setting up the project, the first step is to populate the database with th
 - **Gacha System:** A robust API endpoint for handling randomized "pulls" of collectibles, deducting currency, and handling duplicates.
 - **Content Parsing:** A server-side parser to convert raw "greentext" block text into a structured JSON format for storage.
 - **Data Seeding:** A script to populate the database with foundational data for all collectible types.
+- **Per-user Dashboard Layout Persistence:**
+  - New `dashboardLayout` field on `User`
+  - Endpoints: `GET /api/users/me/dashboard-layout`, `PUT /api/users/me/dashboard-layout`
+  - Client saves layout on edits (debounced) and loads on login; localStorage fallback retained
 
 ### Admin & User Panel (`client-admin`)
 
@@ -255,6 +291,39 @@ After setting up the project, the first step is to populate the database with th
   - **Height Management**: Collections maintain their optimal aspect ratio (20% width-to-height)
   - **Selection Interface**: Interface for selecting displayed items from collections
 - **Admin-Specific Panels:**
+
+#### Dashboard Layout System (New)
+
+- Left area uses a responsive 1→3 column grid
+- Edit controls:
+  - Reorder within a column (↑/↓)
+  - Move to previous/next column (←/→)
+  - Adjust widget height (-5px/+5px) and jump presets (SM/MD/LG/XL)
+  - Per-widget width controls were removed per request to simplify editing
+- Global toggle: "Edit Layout & Size" enables layout edits and right sidebar resizing
+- Persistence:
+  - Per-user layout saved and loaded via `/api/users/me/dashboard-layout`
+  - Debounced saves with localStorage fallback for offline/unauthenticated use
+
+#### Right Sidebar (New)
+
+- Persistent across all pages (moved into `AdminLayout`)
+- Glassmorphism container; occupies the right side from header to bottom
+- Resizable width via draggable handle; collapsible; state persisted
+- Widgets inside: Clock, Weather, Spotify
+  - Internals scaled to 85% for a tighter look
+  - Always span the sidebar width; unlimited natural height
+  - Transparent widget interiors (no card backgrounds); vertical spacing between widgets
+
+#### Header Popovers (New)
+
+- Pokémon popover: 400x300 animation field shown from a Pokéball button
+- Daily Drafts popover: write drafts and browse history (uses `dailyDraftsService`)
+- Calendar popover: fixed width 400px with enhanced “today” highlight
+
+#### Additional Widgets and Registry
+
+- Quick Notes, Quick Links, Focus Timer, Daily Quote, and Countdown integrated in the widget registry and default/migrated layout
   - **Volume Manager:** Create, edit, publish, and delete Greentext Volumes using a form with a live JSON preview.
   - **Pokemon Database Editor:** Editor with wider layout, improved navigation, and success feedback.
   - **Base Data Manager:** CRUD interfaces for managing the foundational data of all collectibles (e.g., adding a new exercise to the system, defining a new Snoopy collectible).
@@ -295,6 +364,112 @@ After setting up the project, the first step is to populate the database with th
 9.  Visit your **Profile** page to see your updated level/XP, currency balances, and manage which collectibles are displayed in the 6-item-per-row collections with improved spacing and visual hierarchy.
 
 The dashboard now provides a view of your digital sanctuary with responsive charts that adapt to any screen size, persona-based theming that reflects your current aesthetic preferences, and analytics that help you track your progress across all areas of the system.
+
+---
+
+## Pages and modules reference
+
+This section lists the primary pages/screens and the functional modules across the app. Names reflect file names; brief descriptions are provided for orientation.
+
+### Admin web app pages (`client_admin/src/pages`)
+
+- Auth and profile
+  - `LoginPage.jsx` — Sign in
+  - `RegisterPage.jsx` — Create account
+  - `ProfilePage.jsx` — User profile, avatar/banner, displayed collections
+  - `SettingsPage.jsx` — App/user settings
+  - `AdminUserManagementPage.jsx` — Admin user list and moderation
+- Dashboard & layout
+  - `DashboardPage.jsx` — Main dashboard with widgets and persistent right sidebar
+  - `DashboardGridLayout.js` — Layout utilities/demo for grid-based arrangement
+  - `DailyDraftsPage.jsx` — Daily writing drafts and history
+- Habits, books, tasks
+  - `HabitsPage.jsx` — Habit tracker
+  - `BooksPage.jsx` — Reading tracker and library
+  - `TasksPage.jsx` — Tasks with checklists
+- Fitness and sports
+  - `WorkoutPage.jsx` — Workout overview
+  - `LogWorkoutPage.jsx` — Log a workout session
+  - `SelectTemplatePage.jsx` — Choose a workout template
+  - `AdminTemplatesPage.jsx` — Manage workout templates
+  - `BulkWorkoutImportPage.jsx` — Import workouts/templates in bulk
+  - `AdminExercisesPage.jsx` — Exercise definitions
+  - `BaseballTrackerPage.jsx` — Baseball stats tracker
+  - `FootballTrackerPage.jsx` — Football stats tracker
+- Finance
+  - `FinancePage.jsx` — Personal finance overview
+  - `RichFinancePage.jsx` — Extended finance analytics/tools
+- Calendars & blessings
+  - `CalendarAdminPage.jsx` — Calendar data management
+  - `BlessingsAdminPage.jsx` — Blessing definitions admin
+  - `BlessingsUsagePage.jsx` — Blessings usage/reporting
+- Collections and shop
+  - `CollectionsPage.jsx` — All collections grid
+  - `CollectionDetailPage.jsx` — Collection detail view
+  - `ShopPage.jsx` — Gacha/shop pulls
+- Pokémon and media
+  - `PokedexPage.jsx` — Pokedex browsing
+  - `PokemonEditorPage.jsx` — Editor for Pokemon base data
+  - `AdminEditPokemonPage.jsx` — Admin edit utilities for pokemon
+  - `SnoopyAdminPage.jsx` — Snoopy collectibles admin
+  - `HabboRareManagement.jsx` — Habbo rares admin
+  - `SpotifyStatsPage.jsx` — Spotify activity and stats
+- Volumes (greentext)
+  - `VolumesPage.jsx` — Volumes list
+  - `VolumeWorkbenchPage.jsx` — Create/edit with live preview
+  - `EditVolumePage.jsx` — Edit volume content and metadata
+  - `volumeFunctionality/` — Helper utilities for volumes
+
+### Public web app (terminal viewer) (`client_public`)
+
+- Single-page terminal UI with components under `src/components`, started by `App.jsx`.
+- Displays volumes with typewriter effects and command-style navigation.
+
+### Mobile app screens (`mobile/src/screens`)
+
+- `DashboardScreen.jsx` — Mobile dashboard
+- `CollectionsScreen.jsx` — Collections on mobile
+- `FinanceScreen.jsx` — Finance features on mobile
+- `LoginScreen.jsx` — Mobile login
+- `MoreScreen.jsx` — Additional mobile options
+- `VolumeListScreen.jsx`, `VolumeDetailScreen.jsx` — Volume browsing and details
+
+### Admin client services (`client_admin/src/services`)
+
+- `api.js` — Axios instance and auth header injection
+- `adminUserService.js` — Admin user operations
+- `blessingsService.js` — Blessings API calls
+- `calendarService.js` — Calendar API calls
+- `dailyDraftsService.js` — Drafts persistence
+- `layoutService.js` — Per-user dashboard layout (GET/PUT)
+- `personaService.js` — Persona data
+- `snoopyService.js` — Snoopy API
+- `sportsService.js` — Sports endpoints
+
+### Server API areas (`server/controllers` → `server/routes`)
+
+- Auth: `authController.js` / `authRoutes.js` — Register, login, me
+- Users: `userController.js` / `userRoutes.js` — Profile, displayed items, streaks, dashboard stats, profile media, per-user dashboard layout (GET/PUT `/api/users/me/dashboard-layout`)
+- Habits: `habitController.js` — Habit CRUD and completion
+- Books: `bookController.js` — Book CRUD and progress
+- Tasks: `taskController.js` — Tasks and checklists
+- Workout Templates: `workoutTemplateController.js` — Template CRUD
+- Workout Logs: `workoutLogController.js` — Log sessions and sets
+- Exercise Definitions: `exerciseDefinitionController.js` — Exercise catalog
+- Finance: `financeController.js` — Finance data and operations
+- Badges: `badgeController.js` — Badge system
+- Blessings: `blessingDefinitionController.js` — Blessings data
+- Calendar: `calendarController.js` — Calendar entries
+- Pokémon: `pokemonController.js`, `pokemonAdminController.js` — Pokémon public and admin endpoints
+- Persona Admin: `personaAdminController.js` — Persona admin features
+- Shop/Gacha: `shopController.js` — Gacha pulls and currency handling
+- Spotify: `spotifyController.js` — Connect, sync, currently playing, recently played
+- Sports: `sportsController.js` — Sports data (e.g., baseball/football trackers)
+- Strokes: `strokesController.js` — Drawing/strokes utilities
+- Volumes: `volumeController.js` — Greentext volumes CRUD and publishing
+- Public: `publicController.js` — Public content endpoints
+
+If you need endpoint-level detail, see each file under `server/routes/` for route paths mapped to the controllers above.
 
 ---
 

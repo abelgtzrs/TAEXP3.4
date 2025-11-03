@@ -124,9 +124,7 @@ export function LayoutProvider({ children }) {
     if (!user) return; // only save when authenticated
     if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     saveTimerRef.current = setTimeout(() => {
-      layoutService
-        .saveLayout(columns)
-        .catch((e) => console.warn("Layout: save failed", e?.message || e));
+      layoutService.saveLayout(columns).catch((e) => console.warn("Layout: save failed", e?.message || e));
     }, 500);
     return () => {
       if (saveTimerRef.current) clearTimeout(saveTimerRef.current);

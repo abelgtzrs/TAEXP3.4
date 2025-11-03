@@ -17,14 +17,8 @@ const sizeToPx = (size) => {
 };
 
 export default function DraggableWidgetShell({ item, columnId, index, children }) {
-  const {
-    editMode,
-    resizeWidget,
-    adjustHeight,
-    moveWidgetToAdjacentColumn,
-    reorderWithinColumn,
-    columns,
-  } = useLayout();
+  const { editMode, resizeWidget, adjustHeight, moveWidgetToAdjacentColumn, reorderWithinColumn, columns } =
+    useLayout();
 
   const height = item.height ?? sizeToPx(item.size);
   const maxW = item.maxWidth ?? null;
