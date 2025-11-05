@@ -1,5 +1,6 @@
 import { Search, Bell, Mail, User, LogOut, CalendarDays, FileText, Save, History, Trash2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
 import { Link } from "react-router-dom";
@@ -59,6 +60,32 @@ const Header = ({ forcedHeight }) => {
     if (dailyOpen) refreshDaily();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dailyDateStr, dailyOpen]);
+
+  // Close Daily Drafts on Escape when modal is open
+  useEffect(() => {
+    if (!dailyOpen) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") setDailyOpen(false);
+      if (e.key === "ArrowLeft") setDailyDateStr((s) => offsetDateStr(s, -1));
+      if (e.key === "ArrowRight") setDailyDateStr((s) => offsetDateStr(s, 1));
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [dailyOpen]);
+
+  const offsetDateStr = (dateStr, delta) => {
+    try {
+      const d = new Date(`${dateStr}T00:00:00`);
+      if (isNaN(d.getTime())) throw new Error("Invalid date");
+      d.setDate(d.getDate() + delta);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    } catch {
+      return dateStr;
+    }
+  };
 
   const handleSelectPersona = async (personaId) => {
     if (personaId === activePersonaId) {
@@ -189,19 +216,8 @@ const Header = ({ forcedHeight }) => {
         >
           <Mail size={16} />
         </button>
-        {/* Daily Drafts popover */}
-        <div
-          className="relative"
-          onMouseEnter={() => {
-            if (dailyHoverTimer.current) {
-              clearTimeout(dailyHoverTimer.current);
-              dailyHoverTimer.current = null;
-            }
-          }}
-          onMouseLeave={() => {
-            dailyHoverTimer.current = setTimeout(() => setDailyOpen(false), 120);
-          }}
-        >
+        {/* Daily Drafts modal trigger */}
+        <div className="relative">
           <button
             type="button"
             aria-haspopup="dialog"
@@ -217,26 +233,25 @@ const Header = ({ forcedHeight }) => {
           >
             <FileText size={16} />
           </button>
-          {dailyOpen && (
-            <div
-              role="dialog"
-              aria-label="Daily Drafts"
-              className="absolute right-0 mt-2 z-50 w-[760px] max-h-[600px]"
-              onMouseEnter={() => {
-                if (dailyHoverTimer.current) {
-                  clearTimeout(dailyHoverTimer.current);
-                  dailyHoverTimer.current = null;
-                }
-              }}
-              onMouseLeave={() => {
-                dailyHoverTimer.current = setTimeout(() => setDailyOpen(false), 120);
-              }}
-            >
-              <div className="rounded-xl bg-black/85 backdrop-blur-xl border border-white/15 shadow-2xl p-3">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {/* Editor */}
-                  <div className="md:col-span-2">
-                    <div className="flex items-center gap-2 mb-2">
+          {dailyOpen &&
+            createPortal(
+              <div className="fixed inset-0 z-[1000] flex items-center justify-center">
+                {/* Backdrop */}
+                <div className="absolute inset-0 bg-black/60" onClick={() => setDailyOpen(false)} />
+                {/* Modal */}
+                <div className="relative w-[min(92vw,900px)] max-h-[80vh] overflow-auto rounded-xl bg-black/85 backdrop-blur-xl border border-white/15 shadow-2xl p-4">
+                {/* Header with date and navigation */}
+                <div className="flex items-center justify-between gap-3 mb-3">
+                  <div className="flex items-center gap-2">
+                    <button
+                      className="px-2 py-1 rounded border text-xs hover:bg-white/10"
+                      style={{ borderColor: "var(--color-primary)" }}
+                      onClick={() => setDailyDateStr((s) => offsetDateStr(s, -1))}
+                      title="Previous day"
+                    >
+                      ◀
+                    </button>
+                    <div className="flex items-center gap-2">
                       <label className="text-xs text-text-secondary">Date</label>
                       <input
                         type="date"
@@ -245,8 +260,44 @@ const Header = ({ forcedHeight }) => {
                         value={dailyDateStr}
                         onChange={(e) => setDailyDateStr(e.target.value)}
                       />
-                      <div className="text-[11px] text-text-tertiary">Write today's draft and save versions.</div>
+                      <button
+                        className="px-2 py-1 rounded border text-xs hover:bg-white/10"
+                        style={{ borderColor: "var(--color-primary)" }}
+                        onClick={() => {
+                          const d = new Date();
+                          const y = d.getFullYear();
+                          const m = String(d.getMonth() + 1).padStart(2, "0");
+                          const day = String(d.getDate()).padStart(2, "0");
+                          setDailyDateStr(`${y}-${m}-${day}`);
+                        }}
+                        title="Jump to today"
+                      >
+                        Today
+                      </button>
                     </div>
+                    <button
+                      className="px-2 py-1 rounded border text-xs hover:bg-white/10"
+                      style={{ borderColor: "var(--color-primary)" }}
+                      onClick={() => setDailyDateStr((s) => offsetDateStr(s, 1))}
+                      title="Next day"
+                    >
+                      ▶
+                    </button>
+                  </div>
+                  <button
+                    className="px-2 py-1 rounded border text-xs hover:bg-white/10"
+                    style={{ borderColor: "var(--color-primary)" }}
+                    onClick={() => setDailyOpen(false)}
+                    title="Close"
+                  >
+                    Close
+                  </button>
+                </div>
+                {/* Body */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {/* Editor */}
+                  <div className="md:col-span-2">
+                    <div className="text-[11px] text-text-tertiary mb-2">Write today's draft and save versions.</div>
                     <textarea
                       value={dailyContent}
                       onChange={(e) => setDailyContent(e.target.value)}
@@ -338,9 +389,10 @@ const Header = ({ forcedHeight }) => {
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          )}
+                </div>
+              </div>,
+              document.body
+            )}
         </div>
         {/* Team toggle - Poké Ball icon with popover */}
         <div

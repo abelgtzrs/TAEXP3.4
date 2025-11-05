@@ -12,7 +12,7 @@ export default function CoherenceChart() {
     [coherenceSeries]
   );
   return (
-    <Widget title="Narrative Coherence Index" className="h-64">
+    <Widget title="Narrative Coherence Index" className="h-full min-h-0">
       <div className="flex-1 w-full h-full min-h-0 py-2">
         <ResponsiveContainer width="100%" height="100%" minHeight={120}>
           <AreaChart data={data} margin={{ top: 10, right: 20, left: -15, bottom: 10 }}>

@@ -9,7 +9,7 @@ export default function DriftChart() {
   const { driftSeries } = useChartData();
   const data = React.useMemo(() => driftSeries.map((d) => ({ name: d.name, drift: d.value })), [driftSeries]);
   return (
-    <Widget title="Temporal Drift Analysis" className="h-64">
+    <Widget title="Temporal Drift Analysis" className="h-full min-h-0">
       <div className="flex-1 w-full h-full min-h-0 py-2">
         <ResponsiveContainer width="100%" height="100%" minHeight={120}>
           <LineChart data={data} margin={{ top: 10, right: 20, left: -15, bottom: 10 }}>

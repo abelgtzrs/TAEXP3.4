@@ -162,7 +162,7 @@ const DashboardPage = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="grid grid-cols-8 gap-4 -mt-1 grid-flow-row-dense flex-1 min-h-0 overflow-hidden"
+          className="grid grid-cols-8 gap-3 -mt-1 grid-flow-row-dense flex-1 min-h-0 overflow-hidden"
         >
           {/* Row 1: Full-width Stat Box */}
           <motion.div
@@ -171,7 +171,7 @@ const DashboardPage = () => {
             transition={{ duration: 0.5, delay: 0.6 }}
             className="col-span-8 order-1 md:order-1"
           >
-            <div className="grid grid-cols-2 gap-2 w-full md:grid-cols-8 md:gap-4 auto-rows-fr">
+            <div className="grid grid-cols-2 gap-1 w-full md:grid-cols-8 md:gap-3 auto-rows-fr">
               {Array.isArray(stats.statBoxes) ? (
                 stats.statBoxes.map((stat, idx) => (
                   <div key={stat.id || idx} className="w-full h-full">

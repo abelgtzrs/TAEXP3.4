@@ -107,21 +107,24 @@ const AdminLayout = () => {
       return 360;
     }
   });
-  const [rightSidebarCollapsed, setRightSidebarCollapsed] = useState(() => {
+  // Right sidebar mode: expanded (resizable) or condensed (10% width)
+  const [rightSidebarMode, setRightSidebarMode] = useState(() => {
     try {
-      return (localStorage.getItem("tae.rightSidebar.collapsed") ?? "false") === "true";
+      const saved = localStorage.getItem("tae.rightSidebar.mode");
+      if (saved === "expanded" || saved === "condensed") return saved;
+      return "expanded";
     } catch {
-      return false;
+      return "expanded";
     }
   });
-  const rightSidebarWidth = rightSidebarCollapsed ? "0px" : `${rightSidebarWidthPx}px`;
+  const rightSidebarWidth = rightSidebarMode === "condensed" ? "10vw" : `${rightSidebarWidthPx}px`;
   const toggleRightSidebar = () => {
-    setRightSidebarCollapsed((v) => {
-      const nv = !v;
+    setRightSidebarMode((mode) => {
+      const next = mode === "expanded" ? "condensed" : "expanded";
       try {
-        localStorage.setItem("tae.rightSidebar.collapsed", String(nv));
+        localStorage.setItem("tae.rightSidebar.mode", next);
       } catch {}
-      return nv;
+      return next;
     });
   };
   const sidebarWidth = isSidebarCollapsed ? sidebarCollapsedWidth : sidebarExpandedWidth;
@@ -653,10 +656,10 @@ const AdminLayout = () => {
           anchorBottom={8}
         />
 
-        {/* Header offset by sidebar width */}
+        {/* Header offset by left sidebar and ending before right sidebar */}
         <div
           className="fixed top-0 right-0 z-40 transition-[left,width] duration-500"
-          style={{ left: sidebarWidth, height: headerHeight }}
+          style={{ left: sidebarWidth, right: rightSidebarWidth, height: headerHeight }}
         >
           <Header />
         </div>
@@ -671,9 +674,9 @@ const AdminLayout = () => {
           </div>
         </main>
 
-        {/* Persistent Right Sidebar */}
-        <aside className="fixed z-30" style={{ top: headerHeight, right: 0, bottom: 0, width: rightSidebarWidth }}>
-          <RightSidebar />
+        {/* Persistent Right Sidebar (full height) */}
+        <aside className="fixed z-30" style={{ top: 0, right: 0, bottom: 0, width: rightSidebarWidth }}>
+          <RightSidebar condensed={rightSidebarMode === "condensed"} />
         </aside>
 
         {/* Right Sidebar Toggle Tab */}
@@ -682,11 +685,11 @@ const AdminLayout = () => {
           className="fixed z-40 bg-surface/80 backdrop-blur-md border border-gray-700/40 rounded-l-md px-2 py-1 text-white hover:bg-gray-700/60 transition-all duration-300"
           style={{
             top: headerHeight + 12,
-            right: rightSidebarCollapsed ? 0 : rightSidebarWidth,
+            right: rightSidebarWidth,
           }}
-          title={rightSidebarCollapsed ? "Expand sidebar" : "Contract sidebar"}
+          title={rightSidebarMode === "condensed" ? "Expand sidebar" : "Contract sidebar"}
         >
-          {rightSidebarCollapsed ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+          {rightSidebarMode === "condensed" ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
         </button>
       </div>
     </LayoutProvider>

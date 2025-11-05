@@ -69,16 +69,23 @@ if (rawOrigins) {
     "http://localhost:5173",
     "http://localhost:5174",
     "http://localhost:5175",
+    // Expo / Metro typical dev origins
+    "http://localhost:8081", // Metro dev server (native)
+    "http://localhost:19006", // Expo web dev server
+    // Deployed origins
     "https://taexp3-0.onrender.com", // API self
     "https://taexp-3-0.vercel.app", // Deployed frontend
   ];
 }
 
+// Helper: allow any localhost/127.0.0.1 port in dev to ease Expo + web testing
+const isDevLocalOrigin = (origin) => /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
+
 const corsOptions = {
   origin: function (origin, callback) {
     // Allow non-browser or same-origin requests (like server-to-server without origin header)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
+    if (allowedOrigins.includes(origin) || isDevLocalOrigin(origin)) {
       return callback(null, true);
     }
     return callback(new Error(`CORS blocked for origin: ${origin}`));

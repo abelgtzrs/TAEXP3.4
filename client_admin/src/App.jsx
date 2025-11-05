@@ -10,7 +10,6 @@ import WorkoutPage from "./pages/WorkoutPage";
 import SelectTemplatePage from "./pages/SelectTemplatePage";
 import LogWorkoutPage from "./pages/LogWorkoutPage";
 import AdminLayout from "./components/layout/AdminLayout";
-import { LayoutProvider } from "./context/LayoutContext";
 import ProtectedRoute from "./components/routing/ProtectedRoute";
 import AdminRoute from "./components/routing/AdminRoute";
 import VolumesPage from "./pages/VolumesPage";
@@ -49,13 +48,7 @@ function App() {
 
       {/* General Protected Routes for all logged-in users */}
       <Route element={<ProtectedRoute />}>
-        <Route
-          element={
-            <LayoutProvider>
-              <AdminLayout />
-            </LayoutProvider>
-          }
-        >
+        <Route element={<AdminLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/habits" element={<HabitsPage />} />
           <Route path="/books" element={<BooksPage />} />
@@ -76,13 +69,7 @@ function App() {
 
       {/* Admin-Only Routes */}
       <Route element={<AdminRoute />}>
-        <Route
-          element={
-            <LayoutProvider>
-              <AdminLayout />
-            </LayoutProvider>
-          }
-        >
+        <Route element={<AdminLayout />}>
           <Route path="/admin/volume-workbench" element={<VolumeWorkbenchPage />} />
           <Route path="/admin/volumes" element={<VolumesPage />} />
           <Route path="/admin/volumes/edit/:volumeId" element={<EditVolumePage />} />

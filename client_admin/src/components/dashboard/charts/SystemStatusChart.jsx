@@ -7,7 +7,7 @@ export default function SystemStatusChart() {
   const { textSecondary } = getTheme();
   const { systemStatus } = useChartData();
   return (
-    <Widget title="System Status Overview" className="h-64">
+    <Widget title="System Status Overview" className="h-full min-h-0">
       <div className="flex-1 w-full h-full min-h-0 flex flex-col justify-center py-2">
         <div className="flex-1 flex items-center justify-center" style={{ minHeight: "120px" }}>
           <ResponsiveContainer width="100%" height="100%" minHeight={100}>

@@ -15,8 +15,8 @@ const StatBoxRow = ({ stats, loading }) => {
   ];
 
   return (
-    <div className="widget-container border border-white/10 rounded-xl overflow-hidden">
-      <div className="flex flex-col md:flex-row">
+    <div className="widget-container border border-white/10">
+      <div className="flex flex-col md:flex-row gap-1">
         {items.map((it, idx) => {
           const val = loading ? "..." : stats?.[it.key] ?? 0;
           const { trend, change, changeType, period } = useStatTrend(it.key, Number(stats?.[it.key] ?? 0), {
@@ -33,6 +33,7 @@ const StatBoxRow = ({ stats, loading }) => {
               period={period}
               trend={trend}
               compact
+              showDivider={false}
             />
           );
         })}

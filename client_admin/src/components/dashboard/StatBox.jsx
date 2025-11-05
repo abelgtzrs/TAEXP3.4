@@ -31,6 +31,7 @@ const StatBox = ({
   lastUpdate = "1 min ago",
   trend, // optional array of numbers for sparkline
   compact = false, // optional compact styling
+  showDivider = true, // whether to render right-side divider
 }) => {
   const isIncrease = changeType === "increase";
   const changeColor = isIncrease ? "text-green-400" : "text-red-400";
@@ -38,8 +39,11 @@ const StatBox = ({
 
   return (
     // Each stat box is a flex container, growing to fill space.
-    // It has a right border to create the vertical dividers, except for the last one.
-    <div className={`flex-1 ${compact ? "p-3" : "p-4"} border-r border-gray-700/50 last:border-r-0`}>
+    <div
+      className={`flex-1 ${compact ? "py-2 px-3" : "p-4"} ${
+        showDivider ? "border-r border-gray-700/50 last:border-r-0" : ""
+      }`}
+    >
       <h4
         className={`font-bold uppercase text-text-secondary tracking-wider ${
           compact ? "text-[10px] mb-1" : "text-xs mb-2"
@@ -47,20 +51,20 @@ const StatBox = ({
       >
         {title}
       </h4>
-      <p className={`${compact ? "text-2xl" : "text-3xl"} font-semibold text-text-main text-glow mb-1`}>{value}</p>
+      <p className={`${compact ? "text-2xl leading-tight mb-0" : "text-3xl mb-1"} font-semibold text-text-main`}>{value}</p>
       {Array.isArray(trend) && trend.length > 1 && (
-        <div className="mt-1 mb-1 -mx-1">
-          <Sparkline data={trend} />
+        <div className={`${compact ? "mt-0.5 mb-0.5" : "mt-1 mb-1"} -mx-1`}>
+          <Sparkline data={trend} height={compact ? 22 : 28} />
         </div>
       )}
       <div className={`flex items-center text-text-secondary ${compact ? "text-[11px]" : "text-xs"}`}>
         <span className={`flex items-center mr-2 ${changeColor}`}>
-          <Icon size={16} className="mr-0.5" />
+          <Icon size={compact ? 14 : 16} className="mr-0.5" />
           {change}
         </span>
         <span>vs {period}</span>
       </div>
-      <p className="text-[10px] text-text-tertiary mt-2">updated {lastUpdate}</p>
+      <p className={`text-[10px] text-text-tertiary ${compact ? "mt-1" : "mt-2"}`}>updated {lastUpdate}</p>
     </div>
   );
 };
