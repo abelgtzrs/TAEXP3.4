@@ -181,7 +181,7 @@ const CollectionDetailPage = () => {
         transition={{ duration: 0.4, delay: 0.2 }}
         className="mb-6"
       >
-        <Link to="/collections" className="text-teal-400 hover:text-teal-300">
+        <Link to="/collections" className="hover:opacity-90" style={{ color: "var(--color-primary)" }}>
           &larr; Back to Collections Hub
         </Link>
       </motion.div>
@@ -202,18 +202,25 @@ const CollectionDetailPage = () => {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: 0.4 }}
-        className="mb-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700"
+        className="mb-6 p-4 rounded-lg border"
+        style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
       >
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-white mb-2">Profile Display</h3>
-            <p className="text-gray-300 text-sm">Select up to {config.limit} items to showcase on your profile</p>
+            <h3 className="text-lg font-semibold mb-2" style={{ color: "var(--color-text-main)" }}>
+              Profile Display
+            </h3>
+            <p className="text-sm" style={{ color: "var(--color-text-secondary)" }}>
+              Select up to {config.limit} items to showcase on your profile
+            </p>
           </div>
           <div className="text-right">
-            <div className="text-2xl font-bold text-teal-400">
+            <div className="text-2xl font-bold" style={{ color: "var(--color-primary)" }}>
               {displayedIds.length}/{config.limit}
             </div>
-            <div className="text-xs text-gray-400">Selected</div>
+            <div className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
+              Selected
+            </div>
             {displayedIds.length > 0 && (
               <button
                 onClick={handleClearDisplayed}
@@ -239,16 +246,18 @@ const CollectionDetailPage = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, delay: 0.7 }}
-            className="text-xl font-semibold text-white mb-4 flex items-center gap-2"
+            className="text-xl font-semibold mb-4 flex items-center gap-2"
+            style={{ color: "var(--color-text-main)" }}
           >
-            <span className="w-2 h-2 bg-teal-400 rounded-full"></span>
+            <span className="w-2 h-2 rounded-full" style={{ background: "var(--color-primary)" }}></span>
             Currently Displayed on Profile
           </motion.h3>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.8 }}
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 p-4 bg-teal-900/20 rounded-lg border border-teal-500/30"
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 p-4 rounded-lg border"
+            style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
           >
             {displayedItems.map((item, index) => (
               <motion.div
@@ -283,7 +292,8 @@ const CollectionDetailPage = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4, delay: displayedItems.length > 0 ? 1.3 : 0.7 }}
-          className="text-xl font-semibold text-white mb-4"
+          className="text-xl font-semibold mb-4"
+          style={{ color: "var(--color-text-main)" }}
         >
           Full Collection
         </motion.h3>
@@ -291,7 +301,8 @@ const CollectionDetailPage = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: displayedItems.length > 0 ? 1.4 : 0.8 }}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 p-4 rounded-lg border"
+          style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
         >
           {Array.isArray(collection) &&
             collection.map((item, index) => (

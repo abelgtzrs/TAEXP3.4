@@ -142,9 +142,14 @@ const CollectionItemCard = ({ item, config, onSelect, isDisplayed, isDisplayFull
   return (
     <div className="relative">
       <div
-        className={`widget-container transition-all duration-300 group ${isDisplayed ? "border-teal-400" : ""} ${
+        className={`widget-container transition-all duration-300 group border ${
           isCompact ? "p-3" : "p-4"
         } flex flex-col text-center ${rarityGlow} ${isSecretRare ? "animate-pulse" : ""}`}
+        style={{
+          background: "var(--color-surface)",
+          borderColor: "var(--color-primary)",
+          color: "var(--color-text-main)",
+        }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -157,20 +162,12 @@ const CollectionItemCard = ({ item, config, onSelect, isDisplayed, isDisplayFull
 
         {/* Image Section */}
         <div
-          className={`w-full ${
-            isCompact ? "h-24" : "h-32"
-          } mb-2 flex items-center justify-center bg-black/20 rounded-md ${
-            config.baseField === "yugiohCardBase" && baseItem?.systemRarity
-              ? `border ${getRarityGlow(baseItem.systemRarity).split(" ").pop()}`
-              : ""
-          }`}
+          className={`w-full ${isCompact ? "h-24" : "h-32"} mb-2 flex items-center justify-center rounded-md`}
         >
           {imageUrl ? (
             <img src={imageUrl} alt={baseItem.name} className="max-w-full max-h-full object-contain" />
           ) : (
-            <div className="w-full h-full bg-gray-700 rounded flex items-center justify-center text-xs text-gray-500">
-              [IMG]
-            </div>
+            <div className="w-full h-full rounded flex items-center justify-center text-xs text-gray-500">[IMG]</div>
           )}
         </div>
 

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 // Central definition of collections with simple, non-emoji badges
 const collections = [
@@ -24,6 +25,83 @@ const Badge = ({ text }) => (
 
 const CollectionsPage = () => {
   const [query, setQuery] = useState("");
+  const { user } = useAuth();
+
+  const displayedByType = useMemo(() => {
+    // Map each collection type to the corresponding displayed array on the user object
+    return {
+      pokemon: Array.isArray(user?.displayedPokemon) ? user.displayedPokemon : [],
+      snoopy: Array.isArray(user?.displayedSnoopyArt) ? user.displayedSnoopyArt : [],
+      habbo: Array.isArray(user?.displayedHabboRares) ? user.displayedHabboRares : [],
+      yugioh: Array.isArray(user?.displayedYugiohCards) ? user.displayedYugiohCards : [],
+    };
+  }, [user]);
+
+  // Build server base to resolve relative asset URLs (e.g., /pokemon/..., /uploads/...)
+  const serverBaseUrl = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").split("/api")[0];
+
+  const getDisplayedItems = (type) => displayedByType[type] || [];
+
+  const getBaseAndName = (type, item) => {
+    switch (type) {
+      case "pokemon": {
+        const base = item?.basePokemon;
+        return { base, name: base?.name || "" };
+      }
+      case "snoopy": {
+        const base = item?.snoopyArtBase;
+        return { base, name: base?.name || "" };
+      }
+      case "habbo": {
+        const base = item?.habboRareBase;
+        return { base, name: base?.name || "" };
+      }
+      case "yugioh": {
+        const base = item?.yugiohCardBase;
+        return { base, name: base?.name || "" };
+      }
+      default:
+        return { base: null, name: "" };
+    }
+  };
+
+  const resolveUrl = (url) => {
+    if (!url) return null;
+    return url.startsWith("/") ? `${serverBaseUrl}${url}` : url;
+  };
+
+  const getThumbUrl = (type, item) => {
+    if (!item) return null;
+    if (type === "pokemon") {
+      const base = item?.basePokemon;
+      const form = base?.forms?.[0];
+      const sprite = form?.spriteGen5Animated || form?.spriteGen6Animated || null;
+      return resolveUrl(sprite);
+    }
+    const { base } = getBaseAndName(type, item);
+    return resolveUrl(base?.imageUrl || null);
+  };
+
+  const getDisplayedNames = (type) => {
+    const items = displayedByType[type] || [];
+    // Safely derive human-readable names depending on base field names per type
+    return items
+      .map((it) => {
+        switch (type) {
+          case "pokemon":
+            return it?.basePokemon?.name || "";
+          case "snoopy":
+            return it?.snoopyArtBase?.name || "";
+          case "habbo":
+            return it?.habboRareBase?.name || "";
+          case "yugioh":
+            return it?.yugiohCardBase?.name || "";
+          default:
+            return "";
+        }
+      })
+      .filter(Boolean);
+  };
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -33,7 +111,10 @@ const CollectionsPage = () => {
 
   return (
     <div>
-      <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div
+        className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between rounded-md"
+        style={{ background: "var(--color-surface)", color: "var(--color-text-main)" }}
+      >
         <h1 className="text-3xl font-bold text-primary">Collections</h1>
         <div className="relative w-full md:w-96">
           <input
@@ -53,9 +134,20 @@ const CollectionsPage = () => {
       {/* Table layout for md+ screens */}
       <div
         className="hidden md:block overflow-x-auto rounded-lg border"
-        style={{ borderColor: "var(--color-primary)" }}
+        style={{
+          background: "var(--color-surface)",
+          borderColor: "var(--color-primary)",
+          color: "var(--color-text-main)",
+        }}
       >
-        <table className="min-w-full divide-y" style={{ borderColor: "var(--color-primary)" }}>
+        <table
+          className="min-w-full divide-y"
+          style={{
+            background: "var(--color-surface)",
+            borderColor: "var(--color-primary)",
+            color: "var(--color-text-main)",
+          }}
+        >
           <thead style={{ background: "var(--color-surface)" }}>
             <tr>
               <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">
@@ -65,14 +157,14 @@ const CollectionsPage = () => {
                 Type
               </th>
               <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">
-                Description
+                Displayed
               </th>
               <th className="px-6 py-3" />
             </tr>
           </thead>
           <tbody
             className="divide-y"
-            style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
+            style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
           >
             {filtered.map((c) => (
               <tr key={c.type} className="" style={{ background: "var(--color-surface)" }}>
@@ -85,7 +177,41 @@ const CollectionsPage = () => {
                   </div>
                 </td>
                 <td className="whitespace-nowrap px-6 py-4 text-sm text-text-secondary">{c.type}</td>
-                <td className="px-6 py-4 text-sm text-text-secondary">{c.description}</td>
+                <td className="px-6 py-4 text-sm text-text-secondary">
+                  {(() => {
+                    const items = getDisplayedItems(c.type);
+                    if (!items.length) return <span className="italic text-text-secondary/70">No items displayed</span>;
+                    return (
+                      <div className="flex flex-wrap items-center gap-1">
+                        {items.slice(0, 6).map((it) => {
+                          const { name } = getBaseAndName(c.type, it);
+                          const src = getThumbUrl(c.type, it);
+                          return src ? (
+                            <img
+                              key={it._id}
+                              src={src}
+                              title={name}
+                              alt={name || c.type}
+                              className="h-8 w-8 object-contain"
+                              style={{ background: "var(--color-surface)" }}
+                            />
+                          ) : (
+                            <span
+                              key={it._id}
+                              className="inline-block h-8 w-8 text-[10px] flex items-center justify-center"
+                              style={{ background: "var(--color-background)", color: "var(--color-text-secondary)" }}
+                            >
+                              N/A
+                            </span>
+                          );
+                        })}
+                        {items.length > 6 && (
+                          <span className="text-xs text-text-secondary">+{items.length - 6} more</span>
+                        )}
+                      </div>
+                    );
+                  })()}
+                </td>
                 <td className="whitespace-nowrap px-6 py-4 text-right">
                   <Link
                     to={`/collections/${c.type}`}
@@ -112,7 +238,42 @@ const CollectionsPage = () => {
               <Badge text={c.abbr} />
               <div className="flex-1">
                 <div className="text-base font-semibold text-text-main">{c.name}</div>
-                <div className="text-sm text-text-secondary">{c.description}</div>
+                <div className="mt-2">
+                  {(() => {
+                    const items = getDisplayedItems(c.type);
+                    if (!items.length)
+                      return <span className="italic text-text-secondary/70 text-sm">No items displayed</span>;
+                    return (
+                      <div className="flex flex-wrap items-center gap-1">
+                        {items.slice(0, 6).map((it) => {
+                          const { name } = getBaseAndName(c.type, it);
+                          const src = getThumbUrl(c.type, it);
+                          return src ? (
+                            <img
+                              key={it._id}
+                              src={src}
+                              title={name}
+                              alt={name || c.type}
+                              className="h-8 w-8 object-contain"
+                              style={{ background: "var(--color-surface)" }}
+                            />
+                          ) : (
+                            <span
+                              key={it._id}
+                              className="inline-block h-8 w-8 text-[10px] flex items-center justify-center"
+                              style={{ background: "var(--color-background)", color: "var(--color-text-secondary)" }}
+                            >
+                              N/A
+                            </span>
+                          );
+                        })}
+                        {items.length > 6 && (
+                          <span className="text-xs text-text-secondary">+{items.length - 6} more</span>
+                        )}
+                      </div>
+                    );
+                  })()}
+                </div>
               </div>
               <Link
                 to={`/collections/${c.type}`}
