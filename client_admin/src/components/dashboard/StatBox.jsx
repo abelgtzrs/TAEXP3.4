@@ -51,7 +51,9 @@ const StatBox = ({
       >
         {title}
       </h4>
-      <p className={`${compact ? "text-2xl leading-tight mb-0" : "text-3xl mb-1"} font-semibold text-text-main`}>{value}</p>
+      <p className={`${compact ? "text-2xl leading-tight mb-0" : "text-3xl mb-1"} font-semibold text-text-main`}>
+        {value}
+      </p>
       {Array.isArray(trend) && trend.length > 1 && (
         <div className={`${compact ? "mt-0.5 mb-0.5" : "mt-1 mb-1"} -mx-1`}>
           <Sparkline data={trend} height={compact ? 22 : 28} />

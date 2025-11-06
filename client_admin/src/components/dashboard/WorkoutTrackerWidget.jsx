@@ -46,73 +46,16 @@ const WorkoutTrackerWidget = () => {
 
   return (
     <Widget title="Workout Status">
-      {lastLog ? (
-        <div
-          className="mb-4 rounded-lg border p-3"
-          style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
-        >
-          <div className="flex items-start gap-3">
-            <div
-              className="h-10 w-10 rounded-md flex items-center justify-center border"
-              style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
-            >
-              <Dumbbell className="h-5 w-5 text-primary" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs text-text-secondary">Last Logged Workout</p>
-              <h4 className="text-base font-semibold text-text-main truncate">{lastLog.workoutName}</h4>
-              {lastMeta?.date && (
-                <div className="mt-1 flex items-center gap-2 text-xs text-text-secondary">
-                  <CalendarDays className="h-4 w-4" />
-                  <span>{lastMeta.date.toLocaleDateString()}</span>
-                  {typeof lastMeta.daysAgo === "number" && (
-                    <span className="ml-2 opacity-80">
-                      {lastMeta.daysAgo === 0 ? "Today" : `${lastMeta.daysAgo}d ago`}
-                    </span>
-                  )}
-                </div>
-              )}
-              <div className="mt-2 flex flex-wrap gap-2">
-                <div
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded border text-xs"
-                  style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
-                  title="Total exercises in session"
-                >
-                  <ListChecks className="h-4 w-4 text-primary" />
-                  <span className="text-text-main">{lastMeta?.totalExercises ?? 0} exercises</span>
-                </div>
-                <div
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded border text-xs"
-                  style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
-                  title="Total sets performed"
-                >
-                  <ListChecks className="h-4 w-4 text-primary" />
-                  <span className="text-text-main">{lastMeta?.totalSets ?? 0} sets</span>
-                </div>
-                {lastMeta?.duration != null && (
-                  <div
-                    className="inline-flex items-center gap-1 px-2 py-1 rounded border text-xs"
-                    style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
-                    title="Session duration"
-                  >
-                    <Clock className="h-4 w-4 text-primary" />
-                    <span className="text-text-main">{lastMeta.duration} min</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <p className="text-sm text-text-tertiary mb-4">No workouts logged yet.</p>
-      )}
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-xs font-semibold text-text-secondary tracking-wide">Quick Start Templates</h3>
       </div>
       <div className="grid grid-cols-2 grid-rows-2 gap-2 mb-2">
         {WORKOUT_TEMPLATES.map((tpl) => (
           <Link key={tpl.name} to={tpl.to} className="block">
-            <StyledButton className="w-full h-16 text-base font-semibold hover:opacity-95">
+            <StyledButton
+              className="w-full h-16 text-base font-semibold hover:opacity-95 border text-text-main"
+              style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
+            >
               <div className="flex items-center justify-center gap-2">
                 <Dumbbell className="h-5 w-5" />
                 <span>{tpl.name}</span>
@@ -121,6 +64,68 @@ const WorkoutTrackerWidget = () => {
           </Link>
         ))}
       </div>
+      {lastLog ? (
+        <div
+          className="mt-3 border p-3"
+          style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
+        >
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-start gap-3 min-w-0">
+              <div
+                className="h-12 w-12 flex items-center justify-center border"
+                style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
+              >
+                <Dumbbell className="h-6 w-6 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-[11px] text-text-secondary">Last Logged Workout</div>
+                <h4 className="text-lg font-semibold text-text-main truncate">{lastLog.workoutName}</h4>
+                {lastMeta?.date && (
+                  <div className="mt-1 flex items-center gap-2 text-[11px] text-text-secondary">
+                    <CalendarDays className="h-4 w-4" />
+                    <span>{lastMeta.date.toLocaleDateString()}</span>
+                    {typeof lastMeta.daysAgo === "number" && (
+                      <span className="ml-2 opacity-80">
+                        {lastMeta.daysAgo === 0 ? "Today" : `${lastMeta.daysAgo}d ago`}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="mt-3 grid grid-cols-3 gap-2">
+            <div
+              className="flex items-center justify-between border px-2 py-1 text-xs"
+              style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
+              title="Total exercises in session"
+            >
+              <span className="text-text-secondary">Exercises</span>
+              <span className="text-text-main font-semibold">{lastMeta?.totalExercises ?? 0}</span>
+            </div>
+            <div
+              className="flex items-center justify-between border px-2 py-1 text-xs"
+              style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
+              title="Total sets performed"
+            >
+              <span className="text-text-secondary">Sets</span>
+              <span className="text-text-main font-semibold">{lastMeta?.totalSets ?? 0}</span>
+            </div>
+            {lastMeta?.duration != null && (
+              <div
+                className="flex items-center justify-between border px-2 py-1 text-xs"
+                style={{ background: "var(--color-background)", borderColor: "var(--color-primary)" }}
+                title="Session duration"
+              >
+                <span className="text-text-secondary">Minutes</span>
+                <span className="text-text-main font-semibold">{lastMeta.duration}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        <p className="text-sm text-text-tertiary">No workouts logged yet.</p>
+      )}
       {/* Timeframe stats */}
       {weekly && (
         <div className="mt-3">

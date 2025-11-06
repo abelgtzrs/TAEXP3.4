@@ -5,6 +5,124 @@ import WeatherWidget from "../dashboard/WeatherWidget";
 import SpotifyWidget from "../dashboard/SpotifyWidget";
 import api from "../../services/api";
 
+// Small in-file popover to house gap & padding controls while in Edit Layout & Size mode
+function RightSidebarControlsPopover({ gapPx, setGapPx, paddingPx, setPaddingPx }) {
+  const [open, setOpen] = useState(false);
+  const popRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDocClick = (e) => {
+      if (!popRef.current) return;
+      if (!popRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onDocClick, true);
+    document.addEventListener("keydown", onKey, true);
+    return () => {
+      document.removeEventListener("mousedown", onDocClick, true);
+      document.removeEventListener("keydown", onKey, true);
+    };
+  }, [open]);
+
+  return (
+    <div className="absolute top-1 left-2 z-30" ref={popRef}>
+      <button
+        type="button"
+        onClick={() => setOpen((s) => !s)}
+        className="px-2 py-1 text-[11px] bg-slate-800/80 border border-slate-600 text-white hover:bg-slate-700 transition-colors"
+        title={open ? "Hide layout controls" : "Show layout controls"}
+      >
+        Layout
+      </button>
+      {open && (
+        <div className="mt-1 bg-black/80 border border-white/10 p-2 w-[240px] shadow-xl">
+          {/* Gap control */}
+          <div className="flex items-center gap-1 mb-2">
+            <span className="text-[10px] text-text-secondary w-[56px]">Gap</span>
+            <button
+              className="px-2 py-0.5 text-[10px] bg-slate-800/80 border border-slate-600 hover:bg-slate-700"
+              title="Decrease gap (-2px)"
+              onClick={() => setGapPx((g) => Math.max(0, g - 2))}
+            >
+              -
+            </button>
+            <span className="text-[10px] text-white min-w-[36px] text-center">{gapPx}px</span>
+            <button
+              className="px-2 py-0.5 text-[10px] bg-slate-800/80 border border-slate-600 hover:bg-slate-700"
+              title="Increase gap (+2px)"
+              onClick={() => setGapPx((g) => Math.min(40, g + 2))}
+            >
+              +
+            </button>
+            <div
+              title="Drag to adjust gap"
+              onMouseDown={(e) => {
+                const startY = e.clientY;
+                const startGap = gapPx;
+                const onMove = (ev) => {
+                  const dy = ev.clientY - startY;
+                  const ng = Math.max(0, Math.min(40, Math.round(startGap + dy / 3)));
+                  setGapPx(ng);
+                };
+                const onUp = () => {
+                  window.removeEventListener("mousemove", onMove);
+                  window.removeEventListener("mouseup", onUp);
+                };
+                window.addEventListener("mousemove", onMove);
+                window.addEventListener("mouseup", onUp);
+              }}
+              className="ml-1 w-3 h-4 cursor-ns-resize bg-white/20"
+            />
+          </div>
+          {/* Padding control */}
+          <div className="flex items-center gap-1">
+            <span className="text-[10px] text-text-secondary w-[56px]">Padding</span>
+            <button
+              className="px-2 py-0.5 text-[10px] bg-slate-800/80 border border-slate-600 hover:bg-slate-700"
+              title="Decrease padding (-2px)"
+              onClick={() => setPaddingPx((p) => Math.max(0, p - 2))}
+            >
+              -
+            </button>
+            <span className="text-[10px] text-white min-w-[36px] text-center">{paddingPx}px</span>
+            <button
+              className="px-2 py-0.5 text-[10px] bg-slate-800/80 border border-slate-600 hover:bg-slate-700"
+              title="Increase padding (+2px)"
+              onClick={() => setPaddingPx((p) => Math.min(40, p + 2))}
+            >
+              +
+            </button>
+            <div
+              title="Drag to adjust padding"
+              onMouseDown={(e) => {
+                const startY = e.clientY;
+                const startPad = paddingPx;
+                const onMove = (ev) => {
+                  const dy = ev.clientY - startY;
+                  const np = Math.max(0, Math.min(40, Math.round(startPad + dy / 3)));
+                  setPaddingPx(np);
+                };
+                const onUp = () => {
+                  window.removeEventListener("mousemove", onMove);
+                  window.removeEventListener("mouseup", onUp);
+                };
+                window.addEventListener("mousemove", onMove);
+                window.addEventListener("mouseup", onUp);
+              }}
+              className="ml-1 w-3 h-4 cursor-ns-resize bg-white/20"
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // Persistent right sidebar content. Assumes its parent positions and sizes the aside area.
 export default function RightSidebar({ condensed = false }) {
   const { editMode } = useLayout();
@@ -18,11 +136,25 @@ export default function RightSidebar({ condensed = false }) {
       return 16;
     }
   });
+  // Adjustable inner padding ("margins") for the sidebar container (in px)
+  const [paddingPx, setPaddingPx] = useState(() => {
+    try {
+      const v = Number(localStorage.getItem("tae.rightSidebar.paddingPx") || 12);
+      return isNaN(v) ? 12 : v;
+    } catch {
+      return 12;
+    }
+  });
   useEffect(() => {
     try {
       localStorage.setItem("tae.rightSidebar.gapPx", String(gapPx));
     } catch {}
   }, [gapPx]);
+  useEffect(() => {
+    try {
+      localStorage.setItem("tae.rightSidebar.paddingPx", String(paddingPx));
+    } catch {}
+  }, [paddingPx]);
   // Per-widget heights (px) with simple persistence
   const [clockH, setClockH] = useState(() => {
     try {
@@ -77,8 +209,8 @@ export default function RightSidebar({ condensed = false }) {
   // Condensed content: minimal essentials (compact clock + now playing)
   const CondensedView = () => {
     const [now, setNow] = useState(() => new Date());
-  const [track, setTrack] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+    const [track, setTrack] = useState(null);
+    const [isPlaying, setIsPlaying] = useState(false);
     const [uptime, setUptime] = useState(0);
 
     useEffect(() => {
@@ -332,7 +464,9 @@ export default function RightSidebar({ condensed = false }) {
                     <div className="w-full h-[6px] border border-white/10 mt-1">
                       <div
                         className="bg-emerald-500 h-[6px]"
-                        style={{ width: `${Math.max(0, Math.min(100, ((track.progressMs || 0) / track.durationMs) * 100))}%` }}
+                        style={{
+                          width: `${Math.max(0, Math.min(100, ((track.progressMs || 0) / track.durationMs) * 100))}%`,
+                        }}
                       />
                     </div>
                   ) : null}
@@ -353,50 +487,20 @@ export default function RightSidebar({ condensed = false }) {
 
   return (
     <div className="h-full p-0 relative">
+      {/* Edit controls trigger + popover */}
+      {editMode && (
+        <RightSidebarControlsPopover
+          gapPx={gapPx}
+          setGapPx={setGapPx}
+          paddingPx={paddingPx}
+          setPaddingPx={setPaddingPx}
+        />
+      )}
       <div
-        className="h-full bg-black/25 backdrop-blur-xl border border-white/10 p-3 flex flex-col overflow-auto"
-        style={{ gap: `${gapPx}px` }}
+        className="h-full bg-black/25 backdrop-blur-xl border border-white/10 flex flex-col overflow-auto"
+        style={{ gap: `${gapPx}px`, padding: `${paddingPx}px` }}
       >
-        {editMode && (
-          <div className="absolute top-1 left-2 z-20 flex items-center gap-1 bg-black/40 border border-white/10 px-2 py-1">
-            <span className="text-[10px] text-text-secondary">Gap</span>
-            <button
-              className="px-2 py-0.5 text-[10px] rounded border bg-slate-800/80 border-slate-600 hover:bg-slate-700"
-              title="Decrease gap (-2px)"
-              onClick={() => setGapPx((g) => Math.max(0, g - 2))}
-            >
-              -
-            </button>
-            <span className="text-[10px] text-white min-w-[28px] text-center">{gapPx}px</span>
-            <button
-              className="px-2 py-0.5 text-[10px] rounded border bg-slate-800/80 border-slate-600 hover:bg-slate-700"
-              title="Increase gap (+2px)"
-              onClick={() => setGapPx((g) => Math.min(40, g + 2))}
-            >
-              +
-            </button>
-            {/* Drag handle for gap */}
-            <div
-              title="Drag to adjust gap"
-              onMouseDown={(e) => {
-                const startY = e.clientY;
-                const startGap = gapPx;
-                const onMove = (ev) => {
-                  const dy = ev.clientY - startY;
-                  const ng = Math.max(0, Math.min(40, Math.round(startGap + dy / 3)));
-                  setGapPx(ng);
-                };
-                const onUp = () => {
-                  window.removeEventListener("mousemove", onMove);
-                  window.removeEventListener("mouseup", onUp);
-                };
-                window.addEventListener("mousemove", onMove);
-                window.addEventListener("mouseup", onUp);
-              }}
-              className="ml-1 w-3 h-4 cursor-ns-resize bg-white/20 rounded-sm"
-            />
-          </div>
-        )}
+        {false && null}
         {/* Clock */}
         <div className="relative w-full">
           {editMode && (
@@ -424,6 +528,27 @@ export default function RightSidebar({ condensed = false }) {
             >
               <ClockWidget />
             </div>
+            {editMode && (
+              <div
+                title="Drag to resize height"
+                onMouseDown={(e) => {
+                  const startY = e.clientY;
+                  const startH = clockH;
+                  const onMove = (ev) => {
+                    const dy = ev.clientY - startY;
+                    const nh = Math.max(80, Math.min(600, startH + dy));
+                    setClockH(nh);
+                  };
+                  const onUp = () => {
+                    window.removeEventListener("mousemove", onMove);
+                    window.removeEventListener("mouseup", onUp);
+                  };
+                  window.addEventListener("mousemove", onMove);
+                  window.addEventListener("mouseup", onUp);
+                }}
+                className="absolute left-0 right-0 bottom-0 h-1 cursor-ns-resize bg-white/10"
+              />
+            )}
           </div>
         </div>
         {/* Weather */}
@@ -453,6 +578,27 @@ export default function RightSidebar({ condensed = false }) {
             >
               <WeatherWidget />
             </div>
+            {editMode && (
+              <div
+                title="Drag to resize height"
+                onMouseDown={(e) => {
+                  const startY = e.clientY;
+                  const startH = weatherH;
+                  const onMove = (ev) => {
+                    const dy = ev.clientY - startY;
+                    const nh = Math.max(100, Math.min(700, startH + dy));
+                    setWeatherH(nh);
+                  };
+                  const onUp = () => {
+                    window.removeEventListener("mousemove", onMove);
+                    window.removeEventListener("mouseup", onUp);
+                  };
+                  window.addEventListener("mousemove", onMove);
+                  window.addEventListener("mouseup", onUp);
+                }}
+                className="absolute left-0 right-0 bottom-0 h-1 cursor-ns-resize bg-white/10"
+              />
+            )}
           </div>
         </div>
         {/* Spotify */}
@@ -482,6 +628,27 @@ export default function RightSidebar({ condensed = false }) {
             >
               <SpotifyWidget />
             </div>
+            {editMode && (
+              <div
+                title="Drag to resize height"
+                onMouseDown={(e) => {
+                  const startY = e.clientY;
+                  const startH = spotifyH;
+                  const onMove = (ev) => {
+                    const dy = ev.clientY - startY;
+                    const nh = Math.max(160, Math.min(1000, startH + dy));
+                    setSpotifyH(nh);
+                  };
+                  const onUp = () => {
+                    window.removeEventListener("mousemove", onMove);
+                    window.removeEventListener("mouseup", onUp);
+                  };
+                  window.addEventListener("mousemove", onMove);
+                  window.addEventListener("mouseup", onUp);
+                }}
+                className="absolute left-0 right-0 bottom-0 h-1 cursor-ns-resize bg-white/10"
+              />
+            )}
           </div>
         </div>
       </div>

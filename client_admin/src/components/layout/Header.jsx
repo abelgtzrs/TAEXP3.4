@@ -240,155 +240,155 @@ const Header = ({ forcedHeight }) => {
                 <div className="absolute inset-0 bg-black/60" onClick={() => setDailyOpen(false)} />
                 {/* Modal */}
                 <div className="relative w-[min(92vw,900px)] max-h-[80vh] overflow-auto rounded-xl bg-black/85 backdrop-blur-xl border border-white/15 shadow-2xl p-4">
-                {/* Header with date and navigation */}
-                <div className="flex items-center justify-between gap-3 mb-3">
-                  <div className="flex items-center gap-2">
-                    <button
-                      className="px-2 py-1 rounded border text-xs hover:bg-white/10"
-                      style={{ borderColor: "var(--color-primary)" }}
-                      onClick={() => setDailyDateStr((s) => offsetDateStr(s, -1))}
-                      title="Previous day"
-                    >
-                      ◀
-                    </button>
+                  {/* Header with date and navigation */}
+                  <div className="flex items-center justify-between gap-3 mb-3">
                     <div className="flex items-center gap-2">
-                      <label className="text-xs text-text-secondary">Date</label>
-                      <input
-                        type="date"
-                        className="rounded border px-2 py-1 text-xs bg-[var(--color-background)]"
-                        style={{ borderColor: "var(--color-primary)" }}
-                        value={dailyDateStr}
-                        onChange={(e) => setDailyDateStr(e.target.value)}
-                      />
                       <button
                         className="px-2 py-1 rounded border text-xs hover:bg-white/10"
                         style={{ borderColor: "var(--color-primary)" }}
-                        onClick={() => {
-                          const d = new Date();
-                          const y = d.getFullYear();
-                          const m = String(d.getMonth() + 1).padStart(2, "0");
-                          const day = String(d.getDate()).padStart(2, "0");
-                          setDailyDateStr(`${y}-${m}-${day}`);
-                        }}
-                        title="Jump to today"
+                        onClick={() => setDailyDateStr((s) => offsetDateStr(s, -1))}
+                        title="Previous day"
                       >
-                        Today
+                        ◀
+                      </button>
+                      <div className="flex items-center gap-2">
+                        <label className="text-xs text-text-secondary">Date</label>
+                        <input
+                          type="date"
+                          className="rounded border px-2 py-1 text-xs bg-[var(--color-background)]"
+                          style={{ borderColor: "var(--color-primary)" }}
+                          value={dailyDateStr}
+                          onChange={(e) => setDailyDateStr(e.target.value)}
+                        />
+                        <button
+                          className="px-2 py-1 rounded border text-xs hover:bg-white/10"
+                          style={{ borderColor: "var(--color-primary)" }}
+                          onClick={() => {
+                            const d = new Date();
+                            const y = d.getFullYear();
+                            const m = String(d.getMonth() + 1).padStart(2, "0");
+                            const day = String(d.getDate()).padStart(2, "0");
+                            setDailyDateStr(`${y}-${m}-${day}`);
+                          }}
+                          title="Jump to today"
+                        >
+                          Today
+                        </button>
+                      </div>
+                      <button
+                        className="px-2 py-1 rounded border text-xs hover:bg-white/10"
+                        style={{ borderColor: "var(--color-primary)" }}
+                        onClick={() => setDailyDateStr((s) => offsetDateStr(s, 1))}
+                        title="Next day"
+                      >
+                        ▶
                       </button>
                     </div>
                     <button
                       className="px-2 py-1 rounded border text-xs hover:bg-white/10"
                       style={{ borderColor: "var(--color-primary)" }}
-                      onClick={() => setDailyDateStr((s) => offsetDateStr(s, 1))}
-                      title="Next day"
+                      onClick={() => setDailyOpen(false)}
+                      title="Close"
                     >
-                      ▶
+                      Close
                     </button>
                   </div>
-                  <button
-                    className="px-2 py-1 rounded border text-xs hover:bg-white/10"
-                    style={{ borderColor: "var(--color-primary)" }}
-                    onClick={() => setDailyOpen(false)}
-                    title="Close"
-                  >
-                    Close
-                  </button>
-                </div>
-                {/* Body */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {/* Editor */}
-                  <div className="md:col-span-2">
-                    <div className="text-[11px] text-text-tertiary mb-2">Write today's draft and save versions.</div>
-                    <textarea
-                      value={dailyContent}
-                      onChange={(e) => setDailyContent(e.target.value)}
-                      rows={12}
-                      className="w-full rounded border p-2 text-sm bg-[var(--color-background)] focus:outline-none"
-                      style={{ borderColor: "var(--color-primary)" }}
-                      placeholder="Draft today's events here..."
-                    />
-                    <div className="mt-2 flex justify-end gap-2">
-                      <button
-                        onClick={() => {
-                          if (!dailyDateStr) return;
-                          saveDraft(dailyDateStr, dailyContent || "");
-                          refreshDaily();
-                        }}
-                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded border text-xs bg-primary/20 hover:bg-primary/30"
+                  {/* Body */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    {/* Editor */}
+                    <div className="md:col-span-2">
+                      <div className="text-[11px] text-text-tertiary mb-2">Write today's draft and save versions.</div>
+                      <textarea
+                        value={dailyContent}
+                        onChange={(e) => setDailyContent(e.target.value)}
+                        rows={12}
+                        className="w-full rounded border p-2 text-sm bg-[var(--color-background)] focus:outline-none"
                         style={{ borderColor: "var(--color-primary)" }}
-                      >
-                        <Save className="w-4 h-4" /> Save New Version
-                      </button>
+                        placeholder="Draft today's events here..."
+                      />
+                      <div className="mt-2 flex justify-end gap-2">
+                        <button
+                          onClick={() => {
+                            if (!dailyDateStr) return;
+                            saveDraft(dailyDateStr, dailyContent || "");
+                            refreshDaily();
+                          }}
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded border text-xs bg-primary/20 hover:bg-primary/30"
+                          style={{ borderColor: "var(--color-primary)" }}
+                        >
+                          <Save className="w-4 h-4" /> Save New Version
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  {/* History / Other dates */}
-                  <div>
-                    <div className="text-[11px] text-text-secondary mb-2 flex items-center gap-2">
-                      <History className="w-4 h-4 text-primary" /> {dailyHistory.length} version(s)
-                    </div>
-                    {dailyHistory.length === 0 ? (
-                      <div className="text-[12px] text-text-tertiary mb-2">No history for this date.</div>
-                    ) : (
-                      <ul className="space-y-2 max-h-[280px] overflow-auto pr-1">
-                        {dailyHistory.map((v) => (
-                          <li
-                            key={v.ts}
-                            className="rounded border p-2 text-xs"
-                            style={{ borderColor: "var(--color-primary)" }}
-                          >
-                            <div className="flex items-center justify-between gap-2">
-                              <div className="text-text-secondary">{new Date(v.ts).toLocaleString()}</div>
-                              <div className="flex items-center gap-2">
-                                <button
-                                  className="px-2 py-0.5 rounded border text-[11px] hover:bg-primary/20"
-                                  style={{ borderColor: "var(--color-primary)" }}
-                                  onClick={() => setDailyContent(v.content || "")}
-                                >
-                                  Load
-                                </button>
-                                <button
-                                  className="px-2 py-0.5 rounded border text-[11px] hover:bg-red-900/40 text-red-300"
-                                  style={{ borderColor: "var(--color-primary)" }}
-                                  onClick={() => {
-                                    if (!confirm("Delete this version?")) return;
-                                    deleteVersion(dailyDateStr, v.ts);
-                                    refreshDaily();
-                                  }}
-                                >
-                                  <Trash2 className="inline-block w-3.5 h-3.5 mr-1" /> Delete
-                                </button>
-                              </div>
-                            </div>
-                            <pre className="mt-1 text-[11px] whitespace-pre-wrap break-words text-text-main max-h-20 overflow-auto">
-                              {v.content}
-                            </pre>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                    <div className="mt-3">
-                      <div className="text-[11px] text-text-secondary mb-1">Other dates</div>
-                      {dailyAllDates.length === 0 ? (
-                        <div className="text-[12px] text-text-tertiary">No saved drafts yet.</div>
+                    {/* History / Other dates */}
+                    <div>
+                      <div className="text-[11px] text-text-secondary mb-2 flex items-center gap-2">
+                        <History className="w-4 h-4 text-primary" /> {dailyHistory.length} version(s)
+                      </div>
+                      {dailyHistory.length === 0 ? (
+                        <div className="text-[12px] text-text-tertiary mb-2">No history for this date.</div>
                       ) : (
-                        <div className="flex flex-wrap gap-1 max-h-[120px] overflow-auto pr-1">
-                          {dailyAllDates.map((d) => (
-                            <button
-                              key={d}
-                              className={`px-2 py-0.5 rounded border text-[11px] hover:bg-primary/20 ${
-                                d === dailyDateStr ? "bg-primary/10" : ""
-                              }`}
+                        <ul className="space-y-2 max-h-[280px] overflow-auto pr-1">
+                          {dailyHistory.map((v) => (
+                            <li
+                              key={v.ts}
+                              className="rounded border p-2 text-xs"
                               style={{ borderColor: "var(--color-primary)" }}
-                              onClick={() => setDailyDateStr(d)}
-                              title={formatDate(d)}
                             >
-                              {d}
-                            </button>
+                              <div className="flex items-center justify-between gap-2">
+                                <div className="text-text-secondary">{new Date(v.ts).toLocaleString()}</div>
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    className="px-2 py-0.5 rounded border text-[11px] hover:bg-primary/20"
+                                    style={{ borderColor: "var(--color-primary)" }}
+                                    onClick={() => setDailyContent(v.content || "")}
+                                  >
+                                    Load
+                                  </button>
+                                  <button
+                                    className="px-2 py-0.5 rounded border text-[11px] hover:bg-red-900/40 text-red-300"
+                                    style={{ borderColor: "var(--color-primary)" }}
+                                    onClick={() => {
+                                      if (!confirm("Delete this version?")) return;
+                                      deleteVersion(dailyDateStr, v.ts);
+                                      refreshDaily();
+                                    }}
+                                  >
+                                    <Trash2 className="inline-block w-3.5 h-3.5 mr-1" /> Delete
+                                  </button>
+                                </div>
+                              </div>
+                              <pre className="mt-1 text-[11px] whitespace-pre-wrap break-words text-text-main max-h-20 overflow-auto">
+                                {v.content}
+                              </pre>
+                            </li>
                           ))}
-                        </div>
+                        </ul>
                       )}
+                      <div className="mt-3">
+                        <div className="text-[11px] text-text-secondary mb-1">Other dates</div>
+                        {dailyAllDates.length === 0 ? (
+                          <div className="text-[12px] text-text-tertiary">No saved drafts yet.</div>
+                        ) : (
+                          <div className="flex flex-wrap gap-1 max-h-[120px] overflow-auto pr-1">
+                            {dailyAllDates.map((d) => (
+                              <button
+                                key={d}
+                                className={`px-2 py-0.5 rounded border text-[11px] hover:bg-primary/20 ${
+                                  d === dailyDateStr ? "bg-primary/10" : ""
+                                }`}
+                                style={{ borderColor: "var(--color-primary)" }}
+                                onClick={() => setDailyDateStr(d)}
+                                title={formatDate(d)}
+                              >
+                                {d}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
                 </div>
               </div>,
               document.body

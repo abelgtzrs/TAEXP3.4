@@ -1,7 +1,16 @@
 // Your application's standard button
-const StyledButton = ({ children, onClick, type = "button", loading = false, className = "", variant = "primary" }) => {
+const StyledButton = ({
+  children,
+  onClick,
+  type = "button",
+  loading = false,
+  className = "",
+  variant = "primary",
+  style = {},
+  ...rest
+}) => {
   const baseClasses =
-    "relative font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed overflow-hidden group";
+    "relative font-semibold py-3 px-6 rounded-none transition-all duration-300 transform focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed overflow-hidden group";
 
   const variants = {
     primary:
@@ -20,6 +29,8 @@ const StyledButton = ({ children, onClick, type = "button", loading = false, cla
       onClick={onClick}
       disabled={loading}
       className={`${baseClasses} ${variants[variant]} ${className}`}
+      style={style}
+      {...rest}
     >
       {/* Shimmer effect overlay */}
       <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-700"></div>

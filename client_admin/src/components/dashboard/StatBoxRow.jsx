@@ -16,8 +16,32 @@ const StatBoxRow = ({ stats, loading }) => {
 
   return (
     <div className="widget-container border border-white/10">
-      <div className="flex flex-col md:flex-row gap-1">
-        {items.map((it, idx) => {
+      {/* Mobile: super condensed 2 rows with 4 boxes per row (show first 8) */}
+      <div className="md:hidden grid grid-cols-4 gap-1">
+        {items.slice(0, 8).map((it) => {
+          const val = loading ? "..." : stats?.[it.key] ?? 0;
+          const { trend, change, changeType, period } = useStatTrend(it.key, Number(stats?.[it.key] ?? 0), {
+            horizon: 14,
+            periodLabel: "yesterday",
+          });
+          return (
+            <StatBox
+              key={it.key}
+              title={it.title}
+              value={val}
+              change={change}
+              changeType={changeType}
+              period={period}
+              trend={trend}
+              compact
+              showDivider={false}
+            />
+          );
+        })}
+      </div>
+      {/* Desktop and up: full row */}
+      <div className="hidden md:flex md:flex-row gap-1">
+        {items.map((it) => {
           const val = loading ? "..." : stats?.[it.key] ?? 0;
           const { trend, change, changeType, period } = useStatTrend(it.key, Number(stats?.[it.key] ?? 0), {
             horizon: 14,

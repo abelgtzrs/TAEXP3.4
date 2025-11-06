@@ -117,7 +117,8 @@ const AdminLayout = () => {
       return "expanded";
     }
   });
-  const rightSidebarWidth = rightSidebarMode === "condensed" ? "10vw" : `${rightSidebarWidthPx}px`;
+  // Expanded right sidebar width set to 20% of viewport width (vw). Condensed remains 10vw.
+  const rightSidebarWidth = rightSidebarMode === "condensed" ? "10vw" : "20vw";
   const toggleRightSidebar = () => {
     setRightSidebarMode((mode) => {
       const next = mode === "expanded" ? "condensed" : "expanded";
@@ -360,10 +361,11 @@ const AdminLayout = () => {
             isSidebarCollapsed ? "w-12" : "w-52"
           }`}
         >
-          {/* Toggle */}
+          {/* Toggle (15px from bottom) */}
           <button
             onClick={toggleSidebar}
-            className="absolute top-2 right-0 translate-x-full bg-surface/80 backdrop-blur-md border border-gray-700/40 rounded-r-md p-1 hover:bg-gray-700/60 transition-all duration-300 shadow-md"
+            className="absolute right-0 translate-x-full bg-surface/80 backdrop-blur-md border border-gray-700/40 rounded-r-md p-1 hover:bg-gray-700/60 transition-all duration-300 shadow-md"
+            style={{ bottom: 15 }}
           >
             {isSidebarCollapsed ? (
               <ChevronRight size={18} className="text-white" />
@@ -679,12 +681,12 @@ const AdminLayout = () => {
           <RightSidebar condensed={rightSidebarMode === "condensed"} />
         </aside>
 
-        {/* Right Sidebar Toggle Tab */}
+        {/* Right Sidebar Toggle Tab (15px from bottom) */}
         <button
           onClick={toggleRightSidebar}
           className="fixed z-40 bg-surface/80 backdrop-blur-md border border-gray-700/40 rounded-l-md px-2 py-1 text-white hover:bg-gray-700/60 transition-all duration-300"
           style={{
-            top: headerHeight + 12,
+            bottom: 15,
             right: rightSidebarWidth,
           }}
           title={rightSidebarMode === "condensed" ? "Expand sidebar" : "Contract sidebar"}
