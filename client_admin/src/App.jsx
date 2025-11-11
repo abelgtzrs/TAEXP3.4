@@ -7,6 +7,7 @@ import DashboardPage from "./pages/DashboardPage";
 import HabitsPage from "./pages/HabitsPage";
 import BooksPage from "./pages/BooksPage";
 import BookNotesPage from "./pages/BookNotesPage";
+import AdminBadgeCollectionsPage from "./pages/AdminBadgeCollectionsPage";
 import WorkoutPage from "./pages/WorkoutPage";
 import SelectTemplatePage from "./pages/SelectTemplatePage";
 import LogWorkoutPage from "./pages/LogWorkoutPage";
@@ -89,6 +90,7 @@ function App() {
           <Route path="/admin/blessings/usage" element={<BlessingsUsagePage />} />
           <Route path="/admin/calendar" element={<CalendarAdminPage />} />
           <Route path="/admin/workouts/bulk-import" element={<BulkWorkoutImportPage />} />
+          <Route path="/admin/badge-collections" element={<AdminBadgeCollectionsPage />} />
         </Route>
       </Route>
 

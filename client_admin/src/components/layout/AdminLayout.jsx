@@ -557,6 +557,9 @@ const AdminLayout = () => {
                     <NavItem to="/admin/snoopys" icon={Boxes} isCollapsed={isSidebarCollapsed}>
                       Snoopy Manager
                     </NavItem>
+                    <NavItem to="/admin/badge-collections" icon={Trophy} isCollapsed={isSidebarCollapsed}>
+                      Badge Collections
+                    </NavItem>
                   </ul>
                 </div>
                 {/* Admin: Fitness */}

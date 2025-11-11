@@ -169,6 +169,7 @@ app.use("/api/admin/habbo-rares", require("./routes/habboRareAdminRoutes"));
 app.use("/api/admin/snoopys", require("./routes/snoopyAdminRoutes"));
 app.use("/api/admin/blessings", require("./routes/blessingDefinitionRoutes"));
 app.use("/api/admin/personas", require("./routes/personaAdminRoutes"));
+app.use("/api/admin/badge-collections", require("./routes/badgeAdminRoutes"));
 app.use("/api/admin", require("./routes/adminUserRoutes"));
 
 // External integrations & additional features

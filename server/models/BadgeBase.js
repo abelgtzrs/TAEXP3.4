@@ -25,6 +25,18 @@ const BadgeBaseSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide an image URL for the Badge"],
     },
+    spriteSmallUrl: {
+      // Smaller sprite for compact UI (optional distinct from imageUrl)
+      type: String,
+      trim: true,
+      default: "",
+    },
+    spriteLargeUrl: {
+      // Larger detailed artwork
+      type: String,
+      trim: true,
+      default: "",
+    },
     category: {
       // To group badges, e.g., "Pokémon Gen 1"
       type: String,
@@ -39,7 +51,24 @@ const BadgeBaseSchema = new mongoose.Schema(
     unlocksGeneration: {
       type: Number,
     },
+    legendaryGate: {
+      // If true, completing this badge's collection is required to unlock legendaries of its generation
+      type: Boolean,
+      default: false,
+    },
+    unlockDay: {
+      // Login streak day required to unlock (multiple of 5). Example: 5,10,15...
+      type: Number,
+      min: 1,
+      index: true,
+    },
     orderInCategory: { type: Number }, //  for predefined display order
+    collectionKey: {
+      // Key tying badges together (e.g., 'gen1', 'gen2'). Serves as a lightweight collection.
+      type: String,
+      trim: true,
+      index: true,
+    },
   },
   { timestamps: true }
 );

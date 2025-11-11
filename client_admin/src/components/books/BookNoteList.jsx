@@ -29,7 +29,7 @@ const BookNoteList = ({ notes, onDelete, onUpdate }) => {
                   <span>Range: {range}</span>
                   {n.chapter && <span>Chapter: {n.chapter}</span>}
                   <span>
-                    Added: {new Date(n.createdAt).toLocaleDateString()} {" "}
+                    Added: {new Date(n.createdAt).toLocaleDateString()}{" "}
                     {new Date(n.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </span>
                   <span className={n.kind === "quote" ? "text-primary/80" : "text-text-tertiary"}>Type: {n.kind}</span>
@@ -57,9 +57,7 @@ const BookNoteList = ({ notes, onDelete, onUpdate }) => {
                 </StyledButton>
               </div>
             </div>
-            {n.kind === "quote" && (
-              <div className="absolute -top-2 -left-2 text-primary text-xl select-none">“</div>
-            )}
+            {n.kind === "quote" && <div className="absolute -top-2 -left-2 text-primary text-xl select-none">“</div>}
           </div>
         );
       })}

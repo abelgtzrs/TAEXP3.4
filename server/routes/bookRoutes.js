@@ -41,7 +41,8 @@ async function attachPdf(req, res) {
   try {
     const book = await Book.findById(req.params.bookId);
     if (!book) return res.status(404).json({ success: false, message: "Book not found" });
-    if (book.user.toString() !== req.user.id) return res.status(401).json({ success: false, message: "Not authorized" });
+    if (book.user.toString() !== req.user.id)
+      return res.status(401).json({ success: false, message: "Not authorized" });
     if (!req.file) return res.status(400).json({ success: false, message: "No file uploaded" });
     // Normalize path for client access
     book.pdfUrl = `/uploads/books/${req.file.filename}`;
