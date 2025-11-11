@@ -65,6 +65,12 @@ const BookSchema = new mongoose.Schema(
       min: 1,
       max: 10, // Or 5, depending on your preferred scale
     },
+    pdfUrl: {
+      // Path to uploaded PDF for immersive reading workspace
+      type: String,
+      trim: true,
+      default: "",
+    },
     notes: {
       // Personal thoughts or notes on the book
       type: String,

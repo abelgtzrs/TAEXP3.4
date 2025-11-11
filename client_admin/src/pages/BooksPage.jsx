@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import AddBookForm from "../components/books/AddBookForm";
 import BookItem from "../components/books/BookItem";
 import PageHeader from "../components/ui/PageHeader";
+import { Link } from "react-router-dom";
 
 const BooksPage = () => {
   const { user, setUser } = useAuth();
@@ -148,14 +149,17 @@ const BooksPage = () => {
         <AddBookForm onAddBook={handleAddBook} loading={formLoading} />
       </motion.div>
 
-      <motion.h2
+      <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5, delay: 0.6 }}
-        className="text-2xl font-semibold text-white mt-10 mb-4"
+        className="flex items-center justify-between mt-10 mb-4"
       >
-        Your Library
-      </motion.h2>
+        <h2 className="text-2xl font-semibold text-white">Your Library</h2>
+        <p className="text-xs text-text-tertiary hidden md:block">
+          Tip: Hover or focus the cover to see full details. Use ⚙️ to open the interaction & notes workspace.
+        </p>
+      </motion.div>
 
       {loading && (
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-text-secondary py-8">

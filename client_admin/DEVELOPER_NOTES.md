@@ -62,3 +62,34 @@ Widgets should fetch just what they need and render fast. Keep larger logic in h
 - `npm run preview` — preview the build locally
 
 If you add a big feature, drop a sentence here so future-me knows where the brain is.
+
+## Books — enhanced cover and notes workspace
+
+- Book list items now show a larger cover. Hover/focus the cover to open a rich tooltip with details and a ⚙️ button.
+- The ⚙️ links to `/books/:bookId/notes` (BookNotesPage): a focused workspace to update pages read and write long-form notes.
+- For now, per-page/chapter notes are stored in the `Book.notes` string (free-form). Future work can introduce a dedicated notes model.
+- Components touched:
+  - `components/books/BookItem.jsx` — tooltip, larger cover, quick link.
+  - `pages/BookNotesPage.jsx` — new route-level page for book interactions.
+  - `App.jsx` — route added for `/books/:bookId/notes`.
+
+### Structured notes (2025-11-10)
+
+- Added model `server/models/userSpecific/BookNote.js` with fields: user, book, pageStart, pageEnd, chapter, content, tags.
+- New endpoints (protected, nested under book):
+  - `GET /api/books/:bookId/notes` — list notes.
+  - `POST /api/books/:bookId/notes` — create note.
+  - `PUT /api/books/:bookId/notes/:noteId` — update note.
+  - `DELETE /api/books/:bookId/notes/:noteId` — delete note.
+- Controllers: `server/controllers/bookNoteController.js` with ownership checks against the parent book.
+- Routes: `server/routes/bookNoteRoutes.js`, mounted via `server/routes/bookRoutes.js`.
+- Client service: `src/services/bookNotes.js`.
+- UI: `components/books/BookNoteForm.jsx` and `components/books/BookNoteList.jsx` integrated into `BookNotesPage` under "Structured Notes".
+
+### Immersive updates (2025-11-10 later)
+
+- Extended `BookNote` with `kind` (`note|quote`) for differentiated rendering.
+- Added visual styling for quotes (ring + decorative mark) in `BookNoteList.jsx`.
+- Added `pdfUrl` field to `Book` model and upload endpoint `POST /api/books/:bookId/pdf` using multer (25MB limit, PDF only).
+- Client: upload via `uploadBookPdf` in `bookNotes.js` and inline viewer (iframe) in `BookNotesPage` "Reader" widget.
+- Future ideas: text highlight mapping to page ranges, inline quote extraction from PDF, AI semantic clustering of notes.

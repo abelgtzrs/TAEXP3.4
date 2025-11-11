@@ -6,6 +6,7 @@ import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import HabitsPage from "./pages/HabitsPage";
 import BooksPage from "./pages/BooksPage";
+import BookNotesPage from "./pages/BookNotesPage";
 import WorkoutPage from "./pages/WorkoutPage";
 import SelectTemplatePage from "./pages/SelectTemplatePage";
 import LogWorkoutPage from "./pages/LogWorkoutPage";
@@ -52,6 +53,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/habits" element={<HabitsPage />} />
           <Route path="/books" element={<BooksPage />} />
+          <Route path="/books/:bookId/notes" element={<BookNotesPage />} />
           <Route path="/workouts" element={<WorkoutPage />} />
           <Route path="/workouts/log" element={<LogWorkoutPage />} />
           <Route path="/workouts/new/template" element={<SelectTemplatePage />} />

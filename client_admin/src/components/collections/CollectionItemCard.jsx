@@ -161,9 +161,7 @@ const CollectionItemCard = ({ item, config, onSelect, isDisplayed, isDisplayFull
         )}
 
         {/* Image Section */}
-        <div
-          className={`w-full ${isCompact ? "h-24" : "h-32"} mb-2 flex items-center justify-center rounded-md`}
-        >
+        <div className={`w-full ${isCompact ? "h-24" : "h-32"} mb-2 flex items-center justify-center rounded-md`}>
           {imageUrl ? (
             <img src={imageUrl} alt={baseItem.name} className="max-w-full max-h-full object-contain" />
           ) : (

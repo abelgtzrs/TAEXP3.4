@@ -40,9 +40,8 @@ const StatBox = ({
   return (
     // Each stat box is a flex container, growing to fill space.
     <div
-      className={`flex-1 ${compact ? "py-2 px-3" : "p-4"} ${
-        showDivider ? "border-r border-gray-700/50 last:border-r-0" : ""
-      }`}
+      className={`flex-1 ${compact ? "py-2 px-3" : "p-4"} ${showDivider ? "border-r last:border-r-0" : ""}`}
+      style={{ background: "var(--color-surface)", borderColor: "var(--color-primary)" }}
     >
       <h4
         className={`font-bold uppercase text-text-secondary tracking-wider ${
