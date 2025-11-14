@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 const router = express.Router();
 const { protect, authorize } = require("../middleware/authMiddleware");
 
@@ -20,7 +21,17 @@ const {
 // Multer storage for badge sprites
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../public/uploads/badges"));
+    // Save under repository root's public/uploads/badges so it's served by static middleware
+    const dir = path.join(__dirname, "../../public/uploads/badges");
+    try {
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+    } catch (e) {
+      // If directory creation fails, propagate error to multer
+      return cb(e);
+    }
+    cb(null, dir);
   },
   filename: function (req, file, cb) {
     const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);

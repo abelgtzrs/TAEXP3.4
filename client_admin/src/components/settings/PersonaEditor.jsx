@@ -4,9 +4,12 @@ import api from "../../services/api";
 import { listPersonas, updatePersona } from "../../services/personaService";
 import Widget from "../ui/Widget";
 
-const ColorInput = ({ label, value, onChange }) => (
+const ColorInput = ({ label, hint, value, onChange }) => (
   <label className="flex items-center gap-2 text-xs">
-    <span className="w-24 text-text-secondary">{label}</span>
+    <span className="w-48 text-text-secondary">
+      {label}
+      {hint ? <span className="ml-1 text-[10px] text-text-tertiary">{hint}</span> : null}
+    </span>
     <input
       type="color"
       value={value}
@@ -158,6 +161,8 @@ const PersonaEditor = ({ className = "" }) => {
     const theme = { colors: editing.colors, text: editing.text, font: editing.font };
     if (theme.colors) {
       root.style.setProperty("--color-bg", theme.colors.bg);
+      // keep both bg variables in sync across the app
+      root.style.setProperty("--color-background", theme.colors.bg);
       root.style.setProperty("--color-surface", theme.colors.surface);
       root.style.setProperty("--color-primary", theme.colors.primary);
       root.style.setProperty("--color-secondary", theme.colors.secondary);
@@ -205,9 +210,11 @@ const PersonaEditor = ({ className = "" }) => {
       const payload = {
         name: editing.name,
         description: editing.description,
+        rarity: editing.rarity || "common",
         font: editing.font,
         colors: editing.colors,
         text: editing.text,
+        iconUrlOrKey: editing.iconUrlOrKey || "",
       };
       const updated = await updatePersona(editing._id, payload);
       setPersonas((arr) => arr.map((p) => (p._id === updated._id ? updated : p)));
@@ -237,74 +244,79 @@ const PersonaEditor = ({ className = "" }) => {
           <div className="space-y-1 overflow-hidden">
             {/* Standard Issue row */}
             <div className="flex items-center gap-2 flex-nowrap">
-              <button
+              <div
+                role="button"
+                tabIndex={0}
                 onClick={() => setSelectedId("__standard__")}
-                className={`flex-1 text-left p-2 rounded border overflow-hidden ${
+                onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setSelectedId("__standard__")}
+                className={`flex-1 p-2 rounded border overflow-hidden cursor-pointer ${
                   selectedId === "__standard__" ? "border-primary" : "border-gray-700 hover:border-gray-500"
                 }`}
                 style={{ borderColor: selectedId === "__standard__" ? DEFAULT_THEME.colors.primary : undefined }}
               >
-                <div className="flex items-center justify-between gap-2 min-w-0">
-                  <div className="min-w-0">
-                    <div className="font-semibold text-white text-sm truncate">Standard Issue</div>
-                    <div className="text-[11px] text-text-secondary truncate">Default system theme</div>
-                  </div>
-                  <div className="flex items-center gap-1 shrink-0">
-                    {[
-                      DEFAULT_THEME.colors.bg,
-                      DEFAULT_THEME.colors.surface,
-                      DEFAULT_THEME.colors.primary,
-                      DEFAULT_THEME.colors.secondary,
-                      DEFAULT_THEME.colors.tertiary,
-                    ].map((c, i) => (
-                      <span key={i} className="w-3.5 h-3.5 rounded border border-gray-600" style={{ background: c }} />
-                    ))}
-                  </div>
+                {/* Name first line */}
+                <div className="font-semibold text-white text-sm truncate">Standard Issue</div>
+                {/* Colors underneath */}
+                <div className="mt-1 flex items-center gap-1">
+                  {[
+                    DEFAULT_THEME.colors.bg,
+                    DEFAULT_THEME.colors.surface,
+                    DEFAULT_THEME.colors.primary,
+                    DEFAULT_THEME.colors.secondary,
+                    DEFAULT_THEME.colors.tertiary,
+                  ].map((c, i) => (
+                    <span key={i} className="w-3.5 h-3.5 rounded border border-gray-600" style={{ background: c }} />
+                  ))}
                 </div>
-                <div className="mt-1 flex items-center justify-between">
+                {/* Footer row: status left, Set Active right */}
+                <div className="mt-2 flex items-center justify-between">
                   <span className="px-1.5 py-0.5 text-[10px] rounded border border-gray-600 text-gray-300">
                     Default
                   </span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectActive(null);
+                    }}
+                    className={`px-2 py-1 text-[11px] rounded border shrink-0 whitespace-nowrap ${
+                      !activePersonaId ? "border-primary text-primary" : "border-gray-600 text-gray-300"
+                    }`}
+                    title="Set active"
+                  >
+                    Set Active
+                  </button>
                 </div>
-              </button>
-              <button
-                onClick={() => handleSelectActive(null)}
-                className={`px-2 py-1 text-[11px] rounded border shrink-0 whitespace-nowrap ${
-                  !activePersonaId ? "border-primary text-primary" : "border-gray-600 text-gray-300"
-                }`}
-                title="Set active"
-              >
-                Set Active
-              </button>
+              </div>
             </div>
             <div className="h-[1px] bg-gray-700 my-2" />
             {pageItems.map((p) => (
               <div key={p._id} className="flex items-center gap-2 flex-nowrap">
-                <button
+                <div
+                  role="button"
+                  tabIndex={0}
                   onClick={() => setSelectedId(p._id)}
-                  className={`flex-1 text-left p-2 rounded border overflow-hidden ${
+                  onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setSelectedId(p._id)}
+                  className={`flex-1 p-2 rounded border overflow-hidden cursor-pointer ${
                     selectedId === p._id ? "border-primary" : "border-gray-700 hover:border-gray-500"
                   }`}
                   style={{ borderColor: selectedId === p._id ? p.colors.primary : undefined }}
                 >
-                  <div className="flex items-center justify-between gap-2 min-w-0">
-                    <div className="min-w-0">
-                      <div className="font-semibold text-white text-sm truncate">{p.name}</div>
-                      <div className="text-[11px] text-text-secondary truncate">{p.description}</div>
-                    </div>
-                    <div className="flex items-center gap-1 shrink-0">
-                      {[p.colors.bg, p.colors.surface, p.colors.primary, p.colors.secondary, p.colors.tertiary].map(
-                        (c, i) => (
-                          <span
-                            key={i}
-                            className="w-3.5 h-3.5 rounded border border-gray-600"
-                            style={{ background: c }}
-                          />
-                        )
-                      )}
-                    </div>
+                  {/* Name first line */}
+                  <div className="font-semibold text-white text-sm truncate">{p.name}</div>
+                  {/* Colors underneath */}
+                  <div className="mt-1 flex items-center gap-1">
+                    {[p.colors.bg, p.colors.surface, p.colors.primary, p.colors.secondary, p.colors.tertiary].map(
+                      (c, i) => (
+                        <span
+                          key={i}
+                          className="w-3.5 h-3.5 rounded border border-gray-600"
+                          style={{ background: c }}
+                        />
+                      )
+                    )}
                   </div>
-                  <div className="mt-1 flex items-center justify-between">
+                  {/* Footer row: status left, Set Active right */}
+                  <div className="mt-2 flex items-center justify-between">
                     <span
                       className={`px-1.5 py-0.5 text-[10px] rounded border ${
                         unlockedIds.has(p._id) ? "border-green-600 text-green-300" : "border-gray-600 text-gray-400"
@@ -312,22 +324,25 @@ const PersonaEditor = ({ className = "" }) => {
                     >
                       {unlockedIds.has(p._id) ? "Owned" : "Locked"}
                     </span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSelectActive(p._id);
+                      }}
+                      disabled={!unlockedIds.has(p._id)}
+                      className={`px-2 py-1 text-[11px] rounded border shrink-0 whitespace-nowrap ${
+                        !unlockedIds.has(p._id)
+                          ? "border-gray-700 text-gray-500 cursor-not-allowed"
+                          : activePersonaId === p._id
+                          ? "border-primary text-primary"
+                          : "border-gray-600 text-gray-300"
+                      }`}
+                      title="Set active"
+                    >
+                      Set Active
+                    </button>
                   </div>
-                </button>
-                <button
-                  onClick={() => handleSelectActive(p._id)}
-                  disabled={!unlockedIds.has(p._id)}
-                  className={`px-2 py-1 text-[11px] rounded border shrink-0 whitespace-nowrap ${
-                    !unlockedIds.has(p._id)
-                      ? "border-gray-700 text-gray-500 cursor-not-allowed"
-                      : activePersonaId === p._id
-                      ? "border-primary text-primary"
-                      : "border-gray-600 text-gray-300"
-                  }`}
-                  title="Set active"
-                >
-                  Set Active
-                </button>
+                </div>
               </div>
             ))}
             {/* Pagination */}
@@ -371,6 +386,16 @@ const PersonaEditor = ({ className = "" }) => {
             <div className="space-y-3">
               <div className="grid grid-cols-2 gap-2">
                 <label className="text-xs">
+                  Persona ID
+                  <input
+                    type="text"
+                    className="mt-1 w-full px-2 py-1 bg-gray-900 border border-gray-700 rounded text-sm opacity-60 cursor-not-allowed"
+                    value={editing.personaId || ""}
+                    readOnly
+                    title="Persona ID is immutable"
+                  />
+                </label>
+                <label className="text-xs">
                   Name
                   <input
                     type="text"
@@ -378,6 +403,26 @@ const PersonaEditor = ({ className = "" }) => {
                     value={editing.name}
                     onChange={(e) => setEditing({ ...editing, name: e.target.value })}
                   />
+                </label>
+                <label className="text-xs">
+                  Rarity
+                  <select
+                    className="mt-1 w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded text-sm"
+                    value={editing.rarity || "common"}
+                    onChange={(e) => setEditing({ ...editing, rarity: e.target.value })}
+                  >
+                    {[
+                      { label: "Common", value: "common" },
+                      { label: "Rare", value: "rare" },
+                      { label: "Epic", value: "epic" },
+                      { label: "Mythic", value: "mythic" },
+                      { label: "Transcendent", value: "transcendent" },
+                    ].map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
                 </label>
                 <label className="text-xs">
                   Font
@@ -419,6 +464,16 @@ const PersonaEditor = ({ className = "" }) => {
                   rows={2}
                 />
               </label>
+              <label className="text-xs block">
+                Icon URL/Key
+                <input
+                  type="text"
+                  className="mt-1 w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded text-sm"
+                  value={editing.iconUrlOrKey || ""}
+                  onChange={(e) => setEditing({ ...editing, iconUrlOrKey: e.target.value })}
+                  placeholder="https://... or an asset key"
+                />
+              </label>
 
               <div className="space-y-3">
                 <div>
@@ -426,46 +481,54 @@ const PersonaEditor = ({ className = "" }) => {
                   <div className="space-y-2">
                     <ColorInput
                       label="Background"
+                      hint="(--color-bg, --color-background)"
                       value={editing.colors.bg}
                       onChange={(v) => setEditing({ ...editing, colors: { ...editing.colors, bg: v } })}
                     />
                     <ColorInput
                       label="Surface"
+                      hint="(--color-surface)"
                       value={editing.colors.surface}
                       onChange={(v) => setEditing({ ...editing, colors: { ...editing.colors, surface: v } })}
                     />
                     <ColorInput
                       label="Primary"
+                      hint="(--color-primary)"
                       value={editing.colors.primary}
                       onChange={(v) => setEditing({ ...editing, colors: { ...editing.colors, primary: v } })}
                     />
                     <ColorInput
                       label="Secondary"
+                      hint="(--color-secondary)"
                       value={editing.colors.secondary}
                       onChange={(v) => setEditing({ ...editing, colors: { ...editing.colors, secondary: v } })}
                     />
                     <ColorInput
                       label="Tertiary"
+                      hint="(--color-tertiary)"
                       value={editing.colors.tertiary}
                       onChange={(v) => setEditing({ ...editing, colors: { ...editing.colors, tertiary: v } })}
                     />
                   </div>
                 </div>
                 <div>
-                  <div className="font-semibold text-white text-sm mb-2">Text</div>
+                  <div className="font-semibold text-white text-sm mb-2">Text Colors</div>
                   <div className="space-y-2">
                     <ColorInput
                       label="Main"
+                      hint="(--color-text-main)"
                       value={editing.text.main}
                       onChange={(v) => setEditing({ ...editing, text: { ...editing.text, main: v } })}
                     />
                     <ColorInput
                       label="Secondary"
+                      hint="(--color-text-secondary)"
                       value={editing.text.secondary}
                       onChange={(v) => setEditing({ ...editing, text: { ...editing.text, secondary: v } })}
                     />
                     <ColorInput
                       label="Tertiary"
+                      hint="(--color-text-tertiary)"
                       value={editing.text.tertiary}
                       onChange={(v) => setEditing({ ...editing, text: { ...editing.text, tertiary: v } })}
                     />

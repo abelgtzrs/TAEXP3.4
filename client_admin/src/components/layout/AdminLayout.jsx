@@ -431,9 +431,6 @@ const AdminLayout = () => {
                 <NavItem to="/tasks" icon={Clapperboard} isCollapsed={isSidebarCollapsed}>
                   Task Administrator
                 </NavItem>
-                <NavItem to="/daily-drafts" icon={FileText} isCollapsed={isSidebarCollapsed}>
-                  Daily Drafts
-                </NavItem>
                 <NavItem to="/habits" icon={CheckSquare} isCollapsed={isSidebarCollapsed}>
                   Habit Tracker
                 </NavItem>
@@ -453,14 +450,26 @@ const AdminLayout = () => {
                   isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-1"
                 }`}
               >
-                Collections
+                Digital Asset Admin
               </p>
               <ul className="space-y-0.1">
                 <NavItem to="/collections" icon={Boxes} isCollapsed={isSidebarCollapsed}>
-                  Object Index
+                  Collection Index
                 </NavItem>
                 <NavItem to="/pokedex" icon={Image} isCollapsed={isSidebarCollapsed}>
                   Pokémon Index
+                </NavItem>
+                <NavItem to="/admin/pokemon-editor" icon={PenSquare} isCollapsed={isSidebarCollapsed}>
+                  Pokémon Data Manager
+                </NavItem>
+                <NavItem to="/admin/habbo-rares" icon={Boxes} isCollapsed={isSidebarCollapsed}>
+                  Habbo Rares Manager
+                </NavItem>
+                <NavItem to="/admin/snoopys" icon={Boxes} isCollapsed={isSidebarCollapsed}>
+                  Snoopy Manager
+                </NavItem>
+                <NavItem to="/admin/badge-collections" icon={Trophy} isCollapsed={isSidebarCollapsed}>
+                  Badge Manager
                 </NavItem>
               </ul>
             </div>
@@ -541,24 +550,8 @@ const AdminLayout = () => {
                     <NavItem to="/admin/blessings/usage" icon={ClipboardList} isCollapsed={isSidebarCollapsed}>
                       Blessings Usage
                     </NavItem>
-                    <p
-                      className={`px-1 text-[10px] font-semibold text-text-tertiary uppercase mb-1 transition-all ${
-                        isSidebarCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-1"
-                      }`}
-                    >
-                      Digital Asset Administration
-                    </p>
-                    <NavItem to="/admin/pokemon-editor" icon={PenSquare} isCollapsed={isSidebarCollapsed}>
-                      Pokémon Data Manager
-                    </NavItem>
-                    <NavItem to="/admin/habbo-rares" icon={Boxes} isCollapsed={isSidebarCollapsed}>
-                      Habbo Rares Manager
-                    </NavItem>
-                    <NavItem to="/admin/snoopys" icon={Boxes} isCollapsed={isSidebarCollapsed}>
-                      Snoopy Manager
-                    </NavItem>
-                    <NavItem to="/admin/badge-collections" icon={Trophy} isCollapsed={isSidebarCollapsed}>
-                      Badge Collections
+                    <NavItem to="/daily-drafts" icon={FileText} isCollapsed={isSidebarCollapsed}>
+                      Daily Drafts
                     </NavItem>
                   </ul>
                 </div>

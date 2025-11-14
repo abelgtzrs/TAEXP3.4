@@ -38,6 +38,12 @@ const BadgeCollectionSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    active: {
+      // If true, this collection is currently being unlocked
+      type: Boolean,
+      default: false,
+      index: true,
+    },
   },
   { timestamps: true }
 );

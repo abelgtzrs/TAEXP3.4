@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
@@ -18,6 +18,8 @@ const ProfilePage = () => {
   const [dashboardStats, setDashboardStats] = useState({});
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
+  const [countdown, setCountdown] = useState("");
+  const tickRef = useRef(null);
   // Collections tab data
   const [collectionsState, setCollectionsState] = useState({
     pokemon: [],
@@ -101,6 +103,30 @@ const ProfilePage = () => {
     (user?.habboRares?.length || 0) +
     (user?.yugiohCards?.length || 0);
 
+  // Live countdown until next local midnight (assumed daily reset)
+  useEffect(() => {
+    const formatLeft = (ms) => {
+      if (ms <= 0) return "00:00:00";
+      const totalSec = Math.floor(ms / 1000);
+      const h = String(Math.floor(totalSec / 3600)).padStart(2, "0");
+      const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2, "0");
+      const s = String(totalSec % 60).padStart(2, "0");
+      return `${h}:${m}:${s}`;
+    };
+    const compute = () => {
+      const now = new Date();
+      // Next local midnight
+      const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
+      const diff = next - now;
+      setCountdown(formatLeft(diff));
+    };
+    compute();
+    tickRef.current = setInterval(compute, 1000);
+    return () => {
+      if (tickRef.current) clearInterval(tickRef.current);
+    };
+  }, []);
+
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
       {/* Hero header */}
@@ -152,9 +178,12 @@ const ProfilePage = () => {
               <span className="inline-flex items-center gap-1">
                 <UserIcon size={14} /> Level {user.level}
               </span>
-              <span className="inline-flex items-center gap-1 text-amber-300">
+              <span className="inline-flex items-center gap-1 text-amber-300" title="Daily login streak">
                 <Flame size={14} />
                 {(dashboardStats?.activeStreaks ?? user.currentLoginStreak) || 0} day streak
+                <span className="ml-1 text-[10px] px-1 py-0.5 rounded bg-amber-300/10 border border-amber-300/30 text-amber-200" title="Time until next reset (local midnight)">
+                  {countdown}
+                </span>
               </span>
               <span className="inline-flex items-center gap-1 text-sky-300">
                 <Images size={14} />
