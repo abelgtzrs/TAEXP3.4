@@ -69,3 +69,98 @@
   backdrop-filter: blur(var(--glass-blur, 8px)) !important;
   -webkit-backdrop-filter: blur(var(--glass-blur, 8px)) !important;
 }
+
+/* --- Toast Notification Animations --- */
+@keyframes toast-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.92) rotateX(25deg);
+    filter: brightness(0.6);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(2px) scale(1.02) rotateX(0deg);
+    filter: brightness(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0deg);
+  }
+}
+@keyframes toast-exit {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(4px) scale(0.95);
+  }
+}
+@keyframes toast-pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, 0);
+  }
+}
+@keyframes toast-bar-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+@keyframes toast-sparkle {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.4);
+  }
+  30% {
+    opacity: 0.9;
+    transform: translate(-6px, -4px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-16px, -10px) scale(0.2);
+  }
+}
+
+.toast-pop {
+  animation: toast-enter 0.55s cubic-bezier(0.16, 0.8, 0.3, 1);
+}
+.toast-fading {
+  animation: toast-exit 0.4s ease forwards;
+}
+.toast-accent {
+  background: linear-gradient(140deg, var(--color-primary) 0%, var(--color-secondary) 50%, var(--color-tertiary) 100%);
+  background-size: 200% 200%;
+  animation: toast-bar-flow 3s linear infinite;
+}
+.toast-glow {
+  position: relative;
+}
+.toast-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.35), transparent 60%);
+  mix-blend-mode: overlay;
+  opacity: 0.4;
+}
+.toast-glow::after {
+  content: "";
+  position: absolute;
+  right: 4px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff, rgba(255, 255, 255, 0));
+  animation: toast-sparkle 2.2s ease-out infinite;
+}

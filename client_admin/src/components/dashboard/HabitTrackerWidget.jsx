@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
@@ -8,6 +9,19 @@ import { CheckSquare } from "lucide-react";
 const HabitTrackerWidget = () => {
   const [habits, setHabits] = useState([]);
   const { setUser, user } = useAuth();
+  const [notifications, setNotifications] = useState([]); // toast-style dopamine messages
+
+  const pushNotification = (message) => {
+    const id = Date.now() + Math.random();
+    setNotifications((prev) => [...prev, { id, message, fading: false }]);
+    // Start fade then remove
+    setTimeout(() => {
+      setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, fading: true } : n)));
+    }, 2600);
+    setTimeout(() => {
+      setNotifications((prev) => prev.filter((n) => n.id !== id));
+    }, 3200);
+  };
 
   const fetchHabits = async () => {
     try {
@@ -24,18 +38,36 @@ const HabitTrackerWidget = () => {
 
   const handleCompleteHabit = async (habitId) => {
     try {
+      const prevTemu = user?.temuTokens || 0;
       const response = await api.post(`/habits/${habitId}/complete`);
-      const updatedHabit = response.data.data;
+      // Merge to avoid accidental field loss causing disappearance
+      const returnedHabit = response.data.data || {};
+      setHabits((prev) => prev.map((h) => (h?._id === habitId ? { ...h, ...returnedHabit } : h)));
+
       const updatedUserData = response.data.userData;
-
-      setHabits((prev) => prev.map((h) => (h?._id === habitId ? updatedHabit : h)));
-
       if (updatedUserData) {
         setUser((prevUser) => ({ ...prevUser, ...updatedUserData }));
+        const newTemu = updatedUserData.temuTokens;
+        if (typeof newTemu === "number" && newTemu > prevTemu) {
+          const gained = newTemu - prevTemu;
+          const phrases = [
+            `Momentum! +${gained} Temu ⚡`,
+            `Streak fuel: +${gained} Temu 🔥`,
+            `Level up! +${gained} Temu ✨`,
+            `Habit crushed! +${gained} Temu 💪`,
+            `Dopamine boost! +${gained} Temu 🧠`,
+            `Vault credit: +${gained} Temu 💎`,
+          ];
+          pushNotification(phrases[Math.floor(Math.random() * phrases.length)]);
+        } else {
+          pushNotification("Habit logged ✅");
+        }
+      } else {
+        pushNotification("Habit logged ✅");
       }
     } catch (err) {
       console.error("Failed to complete habit from widget:", err);
-      alert(err.response?.data?.message || "Could not complete habit.");
+      pushNotification(err.response?.data?.message || "Completion failed ❌");
     }
   };
 
@@ -74,19 +106,25 @@ const HabitTrackerWidget = () => {
             return (
               <div
                 key={habit._id}
-                className={`flex items-center justify-between text-sm py-2 px-3 rounded-lg ${bgColor} border border-gray-700/50`}
+                onClick={() => {
+                  if (!completed) {
+                    handleCompleteHabit(habit._id);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if ((e.key === "Enter" || e.key === " ") && !completed) {
+                    handleCompleteHabit(habit._id);
+                  }
+                }}
+                className={`flex items-center justify-between text-sm py-2 px-3 rounded-lg ${bgColor} border border-gray-700/50 cursor-pointer select-none ${
+                  completed ? "opacity-90" : "hover:border-status-success/70"
+                }`}
+                aria-disabled={completed}
               >
                 <span className={completed ? "text-text-main line-through" : "text-text-secondary"}>{habit.name}</span>
-                <button
-                  onClick={() => handleCompleteHabit(habit._id)}
-                  className={`p-2 rounded ${
-                    completed ? "text-status-success" : "text-gray-200 hover:text-status-success"
-                  }`}
-                  disabled={completed}
-                  aria-label={completed ? "Completed" : "Mark as complete"}
-                >
-                  <CheckSquare size={20} />
-                </button>
+                <CheckSquare size={20} className={`${completed ? "text-status-success" : "text-gray-400"}`} />
               </div>
             );
           })
@@ -97,6 +135,35 @@ const HabitTrackerWidget = () => {
       <Link to="/habits" className="text-sm text-primary hover:underline mt-4 block text-right">
         View All Habits &rarr;
       </Link>
+      {/* Global portal for notifications positioned below header and left of right sidebar */}
+      {createPortal(
+        <div
+          aria-live="polite"
+          className="fixed z-[60] flex flex-col gap-2 pointer-events-none"
+          style={{
+            top: 52, // just below header (48px height + small offset)
+            right: "var(--right-sidebar-width)", // align to left edge of right sidebar
+            maxWidth: 240,
+          }}
+        >
+          {notifications.map((n) => (
+            <div
+              key={n.id}
+              className={`group toast-pop ${
+                n.fading ? "toast-fading" : ""
+              } toast-glow relative px-3 py-2 rounded-md border shadow-xl backdrop-blur-md bg-surface/90 border-primary/40 text-text-main text-xs font-semibold flex items-center gap-2 tracking-wide`}
+              style={{
+                boxShadow: "0 4px 14px -2px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.05)",
+              }}
+            >
+              <div className="toast-accent w-1 h-5 rounded-full" />
+              <span className="flex-1">{n.message}</span>
+              <span className="text-[9px] text-text-tertiary opacity-60">HABIT</span>
+            </div>
+          ))}
+        </div>,
+        document.body
+      )}
     </Widget>
   );
 };

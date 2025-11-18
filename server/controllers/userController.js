@@ -466,6 +466,7 @@ const getDashboardStats = async (req, res) => {
       booksFinished: booksFinished,
       gachaPulls: totalCollectibles,
       activeStreaks: user.currentLoginStreak || 0,
+      longestLoginStreak: user.longestLoginStreak || 0,
       totalWorkouts: totalWorkouts,
       volumesPublished: volumesPublished,
 

@@ -180,14 +180,14 @@ const AdminLayout = () => {
         glassEnabled: (localStorage.getItem("tae.glass.enabled") ?? "true") === "true",
         glassBlur: localStorage.getItem("tae.glass.blur") || getRootVar("--glass-blur", "8px"),
         glassSurfaceAlpha: localStorage.getItem("tae.glass.surfaceAlpha") || getRootVar("--glass-surface-alpha", "0.6"),
-        primary: localStorage.getItem("tae.theme.primary") || getRootVar("--color-primary", "#00d4ff"),
-        secondary: localStorage.getItem("tae.theme.secondary") || getRootVar("--color-secondary", "#a855f7"),
-        background: localStorage.getItem("tae.theme.background") || getRootVar("--color-background", "#0b1220"),
-        surface: localStorage.getItem("tae.theme.surface") || getRootVar("--color-surface", "#0e1726"),
-        textMain: localStorage.getItem("tae.theme.textMain") || getRootVar("--color-text-main", "#e5e7eb"),
-        textSecondary:
-          localStorage.getItem("tae.theme.textSecondary") || getRootVar("--color-text-secondary", "#94a3b8"),
-        textTertiary: localStorage.getItem("tae.theme.textTertiary") || getRootVar("--color-text-tertiary", "#64748b"),
+        // Fallbacks aligned to Standard Issue persona values
+        primary: localStorage.getItem("tae.theme.primary") || "#1a6359ff",
+        secondary: localStorage.getItem("tae.theme.secondary") || "#0099c399",
+        background: localStorage.getItem("tae.theme.background") || "#0D1117",
+        surface: localStorage.getItem("tae.theme.surface") || "#161B22",
+        textMain: localStorage.getItem("tae.theme.textMain") || "#E5E7EB",
+        textSecondary: localStorage.getItem("tae.theme.textSecondary") || "#9CA3AF",
+        textTertiary: localStorage.getItem("tae.theme.textTertiary") || "#4B5563",
         persona: localStorage.getItem("tae.persona") || "default",
       };
     } catch {
@@ -195,13 +195,13 @@ const AdminLayout = () => {
         glassEnabled: true,
         glassBlur: "8px",
         glassSurfaceAlpha: "0.6",
-        primary: "#00d4ff",
-        secondary: "#a855f7",
-        background: "#0b1220",
-        surface: "#0e1726",
-        textMain: "#e5e7eb",
-        textSecondary: "#94a3b8",
-        textTertiary: "#64748b",
+        primary: "#1a6359ff",
+        secondary: "#0099c399",
+        background: "#0D1117",
+        surface: "#161B22",
+        textMain: "#E5E7EB",
+        textSecondary: "#9CA3AF",
+        textTertiary: "#4B5563",
         persona: "default",
       };
     }
@@ -290,6 +290,24 @@ const AdminLayout = () => {
     window.dispatchEvent(new Event("tae:settings-changed"));
   }, [theme]);
 
+  // Enforce Standard Issue persona defaults if no active persona is set on the user profile
+  useEffect(() => {
+    if (!user?.activeAbelPersona) {
+      const root = document.documentElement;
+      if (!root) return;
+      root.style.setProperty("--color-background", "#0D1117");
+      root.style.setProperty("--color-bg", "#0D1117");
+      root.style.setProperty("--color-surface", "#161B22");
+      root.style.setProperty("--color-primary", "#1a6359ff");
+      root.style.setProperty("--color-secondary", "#0099c399");
+      root.style.setProperty("--color-tertiary", "#A5F3FC");
+      root.style.setProperty("--color-text-main", "#E5E7EB");
+      root.style.setProperty("--color-text-secondary", "#9CA3AF");
+      root.style.setProperty("--color-text-tertiary", "#4B5563");
+      root.style.setProperty("--font-main", "Inter, sans-serif");
+    }
+  }, [user?.activeAbelPersona]);
+
   const handleSavePreset = (name) => {
     const id = `${Date.now()}`;
     const entry = { id, name, settings: theme };
@@ -316,6 +334,12 @@ const AdminLayout = () => {
     window.addEventListener("tae:rightSidebar:resize", onResizeEvt);
     return () => window.removeEventListener("tae:rightSidebar:resize", onResizeEvt);
   }, []);
+
+  // Expose the active right sidebar width as a CSS variable for descendant layouts (e.g. VolumesPage fixed panels)
+  useEffect(() => {
+    const root = document.documentElement;
+    if (root) root.style.setProperty("--right-sidebar-width", rightSidebarWidth);
+  }, [rightSidebarWidth]);
 
   return (
     <LayoutProvider>
