@@ -139,13 +139,19 @@ const ProfilePage = () => {
     } catch {}
   }, [avatarOffsetPx]);
   useEffect(() => {
-    try { localStorage.setItem("tae.profile.infoBoxBgMode", infoBoxBgMode); } catch {}
+    try {
+      localStorage.setItem("tae.profile.infoBoxBgMode", infoBoxBgMode);
+    } catch {}
   }, [infoBoxBgMode]);
   useEffect(() => {
-    try { localStorage.setItem("tae.profile.infoBoxBorderMode", infoBoxBorderMode); } catch {}
+    try {
+      localStorage.setItem("tae.profile.infoBoxBorderMode", infoBoxBorderMode);
+    } catch {}
   }, [infoBoxBorderMode]);
   useEffect(() => {
-    try { localStorage.setItem("tae.profile.infoBoxFullWidth", String(infoBoxFullWidth)); } catch {}
+    try {
+      localStorage.setItem("tae.profile.infoBoxFullWidth", String(infoBoxFullWidth));
+    } catch {}
   }, [infoBoxFullWidth]);
 
   // Compute dynamic classes for user info box
@@ -224,13 +230,15 @@ const ProfilePage = () => {
               <div className="w-28 h-28 md:w-[200px] md:h-[200px] rounded-full border-2 border-white/20 shadow-xl overflow-hidden bg-black/30 relative z-20">
                 <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
               </div>
-              <div className={`pb-1 ${infoBoxFullWidth ? 'flex-1' : ''}`}> {/* allow fill when full width */}
-                <div className={`${infoBgClass} ${infoBorderClass} ${infoWidthClass} rounded-lg px-3 py-2 shadow-lg transition-colors duration-300`}> 
+              <div className={`pb-1 ${infoBoxFullWidth ? "flex-1" : ""}`}>
+                {" "}
+                {/* allow fill when full width */}
+                <div
+                  className={`${infoBgClass} ${infoBorderClass} ${infoWidthClass} rounded-lg px-3 py-2 shadow-lg transition-colors duration-300`}
+                >
                   <div className="flex items-center gap-2 flex-wrap mb-1">
                     <h1 className="text-lg md:text-2xl font-bold text-white">{user.username}</h1>
-                    {user?.motto && (
-                      <span className="text-xs md:text-sm text-slate-300/90 italic">“{user.motto}”</span>
-                    )}
+                    {user?.motto && <span className="text-xs md:text-sm text-slate-300/90 italic">“{user.motto}”</span>}
                   </div>
                   <div className="flex items-center gap-3 text-[11px] md:text-xs text-slate-300 flex-wrap">
                     <span className="inline-flex items-center gap-1">
@@ -355,7 +363,10 @@ const ProfilePage = () => {
                 <h2 className="text-sm font-semibold text-text-secondary tracking-wider">Visual Layout Controls</h2>
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-3 flex-wrap">
-                    <label htmlFor="bannerHeight" className="text-[11px] md:text-xs font-semibold uppercase tracking-wide text-text-tertiary">
+                    <label
+                      htmlFor="bannerHeight"
+                      className="text-[11px] md:text-xs font-semibold uppercase tracking-wide text-text-tertiary"
+                    >
                       Banner Height
                     </label>
                     <input
@@ -378,7 +389,10 @@ const ProfilePage = () => {
                     </button>
                   </div>
                   <div className="flex items-center gap-3 flex-wrap">
-                    <label htmlFor="avatarYOffset" className="text-[11px] md:text-xs font-semibold uppercase tracking-wide text-text-tertiary">
+                    <label
+                      htmlFor="avatarYOffset"
+                      className="text-[11px] md:text-xs font-semibold uppercase tracking-wide text-text-tertiary"
+                    >
                       Avatar Y Offset
                     </label>
                     <input
@@ -402,21 +416,27 @@ const ProfilePage = () => {
                   </div>
                   {/* Info Box Styling */}
                   <div className="mt-2 flex flex-col gap-2">
-                    <h3 className="text-[11px] font-semibold uppercase tracking-wide text-text-tertiary">Info Box Styling</h3>
+                    <h3 className="text-[11px] font-semibold uppercase tracking-wide text-text-tertiary">
+                      Info Box Styling
+                    </h3>
                     <div className="flex flex-wrap gap-4 items-center">
                       <div className="flex flex-col gap-1">
                         <span className="text-[10px] text-text-secondary">Background Mode</span>
                         <div className="flex gap-1">
                           {[
-                            { id: 'glass', label: 'Glass' },
-                            { id: 'solid', label: 'Solid' },
-                            { id: 'accent', label: 'Accent' },
-                            { id: 'clear', label: 'Clear' },
-                          ].map(opt => (
+                            { id: "glass", label: "Glass" },
+                            { id: "solid", label: "Solid" },
+                            { id: "accent", label: "Accent" },
+                            { id: "clear", label: "Clear" },
+                          ].map((opt) => (
                             <button
                               key={opt.id}
                               onClick={() => setInfoBoxBgMode(opt.id)}
-                              className={`px-2 py-1 rounded text-[10px] border transition ${infoBoxBgMode === opt.id ? 'bg-primary/40 border-primary/60 text-white' : 'bg-black/30 border-white/10 text-text-secondary hover:bg-black/40'}`}
+                              className={`px-2 py-1 rounded text-[10px] border transition ${
+                                infoBoxBgMode === opt.id
+                                  ? "bg-primary/40 border-primary/60 text-white"
+                                  : "bg-black/30 border-white/10 text-text-secondary hover:bg-black/40"
+                              }`}
                             >
                               {opt.label}
                             </button>
@@ -427,15 +447,19 @@ const ProfilePage = () => {
                         <span className="text-[10px] text-text-secondary">Border Style</span>
                         <div className="flex gap-1">
                           {[
-                            { id: 'none', label: 'None' },
-                            { id: 'subtle', label: 'Subtle' },
-                            { id: 'strong', label: 'Strong' },
-                            { id: 'accent', label: 'Accent' },
-                          ].map(opt => (
+                            { id: "none", label: "None" },
+                            { id: "subtle", label: "Subtle" },
+                            { id: "strong", label: "Strong" },
+                            { id: "accent", label: "Accent" },
+                          ].map((opt) => (
                             <button
                               key={opt.id}
                               onClick={() => setInfoBoxBorderMode(opt.id)}
-                              className={`px-2 py-1 rounded text-[10px] border transition ${infoBoxBorderMode === opt.id ? 'bg-secondary/40 border-secondary/60 text-white' : 'bg-black/30 border-white/10 text-text-secondary hover:bg-black/40'}`}
+                              className={`px-2 py-1 rounded text-[10px] border transition ${
+                                infoBoxBorderMode === opt.id
+                                  ? "bg-secondary/40 border-secondary/60 text-white"
+                                  : "bg-black/30 border-white/10 text-text-secondary hover:bg-black/40"
+                              }`}
                             >
                               {opt.label}
                             </button>
@@ -445,15 +469,23 @@ const ProfilePage = () => {
                       <div className="flex items-center gap-2">
                         <label className="text-[10px] text-text-secondary">Full Width</label>
                         <button
-                          onClick={() => setInfoBoxFullWidth(v => !v)}
-                          className={`px-3 py-1 rounded text-[10px] border transition ${infoBoxFullWidth ? 'bg-tertiary/40 border-tertiary/60 text-white' : 'bg-black/30 border-white/10 text-text-secondary hover:bg-black/40'}`}
+                          onClick={() => setInfoBoxFullWidth((v) => !v)}
+                          className={`px-3 py-1 rounded text-[10px] border transition ${
+                            infoBoxFullWidth
+                              ? "bg-tertiary/40 border-tertiary/60 text-white"
+                              : "bg-black/30 border-white/10 text-text-secondary hover:bg-black/40"
+                          }`}
                         >
-                          {infoBoxFullWidth ? 'On' : 'Off'}
+                          {infoBoxFullWidth ? "On" : "Off"}
                         </button>
                       </div>
                       <button
                         type="button"
-                        onClick={() => { setInfoBoxBgMode('glass'); setInfoBoxBorderMode('subtle'); setInfoBoxFullWidth(false); }}
+                        onClick={() => {
+                          setInfoBoxBgMode("glass");
+                          setInfoBoxBorderMode("subtle");
+                          setInfoBoxFullWidth(false);
+                        }}
                         className="ml-auto text-[10px] px-2 py-1 rounded bg-black/30 border border-white/10 hover:bg-black/40"
                       >
                         Reset Info Box
