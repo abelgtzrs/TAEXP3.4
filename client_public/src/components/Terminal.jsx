@@ -7,11 +7,41 @@ import HELP_TEXT from "./terminal/helpText";
 import { getAboutText, getCatText } from "./terminal/getAboutText";
 import { TextScramble } from "../utils/textScramble";
 
-// Forced local API base URL (development override)
+// Public API base URL resolver (works in dev and deployed)
+const resolvePublicApiBase = () => {
+  const envBase = (import.meta?.env?.VITE_PUBLIC_API_BASE_URL || import.meta?.env?.VITE_API_BASE_URL || "").trim();
+  if (envBase) {
+    try {
+      const u = new URL(envBase, typeof window !== "undefined" ? window.location.origin : "http://localhost");
+      const path = u.pathname.replace(/\/$/, "");
+      if (path.endsWith("/api")) {
+        u.pathname = `${path}/public`;
+      }
+      return u.toString();
+    } catch {
+      return envBase; // fallback to raw string
+    }
+  }
+  if (typeof window !== "undefined") {
+    const origin = window.location.origin.replace(/\/$/, "");
+    if (window.location.hostname === "localhost") {
+      return "http://localhost:5000/api/public"; // local dev default
+    }
+    return `${origin}/api/public`; // deployed default assumes same-origin proxy
+  }
+  return "/api/public"; // SSR/safe fallback
+};
+
 const api = axios.create({
-  baseURL: "http://localhost:5000/api/public",
+  baseURL: resolvePublicApiBase(),
   headers: { "Content-Type": "application/json" },
 });
+
+// Optional: log resolved base (helpful for diagnosing prod vs dev)
+if (typeof window !== "undefined") {
+  // eslint-disable-next-line no-console
+  console.debug("Terminal API base:", api.defaults.baseURL);
+}
 
 // --- TYPEWRITER EFFECT CONFIGURATION ---
 // I fine-tuned these values to get that perfect retro terminal typing feel
@@ -562,7 +592,12 @@ const Terminal = () => {
           });
           await typeLines(catalogueLines);
         } catch (error) {
-          await typeLines([{ text: "Error: Could not fetch volume catalogue.", type: "error" }]);
+          const blocked = String(error?.message || "").includes("Blocked by client") ||
+            String(error?.code || "").includes("ERR_BLOCKED_BY_CLIENT");
+          const msg = blocked
+            ? "Request blocked by a browser extension (ad/privacy blocker). Please allowlist this site or try Incognito."
+            : "Error: Could not fetch volume catalogue.";
+          await typeLines([{ text: msg, type: "error" }]);
         }
         break;
 
