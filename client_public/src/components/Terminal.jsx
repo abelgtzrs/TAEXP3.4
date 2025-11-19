@@ -24,6 +24,10 @@ const resolvePublicApiBase = () => {
   }
   if (typeof window !== "undefined") {
     const origin = window.location.origin.replace(/\/$/, "");
+    // Netlify deployment fallback: hardcode Render API if no env provided
+    if (/netlify\.app$/i.test(window.location.hostname)) {
+      return "https://taexp3-0.onrender.com/api/public";
+    }
     if (window.location.hostname === "localhost") {
       return "http://localhost:5000/api/public"; // local dev default
     }
@@ -321,6 +325,13 @@ const Terminal = () => {
     setIsProcessing(true); // Block input during command execution
 
     switch (cmd) {
+      // Diagnostic: show current API base
+      case "api":
+        await typeLines([
+          { text: `Current API base: ${api?.defaults?.baseURL}`, type: "system" },
+          { text: "Set VITE_PUBLIC_API_BASE_URL (ending with /api) to override.", type: "info" },
+        ]);
+        break;
       // Show available commands - pulls from external help file
       case "help":
         await typeLines(HELP_TEXT);
