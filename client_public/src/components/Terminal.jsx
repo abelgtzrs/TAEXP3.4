@@ -594,9 +594,16 @@ const Terminal = () => {
         } catch (error) {
           const blocked = String(error?.message || "").includes("Blocked by client") ||
             String(error?.code || "").includes("ERR_BLOCKED_BY_CLIENT");
-          const msg = blocked
-            ? "Request blocked by a browser extension (ad/privacy blocker). Please allowlist this site or try Incognito."
-            : "Error: Could not fetch volume catalogue.";
+          const is404 = Number(error?.response?.status) === 404;
+          let msg;
+          if (blocked) {
+            msg = "Request blocked by a browser extension (ad/privacy blocker). Please allowlist this site or try Incognito.";
+          } else if (is404) {
+            const base = api?.defaults?.baseURL || "";
+            msg = `404 Not Found at ${base}/volumes/catalogue. Set VITE_PUBLIC_API_BASE_URL to your API (ending in /api), or host the API at the same origin under /api/public.`;
+          } else {
+            msg = "Error: Could not fetch volume catalogue.";
+          }
           await typeLines([{ text: msg, type: "error" }]);
         }
         break;
