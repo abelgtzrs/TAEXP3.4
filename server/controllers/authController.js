@@ -101,10 +101,37 @@ const loginUser = async (req, res) => {
         user.longestLoginStreak = user.currentLoginStreak;
       }
 
-      // Award Pokémon Badge every 3 streak days
-      if (user.currentLoginStreak > 0 && user.currentLoginStreak % 3 === 0) {
-        // TODO: Add badge awarding logic here
-        console.log(`User ${user.email} reached a ${user.currentLoginStreak}-day streak! Award a badge.`);
+      // Award next badge from active collection every 5 streak days (idempotent)
+      try {
+        const shouldAward = user.currentLoginStreak > 0 && user.currentLoginStreak % 5 === 0;
+        const notAlreadyAwardedForThisStreak = (user.lastBadgeUnlockedStreak || 0) !== user.currentLoginStreak;
+        if (shouldAward && notAlreadyAwardedForThisStreak && user.activeBadgeCollectionKey) {
+          const bases = await BadgeBase.find({ collectionKey: user.activeBadgeCollectionKey })
+            .sort({ unlockDay: 1, orderInCategory: 1, name: 1 })
+            .select("_id badgeId name imageUrl spriteSmallUrl spriteLargeUrl collectionKey");
+          if (bases && bases.length > 0) {
+            const earned = await UserBadge.find({ user: user._id }).select("badgeBase");
+            const earnedSet = new Set(earned.map((e) => String(e.badgeBase)));
+            const nextBase = bases.find((b) => !earnedSet.has(String(b._id)));
+            if (nextBase) {
+              const newUserBadge = await UserBadge.create({ user: user._id, badgeBase: nextBase._id });
+              if (!user.badges) user.badges = [];
+              user.badges.push(newUserBadge._id);
+              user.lastBadgeUnlockedStreak = user.currentLoginStreak;
+              // Attach for response
+              user.__awardedBadge = {
+                badgeId: nextBase.badgeId,
+                name: nextBase.name,
+                imageUrl: nextBase.imageUrl,
+                spriteSmallUrl: nextBase.spriteSmallUrl,
+                spriteLargeUrl: nextBase.spriteLargeUrl,
+                collectionKey: nextBase.collectionKey,
+              };
+            }
+          }
+        }
+      } catch (awardErr) {
+        console.warn("Badge award on login failed:", awardErr.message);
       }
     }
     user.lastLoginDate = today;
@@ -114,7 +141,7 @@ const loginUser = async (req, res) => {
     const userResponse = { ...user.toObject() };
     delete userResponse.password;
 
-    res.status(200).json({ success: true, token, data: userResponse });
+    res.status(200).json({ success: true, token, data: userResponse, awardedBadge: user.__awardedBadge || null });
   } catch (error) {
     console.error("Login Error:", error);
     res.status(500).json({ success: false, message: "Server Error during login" });

@@ -15,6 +15,9 @@ export default function ProfileEditPanel() {
   const [posY, setPosY] = useState(user?.bannerPositionY ?? 50);
   const [uploading, setUploading] = useState(false);
   const [avatarUploading, setAvatarUploading] = useState(false);
+  // Badge collections
+  const [badgeCollections, setBadgeCollections] = useState([]);
+  const [settingCollection, setSettingCollection] = useState(false);
   // Background modal + glass controls
   const [bgModalOpen, setBgModalOpen] = useState(false);
   const [bgFit, setBgFit] = useState(localStorage.getItem("tae.pageBgFit") || "cover");
@@ -34,6 +37,22 @@ export default function ProfileEditPanel() {
     setPosX(user?.bannerPositionX ?? 50);
     setPosY(user?.bannerPositionY ?? 50);
   }, [user]);
+
+  // Load distinct badge collections from base badges
+  useEffect(() => {
+    const loadCollections = async () => {
+      try {
+        const { data } = await api.get("/badges/base");
+        const bases = data?.data || [];
+        const keys = Array.from(new Set(bases.map((b) => b.collectionKey).filter(Boolean)));
+        keys.sort((a, b) => String(a).localeCompare(String(b)));
+        setBadgeCollections(keys);
+      } catch (e) {
+        console.error("Failed to load badge collections:", e);
+      }
+    };
+    loadCollections();
+  }, []);
 
   const serverBaseUrl = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").split("/api")[0];
   const bannerUrl = user?.bannerImage ? `${serverBaseUrl}${user.bannerImage}` : null;
@@ -310,6 +329,59 @@ export default function ProfileEditPanel() {
           <div className="flex justify-end">
             <StyledButton onClick={applyGlassSettings}>Apply Glass</StyledButton>
           </div>
+        </div>
+
+        {/* Active Badge Collection */}
+        <div className="rounded-lg bg-white/5 border border-white/10 p-3 space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-slate-200 font-semibold">Active Badge Collection</div>
+          </div>
+          <div className="flex items-center gap-2">
+            <select
+              className="px-2 py-1.5 rounded-md bg-black/40 border border-white/15 text-sm text-white"
+              value={user?.activeBadgeCollectionKey || ""}
+              onChange={async (e) => {
+                const val = e.target.value;
+                try {
+                  setSettingCollection(true);
+                  const { data } = await api.put("/users/me/profile/active-badge-collection", {
+                    collectionKey: val || null,
+                  });
+                  setUser(data.data);
+                } catch (err) {
+                  console.error("Failed to set active badge collection:", err);
+                  alert("Failed to set active badge collection.");
+                } finally {
+                  setSettingCollection(false);
+                }
+              }}
+            >
+              <option value="">None (disabled)</option>
+              {badgeCollections.map((key) => (
+                <option key={key} value={key}>
+                  {String(key)}
+                </option>
+              ))}
+            </select>
+            <button
+              className="px-3 py-1.5 rounded-md bg-black/40 border border-white/15 hover:bg-black/50 transition text-sm"
+              disabled={settingCollection || !user?.activeBadgeCollectionKey}
+              onClick={async () => {
+                try {
+                  setSettingCollection(true);
+                  const { data } = await api.put("/users/me/profile/active-badge-collection", { collectionKey: null });
+                  setUser(data.data);
+                } catch (err) {
+                  console.error("Failed to clear active badge collection:", err);
+                } finally {
+                  setSettingCollection(false);
+                }
+              }}
+            >
+              {settingCollection ? "Saving…" : "Clear"}
+            </button>
+          </div>
+          <p className="text-[11px] text-slate-400">Unlocks 1 badge every 5 streak days.</p>
         </div>
 
         {/* General profile fields (optional) */}

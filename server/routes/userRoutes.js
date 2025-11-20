@@ -91,6 +91,7 @@ const {
   updateBannerSettings,
   getDashboardLayout,
   setDashboardLayout,
+  setActiveBadgeCollection,
 } = require("../controllers/userController");
 const { getMe } = require("../controllers/authController");
 
@@ -109,6 +110,8 @@ router.put("/me/profile-banner", bannerUpload.single("profileBanner"), updatePro
 router.put("/me/profile/banner-settings", updateBannerSettings);
 
 router.put("/me/profile/active-persona", setActivePersona);
+// Set active badge collection (or clear by sending null/empty)
+router.put("/me/profile/active-badge-collection", setActiveBadgeCollection);
 router.put("/me/profile", updateProfileBio);
 
 // Temporary route to unlock all personas for testing

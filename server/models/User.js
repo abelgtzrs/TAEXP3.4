@@ -141,6 +141,18 @@ const UserSchema = new mongoose.Schema({
     default: 0,
     min: [0, "Longest login streak cannot be negative"],
   },
+  // Badge collection progression
+  activeBadgeCollectionKey: {
+    type: String,
+    default: null,
+    trim: true,
+  },
+  lastBadgeUnlockedStreak: {
+    // To prevent duplicate awards at the same streak threshold
+    type: Number,
+    default: 0,
+    min: [0, "lastBadgeUnlockedStreak cannot be negative"],
+  },
   unlockedAbelPersonas: [
     {
       type: mongoose.Schema.Types.ObjectId,

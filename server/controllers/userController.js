@@ -1,4 +1,7 @@
 const User = require("../models/User");
+const BadgeBase = require("../models/BadgeBase");
+const UserBadge = require("../models/userSpecific/userBadge");
+const BadgeCollection = require("../models/BadgeCollection");
 const Habit = require("../models/userSpecific/Habit");
 const Book = require("../models/userSpecific/Book");
 const WorkoutLog = require("../models/userSpecific/WorkoutLog");
@@ -34,7 +37,7 @@ const getStreakStatus = async (req, res) => {
 const tickLoginStreak = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select(
-      "+password lastLoginDate currentLoginStreak longestLoginStreak email"
+      "+password lastLoginDate currentLoginStreak longestLoginStreak email activeBadgeCollectionKey lastBadgeUnlockedStreak"
     );
     if (!user) return res.status(404).json({ success: false, message: "User not found" });
 
@@ -73,11 +76,43 @@ const tickLoginStreak = async (req, res) => {
       user.longestLoginStreak = user.currentLoginStreak;
     }
 
-    // Optional: badge awarding hook every 3 days
-    if (user.currentLoginStreak > 0 && user.currentLoginStreak % 3 === 0) {
-      console.log(
-        `User ${user.email} reached a ${user.currentLoginStreak}-day streak via tick! Consider awarding a badge.`
-      );
+    // Award a badge every 5 days for the active collection (idempotent)
+    let awardedBadge = null;
+    const shouldAward = user.currentLoginStreak > 0 && user.currentLoginStreak % 5 === 0;
+    const notAlreadyAwardedForThisStreak = (user.lastBadgeUnlockedStreak || 0) !== user.currentLoginStreak;
+    if (shouldAward && notAlreadyAwardedForThisStreak && user.activeBadgeCollectionKey) {
+      try {
+        // Find all badge bases for the active collection
+        const bases = await BadgeBase.find({ collectionKey: user.activeBadgeCollectionKey })
+          .sort({ unlockDay: 1, orderInCategory: 1, name: 1 })
+          .select("_id badgeId name imageUrl spriteSmallUrl spriteLargeUrl collectionKey");
+        if (bases && bases.length > 0) {
+          // Find which badges user already has
+          const earned = await UserBadge.find({ user: user._id }).select("badgeBase");
+          const earnedSet = new Set(earned.map((e) => String(e.badgeBase)));
+          // Pick the first not-yet-earned badge from the collection
+          const nextBase = bases.find((b) => !earnedSet.has(String(b._id)));
+          if (nextBase) {
+            // Create user badge and link to user
+            const newUserBadge = await UserBadge.create({ user: user._id, badgeBase: nextBase._id });
+            // Push reference into user.badges array if not already present
+            if (!user.badges) user.badges = [];
+            user.badges.push(newUserBadge._id);
+            // Mark the last awarded streak to prevent duplicates
+            user.lastBadgeUnlockedStreak = user.currentLoginStreak;
+            awardedBadge = {
+              badgeId: nextBase.badgeId,
+              name: nextBase.name,
+              imageUrl: nextBase.imageUrl,
+              spriteSmallUrl: nextBase.spriteSmallUrl,
+              spriteLargeUrl: nextBase.spriteLargeUrl,
+              collectionKey: nextBase.collectionKey,
+            };
+          }
+        }
+      } catch (awardErr) {
+        console.warn("Badge award on streak failed:", awardErr.message);
+      }
     }
 
     user.lastLoginDate = today;
@@ -91,6 +126,7 @@ const tickLoginStreak = async (req, res) => {
         currentLoginStreak: user.currentLoginStreak || 0,
         longestLoginStreak: user.longestLoginStreak || 0,
         lastLoginDate: user.lastLoginDate || null,
+        awardedBadge,
       },
     });
   } catch (error) {
@@ -220,6 +256,62 @@ const updateBannerSettings = async (req, res) => {
   } catch (error) {
     console.error("Update Banner Settings Error:", error);
     res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// Set or clear the active badge collection for the user
+const setActiveBadgeCollection = async (req, res) => {
+  try {
+    const { collectionKey } = req.body;
+
+    // Allow clearing the active collection
+    if (!collectionKey) {
+      const cleared = await User.findByIdAndUpdate(
+        req.user.id,
+        { activeBadgeCollectionKey: null },
+        { new: true, runValidators: true }
+      )
+        .select("-password")
+        .populate({ path: "activeAbelPersona", model: "AbelPersonaBase" })
+        .populate({ path: "unlockedAbelPersonas", model: "AbelPersonaBase" })
+        .populate({ path: "displayedPokemon", populate: { path: "basePokemon", model: "PokemonBase" } })
+        .populate({ path: "displayedSnoopyArt", populate: { path: "snoopyArtBase", model: "SnoopyArtBase" } })
+        .populate({ path: "displayedHabboRares", populate: { path: "habboRareBase", model: "HabboRareBase" } })
+        .populate({ path: "displayedYugiohCards", populate: { path: "yugiohCardBase", model: "YugiohCardBase" } })
+        .populate({ path: "badges", populate: { path: "badgeBase", model: "BadgeBase" } })
+        .populate({ path: "equippedTitle", populate: { path: "titleBase", model: "TitleBase" } });
+      if (!cleared) return res.status(404).json({ success: false, message: "User not found." });
+      return res.status(200).json({ success: true, data: cleared });
+    }
+
+    // Validate the collection exists (prefer BadgeCollection, fallback to BadgeBase existence)
+    const col = await BadgeCollection.findOne({ key: collectionKey });
+    if (!col) {
+      const hasBadges = await BadgeBase.exists({ collectionKey });
+      if (!hasBadges) {
+        return res.status(400).json({ success: false, message: "Invalid collection key" });
+      }
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { activeBadgeCollectionKey: collectionKey },
+      { new: true, runValidators: true }
+    )
+      .select("-password")
+      .populate({ path: "activeAbelPersona", model: "AbelPersonaBase" })
+      .populate({ path: "unlockedAbelPersonas", model: "AbelPersonaBase" })
+      .populate({ path: "displayedPokemon", populate: { path: "basePokemon", model: "PokemonBase" } })
+      .populate({ path: "displayedSnoopyArt", populate: { path: "snoopyArtBase", model: "SnoopyArtBase" } })
+      .populate({ path: "displayedHabboRares", populate: { path: "habboRareBase", model: "HabboRareBase" } })
+      .populate({ path: "displayedYugiohCards", populate: { path: "yugiohCardBase", model: "YugiohCardBase" } })
+      .populate({ path: "badges", populate: { path: "badgeBase", model: "BadgeBase" } })
+      .populate({ path: "equippedTitle", populate: { path: "titleBase", model: "TitleBase" } });
+    if (!user) return res.status(404).json({ success: false, message: "User not found." });
+    return res.status(200).json({ success: true, data: user });
+  } catch (error) {
+    console.error("Set Active Badge Collection Error:", error);
+    return res.status(500).json({ success: false, message: "Server Error" });
   }
 };
 
@@ -532,7 +624,7 @@ const getAllUsersAdmin = async (req, res) => {
   try {
     const users = await User.find({})
       .select(
-        "email username role level experience temuTokens gatillaGold wendyHearts currentLoginStreak longestLoginStreak createdAt profilePicture"
+        "email username role level experience temuTokens gatillaGold wendyHearts currentLoginStreak longestLoginStreak createdAt profilePicture lastLoginDate bio location website motto bannerImage"
       )
       .sort({ createdAt: -1 });
     res.status(200).json({ success: true, data: users });
@@ -546,7 +638,7 @@ const getAllUsersAdmin = async (req, res) => {
 const updateUserAdmin = async (req, res) => {
   try {
     const { id } = req.params;
-    const allowed = ["username", "role", "level", "experience", "temuTokens", "gatillaGold", "wendyHearts"]; // safe updatable fields
+    const allowed = ["username", "role", "level", "experience", "temuTokens", "gatillaGold", "wendyHearts", "profilePicture", "bio", "location", "website", "motto", "bannerImage"]; // safe updatable fields
     const updates = {};
 
     for (const k of allowed) {
@@ -570,7 +662,7 @@ const updateUserAdmin = async (req, res) => {
       return res.status(400).json({ success: false, message: "No valid fields supplied" });
     }
     const user = await User.findByIdAndUpdate(id, updates, { new: true, runValidators: true }).select(
-      "email username role level experience temuTokens gatillaGold wendyHearts currentLoginStreak longestLoginStreak createdAt profilePicture"
+      "email username role level experience temuTokens gatillaGold wendyHearts currentLoginStreak longestLoginStreak createdAt profilePicture lastLoginDate bio location website motto bannerImage"
     );
     if (!user) return res.status(404).json({ success: false, message: "User not found" });
     res.status(200).json({ success: true, data: user });
@@ -608,6 +700,7 @@ module.exports = {
   updateProfilePicture, // <-- EXPORT NEW FUNCTION
   updateProfileBanner,
   updateBannerSettings,
+  setActiveBadgeCollection,
   getAllUsersAdmin,
   updateUserAdmin,
   resetUserPasswordAdmin,

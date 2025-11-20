@@ -75,6 +75,7 @@ if (rawOrigins) {
     // Deployed origins
     "https://taexp3-0.onrender.com", // API self
     "https://taexp-3-0.vercel.app", // Deployed frontend
+    "https://taexp.netlify.app", // Netlify public site
   ];
 }
 
@@ -116,7 +117,8 @@ app.use(
       return callback(new Error(`CORS public blocked for origin: ${origin}`));
     },
     credentials: false,
-    methods: ["GET"],
+    // Allow simple GET plus HEAD for curl -I tests and OPTIONS for any future preflights
+    methods: ["GET", "HEAD", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Accept"],
   })
 );

@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import Header from "./Header";
 import RightSidebar from "./RightSidebar";
 import UiCustomizerModal from "../settings/UiCustomizerModal";
+import GlobalToastHost from "../ui/GlobalToastHost";
 import { LayoutProvider, useLayout } from "../../context/LayoutContext";
 import {
   LayoutDashboard,
@@ -344,6 +345,8 @@ const AdminLayout = () => {
   return (
     <LayoutProvider>
       <div className="relative h-screen w-screen overflow-hidden bg-background text-text-main text-xs">
+        {/* Global toast host for cross-app notifications */}
+        <GlobalToastHost />
         {/* Listen for sidebar resize events from RightSidebar handle */}
         {/* Using a small effect here to wire window event to local state */}
         {(() => {

@@ -2,6 +2,7 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api"; // Our pre-configured axios instance
+import { emitToast } from "../utils/toastBus";
 
 // 1. Create the Context
 // This creates an object that components can subscribe to.
@@ -38,12 +39,25 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await api.post("/auth/login", { email, password });
-      const { token, data } = response.data;
+      const { token, data, awardedBadge } = response.data;
 
       // Store the token and user data
       localStorage.setItem("token", token);
       setToken(token);
       setUser(data);
+
+      // Celebratory toast for badge unlocks on login
+      if (awardedBadge && (awardedBadge.name || awardedBadge.badgeId)) {
+        const serverBaseUrl = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").split("/api")[0];
+        const img = awardedBadge.spriteSmallUrl || awardedBadge.imageUrl || "";
+        const imageUrl = img?.startsWith("http") ? img : img ? `${serverBaseUrl}${img}` : undefined;
+        emitToast({
+          title: "Badge Unlocked!",
+          message: awardedBadge.name || awardedBadge.badgeId,
+          imageUrl,
+          tag: "BADGE",
+        });
+      }
 
       // Redirect to the dashboard
       navigate("/dashboard");

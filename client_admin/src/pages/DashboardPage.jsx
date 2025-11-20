@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
+import { emitToast } from "../utils/toastBus";
 
 // UI Components
 import PageHeader from "../components/ui/PageHeader";
@@ -74,6 +75,17 @@ const DashboardPage = () => {
       const data = res.data?.data || {};
       setStreakStatus((prev) => ({ ...prev, ...data }));
       setShowStreakModal(false);
+      if (data.awardedBadge && (data.awardedBadge.name || data.awardedBadge.badgeId)) {
+        const serverBaseUrl = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").split("/api")[0];
+        const img = data.awardedBadge.spriteSmallUrl || data.awardedBadge.imageUrl || "";
+        const imageUrl = img?.startsWith("http") ? img : img ? `${serverBaseUrl}${img}` : undefined;
+        emitToast({
+          title: "Badge Unlocked!",
+          message: data.awardedBadge.name || data.awardedBadge.badgeId,
+          imageUrl,
+          tag: "BADGE",
+        });
+      }
       // Refresh dashboard stats to reflect new streak immediately
       const statsRes = await api.get("/users/me/dashboard-stats");
       setStats(statsRes.data.data);
